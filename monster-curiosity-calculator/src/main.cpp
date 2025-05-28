@@ -22,7 +22,7 @@ public:
             if (ImGui::Button("Set Calculation Type"))
                 ImGui::OpenPopup("calc_type_popup");
             ImGui::SameLine();
-            ImGui::Text("AAAAAAAAAAAAAH");
+            ImGui::Text("THIS IS A BUILD TEST");
         }
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
