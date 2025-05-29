@@ -62,14 +62,25 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 	char* errorMessage;
 	int exit = sqlite3_open(dbPath, &db);
 
+
+	std::string clear{"DELETE FROM monsters"};
+	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
+	if(exit != SQLITE_OK) {
+		std::cerr << "Error clearing existing monster data" << std::endl;
+		std::cout << "Error Code: " << exit << std::endl;
+		std::cout << "Error Message: " << errorMessage << std::endl;
+	}
+	else {
+		std::cout << "Successfully cleared data from database at location " << dbPath << std::endl;
+	}
+
 	int n = monsters.size();
 	for (int i = 0; i < n; i++) {
 		auto mon_info = monsters[i];
 
-		std::cout << mon_info["name"].asString() << std::endl;
-
 		std::string data_schema{
-			"INSERT INTO monsters (name) VALUES('" + mon_info["name"].asString() + "');"
+			"INSERT INTO monsters (name)"
+			"VALUES('" + mon_info["name"].asString() + "');"
 		};
 		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &errorMessage);
 		if (exit != SQLITE_OK) {
@@ -81,6 +92,7 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 		}
 	}
 
+	std::cout << "Successfully converted json data from " << jsonPath << " to database at location " << dbPath << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
