@@ -26,9 +26,11 @@ public:
         {
             if (ImGui::Button("Build Monster Database")) {
                 createDatabase(DB_PATH.c_str());
+                deleteTable(DB_PATH.c_str());
                 createTable(DB_PATH.c_str());
             }
             if (ImGui::Button("Parse Monster Json Info Into Database")) {
+                clearTable(DB_PATH.c_str());
                 insertDataFromJson(DB_PATH.c_str(), JSON_PATH.c_str());
             }
             ImGui::SameLine();
