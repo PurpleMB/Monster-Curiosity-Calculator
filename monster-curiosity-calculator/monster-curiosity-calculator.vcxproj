@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Libraries\sqlite-amalgamation-3490200\sqlite3.c" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx9.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="lib\imgui\imgui_draw.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,8 +153,19 @@
     <ClInclude Include="lib\imgui\imstb_rectpack.h" />
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\database.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\sqlite3_c_plus_plus.1.0.3\build\native\sqlite3_c_plus_plus.targets" Condition="Exists('packages\sqlite3_c_plus_plus.1.0.3\build\native\sqlite3_c_plus_plus.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\sqlite3_c_plus_plus.1.0.3\build\native\sqlite3_c_plus_plus.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sqlite3_c_plus_plus.1.0.3\build\native\sqlite3_c_plus_plus.targets'))" />
+  </Target>
 </Project>

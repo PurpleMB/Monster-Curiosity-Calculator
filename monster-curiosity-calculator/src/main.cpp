@@ -1,8 +1,12 @@
+#include <string>
 #include "app.h"
+#include "database.h"
 
 class MCCApp : public App
 {
 public:
+    const std::string DB_PATH = "c:\\DB_TEST\\test.db";
+
     MCCApp() = default;
     ~MCCApp() = default;
 
@@ -19,10 +23,13 @@ public:
 
         // calculation selection window
         {
-            if (ImGui::Button("Set Calculation Type"))
+            if (ImGui::Button("Set Calculation Type")) {
                 ImGui::OpenPopup("calc_type_popup");
+                createDatabase(DB_PATH.c_str());
+                createTable(DB_PATH.c_str());
+            }
             ImGui::SameLine();
-            ImGui::Text("THIS IS A BUILD TEST");
+            ImGui::Text("THIS IS A BUILD TEST for basic SQLite/C++ integration");
         }
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
