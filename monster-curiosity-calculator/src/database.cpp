@@ -22,8 +22,17 @@ int createTable(const char* path) {
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
 		"name TEXT NOT NULL,"
+		"dex_number INTEGER NOT NULL,"
 		"primary_type TEXT NOT NULL,"
-		"secondary_type TEXT NOT NULL);"
+		"secondary_type TEXT NOT NULL,"
+		"hp INTEGER NOT NULL,"
+		"attack INTEGER NOT NULL,"
+		"defense INTEGER NOT NULL,"
+		"special_attack INTEGER NOT NULL,"
+		"special_defense INTEGER NOT NULL,"
+		"speed INTEGER NOT NULL,"
+		"stat_total INTEGER NOT NULL"
+		");"
 	);
 
 	sqlite3* db;
@@ -124,13 +133,33 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 
 std::string generateQueryString(Json::Value mon_info) {
 	std::string monName = mon_info["name"].asString();
+	std::string dexNum = mon_info["id"].asString();
 	std::string primType = mon_info["types"]["primary"].asString();
 	std::string secType = mon_info["types"]["secondary"].asString();
+	std::string health = mon_info["stats"]["hp"].asString();
+	std::string attack = mon_info["stats"]["attack"].asString();
+	std::string defense = mon_info["stats"]["defense"].asString();
+	std::string spe_atk = mon_info["stats"]["special-attack"].asString();
+	std::string spe_def = mon_info["stats"]["special-defense"].asString();
+	std::string speed = mon_info["stats"]["speed"].asString();
+	std::string stat_total = mon_info["stats"]["total"].asString();
 
 	std::string data_schema{
-	"INSERT INTO monsters (name, primary_type, secondary_type)"
-	"VALUES('" + monName + "', '" + primType + "', '" + secType + "');"
+	"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
+	"VALUES('"
 	};
+	data_schema += monName + "', '";
+	data_schema += dexNum + "', '";
+	data_schema += primType + "', '";
+	data_schema += secType + "', '";
+	data_schema += health + "', '";
+	data_schema += attack + "', '";
+	data_schema += defense + "', '";
+	data_schema += spe_atk + "', '";
+	data_schema += spe_def + "', '";
+	data_schema += speed + "', '";
+	data_schema += stat_total;
+	data_schema += "');";
 
 	return data_schema;
 }
