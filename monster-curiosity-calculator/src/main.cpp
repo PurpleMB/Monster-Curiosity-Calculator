@@ -6,6 +6,7 @@ class MCCApp : public App
 {
 public:
     const std::string DB_PATH = "c:\\DB_TEST\\test.db";
+    const std::string JSON_PATH = "c:\\DB_TEST\\mccdata.json";
 
     MCCApp() = default;
     ~MCCApp() = default;
@@ -23,10 +24,12 @@ public:
 
         // calculation selection window
         {
-            if (ImGui::Button("Set Calculation Type")) {
-                ImGui::OpenPopup("calc_type_popup");
+            if (ImGui::Button("Build Monster Database")) {
                 createDatabase(DB_PATH.c_str());
                 createTable(DB_PATH.c_str());
+            }
+            if (ImGui::Button("Parse Monster Json Info Into Database")) {
+                insertDataFromJson(DB_PATH.c_str(), JSON_PATH.c_str());
             }
             ImGui::SameLine();
             ImGui::Text("THIS IS A BUILD TEST for basic SQLite/C++ integration");

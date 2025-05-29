@@ -1,5 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <json/json.h>
+#include <json/value.h>
 #include "database.h"
 
 int createDatabase(const char* path) {
@@ -20,9 +23,7 @@ int createTable(const char* path) {
 	std::string table_schema = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
-		"name TEXT NOT NULL,"
-		"primary_type TEXT NOT NULL,"
-		"secondary_type TEXT);"
+		"name TEXT NOT NULL);"
 	);
 
 	sqlite3* db;
@@ -36,6 +37,8 @@ int createTable(const char* path) {
 
 		if (exit != SQLITE_OK) {
 			std::cout << "Error creating table schema in database at location " << path << std::endl;
+			std::cout << "Error Code: " << exit << std::endl;
+			std::cout << "Error Message: " << errorMessage << std::endl;
 			sqlite3_free(errorMessage);
 		}
 		else {
@@ -51,9 +54,37 @@ int createTable(const char* path) {
 }
 
 int insertDataFromJson(const char* dbPath, const char* jsonPath) {
+	std::ifstream monster_json_file(jsonPath, std::ifstream::binary);
+	Json::Value monsters;
+	monster_json_file >> monsters;
 
+	sqlite3* db;
+	char* errorMessage;
+	int exit = sqlite3_open(dbPath, &db);
+
+	int n = monsters.size();
+	for (int i = 0; i < n; i++) {
+		auto mon_info = monsters[i];
+
+		std::cout << mon_info["name"].asString() << std::endl;
+
+		std::string data_schema{
+			"INSERT INTO monsters (name) VALUES('" + mon_info["name"].asString() + "');"
+		};
+		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &errorMessage);
+		if (exit != SQLITE_OK) {
+			std::cerr << "Error inserting monster data" << std::endl;
+			std::cout << "Error Code: " << exit << std::endl;
+			std::cout << "Error Message: " << errorMessage << std::endl;
+			sqlite3_free(errorMessage);
+			break;
+		}
+	}
+
+	sqlite3_close(db);
+	return 0;
 }
 
 int debugCallback(void* NotUsed, int argc, char** argv, char** azColName) {
-
+	return 0;
 }

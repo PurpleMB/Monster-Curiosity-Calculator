@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)lib\imgui\backends;$(ProjectDir)lib\imgui\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)lib\jsoncpp;$(ProjectDir)lib\imgui\backends;$(ProjectDir)lib\imgui\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Libraries\jsoncpp\dist\jsoncpp.cpp" />
     <ClCompile Include="..\..\..\Libraries\sqlite-amalgamation-3490200\sqlite3.c" />
     <ClCompile Include="src\app.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx9.cpp" />
@@ -144,6 +145,8 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json-forwards.h" />
+    <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json.h" />
     <ClInclude Include="src\app.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h" />
