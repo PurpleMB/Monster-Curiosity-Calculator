@@ -69,17 +69,15 @@ def prune_pokemon_info(pokemon_info):
 
     # ability info
     poke_abilities = {}
-    normal_abilities = []
-    hidden_ability = ""
+    abilities = ["-", "-", "-"]
 
     for ability in pokemon_info["abilities"]:
-        if ability["is_hidden"]:
-            hidden_ability = ability["ability"]["name"]
-        else:
-            normal_abilities.append(ability["ability"]["name"])
+        abilities[ability["slot"]-1] = ability["ability"]["name"]
 
-    poke_abilities["normal"] = normal_abilities
-    poke_abilities["hidden"] = hidden_ability
+    poke_abilities["first"] = abilities[0]
+    poke_abilities["second"] = abilities[1]
+    poke_abilities["hidden"] = abilities[2]
+
     pruned_info["abilities"] = poke_abilities
 
     return pruned_info
