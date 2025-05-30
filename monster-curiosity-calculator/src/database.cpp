@@ -25,6 +25,8 @@ int createTable(const char* path) {
 		"dex_number INTEGER NOT NULL,"
 		"primary_type TEXT NOT NULL,"
 		"secondary_type TEXT NOT NULL,"
+		"height DOUBLE NOT NULL,"
+		"weight DOUBLE NOT NULL,"
 		"hp INTEGER NOT NULL,"
 		"attack INTEGER NOT NULL,"
 		"defense INTEGER NOT NULL,"
@@ -68,7 +70,7 @@ int deleteTable(const char* path) {
 	int exit = sqlite3_open(path, &db);
 
 
-	std::string clear{ "DROP TABLE monsters" };
+	std::string clear{ "DROP TABLE IF EXISTS monsters" };
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error clearing existing monster data" << std::endl;
@@ -136,6 +138,8 @@ std::string generateQueryString(Json::Value mon_info) {
 	std::string dexNum = mon_info["id"].asString();
 	std::string primType = mon_info["types"]["primary"].asString();
 	std::string secType = mon_info["types"]["secondary"].asString();
+	std::string height = mon_info["height(m)"].asString();
+	std::string weight = mon_info["weight(kg)"].asString();
 	std::string health = mon_info["stats"]["hp"].asString();
 	std::string attack = mon_info["stats"]["attack"].asString();
 	std::string defense = mon_info["stats"]["defense"].asString();
@@ -145,13 +149,15 @@ std::string generateQueryString(Json::Value mon_info) {
 	std::string stat_total = mon_info["stats"]["total"].asString();
 
 	std::string data_schema{
-	"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
+	"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, height, weight, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
 	"VALUES('"
 	};
 	data_schema += monName + "', '";
 	data_schema += dexNum + "', '";
 	data_schema += primType + "', '";
 	data_schema += secType + "', '";
+	data_schema += height + "', '";
+	data_schema += weight + "', '";
 	data_schema += health + "', '";
 	data_schema += attack + "', '";
 	data_schema += defense + "', '";
