@@ -146,13 +146,9 @@ std::string generateQueryString(Json::Value mon_info) {
 	std::string height = mon_info["height(m)"].asString();
 	std::string weight = mon_info["weight(kg)"].asString();
 
-	int abilCount = mon_info["abilities"]["normal"].size();
-	std::string abil1 = mon_info["abilities"]["normal"][0].asString();
-	std::string abil2 = (abilCount > 1) ? mon_info["abilities"]["normal"][1].asString() : "-";
+	std::string abil1 = mon_info["abilities"]["first"].asString();
+	std::string abil2 = mon_info["abilities"]["second"].asString();
 	std::string abilHidden = mon_info["abilities"]["hidden"].asString();
-	if (abilHidden.size() == 0) {
-		abilHidden = "-";
-	}
 
 	std::string health = mon_info["stats"]["hp"].asString();
 	std::string attack = mon_info["stats"]["attack"].asString();
