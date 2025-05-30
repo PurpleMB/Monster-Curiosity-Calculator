@@ -27,6 +27,9 @@ int createTable(const char* path) {
 		"secondary_type TEXT NOT NULL,"
 		"height DOUBLE NOT NULL,"
 		"weight DOUBLE NOT NULL,"
+		"ability_1 TEXT NOT NULL,"
+		"ability_2 TEXT NOT NULL,"
+		"hidden_ability TEXT NOT NULL,"
 		"hp INTEGER NOT NULL,"
 		"attack INTEGER NOT NULL,"
 		"defense INTEGER NOT NULL,"
@@ -136,10 +139,21 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 std::string generateQueryString(Json::Value mon_info) {
 	std::string monName = mon_info["name"].asString();
 	std::string dexNum = mon_info["id"].asString();
+
 	std::string primType = mon_info["types"]["primary"].asString();
 	std::string secType = mon_info["types"]["secondary"].asString();
+
 	std::string height = mon_info["height(m)"].asString();
 	std::string weight = mon_info["weight(kg)"].asString();
+
+	int abilCount = mon_info["abilities"]["normal"].size();
+	std::string abil1 = mon_info["abilities"]["normal"][0].asString();
+	std::string abil2 = (abilCount > 1) ? mon_info["abilities"]["normal"][1].asString() : "-";
+	std::string abilHidden = mon_info["abilities"]["hidden"].asString();
+	if (abilHidden.size() == 0) {
+		abilHidden = "-";
+	}
+
 	std::string health = mon_info["stats"]["hp"].asString();
 	std::string attack = mon_info["stats"]["attack"].asString();
 	std::string defense = mon_info["stats"]["defense"].asString();
@@ -149,15 +163,22 @@ std::string generateQueryString(Json::Value mon_info) {
 	std::string stat_total = mon_info["stats"]["total"].asString();
 
 	std::string data_schema{
-	"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, height, weight, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
-	"VALUES('"
+		"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, height, weight, ability_1, ability_2, hidden_ability, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
+		"VALUES('"
 	};
 	data_schema += monName + "', '";
 	data_schema += dexNum + "', '";
+
 	data_schema += primType + "', '";
 	data_schema += secType + "', '";
+
 	data_schema += height + "', '";
 	data_schema += weight + "', '";
+
+	data_schema += abil1 + "', '";
+	data_schema += abil2 + "', '";
+	data_schema += abilHidden + "', '";
+
 	data_schema += health + "', '";
 	data_schema += attack + "', '";
 	data_schema += defense + "', '";
