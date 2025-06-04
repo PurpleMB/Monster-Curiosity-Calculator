@@ -2,6 +2,9 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_gui_windows.h"
+#include "imgui.h"
+#include "imgui_impl_dx9.h"
+#include "imgui_impl_win32.h"
 
 class MCCApp : public App
 {

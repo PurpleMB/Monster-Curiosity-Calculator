@@ -8,6 +8,15 @@
 
 #include "app.h"
 
+#include <cstdlib>
+
+#include <d3d9.h>
+#include <tchar.h>
+
+#include "imgui.h"
+#include "imgui_impl_dx9.h"
+#include "imgui_impl_win32.h"
+
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = nullptr;

@@ -1,10 +1,9 @@
 #pragma once
+#include <d3d9.h>
+
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
-#include <d3d9.h>
-#include <tchar.h>
-#include <cstdlib>
 
 class App
 {
@@ -18,6 +17,7 @@ public:
 protected:
 	ImVec4 clear_color;
 	ImGuiIO* io;
+
 private:
 	HWND hwnd;
 	WNDCLASSEXW wc;
