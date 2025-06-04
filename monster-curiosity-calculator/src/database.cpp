@@ -7,10 +7,10 @@ int createDatabase(const char* path) {
 	sqlite3* db;
 	int status = sqlite3_open(path, &db);
 	if (status) {
-		std::cout << "Error creating database at location " << path << std::endl;
+		std::cout << "Error opening database at location " << path << std::endl;
 	}
 	else {
-		std::cout << "Successfully created database at location " << path << std::endl;
+		std::cout << "Successfully opened database at location " << path << std::endl;
 	}
 	sqlite3_close(db);
 
@@ -69,14 +69,13 @@ int createTable(const char* path) {
 
 int deleteTable(const char* path) {
 	sqlite3* db;
-	char* errorMessage;
 	int exit = sqlite3_open(path, &db);
 
-
+	char* errorMessage;
 	std::string clear{ "DROP TABLE IF EXISTS monsters" };
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
 	if (exit != SQLITE_OK) {
-		std::cerr << "Error clearing existing monster data" << std::endl;
+		std::cerr << "Error deleting monster data table" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
 		std::cout << "Error Message: " << errorMessage << std::endl;
 	}
@@ -89,10 +88,9 @@ int deleteTable(const char* path) {
 
 int clearTable(const char* path) {
 	sqlite3* db;
-	char* errorMessage;
 	int exit = sqlite3_open(path, &db);
 
-
+	char* errorMessage;
 	std::string clear{ "DELETE FROM monsters" };
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
 	if (exit != SQLITE_OK) {
@@ -113,17 +111,17 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 	monster_json_file >> monsters;
 
 	sqlite3* db;
-	char* errorMessage;
 	int exit = sqlite3_open(dbPath, &db);
 
+	char* errorMessage;
 	int n = monsters.size();
 	for (int i = 0; i < n; i++) {
 		auto mon_info = monsters[i];
 
-		std::string data_schema = generateQueryString(mon_info);
+		std::string data_schema = generateDataString(mon_info);
 		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &errorMessage);
 		if (exit != SQLITE_OK) {
-			std::cerr << "Error inserting monster data" << std::endl;
+			std::cerr << "Error inserting monster data from JSON file" << std::endl;
 			std::cout << "Error Code: " << exit << std::endl;
 			std::cout << "Error Message: " << errorMessage << std::endl;
 			sqlite3_free(errorMessage);
@@ -131,12 +129,12 @@ int insertDataFromJson(const char* dbPath, const char* jsonPath) {
 		}
 	}
 
-	std::cout << "Successfully converted json data from " << jsonPath << " to database at location " << dbPath << std::endl;
+	std::cout << "Successfully converted JSON data from " << jsonPath << " to database at location " << dbPath << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
 
-std::string generateQueryString(Json::Value mon_info) {
+std::string generateDataString(Json::Value mon_info) {
 	std::string monName = mon_info["name"].asString();
 	std::string dexNum = mon_info["id"].asString();
 
@@ -185,6 +183,24 @@ std::string generateQueryString(Json::Value mon_info) {
 	data_schema += "');";
 
 	return data_schema;
+}
+
+int queryDatabase(const char* path, const int argc, const char** argv, std::vector<std::string>& results) {
+	sqlite3* db;
+	char* errorMessage;
+	int exit = sqlite3_open(path, &db);
+
+	std::string queryString = "";
+	exit = sqlite3_exec(db, queryString.c_str(), NULL, 0, &errorMessage);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error querying monster data" << std::endl;
+		std::cout << "Error Code: " << exit << std::endl;
+		std::cout << "Error Message: " << errorMessage << std::endl;
+		sqlite3_free(errorMessage);
+	}
+
+	sqlite3_close(db);
+	return 0;
 }
 
 int debugCallback(void* NotUsed, int argc, char** argv, char** azColName) {

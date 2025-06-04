@@ -8,5 +8,6 @@ int createTable(const char* path);
 int deleteTable(const char* path);
 int clearTable(const char* path);
 int insertDataFromJson(const char* dbPath, const char* jsonPath);
-std::string generateQueryString(Json::Value mon_info);
+std::string generateDataString(Json::Value mon_info);
+int queryDatabase(const char* path, const int argc, const char** argv, std::vector<std::string>& results);
 int debugCallback(void* NotUsed, int argc, char** argv, char** azColName);

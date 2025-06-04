@@ -143,6 +143,7 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mcc_gui_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json-forwards.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="src\database.h" />
+    <ClInclude Include="src\mcc_gui_windows.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

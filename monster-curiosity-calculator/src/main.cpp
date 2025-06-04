@@ -1,6 +1,7 @@
 #include <string>
 #include "app.h"
 #include "database.h"
+#include "mcc_gui_windows.h"
 
 class MCCApp : public App
 {
@@ -34,56 +35,28 @@ public:
             ImGui::SetNextWindowSize({ window_size[0], window_size[1]});
             ImGui::SetNextWindowPos({window_pos[0], window_pos[1]});
 
-            ImGui::Begin("Database Generation", nullptr, DEFAULT_WINDOW_SETTINGS);
-            if (ImGui::Button("Build Monster Database")) {
-                createDatabase(DB_PATH.c_str());
-                deleteTable(DB_PATH.c_str());
-                createTable(DB_PATH.c_str());
-            }
-            if (ImGui::Button("Parse Monster Json Info Into Database")) {
-                clearTable(DB_PATH.c_str());
-                insertDataFromJson(DB_PATH.c_str(), JSON_PATH.c_str());
-            }
+            monster_calculator::DrawWelcomeWindow(DEFAULT_WINDOW_SETTINGS, DB_PATH.c_str(), JSON_PATH.c_str());
 
             window_pos[1] += MARGIN + ImGui::GetWindowHeight();
-
-            ImGui::End();
         }
 
         // type selection window
         {
-            static int selected_type = -1;
-            const char* types[] = {"Any", "None", "Normal", "Grass" , "Water", "Fire"};
-            
-            std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
-
             ImGui::SetNextWindowSize({ window_size[0], window_size[1] });
             ImGui::SetNextWindowPos({ window_pos[0], window_pos[1] });
 
-            ImGui::Begin("Type Selection", nullptr, DEFAULT_WINDOW_SETTINGS);
+            monster_calculator::DrawSetParameterWindow(DEFAULT_WINDOW_SETTINGS);
 
-            ImGui::Text("Select type to search for:");
+            window_pos[1] = MARGIN;
+            window_pos[0] += MARGIN + ImGui::GetWindowWidth();
+        }
 
-            ImGui::Text("Primary Type: ");
-            ImGui::SameLine();
-            if (ImGui::Button(selected_type_name.c_str()))
-            {
-                ImGui::OpenPopup("Select type");
-            }
+        // answer calculation window
+        {
+            ImGui::SetNextWindowSize({ window_size[0], window_size[1] });
+            ImGui::SetNextWindowPos({ window_pos[0], window_pos[1] });
 
-            if (ImGui::BeginPopup("Select type"))
-            {
-                for (int i = 0; i < IM_ARRAYSIZE(types); i++)
-                {
-                    if (ImGui::Selectable(types[i]))
-                    {
-                        selected_type = i;
-                    }
-                }
-                ImGui::EndPopup();
-            }
-
-            ImGui::End();
+            monster_calculator::DrawOutputLogWindow(DEFAULT_WINDOW_SETTINGS);
         }
     }
 
