@@ -86,4 +86,4 @@ void DrawOutputLogWindow(const int windowSettings) {
 
 	ImGui::End();
 }
-} // monster_calculator
+} // namespace monster_calculator

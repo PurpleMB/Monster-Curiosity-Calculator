@@ -3,6 +3,8 @@
 #include <string>
 #include "database.h"
 
+namespace monster_calculator {
+
 int createDatabase(const char* path) {
 	sqlite3* db;
 	int status = sqlite3_open(path, &db);
@@ -38,7 +40,7 @@ int createTable(const char* path) {
 		"speed INTEGER NOT NULL,"
 		"stat_total INTEGER NOT NULL"
 		");"
-	);
+		);
 
 	sqlite3* db;
 
@@ -60,7 +62,7 @@ int createTable(const char* path) {
 		}
 		sqlite3_close(db);
 	}
-	catch (const std::exception &e) {
+	catch (const std::exception& e) {
 		std::cerr << e.what();
 	}
 
@@ -206,3 +208,5 @@ int queryDatabase(const char* path, const int argc, const char** argv, std::vect
 int debugCallback(void* NotUsed, int argc, char** argv, char** azColName) {
 	return 0;
 }
+
+} // namespace monster_calculator

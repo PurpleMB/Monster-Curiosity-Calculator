@@ -5,14 +5,15 @@
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 
+namespace monster_calculator {
+
 // Encloses and obfuscates boilerplate DearImGui code
 // Each class method, including constructors and destructors,
 // simply contains code required to get DearImGui running.
 // Ideally, a child class of App only needs to define its
 // own Update() implementation to handle its own GUI drawing
 // without worrying about defining any buffers, fonts, etc..
-class App
-{
+class App {
 public:
 	App();
 	virtual ~App();
@@ -33,3 +34,5 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+} // namespace monster_calculator
