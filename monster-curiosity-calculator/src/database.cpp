@@ -1,11 +1,16 @@
+#include "database.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "database.h"
+
+#include <sqlite3.h>
+#include <json/json.h>
+#include <json/value.h>
 
 namespace monster_calculator {
 
-int createDatabase(const char* path) {
+int CreateDatabase(const char* path) {
 	sqlite3* db;
 	int status = sqlite3_open(path, &db);
 	if (status) {
@@ -19,7 +24,7 @@ int createDatabase(const char* path) {
 	return 0;
 }
 
-int createTable(const char* path) {
+int CreateTable(const char* path) {
 	std::string table_schema = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
@@ -48,14 +53,14 @@ int createTable(const char* path) {
 		int exit = 0;
 		exit = sqlite3_open(path, &db);
 
-		char* errorMessage;
-		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &errorMessage);
+		char* error_message;
+		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &error_message);
 
 		if (exit != SQLITE_OK) {
 			std::cout << "Error creating table schema in database at location " << path << std::endl;
 			std::cout << "Error Code: " << exit << std::endl;
-			std::cout << "Error Message: " << errorMessage << std::endl;
-			sqlite3_free(errorMessage);
+			std::cout << "Error Message: " << error_message << std::endl;
+			sqlite3_free(error_message);
 		}
 		else {
 			std::cout << "Successfully created table schema in database at location " << path << std::endl;
@@ -69,17 +74,17 @@ int createTable(const char* path) {
 	return 0;
 }
 
-int deleteTable(const char* path) {
+int DeleteTable(const char* path) {
 	sqlite3* db;
 	int exit = sqlite3_open(path, &db);
 
-	char* errorMessage;
-	std::string clear{ "DROP TABLE IF EXISTS monsters" };
-	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
+	char* error_message;
+	std::string clear {"DROP TABLE IF EXISTS monsters"};
+	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error deleting monster data table" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << errorMessage << std::endl;
+		std::cout << "Error Message: " << error_message << std::endl;
 	}
 	else {
 		std::cout << "Successfully dropped data table from database at location " << path << std::endl;
@@ -88,17 +93,17 @@ int deleteTable(const char* path) {
 	return 0;
 }
 
-int clearTable(const char* path) {
+int ClearTable(const char* path) {
 	sqlite3* db;
 	int exit = sqlite3_open(path, &db);
 
-	char* errorMessage;
-	std::string clear{ "DELETE FROM monsters" };
-	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &errorMessage);
+	char* error_message;
+	std::string clear {"DELETE FROM monsters"};
+	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error clearing existing monster data" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << errorMessage << std::endl;
+		std::cout << "Error Message: " << error_message << std::endl;
 	}
 	else {
 		std::cout << "Successfully cleared data from database at location " << path << std::endl;
@@ -107,48 +112,48 @@ int clearTable(const char* path) {
 	return 0;
 }
 
-int insertDataFromJson(const char* dbPath, const char* jsonPath) {
-	std::ifstream monster_json_file(jsonPath, std::ifstream::binary);
+int InsertDataFromJson(const char* db_path, const char* json_path) {
+	std::ifstream monster_json_file(json_path, std::ifstream::binary);
 	Json::Value monsters;
 	monster_json_file >> monsters;
 
 	sqlite3* db;
-	int exit = sqlite3_open(dbPath, &db);
+	int exit = sqlite3_open(db_path, &db);
 
-	char* errorMessage;
+	char* error_message;
 	int n = monsters.size();
 	for (int i = 0; i < n; i++) {
 		auto mon_info = monsters[i];
 
-		std::string data_schema = generateDataString(mon_info);
-		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &errorMessage);
+		std::string data_schema = GenerateDataString(mon_info);
+		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &error_message);
 		if (exit != SQLITE_OK) {
 			std::cerr << "Error inserting monster data from JSON file" << std::endl;
 			std::cout << "Error Code: " << exit << std::endl;
-			std::cout << "Error Message: " << errorMessage << std::endl;
-			sqlite3_free(errorMessage);
+			std::cout << "Error Message: " << error_message << std::endl;
+			sqlite3_free(error_message);
 			break;
 		}
 	}
 
-	std::cout << "Successfully converted JSON data from " << jsonPath << " to database at location " << dbPath << std::endl;
+	std::cout << "Successfully converted JSON data from " << json_path << " to database at location " << db_path << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
 
-std::string generateDataString(Json::Value mon_info) {
-	std::string monName = mon_info["name"].asString();
-	std::string dexNum = mon_info["id"].asString();
+std::string GenerateDataString(Json::Value mon_info) {
+	std::string mon_name = mon_info["name"].asString();
+	std::string dex_num = mon_info["id"].asString();
 
-	std::string primType = mon_info["types"]["primary"].asString();
-	std::string secType = mon_info["types"]["secondary"].asString();
+	std::string prim_type = mon_info["types"]["primary"].asString();
+	std::string sec_type = mon_info["types"]["secondary"].asString();
 
 	std::string height = mon_info["height(m)"].asString();
 	std::string weight = mon_info["weight(kg)"].asString();
 
 	std::string abil1 = mon_info["abilities"]["first"].asString();
 	std::string abil2 = mon_info["abilities"]["second"].asString();
-	std::string abilHidden = mon_info["abilities"]["hidden"].asString();
+	std::string abil_hidden = mon_info["abilities"]["hidden"].asString();
 
 	std::string health = mon_info["stats"]["hp"].asString();
 	std::string attack = mon_info["stats"]["attack"].asString();
@@ -158,22 +163,22 @@ std::string generateDataString(Json::Value mon_info) {
 	std::string speed = mon_info["stats"]["speed"].asString();
 	std::string stat_total = mon_info["stats"]["total"].asString();
 
-	std::string data_schema{
+	std::string data_schema {
 		"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, height, weight, ability_1, ability_2, hidden_ability, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
 		"VALUES('"
 	};
-	data_schema += monName + "', '";
-	data_schema += dexNum + "', '";
+	data_schema += mon_name + "', '";
+	data_schema += dex_num + "', '";
 
-	data_schema += primType + "', '";
-	data_schema += secType + "', '";
+	data_schema += prim_type + "', '";
+	data_schema += sec_type + "', '";
 
 	data_schema += height + "', '";
 	data_schema += weight + "', '";
 
 	data_schema += abil1 + "', '";
 	data_schema += abil2 + "', '";
-	data_schema += abilHidden + "', '";
+	data_schema += abil_hidden + "', '";
 
 	data_schema += health + "', '";
 	data_schema += attack + "', '";
@@ -187,7 +192,7 @@ std::string generateDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int queryDatabase(const char* path, const int argc, const char** argv, std::vector<std::string>& results) {
+int QueryDatabase(const char* path, const int argc, const char** argv, std::vector<std::string>& results) {
 	sqlite3* db;
 	char* errorMessage;
 	int exit = sqlite3_open(path, &db);
@@ -205,7 +210,7 @@ int queryDatabase(const char* path, const int argc, const char** argv, std::vect
 	return 0;
 }
 
-int debugCallback(void* NotUsed, int argc, char** argv, char** azColName) {
+int DebugCallback(void* not_used, int argc, char** argv, char** azColName) {
 	return 0;
 }
 

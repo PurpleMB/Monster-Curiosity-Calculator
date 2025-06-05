@@ -24,8 +24,8 @@ public:
 	// Put any logic for the GUI that needs to be drawn every frame in here
 	virtual void Update() final {
 		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
+		if (show_demo_window_)
+			ImGui::ShowDemoWindow(&show_demo_window_);
 
 		std::vector<float> window_size = {350, 0};
 		std::vector<float> window_pos = {kWindowMargin, kWindowMargin};
@@ -61,8 +61,8 @@ public:
 	}
 
 private:
-	bool show_demo_window = true;
-	bool show_another_window = false;
+	bool show_demo_window_ = true;
+	bool show_another_window_ = false;
 
 	const std::string kDbPath = "c:\\DB_TEST\\test.db";
 	const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";

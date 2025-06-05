@@ -1,8 +1,9 @@
 #pragma once
+
 namespace monster_calculator {
-	void DrawWelcomeWindow(const int windowSettings, const char* databasePath, const char* jsonPath);
-	void DrawSetParameterWindow(const int windowSettings);
+	void DrawWelcomeWindow(const int window_settings, const char* database_path, const char* json_path);
+	void DrawSetParameterWindow(const int window_settings);
 	void DrawValueParameterWindow();
 	void DrawSetDisplayWindow();
-	void DrawOutputLogWindow(const int windowSettings);
+	void DrawOutputLogWindow(const int window_settings);
 } // namespace monster_calculator

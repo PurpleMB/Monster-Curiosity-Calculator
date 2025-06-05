@@ -13,27 +13,28 @@
 #include "database.h"
 
 namespace monster_calculator {
-void DrawWelcomeWindow(const int windowSettings, const char* databasePath, const char* jsonPath) {
-	ImGui::Begin("Database Generation", nullptr, windowSettings);
+
+void DrawWelcomeWindow(const int window_settings, const char* database_path, const char* json_path) {
+	ImGui::Begin("Database Generation", nullptr, window_settings);
 	if (ImGui::Button("Build Monster Database")) {
-		createDatabase(databasePath);
-		deleteTable(databasePath);
-		createTable(databasePath);
+		CreateDatabase(database_path);
+		DeleteTable(database_path);
+		CreateTable(database_path);
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		clearTable(databasePath);
-		insertDataFromJson(databasePath, jsonPath);
+		ClearTable(database_path);
+		InsertDataFromJson(database_path, json_path);
 	}
 	ImGui::End();
 }
 
-void DrawSetParameterWindow(const int windowSettings) {
+void DrawSetParameterWindow(const int window_settings) {
 	static int selected_type = -1;
 	const char* types[] = { "Any", "None", "Normal", "Grass" , "Water", "Fire" };
 
 	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
 
-	ImGui::Begin("Type Selection", nullptr, windowSettings);
+	ImGui::Begin("Type Selection", nullptr, window_settings);
 
 	ImGui::Text("Select type to search for:");
 
@@ -70,8 +71,8 @@ void DrawSetDisplayWindow() {
 
 }
 
-void DrawOutputLogWindow(const int windowSettings) {
-	ImGui::Begin("Answer Calculation", nullptr, windowSettings);
+void DrawOutputLogWindow(const int window_settings) {
+	ImGui::Begin("Answer Calculation", nullptr, window_settings);
 
 	ImGui::Text("# of Results: ");
 	ImGui::SameLine();
@@ -86,4 +87,5 @@ void DrawOutputLogWindow(const int windowSettings) {
 
 	ImGui::End();
 }
+
 } // namespace monster_calculator
