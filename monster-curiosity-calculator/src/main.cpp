@@ -7,6 +7,7 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_gui_windows.h"
+#include  "mcc_gui_window_structs.h"
 
 namespace monster_calculator {
 
@@ -27,36 +28,71 @@ public:
 		if (show_demo_window_)
 			ImGui::ShowDemoWindow(&show_demo_window_);
 
-		std::vector<float> window_size = {350, 0};
-		std::vector<float> window_pos = {kWindowMargin, kWindowMargin};
+		ImVec2 window_size = {350, 0};
+		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
 
-		// database generation window
+		// welcome window
 		{
-			ImGui::SetNextWindowSize({window_size[0], window_size[1]});
-			ImGui::SetNextWindowPos({window_pos[0], window_pos[1]});
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Welcome";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawWelcomeWindow(kDefaultWindowSettings, kDbPath.c_str(), kJsonPath.c_str());
+			monster_calculator::DrawWelcomeWindow(window_params, kDbPath.c_str(), kJsonPath.c_str());
 
-			window_pos[1] += kWindowMargin + ImGui::GetWindowHeight();
+			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
-		// type selection window
+		// set restriction window
 		{
-			ImGui::SetNextWindowSize({window_size[0], window_size[1]});
-			ImGui::SetNextWindowPos({window_pos[0], window_pos[1]});
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Dataset Refinement";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetParameterWindow(kDefaultWindowSettings);
+			monster_calculator::DrawSetParameterWindow(window_params);
 
-			window_pos[1] = kWindowMargin;
-			window_pos[0] += kWindowMargin + ImGui::GetWindowWidth();
+			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
-		// answer calculation window
+		// value definition window
 		{
-			ImGui::SetNextWindowSize({window_size[0], window_size[1]});
-			ImGui::SetNextWindowPos({window_pos[0], window_pos[1]});
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Output Value Selection";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawOutputLogWindow(kDefaultWindowSettings);
+			monster_calculator::DrawValueParameterWindow(window_params);
+
+			window_pos.x += kWindowMargin + window_params.window_size.x;
+			window_pos.y = kWindowMargin;
+		}
+
+		// set display window
+		{
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Dataset Display";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+
+			monster_calculator::DrawSetDisplayWindow(window_params);
+
+			window_pos.y += kWindowMargin + window_params.window_size.y;
+		}
+
+		// output log window
+		{
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Output Log";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+
+			monster_calculator::DrawOutputLogWindow(window_params);
 		}
 	}
 
@@ -67,7 +103,9 @@ private:
 	const std::string kDbPath = "c:\\DB_TEST\\test.db";
 	const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
 
-	const int kDefaultWindowSettings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove;
+	const int kDefaultImGuiWindowSettings = ImGuiWindowFlags_NoResize | 
+											ImGuiWindowFlags_NoCollapse | 
+											ImGuiWindowFlags_NoMove;
 	const float kWindowMargin = 25;
 };
 

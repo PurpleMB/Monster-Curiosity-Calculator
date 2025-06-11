@@ -14,8 +14,12 @@
 
 namespace monster_calculator {
 
-void DrawWelcomeWindow(const int window_settings, const char* database_path, const char* json_path) {
-	ImGui::Begin("Database Generation", nullptr, window_settings);
+void DrawWelcomeWindow(WindowParameters& window_parameters, const char* database_path, const char* json_path) {
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
+
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+
 	if (ImGui::Button("Build Monster Database")) {
 		CreateDatabase(database_path);
 		DeleteTable(database_path);
@@ -25,16 +29,27 @@ void DrawWelcomeWindow(const int window_settings, const char* database_path, con
 		ClearTable(database_path);
 		InsertDataFromJson(database_path, json_path);
 	}
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
 	ImGui::End();
 }
 
-void DrawSetParameterWindow(const int window_settings) {
+void DrawSetParameterWindow(WindowParameters& window_parameters) {
 	static int selected_type = -1;
 	const char* types[] = { "Any", "None", "Normal", "Grass" , "Water", "Fire" };
 
 	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
 
-	ImGui::Begin("Type Selection", nullptr, window_settings);
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
+
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("Select type to search for:");
 
@@ -60,19 +75,54 @@ void DrawSetParameterWindow(const int window_settings) {
 	if (ImGui::Button("Find Matching Monsters")) {
 
 	}
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
 	ImGui::End();
 }
 
-void DrawValueParameterWindow() {
+void DrawValueParameterWindow(WindowParameters& window_parameters) {
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
 
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
+	ImGui::End();
 }
 
-void DrawSetDisplayWindow() {
+void DrawSetDisplayWindow(WindowParameters& window_parameters) {
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
 
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
+	ImGui::End();
 }
 
-void DrawOutputLogWindow(const int window_settings) {
-	ImGui::Begin("Answer Calculation", nullptr, window_settings);
+void DrawOutputLogWindow(WindowParameters& window_parameters) {
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
+
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("# of Results: ");
 	ImGui::SameLine();
@@ -83,6 +133,13 @@ void DrawOutputLogWindow(const int window_settings) {
 	if (ImGui::BeginTable("table_results", 3, ImGuiTableFlags_ScrollY, outer_size))
 	{
 		ImGui::EndTable();
+	}
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
 	}
 
 	ImGui::End();
