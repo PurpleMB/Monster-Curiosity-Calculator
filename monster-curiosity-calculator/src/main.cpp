@@ -65,7 +65,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawValueParameterWindow(window_params);
+			monster_calculator::DrawValueParameterWindow(window_params, kDbPath.c_str());
 
 			window_pos.x += kWindowMargin + window_params.window_size.x;
 			window_pos.y = kWindowMargin;

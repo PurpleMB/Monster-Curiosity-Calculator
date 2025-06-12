@@ -86,11 +86,15 @@ void DrawSetParameterWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void DrawValueParameterWindow(WindowParameters& window_parameters) {
+void DrawValueParameterWindow(WindowParameters& window_parameters, const char* database_path) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+
+	if (ImGui::Button("Query Database")) {
+		QueryDatabase(database_path);
+	}
 
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();

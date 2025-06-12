@@ -125,7 +125,7 @@ int InsertDataFromJson(const char* db_path, const char* json_path) {
 	for (int i = 0; i < n; i++) {
 		auto mon_info = monsters[i];
 
-		std::string data_schema = GenerateDataString(mon_info);
+		std::string data_schema = GenerateJsonDataString(mon_info);
 		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &error_message);
 		if (exit != SQLITE_OK) {
 			std::cerr << "Error inserting monster data from JSON file" << std::endl;
@@ -141,7 +141,7 @@ int InsertDataFromJson(const char* db_path, const char* json_path) {
 	return 0;
 }
 
-std::string GenerateDataString(Json::Value mon_info) {
+std::string GenerateJsonDataString(Json::Value mon_info) {
 	std::string mon_name = mon_info["name"].asString();
 	std::string dex_num = mon_info["id"].asString();
 
@@ -192,13 +192,17 @@ std::string GenerateDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase(const char* path, const int argc, const char** argv, std::vector<std::string>& results) {
+int QueryDatabase(const char* path) {
 	sqlite3* db;
-	char* errorMessage;
 	int exit = sqlite3_open(path, &db);
 
-	std::string queryString = "";
-	exit = sqlite3_exec(db, queryString.c_str(), NULL, 0, &errorMessage);
+	std::string queryString = "SELECT * "
+							  "FROM monsters "
+							  "WHERE dex_number < 152;";
+
+	char* errorMessage;
+	// the 4th parameter is passed as the first arg to the callback function
+	exit = sqlite3_exec(db, queryString.c_str(), DebugCallback, 0, &errorMessage);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error querying monster data" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
@@ -210,7 +214,17 @@ int QueryDatabase(const char* path, const int argc, const char** argv, std::vect
 	return 0;
 }
 
+// used to test queries to DB by printing results to log
+// this method is called once PER RETURNED ROW from the query
+// argc is # of returned columns, azColName is array of column names
+// argv is the actual values that go with the columns
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName) {
+	for (int i = 0; i < argc; i++) {
+		std::cout << azColName[i] << ": " << argv[i] << std::endl;
+	}
+
+	std::cout << std::endl;
+
 	return 0;
 }
 
