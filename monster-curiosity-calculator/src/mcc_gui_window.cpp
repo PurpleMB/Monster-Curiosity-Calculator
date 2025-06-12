@@ -21,13 +21,13 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, const char* database
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	if (ImGui::Button("Build Monster Database")) {
-		CreateDatabase(database_path);
-		DeleteTable(database_path);
-		CreateTable(database_path);
+		CreateDatabase();
+		DeleteTable();
+		CreateTable();
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearTable(database_path);
-		InsertDataFromJson(database_path, json_path);
+		ClearTable();
+		InsertDataFromJson();
 	}
 
 	if (window_parameters.window_size.x == 0) {
@@ -41,17 +41,16 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, const char* database
 }
 
 void DrawSetParameterWindow(WindowParameters& window_parameters) {
-	static int selected_type = -1;
-	const char* types[] = { "Any", "None", "Normal", "Grass" , "Water", "Fire" };
-
-	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
-
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("Select type to search for:");
+
+	static int selected_type = -1;
+	const char* types[] = {"Any", "None", "Normal", "Grass" , "Water", "Fire"};
+	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
 
 	ImGui::Text("Primary Type: ");
 	ImGui::SameLine();
@@ -93,7 +92,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, const char* d
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	if (ImGui::Button("Query Database")) {
-		QueryDatabase(database_path);
+		QueryDatabase();
 	}
 
 	if (window_parameters.window_size.x == 0) {

@@ -10,21 +10,26 @@
 
 namespace monster_calculator {
 
-int CreateDatabase(const char* path) {
+static const std::string kDbPath = "c:\\DB_TEST\\test.db";
+static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
+
+int CreateDatabase() {
+	char* database_path = (char*)kDbPath.c_str();
+
 	sqlite3* db;
-	int status = sqlite3_open(path, &db);
+	int status = sqlite3_open(database_path, &db);
 	if (status) {
-		std::cout << "Error opening database at location " << path << std::endl;
+		std::cout << "Error opening database at location " << database_path << std::endl;
 	}
 	else {
-		std::cout << "Successfully opened database at location " << path << std::endl;
+		std::cout << "Successfully opened database at location " << database_path << std::endl;
 	}
 	sqlite3_close(db);
 
 	return 0;
 }
 
-int CreateTable(const char* path) {
+int CreateTable() {
 	std::string table_schema = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
@@ -47,23 +52,23 @@ int CreateTable(const char* path) {
 		");"
 		);
 
+	char* database_path = (char*)kDbPath.c_str();
 	sqlite3* db;
-
 	try {
 		int exit = 0;
-		exit = sqlite3_open(path, &db);
+		exit = sqlite3_open(database_path, &db);
 
 		char* error_message;
 		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &error_message);
 
 		if (exit != SQLITE_OK) {
-			std::cout << "Error creating table schema in database at location " << path << std::endl;
+			std::cout << "Error creating table schema in database at location " << database_path << std::endl;
 			std::cout << "Error Code: " << exit << std::endl;
 			std::cout << "Error Message: " << error_message << std::endl;
 			sqlite3_free(error_message);
 		}
 		else {
-			std::cout << "Successfully created table schema in database at location " << path << std::endl;
+			std::cout << "Successfully created table schema in database at location " << database_path << std::endl;
 		}
 		sqlite3_close(db);
 	}
@@ -74,9 +79,10 @@ int CreateTable(const char* path) {
 	return 0;
 }
 
-int DeleteTable(const char* path) {
+int DeleteTable() {
+	char* database_path = (char*)kDbPath.c_str();
 	sqlite3* db;
-	int exit = sqlite3_open(path, &db);
+	int exit = sqlite3_open(database_path, &db);
 
 	char* error_message;
 	std::string clear {"DROP TABLE IF EXISTS monsters"};
@@ -87,15 +93,16 @@ int DeleteTable(const char* path) {
 		std::cout << "Error Message: " << error_message << std::endl;
 	}
 	else {
-		std::cout << "Successfully dropped data table from database at location " << path << std::endl;
+		std::cout << "Successfully dropped data table from database at location " << database_path << std::endl;
 	}
 
 	return 0;
 }
 
-int ClearTable(const char* path) {
+int ClearTable() {
+	char* database_path = (char*)kDbPath.c_str();
 	sqlite3* db;
-	int exit = sqlite3_open(path, &db);
+	int exit = sqlite3_open(database_path, &db);
 
 	char* error_message;
 	std::string clear {"DELETE FROM monsters"};
@@ -106,19 +113,21 @@ int ClearTable(const char* path) {
 		std::cout << "Error Message: " << error_message << std::endl;
 	}
 	else {
-		std::cout << "Successfully cleared data from database at location " << path << std::endl;
+		std::cout << "Successfully cleared data from database at location " << database_path << std::endl;
 	}
 
 	return 0;
 }
 
-int InsertDataFromJson(const char* db_path, const char* json_path) {
+int InsertDataFromJson() {
+	char* json_path = (char*)kJsonPath.c_str();
 	std::ifstream monster_json_file(json_path, std::ifstream::binary);
 	Json::Value monsters;
 	monster_json_file >> monsters;
 
+	char* database_path = (char*)kDbPath.c_str();
 	sqlite3* db;
-	int exit = sqlite3_open(db_path, &db);
+	int exit = sqlite3_open(database_path, &db);
 
 	char* error_message;
 	int n = monsters.size();
@@ -136,7 +145,7 @@ int InsertDataFromJson(const char* db_path, const char* json_path) {
 		}
 	}
 
-	std::cout << "Successfully converted JSON data from " << json_path << " to database at location " << db_path << std::endl;
+	std::cout << "Successfully converted JSON data from " << json_path << " to database at location " << database_path << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
@@ -192,9 +201,10 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase(const char* path) {
+int QueryDatabase() {
+	char* database_path = (char*)kDbPath.c_str();
 	sqlite3* db;
-	int exit = sqlite3_open(path, &db);
+	int exit = sqlite3_open(database_path, &db);
 
 	std::string queryString = "SELECT * "
 							  "FROM monsters "
