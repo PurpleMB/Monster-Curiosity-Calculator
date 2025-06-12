@@ -14,7 +14,7 @@ static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
 
 int CreateDatabase() {
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 
 	sqlite3* db;
 	int status = sqlite3_open(database_path, &db);
@@ -52,7 +52,7 @@ int CreateTable() {
 		");"
 		);
 
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	try {
 		int exit = 0;
@@ -80,7 +80,7 @@ int CreateTable() {
 }
 
 int DeleteTable() {
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
@@ -100,7 +100,7 @@ int DeleteTable() {
 }
 
 int ClearTable() {
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
@@ -120,12 +120,12 @@ int ClearTable() {
 }
 
 int InsertDataFromJson() {
-	char* json_path = (char*)kJsonPath.c_str();
+	const char* json_path = kJsonPath.c_str();
 	std::ifstream monster_json_file(json_path, std::ifstream::binary);
 	Json::Value monsters;
 	monster_json_file >> monsters;
 
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
@@ -202,7 +202,7 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 }
 
 int QueryDatabase() {
-	char* database_path = (char*)kDbPath.c_str();
+	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
