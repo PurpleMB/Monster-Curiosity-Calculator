@@ -10,8 +10,12 @@
 
 namespace monster_calculator {
 
+static const bool kDebug = false;
+
 static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
+
+static int query_result_count = 0;
 
 int CreateDatabase() {
 	const char* database_path = kDbPath.c_str();
@@ -206,13 +210,16 @@ int QueryDatabase(QueryParameter& query_parameter) {
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string queryString = "SELECT * FROM monsters " +
-							  GenerateQueryParameterString(query_parameter) +
+	std::string parameter_string = GenerateQueryParameterString(query_parameter);
+	std::string query_string = "SELECT * FROM monsters " +
+							  parameter_string +
 							  ";";
+
+	query_result_count = 0;
 
 	char* errorMessage;
 	// the 4th parameter is passed as the first arg to the callback function
-	exit = sqlite3_exec(db, queryString.c_str(), DebugCallback, 0, &errorMessage);
+	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &errorMessage);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error querying monster data" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
@@ -220,6 +227,9 @@ int QueryDatabase(QueryParameter& query_parameter) {
 		sqlite3_free(errorMessage);
 	}
 
+	std::cout << "Successfully queried database." << std::endl;
+	std::cout << "Query Parameter: " << parameter_string << std::endl;
+	std::cout << "# of results : " << query_result_count << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
@@ -247,6 +257,11 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 // argc is # of returned columns, azColName is array of column names
 // argv is the actual values that go with the columns
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName) {
+	++query_result_count;
+	if (!kDebug) {
+		return 0;
+	}
+
 	for (int i = 0; i < argc; i++) {
 		std::cout << azColName[i] << ": " << argv[i] << std::endl;
 	}

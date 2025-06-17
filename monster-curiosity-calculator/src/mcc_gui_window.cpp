@@ -49,7 +49,9 @@ void DrawSetParameterWindow(WindowParameters& window_parameters) {
 	ImGui::Text("Select type to search for:");
 
 	static int selected_type = -1;
-	const char* types[] = {"Any", "None", "Normal", "Grass" , "Water", "Fire"};
+	const char* types[] = {"Normal", "Fire", "Fighting", "Water", "Flying", "Grass", 
+						   "Poison", "Electric", "Ground", "Psychic", "Rock", 
+						   "Ice", "Bug", "Dragon", "Ghost", "Dark", "Steel", "Fairy"};
 	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
 
 	ImGui::Text("Primary Type: ");
