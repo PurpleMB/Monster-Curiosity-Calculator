@@ -243,7 +243,15 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	std::string parameter_string = "WHERE ";
 
 	if (query_parameter.parameter_name == "primary_type") {
-		parameter_string += "primary_type = '" + query_parameter.parameter_value + "'";
+		if (query_parameter.parameter_value == "any") {
+			parameter_string += "primary_type != '-'";
+		}
+		else if (query_parameter.parameter_value == "none") {
+			parameter_string += "primary_type = '-'";
+		}
+		else {
+			parameter_string += "primary_type = '" + query_parameter.parameter_value + "'";
+		}
 	}
 	else {
 		return "";
