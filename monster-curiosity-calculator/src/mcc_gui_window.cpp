@@ -14,7 +14,7 @@
 
 namespace monster_calculator {
 
-void DrawWelcomeWindow(WindowParameters& window_parameters, const char* database_path, const char* json_path) {
+void DrawWelcomeWindow(WindowParameters& window_parameters) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
@@ -85,14 +85,14 @@ void DrawSetParameterWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void DrawValueParameterWindow(WindowParameters& window_parameters, const char* database_path) {
+void DrawValueParameterWindow(WindowParameters& window_parameters) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	if (ImGui::Button("Query Database")) {
-		QueryDatabase();
+		
 	}
 
 	if (window_parameters.window_size.x == 0) {

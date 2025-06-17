@@ -201,14 +201,14 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase() {
+int QueryDatabase(std::unordered_map<std::string, std::vector<std::string>> query_arguments) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
 	std::string queryString = "SELECT * "
 							  "FROM monsters "
-							  "WHERE dex_number < 152;";
+							  "";
 
 	char* errorMessage;
 	// the 4th parameter is passed as the first arg to the callback function
