@@ -72,7 +72,13 @@ void DrawSetParameterWindow(WindowParameters& window_parameters) {
 	}
 
 	if (ImGui::Button("Find Matching Monsters")) {
-
+		QueryParameter query_param;
+		query_param.parameter_name = "primary_type";
+		query_param.parameter_value = selected_type_name;
+		for (char& c : query_param.parameter_value) {
+			c = std::tolower(static_cast<unsigned char>(c));
+		}
+		QueryDatabase(query_param);
 	}
 
 	if (window_parameters.window_size.x == 0) {

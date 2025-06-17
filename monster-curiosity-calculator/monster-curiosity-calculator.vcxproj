@@ -160,6 +160,7 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="src\database.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />
+    <ClInclude Include="src\structs_database.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

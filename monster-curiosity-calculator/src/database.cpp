@@ -201,14 +201,14 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase(std::unordered_map<std::string, std::vector<std::string>> query_arguments) {
+int QueryDatabase(QueryParameter& query_parameter) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string queryString = "SELECT * "
-							  "FROM monsters "
-							  "";
+	std::string queryString = "SELECT * FROM monsters " +
+							  GenerateQueryParameterString(query_parameter) +
+							  ";";
 
 	char* errorMessage;
 	// the 4th parameter is passed as the first arg to the callback function
@@ -222,6 +222,24 @@ int QueryDatabase(std::unordered_map<std::string, std::vector<std::string>> quer
 
 	sqlite3_close(db);
 	return 0;
+}
+
+std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
+	// TODO: change this guard clause if query params switch the type for param name
+	if (query_parameter.parameter_name == "") {
+		return "";
+	}
+
+	std::string parameter_string = "WHERE ";
+
+	if (query_parameter.parameter_name == "primary_type") {
+		parameter_string += "primary_type = '" + query_parameter.parameter_value + "'";
+	}
+	else {
+		return "";
+	}
+
+	return parameter_string;
 }
 
 // used to test queries to DB by printing results to log
