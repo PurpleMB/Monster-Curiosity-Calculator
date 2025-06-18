@@ -207,7 +207,7 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase(QueryParameter& query_parameter) {
+int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -228,6 +228,8 @@ int QueryDatabase(QueryParameter& query_parameter) {
 		std::cout << "Error Message: " << errorMessage << std::endl;
 		sqlite3_free(errorMessage);
 	}
+
+	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
 
 	std::cout << "Successfully queried database." << std::endl;
 	std::cout << "Query Parameter: " << parameter_string << std::endl;

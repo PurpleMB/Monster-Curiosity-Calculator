@@ -53,7 +53,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetParameterWindow(window_params);
+			monster_calculator::DrawSetParameterWindow(window_params, output_environment);
 
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
@@ -93,7 +93,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawOutputLogWindow(window_params);
+			monster_calculator::DrawOutputLogWindow(window_params, output_environment);
 		}
 	}
 
@@ -105,6 +105,8 @@ private:
 											ImGuiWindowFlags_NoCollapse | 
 											ImGuiWindowFlags_NoMove;
 	const float kWindowMargin = 25;
+
+	OutputEnvironment output_environment;
 };
 
 } // namespace monster_calculator

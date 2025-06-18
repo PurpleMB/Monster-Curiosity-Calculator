@@ -41,7 +41,7 @@ void DrawWelcomeWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void DrawSetParameterWindow(WindowParameters& window_parameters) {
+void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
@@ -81,7 +81,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters) {
 		for (char& c : query_param.parameter_value) {
 			c = std::tolower(static_cast<unsigned char>(c));
 		}
-		QueryDatabase(query_param);
+		QueryDatabase(query_param, output_environment);
 	}
 
 	if (window_parameters.window_size.x == 0) {
@@ -130,15 +130,13 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void DrawOutputLogWindow(WindowParameters& window_parameters) {
+void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImGui::Text("# of Results: ");
-	ImGui::SameLine();
-	ImGui::Text("XXX");
+	ImGui::Text(output_environment.result_count_text.c_str());
 
 	ImGui::Text("Results:");
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);

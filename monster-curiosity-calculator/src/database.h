@@ -15,7 +15,7 @@ int DeleteTable();
 int ClearTable();
 int InsertDataFromJson();
 std::string GenerateJsonDataString(Json::Value mon_info);
-int QueryDatabase(QueryParameter& query_parameter);
+int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment);
 std::string GenerateQueryParameterString(QueryParameter& query_parameter);
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName);
 
