@@ -26,6 +26,7 @@ struct WindowParameters {
 
 struct OutputEnvironment {
 	std::string result_count_text = "Results: ";
+	std::vector<std::string> query_result_texts = {};
 };
 
 } // namespace monster_calculator

@@ -231,6 +231,9 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 
 	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
 
+	int queries_performed = output_environment.query_result_texts.size() + 1;
+	output_environment.query_result_texts.push_back(std::to_string(queries_performed) + ": Query performed");
+
 	std::cout << "Successfully queried database." << std::endl;
 	std::cout << "Query Parameter: " << parameter_string << std::endl;
 	std::cout << "# of results : " << query_result_count << std::endl;

@@ -138,10 +138,24 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 
 	ImGui::Text(output_environment.result_count_text.c_str());
 
-	ImGui::Text("Results:");
-	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
-	if (ImGui::BeginTable("table_results", 3, ImGuiTableFlags_ScrollY, outer_size))
+	ImGui::Text("Log:");
+	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
+	if (ImGui::BeginTable("table_results", 1, ImGuiTableFlags_ScrollY, outer_size))
 	{
+		for (std::string query_output : output_environment.query_result_texts) {
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			ImGui::Text(query_output.c_str());
+		}
+		/*
+		for (int row = 0; row < 4; row++) {
+			ImGui::TableNextRow();
+			for (int column = 0; column < 3; column++) {
+				ImGui::TableSetColumnIndex(column);
+				ImGui::Text("Row %d Column %d", row, column);
+			}
+		}
+		*/
 		ImGui::EndTable();
 	}
 
