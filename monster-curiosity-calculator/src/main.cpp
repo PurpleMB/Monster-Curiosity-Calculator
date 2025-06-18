@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 
 #include "imgui.h"
@@ -7,7 +8,7 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_gui_windows.h"
-#include  "mcc_gui_window_structs.h"
+#include  "mcc_structs.h"
 
 namespace monster_calculator {
 

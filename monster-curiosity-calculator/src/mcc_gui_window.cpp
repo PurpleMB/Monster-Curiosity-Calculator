@@ -11,6 +11,7 @@
 
 #include "app.h"
 #include "database.h"
+#include "mcc_structs.h"
 
 namespace monster_calculator {
 

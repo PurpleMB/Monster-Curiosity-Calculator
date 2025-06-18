@@ -144,7 +144,6 @@
     <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mcc_gui_window.cpp" />
-    <ClCompile Include="src\mcc_gui_window_structs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json-forwards.h" />
@@ -160,7 +159,7 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="src\database.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />
-    <ClInclude Include="src\structs_database.h" />
+    <ClInclude Include="src\mcc_structs.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

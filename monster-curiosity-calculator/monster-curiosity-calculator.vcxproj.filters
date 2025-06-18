@@ -54,9 +54,6 @@
     <ClCompile Include="src\mcc_gui_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_gui_window_structs.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app.h">
@@ -98,7 +95,7 @@
     <ClInclude Include="src\mcc_gui_windows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structs_database.h">
+    <ClInclude Include="src\mcc_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

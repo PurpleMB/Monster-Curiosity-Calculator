@@ -5,7 +5,7 @@
 #include <json/json.h>
 #include <json/value.h>
 
-#include "structs_database.h"
+#include "mcc_structs.h"
 
 namespace monster_calculator {
 
