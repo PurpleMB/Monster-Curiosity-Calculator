@@ -231,9 +231,17 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 							  parameter_string +
 							  ";";
 
-	query_result_count = 0;
-
 	// the 4th parameter is passed as the first arg to the callback function
+	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error querying monster data" << std::endl;
+		std::cout << "Error Code: " << exit << std::endl;
+		std::cout << "Error Message: " << error_message << std::endl;
+		sqlite3_free(error_message);
+	}
+
+	query_result_count = 0;
+	query_string = "SELECT * FROM submonsters";
 	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error querying monster data" << std::endl;
