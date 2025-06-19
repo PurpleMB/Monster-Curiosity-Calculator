@@ -23,11 +23,11 @@ void DrawWelcomeWindow(WindowParameters& window_parameters) {
 
 	if (ImGui::Button("Build Monster Database")) {
 		CreateDatabase();
-		DeleteTable();
-		CreateTable();
+		DeleteMainTable();
+		CreateMainTable();
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearTable();
+		ClearMainTable();
 		InsertDataFromJson();
 	}
 

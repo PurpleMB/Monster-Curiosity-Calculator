@@ -8,15 +8,19 @@
 #include "mcc_structs.h"
 
 namespace monster_calculator {
-
+// basic database creation
 int CreateDatabase();
-int CreateTable();
-int DeleteTable();
-int ClearTable();
+int CreateMainTable();
+int DeleteMainTable();
+int ClearMainTable();
 int InsertDataFromJson();
 std::string GenerateJsonDataString(Json::Value mon_info);
+
+// querying primary table
 int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment);
 std::string GenerateQueryParameterString(QueryParameter& query_parameter);
+
+// debug functions
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName);
 
 } // namespace monster_calculator

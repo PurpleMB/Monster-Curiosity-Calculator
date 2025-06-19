@@ -30,3 +30,4 @@ struct OutputEnvironment {
 };
 
 } // namespace monster_calculator
+ 

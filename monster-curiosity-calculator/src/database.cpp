@@ -12,7 +12,7 @@
 
 namespace monster_calculator {
 
-static const bool kDebug = false;
+static const bool kDebug = true;
 
 static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
@@ -35,7 +35,7 @@ int CreateDatabase() {
 	return 0;
 }
 
-int CreateTable() {
+int CreateMainTable() {
 	std::string table_schema = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
@@ -85,7 +85,7 @@ int CreateTable() {
 	return 0;
 }
 
-int DeleteTable() {
+int DeleteMainTable() {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -105,7 +105,7 @@ int DeleteTable() {
 	return 0;
 }
 
-int ClearTable() {
+int ClearMainTable() {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -212,21 +212,34 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
+	// make sure to clear existing sub-table if it exists
+	char* error_message;
+	std::string clear {"DROP TABLE IF EXISTS submonsters"};
+	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error clearing existing submonster data" << std::endl;
+		std::cout << "Error Code: " << exit << std::endl;
+		std::cout << "Error Message: " << error_message << std::endl;
+	}
+	else {
+		std::cout << "Successfully cleared subset data from database at location " << database_path << std::endl;
+	}
+
+	// create table with subset of main table that meets criteria
 	std::string parameter_string = GenerateQueryParameterString(query_parameter);
-	std::string query_string = "SELECT * FROM monsters " +
+	std::string query_string = "CREATE TABLE submonsters AS SELECT * FROM monsters " +
 							  parameter_string +
 							  ";";
 
 	query_result_count = 0;
 
-	char* errorMessage;
 	// the 4th parameter is passed as the first arg to the callback function
-	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &errorMessage);
+	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error querying monster data" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << errorMessage << std::endl;
-		sqlite3_free(errorMessage);
+		std::cout << "Error Message: " << error_message << std::endl;
+		sqlite3_free(error_message);
 	}
 
 	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
