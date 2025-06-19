@@ -80,7 +80,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetDisplayWindow(window_params);
+			monster_calculator::DrawSetDisplayWindow(window_params, output_environment);
 
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}

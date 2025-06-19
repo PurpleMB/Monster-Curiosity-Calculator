@@ -225,12 +225,28 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 		std::cout << "Successfully cleared subset data from database at location " << database_path << std::endl;
 	}
 
-	// create table with subset of main table that meets criteria
+	// create subtable with schema of main table
 	std::string parameter_string = GenerateQueryParameterString(query_parameter);
-	std::string query_string = "CREATE TABLE submonsters AS SELECT * FROM monsters " +
-							  parameter_string +
-							  ";";
+	std::string query_string = "CREATE TABLE submonsters AS SELECT * FROM monsters "
+		+ parameter_string + ";";
+	exit = sqlite3_exec(db, query_string.c_str(), NULL, 0, &error_message);
 
+
+	query_string = "SELECT * FROM submonsters;";
+	query_result_count = 0;
+	sqlite3_stmt* stmt;
+	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
+	if (exit != SQLITE_OK) {
+		std::cout << "ERROR" << std::endl;
+	}
+	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
+		++query_result_count;
+		int id = sqlite3_column_int(stmt, 0);
+		const char *name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+		output_environment.subset_entries.push_back(name);
+	}
+	sqlite3_finalize(stmt);
+	/*
 	// the 4th parameter is passed as the first arg to the callback function
 	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
 	if (exit != SQLITE_OK) {
@@ -242,13 +258,14 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 
 	query_result_count = 0;
 	query_string = "SELECT * FROM submonsters";
-	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
+	exit = sqlite3_exec(db, query_string.c_str(), LogCallback, output_environment*, &error_message);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error querying monster data" << std::endl;
 		std::cout << "Error Code: " << exit << std::endl;
 		std::cout << "Error Message: " << error_message << std::endl;
 		sqlite3_free(error_message);
 	}
+	*/
 
 	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
 

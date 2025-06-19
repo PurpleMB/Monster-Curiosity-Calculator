@@ -114,7 +114,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void DrawSetDisplayWindow(WindowParameters& window_parameters) {
+void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
@@ -125,6 +125,17 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters) {
 	}
 	if (window_parameters.window_size.y == 0) {
 		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
+	ImGui::Text("Calculated Subset:");
+	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
+	if (ImGui::BeginTable("subset_entries", 1, ImGuiTableFlags_ScrollY, outer_size)) {
+		for (std::string subset_entry : output_environment.subset_entries) {
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			ImGui::Text(subset_entry.c_str());
+		}
+		ImGui::EndTable();
 	}
 
 	ImGui::End();
@@ -147,15 +158,6 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text(query_output.c_str());
 		}
-		/*
-		for (int row = 0; row < 4; row++) {
-			ImGui::TableNextRow();
-			for (int column = 0; column < 3; column++) {
-				ImGui::TableSetColumnIndex(column);
-				ImGui::Text("Row %d Column %d", row, column);
-			}
-		}
-		*/
 		ImGui::EndTable();
 	}
 
