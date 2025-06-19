@@ -234,6 +234,7 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 
 	query_string = "SELECT * FROM submonsters;";
 	query_result_count = 0;
+	output_environment.subset_entries.clear();
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {
