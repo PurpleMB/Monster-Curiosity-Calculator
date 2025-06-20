@@ -159,6 +159,7 @@
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="src\database.h" />
+    <ClInclude Include="src\mcc_constants.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />
     <ClInclude Include="src\mcc_structs.h" />
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_structs.h"
+#include "mcc_constants.h"
 
 namespace monster_calculator {
 
@@ -47,37 +48,45 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImGui::Text("Select type to search for:");
+	ImGui::Text("Select parameter to filter by:");
 
-	static int selected_type = -1;
-	const char* types[] = {"Any", "None", "Normal", "Fire", "Fighting", "Water", "Flying", "Grass", 
-						   "Poison", "Electric", "Ground", "Psychic", "Rock", 
-						   "Ice", "Bug", "Dragon", "Ghost", "Dark", "Steel", "Fairy"};
-	std::string selected_type_name = (selected_type == -1) ? "Any" : types[selected_type];
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam};
+	static int selected_parameter_index = 0;
+	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
+	static int selected_value_index = 0;
+	std::string selected_value_name = parameter_types[selected_parameter_index].possible_parameter_values[selected_value_index];
 
-	ImGui::Text("Primary Type: ");
+	if (ImGui::Button(selected_parameter_name.c_str())) {
+		ImGui::OpenPopup("Select parameter");
+	}
 	ImGui::SameLine();
-	if (ImGui::Button(selected_type_name.c_str()))
-	{
-		ImGui::OpenPopup("Select type");
+	if (ImGui::Button(selected_value_name.c_str())) {
+		ImGui::OpenPopup("Select parameter value");
 	}
 
-	if (ImGui::BeginPopup("Select type"))
-	{
-		for (int i = 0; i < IM_ARRAYSIZE(types); i++)
-		{
-			if (ImGui::Selectable(types[i]))
-			{
-				selected_type = i;
+	if (ImGui::BeginPopup("Select parameter")) {
+		for (int i = 0; i < parameter_types.size(); i++) {
+			if (ImGui::Selectable(parameter_types[i].display_name.c_str())) {
+				selected_parameter_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopup("Select parameter value")) {
+		for (int i = 0; i < parameter_types[selected_parameter_index].possible_parameter_values.size(); i++) {
+			if (ImGui::Selectable(parameter_types[selected_parameter_index].possible_parameter_values[i].c_str())) {
+				selected_value_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
 	if (ImGui::Button("Find Matching Monsters")) {
-		QueryParameter query_param;
-		query_param.parameter_name = "primary_type";
-		query_param.parameter_value = selected_type_name;
+		QueryParameter query_param (
+			parameter_types[selected_parameter_index].query_name,
+			selected_value_name
+		);
 		for (char& c : query_param.parameter_value) {
 			c = std::tolower(static_cast<unsigned char>(c));
 		}

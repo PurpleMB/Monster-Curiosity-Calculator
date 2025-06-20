@@ -8,7 +8,8 @@ namespace monster_calculator {
 
 // TODO: use this to define display and possible values of different metrics we can refine query by
 struct ParameterType {
-	std::string parameter_name;
+	std::string display_name;
+	std::string query_name;
 	std::vector<std::string> possible_parameter_values;
 };
 

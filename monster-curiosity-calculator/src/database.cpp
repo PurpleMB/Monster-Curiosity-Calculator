@@ -250,24 +250,20 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	if (query_parameter.parameter_name == "") {
 		return "";
 	}
+	std::cout << query_parameter.parameter_name << ": " << query_parameter.parameter_value << std::endl;
 
 	std::string parameter_string = "WHERE ";
 
-	if (query_parameter.parameter_name == "primary_type") {
-		if (query_parameter.parameter_value == "any") {
-			parameter_string += "primary_type != '-'";
-		}
-		else if (query_parameter.parameter_value == "none") {
-			parameter_string += "primary_type = '-'";
-		}
-		else {
-			parameter_string += "primary_type = '" + query_parameter.parameter_value + "'";
-		}
-	}
-	else {
-		return "";
+	// edge cases for things like "any" and "none"
+	if (query_parameter.parameter_value == "any") {
+		parameter_string += query_parameter.parameter_name + " != '-'";
+	} else if (query_parameter.parameter_value == "none") {
+		parameter_string += query_parameter.parameter_name + " = '-'";
+	} else {
+		parameter_string += query_parameter.parameter_name + " = '" + query_parameter.parameter_value + "'";
 	}
 
+	std::cout << parameter_string << std::endl;
 	return parameter_string;
 }
 
