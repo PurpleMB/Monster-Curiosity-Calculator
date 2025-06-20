@@ -13,8 +13,8 @@ struct ParameterType {
 };
 
 struct QueryParameter {
-	std::string parameter_name = "";
-	std::string parameter_value = "";
+	std::string parameter_name;
+	std::string parameter_value;
 };
 
 struct WindowParameters {
@@ -24,10 +24,16 @@ struct WindowParameters {
 	int imgui_window_settings = 0;
 };
 
+struct LogEntry {
+	std::string timestamp;
+	std::string message_code;
+	std::string log_message;
+};
+
 struct OutputEnvironment {
-	std::string result_count_text = "Results: ";
-	std::vector<std::string> log_entries = {};
-	std::vector<std::string> subset_entries = {};
+	std::string result_count_text;
+	std::vector<std::string> log_entries;
+	std::vector<std::string> subset_entries;
 };
 
 } // namespace monster_calculator
