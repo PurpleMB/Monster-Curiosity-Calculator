@@ -148,15 +148,39 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
-	if (ImGui::BeginTable("table_results", 4, ImGuiTableFlags_ScrollY, outer_size))
+	ImVec2 outer_size = ImVec2(800.0f, 200.0f);
+	const int kColumnCount = 4;
+	const int kTableFlags = ImGuiTableFlags_Borders | 
+							ImGuiTableFlags_SizingFixedFit |
+							ImGuiTableFlags_ScrollY;
+	static int frozen_columns = 0;
+	static int frozen_rows = 1;
+	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size))
 	{
+		// prepare table header
+		ImGui::TableSetupColumn("Entry #");
+		ImGui::TableSetupColumn("Timestamp");
+		ImGui::TableSetupColumn("Event Code");
+		ImGui::TableSetupColumn("Message");
+		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
+
+		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
+		for (int column = 0; column < kColumnCount; column++) {
+			ImGui::TableSetColumnIndex(column);
+			const char* column_name = ImGui::TableGetColumnName(column);
+			ImGui::TableHeader(column_name);
+		}
+		
+
+
+		// print log entries
 		for (int i = 0; i < output_environment.log_entries.size(); i++) {
 			LogEntry entry = output_environment.log_entries[i];
 
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ImGui::Text(std::to_string(i).c_str());
+			int displayed_index = i + 1;
+			ImGui::Text(std::to_string(displayed_index).c_str());
 
 			ImGui::TableSetColumnIndex(1);
 			ImGui::Text(entry.timestamp.c_str());
