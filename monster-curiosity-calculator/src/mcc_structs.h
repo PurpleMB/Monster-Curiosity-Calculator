@@ -31,8 +31,7 @@ struct LogEntry {
 };
 
 struct OutputEnvironment {
-	std::string result_count_text;
-	std::vector<std::string> log_entries;
+	std::vector<LogEntry> log_entries;
 	std::vector<std::string> subset_entries;
 };
 

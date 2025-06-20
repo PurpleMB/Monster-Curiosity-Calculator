@@ -127,7 +127,8 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		window_parameters.window_size.y = ImGui::GetWindowHeight();
 	}
 
-	ImGui::Text("Calculated Subset:");
+	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
+	ImGui::Text(subset_size_text.c_str());
 	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
 	if (ImGui::BeginTable("subset_entries", 1, ImGuiTableFlags_ScrollY, outer_size)) {
 		for (std::string subset_entry : output_environment.subset_entries) {
@@ -147,16 +148,24 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImGui::Text(output_environment.result_count_text.c_str());
-
-	ImGui::Text("Log:");
 	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
-	if (ImGui::BeginTable("table_results", 1, ImGuiTableFlags_ScrollY, outer_size))
+	if (ImGui::BeginTable("table_results", 4, ImGuiTableFlags_ScrollY, outer_size))
 	{
-		for (std::string query_output : output_environment.log_entries) {
+		for (int i = 0; i < output_environment.log_entries.size(); i++) {
+			LogEntry entry = output_environment.log_entries[i];
+
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
-			ImGui::Text(query_output.c_str());
+			ImGui::Text(std::to_string(i).c_str());
+
+			ImGui::TableSetColumnIndex(1);
+			ImGui::Text(entry.timestamp.c_str());
+
+			ImGui::TableSetColumnIndex(2);
+			ImGui::Text(entry.message_code.c_str());
+
+			ImGui::TableSetColumnIndex(3);
+			ImGui::Text(entry.log_message.c_str());
 		}
 		ImGui::EndTable();
 	}

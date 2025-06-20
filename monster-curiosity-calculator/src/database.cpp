@@ -261,10 +261,8 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 	}
 	*/
 
-	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
-
 	int queries_performed = output_environment.log_entries.size() + 1;
-	output_environment.log_entries.push_back(std::to_string(queries_performed) + ": Query performed");
+	//output_environment.log_entries.push_back(std::to_string(queries_performed) + ": Query performed");
 
 	std::cout << "Successfully queried database." << std::endl;
 	std::cout << "Query Parameter: " << parameter_string << std::endl;
@@ -306,17 +304,19 @@ int LogSuccess(OutputEnvironment& output_environment, const char* log_message) {
 int LogError(OutputEnvironment& output_environment, const int error_code, const char* error_msg) {
 	++events_logged;
 
+	/*
 	std::string border = "-----------------------------";
 	auto now = std::chrono::system_clock::now();
 	std::string meta_info = std::format("[{}][{}]", events_logged, now);
 	std::string error_info = std::format("Error {}: {}", error_code, error_msg);
+	*/
 
-	output_environment.log_entries.push_back(border);
-	output_environment.log_entries.push_back(meta_info);
-	output_environment.log_entries.push_back(error_info);
-	output_environment.log_entries.push_back(border);
+	std::string timestamp_text = "";
+	std::string error_code_text = std::to_string(error_code);
+	std::string error_message_text = error_msg;
+	LogEntry entry = { timestamp_text, error_code_text, error_message_text };
 
-	std::cout << border << std::endl << meta_info << std::endl << error_info << std::endl;
+	output_environment.log_entries.push_back(entry);
 
 	return 0;
 }

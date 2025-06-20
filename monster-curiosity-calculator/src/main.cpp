@@ -75,7 +75,7 @@ public:
 		// set display window
 		{
 			monster_calculator::WindowParameters window_params;
-			window_params.name = "Dataset Display";
+			window_params.name = "Subset Display";
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
