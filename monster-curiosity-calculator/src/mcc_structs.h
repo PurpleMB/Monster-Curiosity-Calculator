@@ -26,7 +26,7 @@ struct WindowParameters {
 
 struct OutputEnvironment {
 	std::string result_count_text = "Results: ";
-	std::vector<std::string> query_result_texts = {};
+	std::vector<std::string> log_entries = {};
 	std::vector<std::string> subset_entries = {};
 };
 

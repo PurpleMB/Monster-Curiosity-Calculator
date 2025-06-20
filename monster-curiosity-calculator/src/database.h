@@ -10,17 +10,19 @@
 namespace monster_calculator {
 // basic database creation
 int CreateDatabase();
-int CreateMainTable();
-int DeleteMainTable();
-int ClearMainTable();
-int InsertDataFromJson();
+int CreateMainTable(OutputEnvironment& output_environment);
+int DeleteMainTable(OutputEnvironment& output_environment);
+int ClearMainTable(OutputEnvironment& output_environment);
+int InsertDataFromJson(OutputEnvironment& output_environment);
 std::string GenerateJsonDataString(Json::Value mon_info);
 
 // querying primary table
 int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment);
 std::string GenerateQueryParameterString(QueryParameter& query_parameter);
 
-// debug functions
+// logging/debugging
+int LogSuccess(OutputEnvironment& output_environment, const char* log_message);
+int LogError(OutputEnvironment& output_environment, const int error_code, const char* error_msg);
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName);
 
 } // namespace monster_calculator

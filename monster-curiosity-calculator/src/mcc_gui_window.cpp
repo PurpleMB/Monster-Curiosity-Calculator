@@ -15,7 +15,7 @@
 
 namespace monster_calculator {
 
-void DrawWelcomeWindow(WindowParameters& window_parameters) {
+void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
@@ -23,12 +23,12 @@ void DrawWelcomeWindow(WindowParameters& window_parameters) {
 
 	if (ImGui::Button("Build Monster Database")) {
 		CreateDatabase();
-		DeleteMainTable();
-		CreateMainTable();
+		DeleteMainTable(output_environment);
+		CreateMainTable(output_environment);
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearMainTable();
-		InsertDataFromJson();
+		ClearMainTable(output_environment);
+		InsertDataFromJson(output_environment);
 	}
 
 	if (window_parameters.window_size.x == 0) {
@@ -153,7 +153,7 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
 	if (ImGui::BeginTable("table_results", 1, ImGuiTableFlags_ScrollY, outer_size))
 	{
-		for (std::string query_output : output_environment.query_result_texts) {
+		for (std::string query_output : output_environment.log_entries) {
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
 			ImGui::Text(query_output.c_str());

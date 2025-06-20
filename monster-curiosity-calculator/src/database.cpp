@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <format>
+#include <chrono>
 
 #include <sqlite3.h>
 #include <json/json.h>
@@ -18,6 +20,7 @@ static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
 
 static int query_result_count = 0;
+static int events_logged = 0;
 
 int CreateDatabase() {
 	const char* database_path = kDbPath.c_str();
@@ -35,7 +38,7 @@ int CreateDatabase() {
 	return 0;
 }
 
-int CreateMainTable() {
+int CreateMainTable(OutputEnvironment& output_environment) {
 	std::string table_schema = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
@@ -68,9 +71,7 @@ int CreateMainTable() {
 		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &error_message);
 
 		if (exit != SQLITE_OK) {
-			std::cout << "Error creating table schema in database at location " << database_path << std::endl;
-			std::cout << "Error Code: " << exit << std::endl;
-			std::cout << "Error Message: " << error_message << std::endl;
+			LogError(output_environment, exit, error_message);
 			sqlite3_free(error_message);
 		}
 		else {
@@ -85,7 +86,7 @@ int CreateMainTable() {
 	return 0;
 }
 
-int DeleteMainTable() {
+int DeleteMainTable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -94,9 +95,7 @@ int DeleteMainTable() {
 	std::string clear {"DROP TABLE IF EXISTS monsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		std::cerr << "Error deleting monster data table" << std::endl;
-		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << error_message << std::endl;
+		LogError(output_environment, exit, error_message);
 	}
 	else {
 		std::cout << "Successfully dropped data table from database at location " << database_path << std::endl;
@@ -105,7 +104,7 @@ int DeleteMainTable() {
 	return 0;
 }
 
-int ClearMainTable() {
+int ClearMainTable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -114,9 +113,7 @@ int ClearMainTable() {
 	std::string clear {"DELETE FROM monsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		std::cerr << "Error clearing existing monster data" << std::endl;
-		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << error_message << std::endl;
+		LogError(output_environment, exit, error_message);
 	}
 	else {
 		std::cout << "Successfully cleared data from database at location " << database_path << std::endl;
@@ -125,7 +122,7 @@ int ClearMainTable() {
 	return 0;
 }
 
-int InsertDataFromJson() {
+int InsertDataFromJson(OutputEnvironment& output_environment) {
 	const char* json_path = kJsonPath.c_str();
 	std::ifstream monster_json_file(json_path, std::ifstream::binary);
 	Json::Value monsters;
@@ -143,9 +140,7 @@ int InsertDataFromJson() {
 		std::string data_schema = GenerateJsonDataString(mon_info);
 		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &error_message);
 		if (exit != SQLITE_OK) {
-			std::cerr << "Error inserting monster data from JSON file" << std::endl;
-			std::cout << "Error Code: " << exit << std::endl;
-			std::cout << "Error Message: " << error_message << std::endl;
+			LogError(output_environment, exit, error_message);
 			sqlite3_free(error_message);
 			break;
 		}
@@ -217,9 +212,7 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 	std::string clear {"DROP TABLE IF EXISTS submonsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		std::cerr << "Error clearing existing submonster data" << std::endl;
-		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << error_message << std::endl;
+		LogError(output_environment, exit, error_message);
 	}
 	else {
 		std::cout << "Successfully cleared subset data from database at location " << database_path << std::endl;
@@ -270,8 +263,8 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 
 	output_environment.result_count_text = "Results: " + std::to_string(query_result_count);
 
-	int queries_performed = output_environment.query_result_texts.size() + 1;
-	output_environment.query_result_texts.push_back(std::to_string(queries_performed) + ": Query performed");
+	int queries_performed = output_environment.log_entries.size() + 1;
+	output_environment.log_entries.push_back(std::to_string(queries_performed) + ": Query performed");
 
 	std::cout << "Successfully queried database." << std::endl;
 	std::cout << "Query Parameter: " << parameter_string << std::endl;
@@ -304,6 +297,28 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	}
 
 	return parameter_string;
+}
+
+int LogSuccess(OutputEnvironment& output_environment, const char* log_message) {
+	++events_logged;
+}
+
+int LogError(OutputEnvironment& output_environment, const int error_code, const char* error_msg) {
+	++events_logged;
+
+	std::string border = "-----------------------------";
+	auto now = std::chrono::system_clock::now();
+	std::string meta_info = std::format("[{}][{}]", events_logged, now);
+	std::string error_info = std::format("Error {}: {}", error_code, error_msg);
+
+	output_environment.log_entries.push_back(border);
+	output_environment.log_entries.push_back(meta_info);
+	output_environment.log_entries.push_back(error_info);
+	output_environment.log_entries.push_back(border);
+
+	std::cout << border << std::endl << meta_info << std::endl << error_info << std::endl;
+
+	return 0;
 }
 
 // used to test queries to DB by printing results to log
