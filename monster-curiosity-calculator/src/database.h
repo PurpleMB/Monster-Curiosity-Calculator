@@ -21,8 +21,7 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 std::string GenerateQueryParameterString(QueryParameter& query_parameter);
 
 // logging/debugging
-int LogSuccess(OutputEnvironment& output_environment, const char* log_message);
-int LogError(OutputEnvironment& output_environment, const int error_code, const char* error_msg);
+int LogEvent(OutputEnvironment& output_environment, const int error_code, const char* error_msg);
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName);
 
 } // namespace monster_calculator

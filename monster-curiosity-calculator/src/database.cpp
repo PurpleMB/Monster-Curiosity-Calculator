@@ -28,10 +28,11 @@ int CreateDatabase() {
 	sqlite3* db;
 	int status = sqlite3_open(database_path, &db);
 	if (status) {
-		std::cout << "Error opening database at location " << database_path << std::endl;
+		// TODO: rework logging of these intermediate functions
+		//LogEvent(output_environment, status, "Error opening database");
 	}
 	else {
-		std::cout << "Successfully opened database at location " << database_path << std::endl;
+		//LogEvent(output_environment, 0, "Successfukll");
 	}
 	sqlite3_close(db);
 
@@ -71,11 +72,11 @@ int CreateMainTable(OutputEnvironment& output_environment) {
 		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &error_message);
 
 		if (exit != SQLITE_OK) {
-			LogError(output_environment, exit, error_message);
+			LogEvent(output_environment, exit, error_message);
 			sqlite3_free(error_message);
 		}
 		else {
-			std::cout << "Successfully created table schema in database at location " << database_path << std::endl;
+			LogEvent(output_environment, 0, "Successfully created primary database table");
 		}
 		sqlite3_close(db);
 	}
@@ -95,10 +96,10 @@ int DeleteMainTable(OutputEnvironment& output_environment) {
 	std::string clear {"DROP TABLE IF EXISTS monsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		LogError(output_environment, exit, error_message);
+		LogEvent(output_environment, exit, error_message);
 	}
 	else {
-		std::cout << "Successfully dropped data table from database at location " << database_path << std::endl;
+		LogEvent(output_environment, 0, "Successfully dropped existing database table");
 	}
 
 	return 0;
@@ -113,10 +114,10 @@ int ClearMainTable(OutputEnvironment& output_environment) {
 	std::string clear {"DELETE FROM monsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		LogError(output_environment, exit, error_message);
+		LogEvent(output_environment, exit, error_message);
 	}
 	else {
-		std::cout << "Successfully cleared data from database at location " << database_path << std::endl;
+		LogEvent(output_environment, 0, "Successfully cleared existing database table");
 	}
 
 	return 0;
@@ -140,13 +141,13 @@ int InsertDataFromJson(OutputEnvironment& output_environment) {
 		std::string data_schema = GenerateJsonDataString(mon_info);
 		exit = sqlite3_exec(db, data_schema.c_str(), NULL, 0, &error_message);
 		if (exit != SQLITE_OK) {
-			LogError(output_environment, exit, error_message);
+			LogEvent(output_environment, exit, error_message);
 			sqlite3_free(error_message);
 			break;
 		}
 	}
 
-	std::cout << "Successfully converted JSON data from " << json_path << " to database at location " << database_path << std::endl;
+	LogEvent(output_environment, 0, "Successfully parsed JSON data into database");
 	sqlite3_close(db);
 	return 0;
 }
@@ -212,10 +213,7 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 	std::string clear {"DROP TABLE IF EXISTS submonsters"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
-		LogError(output_environment, exit, error_message);
-	}
-	else {
-		std::cout << "Successfully cleared subset data from database at location " << database_path << std::endl;
+		LogEvent(output_environment, exit, error_message);
 	}
 
 	// create subtable with schema of main table
@@ -224,14 +222,14 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 		+ parameter_string + ";";
 	exit = sqlite3_exec(db, query_string.c_str(), NULL, 0, &error_message);
 
-
+	// go through subtable to tabulate results
 	query_string = "SELECT * FROM submonsters;";
 	query_result_count = 0;
 	output_environment.subset_entries.clear();
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {
-		std::cout << "ERROR" << std::endl;
+		LogEvent(output_environment, exit, "Error preparing for subset tabulation");
 	}
 	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
 		++query_result_count;
@@ -239,34 +237,10 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 		const char *name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
 		output_environment.subset_entries.push_back(name);
 	}
+
+	LogEvent(output_environment, 0, "Successfully calculated valid data subset");
+
 	sqlite3_finalize(stmt);
-	/*
-	// the 4th parameter is passed as the first arg to the callback function
-	exit = sqlite3_exec(db, query_string.c_str(), DebugCallback, 0, &error_message);
-	if (exit != SQLITE_OK) {
-		std::cerr << "Error querying monster data" << std::endl;
-		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << error_message << std::endl;
-		sqlite3_free(error_message);
-	}
-
-	query_result_count = 0;
-	query_string = "SELECT * FROM submonsters";
-	exit = sqlite3_exec(db, query_string.c_str(), LogCallback, output_environment*, &error_message);
-	if (exit != SQLITE_OK) {
-		std::cerr << "Error querying monster data" << std::endl;
-		std::cout << "Error Code: " << exit << std::endl;
-		std::cout << "Error Message: " << error_message << std::endl;
-		sqlite3_free(error_message);
-	}
-	*/
-
-	int queries_performed = output_environment.log_entries.size() + 1;
-	//output_environment.log_entries.push_back(std::to_string(queries_performed) + ": Query performed");
-
-	std::cout << "Successfully queried database." << std::endl;
-	std::cout << "Query Parameter: " << parameter_string << std::endl;
-	std::cout << "# of results : " << query_result_count << std::endl;
 	sqlite3_close(db);
 	return 0;
 }
@@ -297,25 +271,15 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	return parameter_string;
 }
 
-int LogSuccess(OutputEnvironment& output_environment, const char* log_message) {
-	++events_logged;
-}
+int LogEvent(OutputEnvironment& output_environment, const int event_code, const char* event_msg) {
+	namespace ch = std::chrono;
+	auto curr_time = ch::floor<ch::seconds>(ch::system_clock::now());
 
-int LogError(OutputEnvironment& output_environment, const int error_code, const char* error_msg) {
-	++events_logged;
+	std::string timestamp_text = std::format("{:%T}", curr_time);
+	std::string error_code_text = std::to_string(event_code);
+	std::string error_message_text = event_msg;
 
-	/*
-	std::string border = "-----------------------------";
-	auto now = std::chrono::system_clock::now();
-	std::string meta_info = std::format("[{}][{}]", events_logged, now);
-	std::string error_info = std::format("Error {}: {}", error_code, error_msg);
-	*/
-
-	std::string timestamp_text = "";
-	std::string error_code_text = std::to_string(error_code);
-	std::string error_message_text = error_msg;
 	LogEntry entry = { timestamp_text, error_code_text, error_message_text };
-
 	output_environment.log_entries.push_back(entry);
 
 	return 0;
