@@ -38,4 +38,9 @@ const std::string kSecondaryDisplayName = "Secondary Type";
 const std::string kSecondaryQueryName = "secondary_type";
 extern const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryName, kTypesList);
 
+// TODO: this needs to be restructured. currently identical to checking secondary = value
+const std::string kEitherDisplayName = "Either Type";
+const std::string kEitherQueryName = "primary_type OR secondary_type";
+extern const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryName, kTypesList);
+
 } // namespace monster_calculator

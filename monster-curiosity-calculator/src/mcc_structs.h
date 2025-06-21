@@ -19,10 +19,11 @@ struct QueryParameter {
 };
 
 struct WindowParameters {
-	std::string name = "";
+	std::string name;
 	ImVec2 window_size;
 	ImVec2 window_position;
-	int imgui_window_settings = 0;
+	int imgui_window_settings;
+	float internal_margin;
 };
 
 struct LogEntry {

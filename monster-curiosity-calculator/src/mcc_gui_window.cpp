@@ -50,7 +50,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Text("Select parameter to filter by:");
 
-	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam};
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam};
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 	static int selected_value_index = 0;
@@ -138,12 +138,28 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
-	ImVec2 outer_size = ImVec2(400.0f, 400.0f);
-	if (ImGui::BeginTable("subset_entries", 1, ImGuiTableFlags_ScrollY, outer_size)) {
-		for (std::string subset_entry : output_environment.subset_entries) {
+
+
+	ImVec2 outer_size = ImVec2(0.0f, 300.0f);
+	const int kColumnCount = 3;
+	const int kTableFlags = ImGuiTableFlags_Borders |
+		ImGuiTableFlags_SizingStretchSame |
+		ImGuiTableFlags_ScrollY;
+	if (ImGui::BeginTable("subset_entries", kColumnCount, kTableFlags, outer_size)) {
+		int subset_size = output_environment.subset_entries.size();
+		int subset_index = 0;
+		while(subset_index < subset_size) {
+		//for (std::string subset_entry : output_environment.subset_entries) {
 			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			ImGui::Text(subset_entry.c_str());
+			for (int column_index = 0; column_index < 3; column_index++) {
+				ImGui::TableSetColumnIndex(column_index);
+				std::string subset_entry = output_environment.subset_entries[subset_index];
+				ImGui::Text(subset_entry.c_str());
+				subset_index++;
+				if (subset_index >= subset_size) {
+					break;
+				}
+			}
 		}
 		ImGui::EndTable();
 	}
@@ -157,7 +173,7 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImVec2 outer_size = ImVec2(800.0f, 200.0f);
+	ImVec2 outer_size = ImVec2(0.0f, 300.0f);
 	const int kColumnCount = 4;
 	const int kTableFlags = ImGuiTableFlags_Borders | 
 							ImGuiTableFlags_SizingFixedFit |
