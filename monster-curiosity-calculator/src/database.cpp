@@ -14,13 +14,10 @@
 
 namespace monster_calculator {
 
-static const bool kDebug = true;
+static const bool kDebug = false;
 
 static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
-
-static int query_result_count = 0;
-static int events_logged = 0;
 
 int CreateDatabase() {
 	const char* database_path = kDbPath.c_str();
@@ -224,7 +221,6 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 
 	// go through subtable to tabulate results
 	query_string = "SELECT * FROM submonsters;";
-	query_result_count = 0;
 	output_environment.subset_entries.clear();
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
@@ -232,7 +228,6 @@ int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_env
 		LogEvent(output_environment, exit, "Error preparing for subset tabulation");
 	}
 	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
-		++query_result_count;
 		int id = sqlite3_column_int(stmt, 0);
 		const char *name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
 		output_environment.subset_entries.push_back(name);
@@ -281,12 +276,11 @@ int LogEvent(OutputEnvironment& output_environment, const int event_code, const 
 	return 0;
 }
 
-// used to test queries to DB by printing results to log
+// used to test queries to DB by printing results to program terminal window
 // this method is called once PER RETURNED ROW from the query
 // argc is # of returned columns, azColName is array of column names
 // argv is the actual values that go with the columns
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName) {
-	++query_result_count;
 	if (!kDebug) {
 		return 0;
 	}
@@ -294,7 +288,6 @@ int DebugCallback(void* not_used, int argc, char** argv, char** azColName) {
 	for (int i = 0; i < argc; i++) {
 		std::cout << azColName[i] << ": " << argv[i] << std::endl;
 	}
-
 	std::cout << std::endl;
 
 	return 0;
