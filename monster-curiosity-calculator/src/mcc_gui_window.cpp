@@ -90,7 +90,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		for (char& c : query_param.parameter_value) {
 			c = std::tolower(static_cast<unsigned char>(c));
 		}
-		QueryDatabase(query_param, output_environment);
+		CreateSubtable(query_param, output_environment);
 	}
 
 	if (window_parameters.window_size.x == 0) {
@@ -109,7 +109,8 @@ void DrawValueParameterWindow(WindowParameters& window_parameters) {
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	if (ImGui::Button("Query Database")) {
+	ImGui::Text("Choose value to calculate:");
+	if (ImGui::Button("Calculate value")) {
 		
 	}
 
@@ -136,10 +137,52 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		window_parameters.window_size.y = ImGui::GetWindowHeight();
 	}
 
+	// text line showing # of entries in subset
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
+	// subset table sorting fields
+	ImGui::Text("Sort entries by:");
 
+	std::vector<std::string> sortable_parameters = {"name", "dex_number", "stat_total"};
+	static int selected_parameter_index = 0;
+	std::string selected_sorting_param_name = sortable_parameters[selected_parameter_index];
+	std::vector<std::string> sorting_directions = {"asc", "desc"};
+	static int selected_sorting_index = 0;
+	std::string selected_sorting_name = sorting_directions[selected_sorting_index];
+	
+	if (ImGui::Button(selected_sorting_param_name.c_str())) {
+		ImGui::OpenPopup("Select sorting parameter");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(selected_sorting_name.c_str())) {
+		ImGui::OpenPopup("Select sorting direction");
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Apply")) {
+		QueryParameter sorting_param(selected_sorting_param_name, selected_sorting_name);
+		SortSubtableEntries(sorting_param, output_environment);
+	}
+
+	if (ImGui::BeginPopup("Select sorting parameter")) {
+		for (int i = 0; i < sortable_parameters.size(); i++) {
+			if (ImGui::Selectable(sortable_parameters[i].c_str())) {
+				selected_parameter_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+	if (ImGui::BeginPopup("Select sorting direction")) {
+		for (int i = 0; i < sorting_directions.size(); i++) {
+			if (ImGui::Selectable(sorting_directions[i].c_str())) {
+				selected_sorting_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+
+	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 300.0f);
 	const int kColumnCount = 3;
 	const int kTableFlags = ImGuiTableFlags_Borders |

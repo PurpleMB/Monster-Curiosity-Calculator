@@ -17,8 +17,11 @@ int InsertDataFromJson(OutputEnvironment& output_environment);
 std::string GenerateJsonDataString(Json::Value mon_info);
 
 // querying primary table
-int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment);
+int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_environment);
+int SortSubtableEntries(QueryParameter& query_parameter, OutputEnvironment& output_environment);
+int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName);
 std::string GenerateQueryParameterString(QueryParameter& query_parameter);
+std::string GenerateSortingParameterString(QueryParameter& query_parameter);
 
 // logging/debugging
 int LogEvent(OutputEnvironment& output_environment, const int error_code, const char* error_msg);

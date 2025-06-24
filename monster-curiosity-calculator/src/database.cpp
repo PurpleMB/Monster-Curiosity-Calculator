@@ -200,7 +200,7 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int QueryDatabase(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
+int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -245,10 +245,8 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	if (query_parameter.parameter_name == "") {
 		return "";
 	}
-	std::cout << query_parameter.parameter_name << ": " << query_parameter.parameter_value << std::endl;
 
 	std::string parameter_string = "WHERE ";
-
 	// edge cases for things like "any" and "none"
 	if (query_parameter.parameter_value == "any") {
 		parameter_string += query_parameter.parameter_name + " != '-'";
@@ -258,8 +256,47 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 		parameter_string += query_parameter.parameter_name + " = '" + query_parameter.parameter_value + "'";
 	}
 
-	std::cout << parameter_string << std::endl;
 	return parameter_string;
+}
+
+int SortSubtableEntries(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
+	const char* database_path = kDbPath.c_str();
+	sqlite3* db;
+	int exit = sqlite3_open(database_path, &db);
+
+	output_environment.subset_entries.clear();
+
+	std::string query_string = "SELECT * FROM submonsters "
+		+ GenerateSortingParameterString(query_parameter) + ";";
+	sqlite3_stmt* stmt;
+	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
+	if (exit != SQLITE_OK) {
+		LogEvent(output_environment, exit, "Error preparing to re-order subset");
+	}
+	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
+		int id = sqlite3_column_int(stmt, 0);
+		const char* name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+		output_environment.subset_entries.push_back(name);
+	}
+
+	LogEvent(output_environment, 0, "Successfully re-ordered data subset");
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return 0;
+}
+
+int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName) {
+	return 0;
+}
+
+std::string GenerateSortingParameterString(QueryParameter& query_parameter) {
+	if (query_parameter.parameter_name == "") {
+		return "";
+	}
+	
+	std::string sorting_string = "ORDER BY " + query_parameter.parameter_name + " " + query_parameter.parameter_value;
+	return sorting_string;
 }
 
 int LogEvent(OutputEnvironment& output_environment, const int event_code, const char* event_msg) {
