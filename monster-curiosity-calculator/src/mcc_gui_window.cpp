@@ -234,10 +234,10 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size))
 	{
 		// prepare table header
-		ImGui::TableSetupColumn("Entry #");
-		ImGui::TableSetupColumn("Timestamp");
-		ImGui::TableSetupColumn("Event Code");
-		ImGui::TableSetupColumn("Message");
+		ImGui::TableSetupColumn("Entry #",		ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Timestamp",	ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Event Code",	ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Message",		ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
 		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
