@@ -265,7 +265,7 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 			ImGui::Text(entry.message_code.c_str());
 
 			ImGui::TableSetColumnIndex(3);
-			ImGui::Text(entry.log_message.c_str());
+			ImGui::TextWrapped(entry.log_message.c_str());
 		}
 		ImGui::EndTable();
 	}
