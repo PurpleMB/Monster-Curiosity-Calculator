@@ -111,7 +111,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("Choose value to calculate:");
-	if (ImGui::Button("Calculate value")) {
+	if (ImGui::Button("TODO: Calculate value")) {
 		
 	}
 
@@ -145,12 +145,15 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	// subset table sorting fields
 	ImGui::Text("Sort entries by:");
 
-	std::vector<std::string> sortable_parameters = {"name", "dex_number", "stat_total"};
+	std::vector<std::string> sortable_parameters = {"ID #", "Name", "Stat Total"};
+	std::vector<std::string> sortable_query_params = {"dex_number", "name", "stat_total"};
 	static int selected_parameter_index = 0;
 	std::string selected_sorting_param_name = sortable_parameters[selected_parameter_index];
-	std::vector<std::string> sorting_directions = {"asc", "desc"};
-	static int selected_sorting_index = 0;
-	std::string selected_sorting_name = sorting_directions[selected_sorting_index];
+
+	std::vector<std::string> sortable_directions = {"Ascending", "Descending"};
+	std::vector<std::string> sortable_query_directions = {"asc", "desc"};
+	static int selected_direction_index = 0;
+	std::string selected_sorting_name = sortable_directions[selected_direction_index];
 	
 	if (ImGui::Button(selected_sorting_param_name.c_str())) {
 		ImGui::OpenPopup("Select sorting parameter");
@@ -161,7 +164,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Apply")) {
-		QueryParameter sorting_param(selected_sorting_param_name, selected_sorting_name);
+		std::string selected_query_param = sortable_query_params[selected_parameter_index];
+		std::string selected_query_dir = sortable_query_directions[selected_direction_index];
+		QueryParameter sorting_param(selected_query_param, selected_query_dir);
 		SortSubtableEntries(sorting_param, output_environment);
 	}
 
@@ -174,9 +179,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		ImGui::EndPopup();
 	}
 	if (ImGui::BeginPopup("Select sorting direction")) {
-		for (int i = 0; i < sorting_directions.size(); i++) {
-			if (ImGui::Selectable(sorting_directions[i].c_str())) {
-				selected_sorting_index = i;
+		for (int i = 0; i < sortable_directions.size(); i++) {
+			if (ImGui::Selectable(sortable_directions[i].c_str())) {
+				selected_direction_index = i;
 			}
 		}
 		ImGui::EndPopup();
