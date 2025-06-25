@@ -219,23 +219,6 @@ int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_en
 		return 0;
 	}
 
-	// go through subtable to tabulate results
-	query_string = "SELECT * FROM submonsters;";
-	output_environment.subset_entries.clear();
-	sqlite3_stmt* stmt;
-	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
-	if (exit != SQLITE_OK) {
-		LogEvent(output_environment, exit, "Error preparing for subset tabulation");
-	}
-	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
-		int id = sqlite3_column_int(stmt, 0);
-		const char *name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-		output_environment.subset_entries.push_back(name);
-	}
-
-	LogEvent(output_environment, 0, "Successfully calculated valid data subset");
-
-	sqlite3_finalize(stmt);
 	sqlite3_close(db);
 	return 0;
 }
@@ -259,15 +242,16 @@ std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
 	return parameter_string;
 }
 
-int SortSubtableEntries(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
+int SortSubtableEntries(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
 	output_environment.subset_entries.clear();
 
+	QueryParameter sorting_parameter = output_environment.sorting_parameter;
 	std::string query_string = "SELECT * FROM submonsters "
-		+ GenerateSortingParameterString(query_parameter) + ";";
+		+ GenerateSortingParameterString(sorting_parameter) + ";";
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {

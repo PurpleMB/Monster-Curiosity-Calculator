@@ -35,6 +35,7 @@ struct LogEntry {
 struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<std::string> subset_entries;
+	QueryParameter sorting_parameter;
 };
 
 } // namespace monster_calculator

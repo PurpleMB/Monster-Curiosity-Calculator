@@ -92,6 +92,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 			c = std::tolower(static_cast<unsigned char>(c));
 		}
 		CreateSubtable(query_param, output_environment);
+		SortSubtableEntries(output_environment);
 	}
 
 	if (window_parameters.window_size.x == 0) {
@@ -167,7 +168,8 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		std::string selected_query_param = sortable_query_params[selected_parameter_index];
 		std::string selected_query_dir = sortable_query_directions[selected_direction_index];
 		QueryParameter sorting_param(selected_query_param, selected_query_dir);
-		SortSubtableEntries(sorting_param, output_environment);
+		output_environment.sorting_parameter = sorting_param;
+		SortSubtableEntries(output_environment);
 	}
 
 	if (ImGui::BeginPopup("Select sorting parameter")) {
