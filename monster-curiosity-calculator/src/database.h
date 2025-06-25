@@ -1,5 +1,4 @@
 #pragma once
-#include <unordered_map>
 #include <string>
 
 #include <json/json.h>
@@ -9,7 +8,7 @@
 
 namespace monster_calculator {
 // basic database creation
-int CreateDatabase();
+int CreateDatabase(OutputEnvironment& output_environment);
 int CreateMainTable(OutputEnvironment& output_environment);
 int DeleteMainTable(OutputEnvironment& output_environment);
 int ClearMainTable(OutputEnvironment& output_environment);

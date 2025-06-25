@@ -144,6 +144,7 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mcc_constants.cpp" />
     <ClCompile Include="src\mcc_gui_window.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,4 @@
+#pragma once
 #include "database.h"
 
 #include <iostream>
@@ -11,6 +12,7 @@
 #include <json/value.h>
 
 #include "mcc_structs.h"
+#include "mcc_constants.h"
 
 namespace monster_calculator {
 
@@ -19,17 +21,13 @@ static const bool kDebug = false;
 static const std::string kDbPath = "c:\\DB_TEST\\test.db";
 static const std::string kJsonPath = "c:\\DB_TEST\\mccdata.json";
 
-int CreateDatabase() {
+int CreateDatabase(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 
 	sqlite3* db;
 	int status = sqlite3_open(database_path, &db);
 	if (status) {
-		// TODO: rework logging of these intermediate functions
-		//LogEvent(output_environment, status, "Error opening database");
-	}
-	else {
-		//LogEvent(output_environment, 0, "Successfukll");
+		LogEvent(output_environment, status, "Error opening/creating SQL database");
 	}
 	sqlite3_close(db);
 
@@ -37,7 +35,8 @@ int CreateDatabase() {
 }
 
 int CreateMainTable(OutputEnvironment& output_environment) {
-	std::string table_schema = (
+	const char* database_path = kDbPath.c_str();
+	const std::string kMainTableScheme = (
 		"CREATE TABLE IF NOT EXISTS monsters("
 		"id INTEGER PRIMARY KEY,"
 		"name TEXT NOT NULL,"
@@ -58,28 +57,20 @@ int CreateMainTable(OutputEnvironment& output_environment) {
 		"stat_total INTEGER NOT NULL"
 		");"
 		);
+	const char* table_schema = kMainTableScheme.c_str();
 
-	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
-	try {
-		int exit = 0;
-		exit = sqlite3_open(database_path, &db);
+	int exit = 0;
+	exit = sqlite3_open(database_path, &db);
 
-		char* error_message;
-		exit = sqlite3_exec(db, table_schema.c_str(), NULL, 0, &error_message);
+	char* error_message;
+	exit = sqlite3_exec(db, table_schema, NULL, 0, &error_message);
 
-		if (exit != SQLITE_OK) {
-			LogEvent(output_environment, exit, error_message);
-			sqlite3_free(error_message);
-		}
-		else {
-			LogEvent(output_environment, 0, "Successfully created primary database table");
-		}
-		sqlite3_close(db);
+	if (exit != SQLITE_OK) {
+		LogEvent(output_environment, exit, error_message);
+		sqlite3_free(error_message);
 	}
-	catch (const std::exception& e) {
-		std::cerr << e.what();
-	}
+	sqlite3_close(db);
 
 	return 0;
 }
@@ -94,10 +85,9 @@ int DeleteMainTable(OutputEnvironment& output_environment) {
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, error_message);
+		sqlite3_free(error_message);
 	}
-	else {
-		LogEvent(output_environment, 0, "Successfully dropped existing database table");
-	}
+	sqlite3_close(db);
 
 	return 0;
 }
@@ -112,20 +102,21 @@ int ClearMainTable(OutputEnvironment& output_environment) {
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, error_message);
+		sqlite3_free(error_message);
 	}
-	else {
-		LogEvent(output_environment, 0, "Successfully cleared existing database table");
-	}
+	sqlite3_close(db);
 
 	return 0;
 }
 
 int InsertDataFromJson(OutputEnvironment& output_environment) {
+	// parse json file into value struct
 	const char* json_path = kJsonPath.c_str();
 	std::ifstream monster_json_file(json_path, std::ifstream::binary);
 	Json::Value monsters;
 	monster_json_file >> monsters;
 
+	// open sqlite database
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -133,6 +124,7 @@ int InsertDataFromJson(OutputEnvironment& output_environment) {
 	char* error_message;
 	int n = monsters.size();
 	for (int i = 0; i < n; i++) {
+		// converts a SINGLE monster json value struct into a sql row
 		auto mon_info = monsters[i];
 
 		std::string data_schema = GenerateJsonDataString(mon_info);
@@ -143,13 +135,14 @@ int InsertDataFromJson(OutputEnvironment& output_environment) {
 			break;
 		}
 	}
-
-	LogEvent(output_environment, 0, "Successfully parsed JSON data into database");
 	sqlite3_close(db);
+
 	return 0;
 }
 
 std::string GenerateJsonDataString(Json::Value mon_info) {
+	// this one is pretty ugly, just converts data in Json::Value
+	// into the format to add a single row to to the sql database
 	std::string mon_name = mon_info["name"].asString();
 	std::string dex_num = mon_info["id"].asString();
 
@@ -211,6 +204,8 @@ int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_en
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, error_message);
+		sqlite3_free(error_message);
+		return 0;
 	}
 
 	// create subtable with schema of main table
@@ -218,6 +213,11 @@ int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_en
 	std::string query_string = "CREATE TABLE submonsters AS SELECT * FROM monsters "
 		+ parameter_string + ";";
 	exit = sqlite3_exec(db, query_string.c_str(), NULL, 0, &error_message);
+	if (exit != SQLITE_OK) {
+		LogEvent(output_environment, exit, error_message);
+		sqlite3_free(error_message);
+		return 0;
+	}
 
 	// go through subtable to tabulate results
 	query_string = "SELECT * FROM submonsters;";

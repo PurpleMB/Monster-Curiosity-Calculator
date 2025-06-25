@@ -6,41 +6,14 @@
 
 namespace monster_calculator {
 
-const std::vector<std::string> kTypesList = {
-	"Any", // equivalent to "type = *"
-	"None", // equivalent to "type = -"
-	"Normal", 
-	"Fire", 
-	"Fighting", 
-	"Water", 
-	"Flying", 
-	"Grass",
-	"Poison", 
-	"Electric", 
-	"Ground", 
-	"Psychic", 
-	"Rock",
-	"Ice", 
-	"Bug", 
-	"Dragon", 
-	"Ghost", 
-	"Dark", 
-	"Steel", 
-	"Fairy"
-};
+extern const std::string kMainTableScheme;
 
-const std::string kPrimaryDisplayName = "Primary Type";
-const std::string kPrimaryQueryName = "primary_type";
-extern const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryName, kTypesList);
+extern const std::vector<std::string> kTypesList;
 
+extern const ParameterType kPrimaryTypeParam;
 
-const std::string kSecondaryDisplayName = "Secondary Type";
-const std::string kSecondaryQueryName = "secondary_type";
-extern const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryName, kTypesList);
+extern const ParameterType kSecondaryTypeParam;
 
-// TODO: this needs to be restructured. currently identical to checking secondary = value
-const std::string kEitherDisplayName = "Either Type";
-const std::string kEitherQueryName = "primary_type OR secondary_type";
-extern const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryName, kTypesList);
+extern const ParameterType kEitherTypeParam;
 
 } // namespace monster_calculator

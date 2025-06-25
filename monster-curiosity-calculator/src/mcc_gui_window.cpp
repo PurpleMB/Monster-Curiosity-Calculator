@@ -1,3 +1,4 @@
+#pragma once
 #include "mcc_gui_windows.h"
 
 #include <cstdlib>
@@ -23,7 +24,7 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& o
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	if (ImGui::Button("Build Monster Database")) {
-		CreateDatabase();
+		CreateDatabase(output_environment);
 		DeleteMainTable(output_environment);
 		CreateMainTable(output_environment);
 	}
@@ -103,7 +104,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ImGui::End();
 }
 
-void DrawValueParameterWindow(WindowParameters& window_parameters) {
+void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
