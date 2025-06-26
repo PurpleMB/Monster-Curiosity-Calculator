@@ -53,10 +53,9 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Text("Select parameter to filter by:");
 
-	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kHealthParam};
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam, kHealthParam};
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
-	static int selected_value_index = 0;
 
 	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select parameter");
@@ -73,54 +72,21 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
 		ImGui::SameLine();
-		ImGui::Text("ENUMERATED PARAMETER");
-		//std::string selected_value_name = parameter_types[selected_parameter_index].possible_parameter_values[selected_value_index];
-		//if (ImGui::Button(selected_value_name.c_str())) {
-		//	ImGui::OpenPopup("Select parameter value");
-		//}
-		BetterQueryParameter testBQP(
-			"primary_type = '{0}' OR secondary_type = '{0}'",
-			"fire"
-		);
-
-		std::string query = std::vformat(testBQP.query_format, std::make_format_args(testBQP.query_values));
-		
-		ImGui::Text(query.c_str());
-	} else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
+		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], output_environment);
+	} 
+	else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
 		ImGui::SameLine();
 		ImGui::Text("NUMERICAL PARAMETER");
 	}
 	else {
 		ImGui::SameLine();
-		ImGui::Text("BROKEN. YAY.");
-		//ImGui::SameLine();
-		//ImGui::Text(selected_parameter->display_name.c_str());
-		ImGui::SameLine();
-		ImGui::Text("WELP");
-	}
-
-	/*
-	if (ImGui::BeginPopup("Select parameter value")) {
-		for (int i = 0; i < parameter_types[selected_parameter_index].possible_parameter_values.size(); i++) {
-			if (ImGui::Selectable(parameter_types[selected_parameter_index].possible_parameter_values[i].c_str())) {
-				selected_value_index = i;
-			}
-		}
-		ImGui::EndPopup();
+		ImGui::Text("UNDEFINED PARAMETER TYPE");
 	}
 
 	if (ImGui::Button("Find Matching Monsters")) {
-		QueryParameter query_param (
-			parameter_types[selected_parameter_index].query_name,
-			selected_value_name
-		);
-		for (char& c : query_param.parameter_value) {
-			c = std::tolower(static_cast<unsigned char>(c));
-		}
-		CreateSubtable(query_param, output_environment);
+		CreateSubtable(output_environment);
 		SortSubtableEntries(output_environment);
 	}
-	*/
 
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();
@@ -130,6 +96,33 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	}
 
 	ImGui::End();
+}
+
+void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironment& output_environment) {
+	static int selected_value_index = 0;
+
+	std::string selected_value_name = param_type.values[selected_value_index].first;
+	if (ImGui::Button(selected_value_name.c_str())) {
+		ImGui::OpenPopup("Select parameter value");
+	}
+
+	if (ImGui::BeginPopup("Select parameter value")) {
+		for (int i = 0; i < param_type.values.size(); i++) {
+			if (ImGui::Selectable(param_type.values[i].first.c_str())) {
+				selected_value_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Apply Parameter")) {
+		BetterQueryParameter subset_parameter(
+			param_type.query_format,
+			param_type.values[selected_value_index].second
+		);
+		output_environment.subset_parameters.push_back(subset_parameter);
+	}
 }
 
 void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
@@ -192,11 +185,13 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Apply")) {
+		/*
 		std::string selected_query_param = sortable_query_params[selected_parameter_index];
 		std::string selected_query_dir = sortable_query_directions[selected_direction_index];
 		QueryParameter sorting_param(selected_query_param, selected_query_dir);
 		output_environment.sorting_parameter = sorting_param;
 		SortSubtableEntries(output_environment);
+		*/
 	}
 
 	if (ImGui::BeginPopup("Select sorting parameter")) {

@@ -25,44 +25,43 @@ const std::string kMainTableScheme = (
 	");"
 );
 
-const std::vector<std::string> kTypesList = {
-	"Any", // equivalent to "type = *"
-	"None", // equivalent to "type = -"
-	"Normal",
-	"Fire",
-	"Fighting",
-	"Water",
-	"Flying",
-	"Grass",
-	"Poison",
-	"Electric",
-	"Ground",
-	"Psychic",
-	"Rock",
-	"Ice",
-	"Bug",
-	"Dragon",
-	"Ghost",
-	"Dark",
-	"Steel",
-	"Fairy"
+const std::vector<std::pair<std::string, std::string>> kTypesList = {
+	{"Any", "!= '-'"},
+	{"None", "= '-'"},
+	{"Normal", "= 'normal'"},
+	{"Fire", "= 'fire'"},
+	{"Fighting", "= 'fighting'"},
+	{"Water", "= 'water'"},
+	{"Flying", "= 'flying'"},
+	{"Grass", "= 'grass'"},
+	{"Poison", "= 'poison'"},
+	{"Electric", " = 'electric'"},
+	{"Ground", "= 'ground'"},
+	{"Psychic", "= 'psychic'"},
+	{"Rock", "= 'rock'"},
+	{"Ice", "= 'ice'"},
+	{"Bug", "= 'bug'"},
+	{"Dragon", "= 'dragon'"},
+	{"Ghost", "= 'ghost'"},
+	{"Dark", "= 'dark'"},
+	{"Steel", "= 'steel'"},
+	{"Fairy", "= 'fairy'"}
 };
 
 const std::string kPrimaryDisplayName = "Primary Type";
-const std::string kPrimaryQueryName = "primary_type";
-const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryName, Enumerated, kTypesList);
+const std::string kPrimaryQueryFormat = "primary_type {0}";
+const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryFormat, Enumerated, kTypesList);
 
 const std::string kSecondaryDisplayName = "Secondary Type";
-const std::string kSecondaryQueryName = "secondary_type";
-const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryName, Enumerated, kTypesList);
+const std::string kSecondaryQueryFormat = "secondary_type {0}";
+const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryFormat, Enumerated, kTypesList);
 
-// TODO: this needs to be restructured. currently identical to checking secondary = value
 const std::string kEitherDisplayName = "Either Type";
-const std::string kEitherQueryName = "primary_type OR secondary_type";
-const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryName, Enumerated, kTypesList);
+const std::string kEitherQueryFormat = "primary_type {0} OR secondary_type {0}";
+const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryFormat, Enumerated, kTypesList);
 
 const std::string kHealthDisplayName = "Health";
-const std::string kHealthQueryName = "health";
-const ParameterType kHealthParam(kHealthDisplayName, kEitherQueryName, Numerical, {"0", "255"});
+const std::string kHealthQueryFormat = "health {0} {1}";
+const ParameterType kHealthParam(kHealthDisplayName, kEitherQueryFormat, Numerical, {{"0", "255"}});
 
 } // namespace monster_calculator

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "imgui.h"
 
@@ -15,13 +16,13 @@ enum ParameterCategory {
 // TODO: use this to define display and possible values of different metrics we can refine query by
 struct ParameterType {
 	std::string display_name;
-	std::string query_name;
+	std::string query_format;
 	ParameterCategory catergory;
-	std::vector<std::string> values;
+	std::vector<std::pair<std::string, std::string>> values;
 
-	ParameterType(std::string name, std::string q_name, ParameterCategory cat, std::vector<std::string> vals) {
+	ParameterType(std::string name, std::string q_name, ParameterCategory cat, std::vector<std::pair<std::string, std::string>> vals) {
 		display_name = name;
-		query_name = q_name;
+		query_format = q_name;
 		catergory = cat;
 		values = vals;
 	}
@@ -33,44 +34,9 @@ struct ParameterType {
 	}
 };
 
-/*
-struct EnumeratedParameter : ParameterType {
-	std::vector<std::string> possible_parameter_values;
-
-	EnumeratedParameter(std::string name, std::string q_name, std::vector<std::string> values)
-	: ParameterType(name, q_name) {
-		possible_parameter_values = values;
-	}
-
-	ParameterCategory GetParameterCategory() override {
-		return Enumerated;
-	}
-};
-
-struct NumericalParameter : ParameterType {
-	int lower_bound;
-	int upper_bound;
-
-	NumericalParameter(std::string name, std::string q_name, int lower, int upper)
-	: ParameterType(name, q_name) {
-		lower_bound = lower;
-		upper_bound = upper;
-	}
-
-	ParameterCategory GetParameterCategory() override {
-		return Numerical;
-	}
-};
-*/
-
-struct QueryParameter {
-	std::string parameter_name;
-	std::string parameter_value;
-};
-
 struct BetterQueryParameter {
 	std::string query_format;
-	std::string query_values;
+	std::string query_value;
 };
 
 struct WindowParameters {
@@ -90,7 +56,8 @@ struct LogEntry {
 struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<std::string> subset_entries;
-	QueryParameter sorting_parameter;
+	std::vector<BetterQueryParameter> subset_parameters;
+	std::vector<BetterQueryParameter> sorting_parameters;
 };
 
 } // namespace monster_calculator

@@ -193,7 +193,7 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	return data_schema;
 }
 
-int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_environment) {
+int CreateSubtable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -209,7 +209,7 @@ int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_en
 	}
 
 	// create subtable with schema of main table
-	std::string parameter_string = GenerateQueryParameterString(query_parameter);
+	std::string parameter_string = GenerateQueryParameterString(output_environment.subset_parameters);
 	std::string query_string = "CREATE TABLE submonsters AS SELECT * FROM monsters "
 		+ parameter_string + ";";
 	exit = sqlite3_exec(db, query_string.c_str(), NULL, 0, &error_message);
@@ -223,21 +223,23 @@ int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_en
 	return 0;
 }
 
-std::string GenerateQueryParameterString(QueryParameter& query_parameter) {
-	// TODO: change this guard clause if query params switch the type for param name
-	if (query_parameter.parameter_name == "") {
+std::string GenerateQueryParameterString(std::vector<BetterQueryParameter>& subset_parameters) {
+	if (subset_parameters.size() == 0) {
 		return "";
 	}
 
 	std::string parameter_string = "WHERE ";
-	// edge cases for things like "any" and "none"
-	if (query_parameter.parameter_value == "any") {
-		parameter_string += query_parameter.parameter_name + " != '-'";
-	} else if (query_parameter.parameter_value == "none") {
-		parameter_string += query_parameter.parameter_name + " = '-'";
-	} else {
-		parameter_string += query_parameter.parameter_name + " = '" + query_parameter.parameter_value + "'";
+	for (int i = 0; i < subset_parameters.size(); i++) {
+		BetterQueryParameter subset_param = subset_parameters[i];
+		std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
+		parameter_string += formatted_query;
+
+		if (i < subset_parameters.size() - 1) {
+			parameter_string += " AND ";
+		}
 	}
+
+	std::cout << parameter_string << std::endl;
 
 	return parameter_string;
 }
@@ -249,9 +251,8 @@ int SortSubtableEntries(OutputEnvironment& output_environment) {
 
 	output_environment.subset_entries.clear();
 
-	QueryParameter sorting_parameter = output_environment.sorting_parameter;
 	std::string query_string = "SELECT * FROM submonsters "
-		+ GenerateSortingParameterString(sorting_parameter) + ";";
+		+ GenerateSortingParameterString(output_environment.sorting_parameters) + ";";
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {
@@ -274,13 +275,14 @@ int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName
 	return 0;
 }
 
-std::string GenerateSortingParameterString(QueryParameter& query_parameter) {
-	if (query_parameter.parameter_name == "") {
+std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& sorting_parameters) {
+	if (sorting_parameters.size() == 0) {
 		return "";
 	}
 	
-	std::string sorting_string = "ORDER BY " + query_parameter.parameter_name + " " + query_parameter.parameter_value;
-	return sorting_string;
+	return "";
+	//std::string sorting_string = "ORDER BY " + query_parameter.parameter_name + " " + query_parameter.parameter_value;
+	//return sorting_string;
 }
 
 int LogEvent(OutputEnvironment& output_environment, const int event_code, const char* event_msg) {
