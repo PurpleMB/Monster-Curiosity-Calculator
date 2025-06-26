@@ -11,9 +11,9 @@ extern const std::string kMainTableScheme;
 extern const std::vector<std::string> kTypesList;
 
 extern const ParameterType kPrimaryTypeParam;
-
 extern const ParameterType kSecondaryTypeParam;
-
 extern const ParameterType kEitherTypeParam;
+					  
+extern const ParameterType kHealthParam;
 
 } // namespace monster_calculator

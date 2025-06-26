@@ -51,18 +51,13 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Text("Select parameter to filter by:");
 
-	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam};
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kHealthParam};
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 	static int selected_value_index = 0;
-	std::string selected_value_name = parameter_types[selected_parameter_index].possible_parameter_values[selected_value_index];
 
 	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select parameter");
-	}
-	ImGui::SameLine();
-	if (ImGui::Button(selected_value_name.c_str())) {
-		ImGui::OpenPopup("Select parameter value");
 	}
 
 	if (ImGui::BeginPopup("Select parameter")) {
@@ -74,6 +69,27 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 
+	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
+		ImGui::SameLine();
+		ImGui::Text("ENUMERATED PARAMETER");
+		//std::string selected_value_name = parameter_types[selected_parameter_index].possible_parameter_values[selected_value_index];
+		//if (ImGui::Button(selected_value_name.c_str())) {
+		//	ImGui::OpenPopup("Select parameter value");
+		//}
+	} else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
+		ImGui::SameLine();
+		ImGui::Text("NUMERICAL PARAMETER");
+	}
+	else {
+		ImGui::SameLine();
+		ImGui::Text("BROKEN. YAY.");
+		//ImGui::SameLine();
+		//ImGui::Text(selected_parameter->display_name.c_str());
+		ImGui::SameLine();
+		ImGui::Text("WELP");
+	}
+
+	/*
 	if (ImGui::BeginPopup("Select parameter value")) {
 		for (int i = 0; i < parameter_types[selected_parameter_index].possible_parameter_values.size(); i++) {
 			if (ImGui::Selectable(parameter_types[selected_parameter_index].possible_parameter_values[i].c_str())) {
@@ -94,6 +110,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		CreateSubtable(query_param, output_environment);
 		SortSubtableEntries(output_environment);
 	}
+	*/
 
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();

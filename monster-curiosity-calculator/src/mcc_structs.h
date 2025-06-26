@@ -6,12 +6,62 @@
 
 namespace monster_calculator {
 
+enum ParameterCategory {
+	Enumerated,
+	Numerical,
+	Undefined
+};
+
 // TODO: use this to define display and possible values of different metrics we can refine query by
 struct ParameterType {
 	std::string display_name;
 	std::string query_name;
-	std::vector<std::string> possible_parameter_values;
+	ParameterCategory catergory;
+	std::vector<std::string> values;
+
+	ParameterType(std::string name, std::string q_name, ParameterCategory cat, std::vector<std::string> vals) {
+		display_name = name;
+		query_name = q_name;
+		catergory = cat;
+		values = vals;
+	}
+
+	virtual ~ParameterType() = default;
+
+	virtual ParameterCategory GetParameterCategory() {
+		return catergory;
+	}
 };
+
+/*
+struct EnumeratedParameter : ParameterType {
+	std::vector<std::string> possible_parameter_values;
+
+	EnumeratedParameter(std::string name, std::string q_name, std::vector<std::string> values)
+	: ParameterType(name, q_name) {
+		possible_parameter_values = values;
+	}
+
+	ParameterCategory GetParameterCategory() override {
+		return Enumerated;
+	}
+};
+
+struct NumericalParameter : ParameterType {
+	int lower_bound;
+	int upper_bound;
+
+	NumericalParameter(std::string name, std::string q_name, int lower, int upper)
+	: ParameterType(name, q_name) {
+		lower_bound = lower;
+		upper_bound = upper;
+	}
+
+	ParameterCategory GetParameterCategory() override {
+		return Numerical;
+	}
+};
+*/
 
 struct QueryParameter {
 	std::string parameter_name;

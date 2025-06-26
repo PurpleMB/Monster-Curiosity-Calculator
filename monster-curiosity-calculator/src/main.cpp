@@ -29,7 +29,7 @@ public:
 		if (show_demo_window_)
 			ImGui::ShowDemoWindow(&show_demo_window_);
 
-		ImVec2 window_size = {250, 0};
+		ImVec2 window_size = {550, 0};
 		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
 
 		// welcome window

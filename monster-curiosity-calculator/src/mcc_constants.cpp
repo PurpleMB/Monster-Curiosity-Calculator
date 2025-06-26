@@ -50,14 +50,19 @@ const std::vector<std::string> kTypesList = {
 
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryQueryName = "primary_type";
-const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryName, kTypesList);
+const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryName, Enumerated, kTypesList);
 
 const std::string kSecondaryDisplayName = "Secondary Type";
 const std::string kSecondaryQueryName = "secondary_type";
-const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryName, kTypesList);
+const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryName, Enumerated, kTypesList);
 
 // TODO: this needs to be restructured. currently identical to checking secondary = value
 const std::string kEitherDisplayName = "Either Type";
 const std::string kEitherQueryName = "primary_type OR secondary_type";
-const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryName, kTypesList);
+const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryName, Enumerated, kTypesList);
+
+const std::string kHealthDisplayName = "Health";
+const std::string kHealthQueryName = "health";
+const ParameterType kHealthParam(kHealthDisplayName, kEitherQueryName, Numerical, {"0", "255"});
+
 } // namespace monster_calculator
