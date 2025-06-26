@@ -68,6 +68,11 @@ struct QueryParameter {
 	std::string parameter_value;
 };
 
+struct BetterQueryParameter {
+	std::string query_format;
+	std::string query_values;
+};
+
 struct WindowParameters {
 	std::string name;
 	ImVec2 window_size;

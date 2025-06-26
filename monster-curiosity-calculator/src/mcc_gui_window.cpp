@@ -6,6 +6,8 @@
 #include <d3d9.h>
 #include <tchar.h>
 
+#include <format>
+
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
@@ -76,6 +78,14 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		//if (ImGui::Button(selected_value_name.c_str())) {
 		//	ImGui::OpenPopup("Select parameter value");
 		//}
+		BetterQueryParameter testBQP(
+			"primary_type = '{0}' OR secondary_type = '{0}'",
+			"fire"
+		);
+
+		std::string query = std::vformat(testBQP.query_format, std::make_format_args(testBQP.query_values));
+		
+		ImGui::Text(query.c_str());
 	} else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
 		ImGui::SameLine();
 		ImGui::Text("NUMERICAL PARAMETER");
