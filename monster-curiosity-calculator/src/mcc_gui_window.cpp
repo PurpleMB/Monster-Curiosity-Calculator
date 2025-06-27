@@ -71,12 +71,10 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	}
 
 	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
-		ImGui::SameLine();
 		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], output_environment);
 	} 
 	else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
-		ImGui::SameLine();
-		ImGui::Text("TODO: CREATE NUMERICAL PARAMETER FUNCTION");
+		DrawNumericalParameterSelector(parameter_types[selected_parameter_index], output_environment);
 	}
 	else {
 		ImGui::SameLine();
@@ -127,25 +125,28 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 	}
 }
 
-void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
-	ImGui::SetNextWindowPos(window_parameters.window_position);
+void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment& output_environment) {
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 
-	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+	static ImU8 lower_bound = 255;
+	ImGui::Text("Set Lower Bound: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 
-	ImGui::Text("Choose value to calculate:");
-	if (ImGui::Button("TODO: Calculate value")) {
-		
+	static ImU8 upper_bound = 255;
+	ImGui::Text("Set Upper Bound: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+
+	if (ImGui::Button("Apply Parameter")) {
+		BetterQueryParameter subset_parameter(
+			param_type.query_format,
+			std::format("{0} AND {1}", lower_bound, upper_bound)
+		);
+		output_environment.subset_parameters.push_back(subset_parameter);
 	}
-
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-
-	ImGui::End();
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
@@ -198,6 +199,27 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 		}
 		ImGui::EndTable();
 	}
+}
+
+void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
+	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowPos(window_parameters.window_position);
+
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+
+	ImGui::Text("Choose value to calculate:");
+	if (ImGui::Button("TODO: Calculate value")) {
+		
+	}
+
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
+
+	ImGui::End();
 }
 
 void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {

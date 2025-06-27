@@ -61,7 +61,7 @@ const std::string kEitherQueryFormat = "primary_type {0} OR secondary_type {0}";
 const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryFormat, Enumerated, kTypesList);
 
 const std::string kHealthDisplayName = "Health";
-const std::string kHealthQueryFormat = "health {0} {1}";
-const ParameterType kHealthParam(kHealthDisplayName, kEitherQueryFormat, Numerical, {{"0", "255"}});
+const std::string kHealthQueryFormat = "hp BETWEEN {0}";
+const ParameterType kHealthParam(kHealthDisplayName, kHealthQueryFormat, Numerical, {{"0", "255"}});
 
 } // namespace monster_calculator
