@@ -76,12 +76,14 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	} 
 	else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
 		ImGui::SameLine();
-		ImGui::Text("NUMERICAL PARAMETER");
+		ImGui::Text("TODO: CREATE NUMERICAL PARAMETER FUNCTION");
 	}
 	else {
 		ImGui::SameLine();
-		ImGui::Text("UNDEFINED PARAMETER TYPE");
+		ImGui::Text("ERROR: UNDEFINED PARAMETER TYPE");
 	}
+
+	DrawSubsetParameterTable(output_environment);
 
 	if (ImGui::Button("Find Matching Monsters")) {
 		CreateSubtable(output_environment);
@@ -144,6 +146,58 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	}
 
 	ImGui::End();
+}
+
+void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
+	ImGui::Text("Current subset parameters:");
+
+	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
+	const int kColumnCount = 4;
+	const int kTableFlags = ImGuiTableFlags_Borders |
+		ImGuiTableFlags_SizingFixedFit |
+		ImGuiTableFlags_ScrollY;
+	static int frozen_columns = 0;
+	static int frozen_rows = 1;
+	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
+		// prepare table header
+		ImGui::TableSetupColumn("Parameter #", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Column", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
+
+		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
+		for (int column = 0; column < kColumnCount; column++) {
+			ImGui::TableSetColumnIndex(column);
+			const char* column_name = ImGui::TableGetColumnName(column);
+			ImGui::TableHeader(column_name);
+		}
+
+
+
+		// print log entries
+		for (int i = 0; i < output_environment.subset_parameters.size(); i++) {
+			BetterQueryParameter subset_parameter = output_environment.subset_parameters[i];
+			ImGui::TableNextRow();
+
+			ImGui::TableSetColumnIndex(0);
+			int displayed_index = i + 1;
+			ImGui::Text(std::to_string(displayed_index).c_str());
+
+			ImGui::TableSetColumnIndex(1);
+			ImGui::Text(subset_parameter.query_format.c_str());
+
+			ImGui::TableSetColumnIndex(2);
+			ImGui::Text(subset_parameter.query_value.c_str());
+
+			ImGui::TableSetColumnIndex(3);
+			std::string label = std::to_string(i) + " Remove Parameter";
+			if (ImGui::Button(label.c_str())) {
+				output_environment.subset_parameters.erase(output_environment.subset_parameters.begin() + i);
+			}
+		}
+		ImGui::EndTable();
+	}
 }
 
 void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
