@@ -230,9 +230,11 @@ std::string GenerateQueryParameterString(std::vector<BetterQueryParameter>& subs
 
 	std::string parameter_string = "WHERE ";
 	for (int i = 0; i < subset_parameters.size(); i++) {
+		parameter_string += "(";
 		BetterQueryParameter subset_param = subset_parameters[i];
 		std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
 		parameter_string += formatted_query;
+		parameter_string += ")";
 
 		if (i < subset_parameters.size() - 1) {
 			parameter_string += " AND ";
