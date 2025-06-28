@@ -53,7 +53,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Text("Select parameter to filter by:");
 
-	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam, kHealthParam};
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam, kHealthParam, kRegionParam};
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 

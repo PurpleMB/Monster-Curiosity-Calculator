@@ -48,6 +48,19 @@ const std::vector<std::pair<std::string, std::string>> kTypesList = {
 	{"Fairy", "= 'fairy'"}
 };
 
+const std::vector<std::pair<std::string, std::string>> kRegionsList = {
+	{"Kanto", "BETWEEN 1 AND 151"},
+	{"Johto", "BETWEEN 152 AND 251"},
+	{"Hoenn", "BETWEEN 252 AND 386"},
+	{"Sinnoh", "BETWEEN 387 AND 493"},
+	{"Unova", "BETWEEN 494 AND 649"},
+	{"Kalos", "BETWEEN 650 AND 721"},
+	{"Alola", "BETWEEN 722 AND 809"},
+	{"Galar", "BETWEEN 810 AND 905"},
+	{"Paldea", "BETWEEN 906 AND 1025"},
+	{"Any", "BETWEEN 0 AND 2500"},
+};
+
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryQueryFormat = "primary_type {0}";
 const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryFormat, Enumerated, kTypesList);
@@ -59,6 +72,10 @@ const ParameterType kSecondaryTypeParam(kSecondaryDisplayName, kSecondaryQueryFo
 const std::string kEitherDisplayName = "Either Type";
 const std::string kEitherQueryFormat = "primary_type {0} OR secondary_type {0}";
 const ParameterType kEitherTypeParam(kEitherDisplayName, kEitherQueryFormat, Enumerated, kTypesList);
+
+const std::string kRegionDisplayName = "Home Region";
+const std::string kRegionQueryFormat = "dex_number {0}";
+const ParameterType kRegionParam(kRegionDisplayName, kRegionQueryFormat, Enumerated, kRegionsList);
 
 const std::string kHealthDisplayName = "Health";
 const std::string kHealthQueryFormat = "hp BETWEEN {0}";
