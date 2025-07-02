@@ -52,34 +52,34 @@ def prune_pokemon_info(species_info, form_info):
     # basic identification info
     pruned_info["name"] = form_info["name"]
     pruned_info["dex_number"] = species_info["id"]
-    '''
+    
     # size info
-    pruned_info["weight(kg)"] = pokemon_info["weight"] / 10
-    pruned_info["height(m)"] = pokemon_info["height"] / 10
-
+    pruned_info["weight(kg)"] = form_info["weight"] / 10
+    pruned_info["height(m)"] = form_info["height"] / 10
+    
     # base stat info
     poke_stats = {}
     stat_total = 0
-    for stat in pokemon_info["stats"]:
+    for stat in form_info["stats"]:
         poke_stats[stat["stat"]["name"]] = stat["base_stat"]
         stat_total += stat["base_stat"]
     poke_stats["total"] = stat_total
     pruned_info["stats"] = poke_stats
-
+    
     # typing info
     poke_types = {}
-    poke_types["primary"] = pokemon_info["types"][0]["type"]["name"]
-    if len(pokemon_info["types"]) > 1:
-        poke_types["secondary"] = pokemon_info["types"][1]["type"]["name"]
+    poke_types["primary"] = form_info["types"][0]["type"]["name"]
+    if len(form_info["types"]) > 1:
+        poke_types["secondary"] = form_info["types"][1]["type"]["name"]
     else:
         poke_types["secondary"] = "-"
     pruned_info["types"] = poke_types
-
+    
     # ability info
     poke_abilities = {}
     abilities = ["-", "-", "-"]
 
-    for ability in pokemon_info["abilities"]:
+    for ability in form_info["abilities"]:
         abilities[ability["slot"]-1] = ability["ability"]["name"]
 
     poke_abilities["first"] = abilities[0]
@@ -87,7 +87,7 @@ def prune_pokemon_info(species_info, form_info):
     poke_abilities["hidden"] = abilities[2]
 
     pruned_info["abilities"] = poke_abilities
-    '''
+    
     return pruned_info
 
 
