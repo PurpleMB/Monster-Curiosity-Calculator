@@ -52,6 +52,35 @@ def prune_pokemon_info(species_info, form_info):
     # basic identification info
     pruned_info["name"] = form_info["name"]
     pruned_info["dex_number"] = species_info["id"]
+    pruned_info["generation"] = species_info["generation"]["name"]
+    pruned_info["unique_id"] = form_info["id"]
+    pruned_info["form_switchable"] = species_info["forms_switchable"]
+    pruned_info["color"] = species_info["color"]["name"]
+    pruned_info["shape"] = species_info["shape"]["name"]
+
+    # breeding/growth info
+    pruned_info["growth_rate"] = species_info["growth_rate"]["name"]
+    pruned_info["base_experience"] = form_info["base_experience"]
+    pruned_info["base_happiness"] = species_info["base_happiness"]
+    pruned_info["catch_rate"] = species_info["capture_rate"]
+    pruned_info["hatch_counter"] = species_info["hatch_counter"]
+    pruned_info["gender_rate"] = species_info["gender_rate"]
+    pruned_info["dimorphic"] = species_info["has_gender_differences"]
+
+    egg_groups = {}
+    egg_groups["primary"] = species_info["egg_groups"][0]["name"]
+    if len(species_info["egg_groups"]) > 1:
+        egg_groups["secondary"] = species_info["egg_groups"][1]["name"]
+    else:
+        egg_groups["secondary"] = "-"
+    pruned_info["egg_groups"] = egg_groups
+
+    
+    # classification info
+    pruned_info["is_default"] = form_info["is_default"]
+    pruned_info["is_baby"] = species_info["is_baby"]
+    pruned_info["is_legendary"] = species_info["is_legendary"]
+    pruned_info["is_mythical"] = species_info["is_mythical"]
     
     # size info
     pruned_info["weight(kg)"] = form_info["weight"] / 10
@@ -88,6 +117,7 @@ def prune_pokemon_info(species_info, form_info):
 
     pruned_info["abilities"] = poke_abilities
     
+
     return pruned_info
 
 
