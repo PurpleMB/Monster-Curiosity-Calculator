@@ -36,27 +36,6 @@ int CreateDatabase(OutputEnvironment& output_environment) {
 
 int CreateMainTable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
-	const std::string kMainTableScheme = (
-		"CREATE TABLE IF NOT EXISTS monsters("
-		"id INTEGER PRIMARY KEY,"
-		"name TEXT NOT NULL,"
-		"dex_number INTEGER NOT NULL,"
-		"primary_type TEXT NOT NULL,"
-		"secondary_type TEXT NOT NULL,"
-		"height DOUBLE NOT NULL,"
-		"weight DOUBLE NOT NULL,"
-		"ability_1 TEXT NOT NULL,"
-		"ability_2 TEXT NOT NULL,"
-		"hidden_ability TEXT NOT NULL,"
-		"hp INTEGER NOT NULL,"
-		"attack INTEGER NOT NULL,"
-		"defense INTEGER NOT NULL,"
-		"special_attack INTEGER NOT NULL,"
-		"special_defense INTEGER NOT NULL,"
-		"speed INTEGER NOT NULL,"
-		"stat_total INTEGER NOT NULL"
-		");"
-		);
 	const char* table_schema = kMainTableScheme.c_str();
 
 	sqlite3* db;
@@ -143,11 +122,34 @@ int InsertDataFromJson(OutputEnvironment& output_environment) {
 std::string GenerateJsonDataString(Json::Value mon_info) {
 	// this one is pretty ugly, just converts data in Json::Value
 	// into the format to add a single row to to the sql database
+	std::string unique_id = mon_info["unique_id"].asString();
 	std::string mon_name = mon_info["name"].asString();
-	std::string dex_num = mon_info["id"].asString();
+	std::string dex_num = mon_info["dex_number"].asString();
+
+	std::string generation = mon_info["generation"].asString();
+	std::string switchable = mon_info["form_switchable"].asString();
+	std::string color = mon_info["color"].asString();
+	std::string shape = mon_info["shape"].asString();
 
 	std::string prim_type = mon_info["types"]["primary"].asString();
 	std::string sec_type = mon_info["types"]["secondary"].asString();
+
+	std::string growth_rate = mon_info["growth_rate"].asString();
+	std::string base_experience = mon_info["base_experience"].asString();
+	std::string base_happiness = mon_info["base_happiness"].asString();
+	std::string catch_rate = mon_info["catch_rate"].asString();
+
+	std::string hatch_count = mon_info["hatch_counter"].asString();
+	std::string gender_rate = mon_info["gender_rate"].asString();
+	std::string dimporhic = mon_info["dimorphic"].asString();
+
+	std::string prim_egg = mon_info["egg_groups"]["primary"].asString();
+	std::string sec_egg = mon_info["egg_groups"]["secondary"].asString();
+
+	std::string is_default = mon_info["is_default"].asString();
+	std::string is_baby = mon_info["is_baby"].asString();
+	std::string is_legendary = mon_info["is_legendary"].asString();
+	std::string is_mythical = mon_info["is_mythical"].asString();
 
 	std::string height = mon_info["height(m)"].asString();
 	std::string weight = mon_info["weight(kg)"].asString();
@@ -165,14 +167,71 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	std::string stat_total = mon_info["stats"]["total"].asString();
 
 	std::string data_schema {
-		"INSERT INTO monsters (name, dex_number, primary_type, secondary_type, height, weight, ability_1, ability_2, hidden_ability, hp, attack, defense, special_attack, special_defense, speed, stat_total)"
-		"VALUES('"
+		"INSERT INTO monsters ("
+		"id"
+		", name"
+		", dex_number"
+		", generation"
+		", form_switchable"
+		", color"
+		", shape"
+		", primary_type"
+		", secondary_type"
+		", growth_rate"
+		", base_experience"
+		", base_happiness"
+		", catch_rate"
+		", hatch_counter"
+		", gender_rate"
+		", dimorphic"
+		", primary_egg_group"
+		", secondary_egg_group"
+		", is_default"
+		", is_baby"
+		", is_legendary"
+		", is_mythical"
+		", height"
+		", weight"
+		", ability_1"
+		", ability_2"
+		", hidden_ability"
+		", hp"
+		", attack"
+		", defense"
+		", special_attack"
+		", special_defense"
+		", speed"
+		", stat_total"
+		")VALUES('"
 	};
+	data_schema += unique_id + "', '";
 	data_schema += mon_name + "', '";
 	data_schema += dex_num + "', '";
 
+	data_schema += generation + "', '";
+	data_schema += switchable + "', '";
+	data_schema += color + "', '";
+	data_schema += shape + "', '";
+
 	data_schema += prim_type + "', '";
 	data_schema += sec_type + "', '";
+
+	data_schema += growth_rate + "', '";
+	data_schema += base_experience + "', '";
+	data_schema += base_happiness + "', '";
+	data_schema += catch_rate + "', '";
+
+	data_schema += hatch_count + "', '";
+	data_schema += gender_rate + "', '";
+	data_schema += dimporhic + "', '";
+
+	data_schema += prim_egg + "', '";
+	data_schema += sec_egg + "', '";
+
+	data_schema += is_default + "', '";
+	data_schema += is_baby + "', '";
+	data_schema += is_legendary + "', '";
+	data_schema += is_mythical + "', '";
 
 	data_schema += height + "', '";
 	data_schema += weight + "', '";
