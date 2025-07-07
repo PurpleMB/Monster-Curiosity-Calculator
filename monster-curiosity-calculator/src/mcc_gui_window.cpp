@@ -228,24 +228,21 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-
 	// text line showing # of entries in subset
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
+	static SubsetColumnInfo name_col_info("Name", "name", true);
+	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", false);
+	static std::vector<SubsetColumnInfo> column_infos = {name_col_info, dex_col_info};
+
+	for (SubsetColumnInfo& col_info : column_infos) {
+		ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
+	}
+
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
-	const std::vector<std::string> kColumnNames = {
-		"name",
-		"dex_number"
-	};
-	const int column_count = kColumnNames.size();
+	const int column_count = column_infos.size();
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY;
@@ -254,7 +251,10 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	if (ImGui::BeginTable("subset_entries", column_count, kTableFlags, outer_size)) {
 		// column setup
 		for (int column = 0; column < column_count; column++) {
-			ImGui::TableSetupColumn(kColumnNames[column].c_str(), ImGuiTableColumnFlags_WidthFixed);
+			if (!column_infos[column].enabled) {
+				continue;
+			}
+			ImGui::TableSetupColumn(column_infos[column].display_name.c_str(), ImGuiTableColumnFlags_WidthFixed);
 		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
@@ -270,13 +270,22 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		for (auto subset_entry : output_environment.subset_entries) {
 			ImGui::TableNextRow();
 			for (int column_index = 0; column_index < column_count; column_index++) {
+				if (!column_infos[column_index].enabled) {
+					continue;
+				}
 				ImGui::TableSetColumnIndex(column_index);
-				ImGui::Text(subset_entry[kColumnNames[column_index]].c_str());
+				ImGui::Text(subset_entry[column_infos[column_index].query_name].c_str());
 			}
 		}
 		ImGui::EndTable();
 	}
 
+	if (window_parameters.window_size.x == 0) {
+		window_parameters.window_size.x = ImGui::GetWindowWidth();
+	}
+	if (window_parameters.window_size.y == 0) {
+		window_parameters.window_size.y = ImGui::GetWindowHeight();
+	}
 	ImGui::End();
 }
 

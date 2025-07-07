@@ -60,6 +60,12 @@ struct OutputEnvironment {
 	std::vector<BetterQueryParameter> sorting_parameters;
 };
 
+struct SubsetColumnInfo {
+	std::string display_name;
+	std::string query_name;
+	bool enabled;
+};
+
 /*
 struct EntryInfo {
 	int unique_id;
