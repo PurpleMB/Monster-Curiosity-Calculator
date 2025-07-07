@@ -241,31 +241,37 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
-	const int kColumnCount = 1;
+	const std::vector<std::string> kColumnNames = {
+		"name",
+		"dex_number"
+	};
+	const int column_count = kColumnNames.size();
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY;
 	static int frozen_columns = 0;
 	static int frozen_rows = 1;
-	if (ImGui::BeginTable("subset_entries", kColumnCount, kTableFlags, outer_size)) {
+	if (ImGui::BeginTable("subset_entries", column_count, kTableFlags, outer_size)) {
 		// column setup
-		ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed);
+		for (int column = 0; column < column_count; column++) {
+			ImGui::TableSetupColumn(kColumnNames[column].c_str(), ImGuiTableColumnFlags_WidthFixed);
+		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
 		// creating label row
 		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
-		for (int column = 0; column < kColumnCount; column++) {
+		for (int column = 0; column < column_count; column++) {
 			ImGui::TableSetColumnIndex(column);
 			const char* column_name = ImGui::TableGetColumnName(column);
 			ImGui::TableHeader(column_name);
 		}
 
 		// printing entry rows
-		for (std::string subset_entry : output_environment.subset_entries) {
+		for (auto subset_entry : output_environment.subset_entries) {
 			ImGui::TableNextRow();
-			for (int column_index = 0; column_index < kColumnCount; column_index++) {
+			for (int column_index = 0; column_index < column_count; column_index++) {
 				ImGui::TableSetColumnIndex(column_index);
-				ImGui::Text(subset_entry.c_str());
+				ImGui::Text(subset_entry[kColumnNames[column_index]].c_str());
 			}
 		}
 		ImGui::EndTable();
