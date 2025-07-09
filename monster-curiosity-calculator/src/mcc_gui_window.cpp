@@ -232,35 +232,59 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
-	static SubsetColumnInfo name_col_info("Name", "name", true);
-	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", false);
-	static std::vector<SubsetColumnInfo> column_infos = {name_col_info, dex_col_info};
+	static SubsetColumnInfo name_col_info("Name", "name", true, false);
+	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", false, true);
+	static SubsetColumnInfo color_info("Color", "color", false, true);
+	static SubsetColumnInfo shape_info("Shape", "shape", false, true);
+	static SubsetColumnInfo height_info("Height (m)", "height", false, true);
+	static SubsetColumnInfo weight_info("Weight (kg)", "weight", false, true);
+	static SubsetColumnInfo prim_type_info("Primary Type", "primary_type", false, true);
+	static SubsetColumnInfo sec_type_info("Secondary Type", "secondary_type", false, true);
 
+	static std::vector<SubsetColumnInfo> column_infos = {
+		name_col_info, 
+		dex_col_info,
+		color_info,
+		shape_info,
+		height_info,
+		weight_info,
+		prim_type_info,
+		sec_type_info
+	};
+	
+	
+	std::vector<SubsetColumnInfo> active_columns = {};
 	for (SubsetColumnInfo& col_info : column_infos) {
-		ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
+		if (col_info.togglable) {
+			ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
+		}
+		if (col_info.enabled) {
+			active_columns.push_back(col_info);
+		}
 	}
+	int active_column_count = active_columns.size();
+	ImGui::Text("Active Columns: %d", active_column_count);
 
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
-	const int column_count = column_infos.size();
-	const int kTableFlags = ImGuiTableFlags_Borders |
+	const int kTableFlags = 
+		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
-		ImGuiTableFlags_ScrollY;
-	static int frozen_columns = 0;
+		ImGuiTableFlags_ScrollY |
+		ImGuiTableFlags_ScrollX;
+	static int frozen_columns = 1;
 	static int frozen_rows = 1;
-	if (ImGui::BeginTable("subset_entries", column_count, kTableFlags, outer_size)) {
+	if (ImGui::BeginTable("subset_entries", active_column_count, kTableFlags, outer_size)) {
 		// column setup
-		for (int column = 0; column < column_count; column++) {
-			if (!column_infos[column].enabled) {
-				continue;
-			}
-			ImGui::TableSetupColumn(column_infos[column].display_name.c_str(), ImGuiTableColumnFlags_WidthFixed);
+		for (SubsetColumnInfo active_column : active_columns) {
+			std::string col_name = active_column.display_name;
+			ImGui::TableSetupColumn(col_name.c_str(), ImGuiTableColumnFlags_WidthFixed);
 		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
 		// creating label row
 		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
-		for (int column = 0; column < column_count; column++) {
+		for (int column = 0; column < active_column_count; column++) {
 			ImGui::TableSetColumnIndex(column);
 			const char* column_name = ImGui::TableGetColumnName(column);
 			ImGui::TableHeader(column_name);
@@ -269,12 +293,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		// printing entry rows
 		for (auto subset_entry : output_environment.subset_entries) {
 			ImGui::TableNextRow();
-			for (int column_index = 0; column_index < column_count; column_index++) {
-				if (!column_infos[column_index].enabled) {
-					continue;
-				}
-				ImGui::TableSetColumnIndex(column_index);
-				ImGui::Text(subset_entry[column_infos[column_index].query_name].c_str());
+			for (SubsetColumnInfo active_column : active_columns) {
+				ImGui::TableNextColumn();
+				ImGui::Text(subset_entry[active_column.query_name].c_str());
 			}
 		}
 		ImGui::EndTable();
