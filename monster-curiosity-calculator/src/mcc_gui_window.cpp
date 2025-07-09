@@ -252,12 +252,17 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		sec_type_info
 	};
 	
-	
+	if (ImGui::TreeNode("Column Options")) {
+		for (SubsetColumnInfo& col_info : column_infos) {
+			if (col_info.togglable) {
+				ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
+			}
+		}
+		ImGui::TreePop();
+	}
+
 	std::vector<SubsetColumnInfo> active_columns = {};
 	for (SubsetColumnInfo& col_info : column_infos) {
-		if (col_info.togglable) {
-			ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
-		}
 		if (col_info.enabled) {
 			active_columns.push_back(col_info);
 		}
