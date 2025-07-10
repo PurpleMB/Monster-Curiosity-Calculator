@@ -137,19 +137,48 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 }
 
 void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment& output_environment) {
+	static ImU8 lower_bound = 0;
+	static ImU8 upper_bound = 255;
+	
+	std::vector<std::string> parameter_subtypes = {
+		"Range",
+		"<",
+		"<=",
+		">",
+		">="
+	};
+	static int selected_subtype_index = 0;
+
+	if (ImGui::Button(parameter_subtypes[selected_subtype_index].c_str())) {
+		ImGui::OpenPopup("##Select parameter subtype");
+	}
+
+	if (ImGui::BeginPopup("##Select parameter subtype")) {
+		for (int i = 0; i < parameter_subtypes.size(); i++) {
+			if (ImGui::Selectable(parameter_subtypes[i].c_str())) {
+				selected_subtype_index = i;
+				upper_bound = 255;
+				lower_bound = 0;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
 	const ImU8 u8_one = 1;
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 
-	static ImU8 lower_bound = 0;
-	ImGui::Text("Set Lower Bound: ");
-	ImGui::SameLine();
-	ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	if (selected_subtype_index == 0 || selected_subtype_index == 3 || selected_subtype_index == 4) {
+		ImGui::Text("Set Lower Bound: ");
+		ImGui::SameLine();
+		ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	}
 
-	static ImU8 upper_bound = 255;
-	ImGui::Text("Set Upper Bound: ");
-	ImGui::SameLine();
-	ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	if (selected_subtype_index == 0 || selected_subtype_index == 1 || selected_subtype_index == 2) {
+		ImGui::Text("Set Upper Bound: ");
+		ImGui::SameLine();
+		ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	}
 
 	static ImU8 parameter_group = 0;
 	ImGui::Text("Set Parameter Group: ");
