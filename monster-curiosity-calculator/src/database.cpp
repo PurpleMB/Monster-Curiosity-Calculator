@@ -292,17 +292,24 @@ std::string GenerateQueryParameterString(std::vector<std::vector<BetterQueryPara
 	for (int group_index = 0; group_index < subset_parameters.size(); group_index++) {
 		std::vector<BetterQueryParameter> parameter_group = subset_parameters[group_index];
 		parameter_string += "(";
-		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-			parameter_string += "(";
-			BetterQueryParameter subset_param = parameter_group[parameter_index];
-			std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
-			parameter_string += formatted_query;
-			parameter_string += ")";
 
-			if (parameter_index < parameter_group.size() - 1) {
-				parameter_string += " AND ";
+		if (parameter_group.size() == 0) {
+			parameter_string += "true";
+		}
+		else {
+			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
+				parameter_string += "(";
+				BetterQueryParameter subset_param = parameter_group[parameter_index];
+				std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
+				parameter_string += formatted_query;
+				parameter_string += ")";
+
+				if (parameter_index < parameter_group.size() - 1) {
+					parameter_string += " AND ";
+				}
 			}
 		}
+
 		parameter_string += ")";
 		if (group_index < subset_parameters.size() - 1) {
 			parameter_string += " OR ";
