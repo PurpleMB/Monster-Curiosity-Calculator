@@ -19,7 +19,7 @@ std::string GenerateJsonDataString(Json::Value mon_info);
 int CreateSubtable(OutputEnvironment& output_environment);
 int SortSubtableEntries(OutputEnvironment& output_environment);
 int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName);
-std::string GenerateQueryParameterString(std::vector<BetterQueryParameter>& subset_parameters);
+std::string GenerateQueryParameterString(std::vector<std::vector<BetterQueryParameter>>& subset_parameters);
 std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& sorting_parameter);
 
 // logging/debugging

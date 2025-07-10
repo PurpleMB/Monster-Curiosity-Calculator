@@ -56,7 +56,7 @@ struct LogEntry {
 struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<std::unordered_map<std::string, std::string>> subset_entries;
-	std::vector<BetterQueryParameter> subset_parameters;
+	std::vector<std::vector<BetterQueryParameter>> subset_parameters;
 	std::vector<BetterQueryParameter> sorting_parameters;
 };
 

@@ -283,21 +283,29 @@ int CreateSubtable(OutputEnvironment& output_environment) {
 	return 0;
 }
 
-std::string GenerateQueryParameterString(std::vector<BetterQueryParameter>& subset_parameters) {
+std::string GenerateQueryParameterString(std::vector<std::vector<BetterQueryParameter>>& subset_parameters) {
 	if (subset_parameters.size() == 0) {
 		return "";
 	}
 
 	std::string parameter_string = "WHERE ";
-	for (int i = 0; i < subset_parameters.size(); i++) {
+	for (int group_index = 0; group_index < subset_parameters.size(); group_index++) {
+		std::vector<BetterQueryParameter> parameter_group = subset_parameters[group_index];
 		parameter_string += "(";
-		BetterQueryParameter subset_param = subset_parameters[i];
-		std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
-		parameter_string += formatted_query;
-		parameter_string += ")";
+		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
+			parameter_string += "(";
+			BetterQueryParameter subset_param = parameter_group[parameter_index];
+			std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
+			parameter_string += formatted_query;
+			parameter_string += ")";
 
-		if (i < subset_parameters.size() - 1) {
-			parameter_string += " AND ";
+			if (parameter_index < parameter_group.size() - 1) {
+				parameter_string += " AND ";
+			}
+		}
+		parameter_string += ")";
+		if (group_index < subset_parameters.size() - 1) {
+			parameter_string += " OR ";
 		}
 	}
 

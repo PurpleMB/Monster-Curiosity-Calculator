@@ -115,13 +115,24 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 		ImGui::EndPopup();
 	}
 
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+	static ImU8 parameter_group = 0;
+	ImGui::Text("Set Parameter Group: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+
 	ImGui::SameLine();
 	if (ImGui::Button("Apply Parameter")) {
 		BetterQueryParameter subset_parameter(
 			param_type.query_format,
 			param_type.values[selected_value_index].second
 		);
-		output_environment.subset_parameters.push_back(subset_parameter);
+		if (parameter_group >= output_environment.subset_parameters.size()) {
+			output_environment.subset_parameters.push_back({});
+		}
+		output_environment.subset_parameters[parameter_group].push_back(subset_parameter);
 	}
 }
 
@@ -130,7 +141,7 @@ void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 
-	static ImU8 lower_bound = 255;
+	static ImU8 lower_bound = 0;
 	ImGui::Text("Set Lower Bound: ");
 	ImGui::SameLine();
 	ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
@@ -140,12 +151,20 @@ void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment
 	ImGui::SameLine();
 	ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 
+	static ImU8 parameter_group = 0;
+	ImGui::Text("Set Parameter Group: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+
 	if (ImGui::Button("Apply Parameter")) {
 		BetterQueryParameter subset_parameter(
 			param_type.query_format,
 			std::format("{0} AND {1}", lower_bound, upper_bound)
 		);
-		output_environment.subset_parameters.push_back(subset_parameter);
+		if (parameter_group >= output_environment.subset_parameters.size()) {
+			output_environment.subset_parameters.push_back({});
+		}
+		output_environment.subset_parameters[parameter_group].push_back(subset_parameter);
 	}
 }
 
@@ -153,7 +172,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	ImGui::Text("Current subset parameters:");
 
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
-	const int kColumnCount = 4;
+	const int kColumnCount = 5;
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY;
@@ -162,6 +181,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
 		ImGui::TableSetupColumn("Parameter #", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Parameter Group", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("Column", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed);
@@ -177,24 +197,31 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 
 		// print log entries
-		for (int i = 0; i < output_environment.subset_parameters.size(); i++) {
-			BetterQueryParameter subset_parameter = output_environment.subset_parameters[i];
-			ImGui::TableNextRow();
+		int parameter_count = 0;
+		for (int group_index = 0; group_index < output_environment.subset_parameters.size(); group_index++) {
+			std::vector<BetterQueryParameter>& parameter_group = output_environment.subset_parameters[group_index];
+			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
+				BetterQueryParameter& subset_parameter = parameter_group[parameter_index];
+				ImGui::TableNextRow();
 
-			ImGui::TableSetColumnIndex(0);
-			int displayed_index = i + 1;
-			ImGui::Text(std::to_string(displayed_index).c_str());
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text(std::to_string(++parameter_count).c_str());
 
-			ImGui::TableSetColumnIndex(1);
-			ImGui::Text(subset_parameter.query_format.c_str());
+				ImGui::TableSetColumnIndex(1);
+				int displayed_group_index = group_index + 1;
+				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
-			ImGui::TableSetColumnIndex(2);
-			ImGui::Text(subset_parameter.query_value.c_str());
+				ImGui::TableSetColumnIndex(2);
+				ImGui::Text(subset_parameter.query_format.c_str());
 
-			ImGui::TableSetColumnIndex(3);
-			std::string label = std::to_string(i) + " Remove Parameter";
-			if (ImGui::Button(label.c_str())) {
-				output_environment.subset_parameters.erase(output_environment.subset_parameters.begin() + i);
+				ImGui::TableSetColumnIndex(3);
+				ImGui::Text(subset_parameter.query_value.c_str());
+
+				ImGui::TableSetColumnIndex(4);
+				std::string label = std::to_string(parameter_count) + " Remove Parameter";
+				if (ImGui::Button(label.c_str())) {
+					parameter_group.erase(parameter_group.begin() + parameter_index);
+				}
 			}
 		}
 		ImGui::EndTable();
