@@ -283,37 +283,38 @@ int CreateSubtable(OutputEnvironment& output_environment) {
 	return 0;
 }
 
-std::string GenerateQueryParameterString(std::vector<std::vector<BetterQueryParameter>>& subset_parameters) {
-	if (subset_parameters.size() == 0) {
+std::string GenerateQueryParameterString(ParameterSet& subset_parameters) {
+	if (subset_parameters.parameter_count == 0) {
 		return "";
 	}
 
+	int active_groups = 0;
 	std::string parameter_string = "WHERE ";
-	for (int group_index = 0; group_index < subset_parameters.size(); group_index++) {
-		std::vector<BetterQueryParameter> parameter_group = subset_parameters[group_index];
-		parameter_string += "(";
-
+	for (int group_index = 0; group_index < subset_parameters.subset_parameters.size(); group_index++) {
+		std::vector<BetterQueryParameter> parameter_group = subset_parameters.subset_parameters[group_index];
 		if (parameter_group.size() == 0) {
-			parameter_string += "true";
+			continue;
 		}
-		else {
-			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-				parameter_string += "(";
-				BetterQueryParameter subset_param = parameter_group[parameter_index];
-				std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
-				parameter_string += formatted_query;
-				parameter_string += ")";
 
-				if (parameter_index < parameter_group.size() - 1) {
-					parameter_string += " AND ";
-				}
+		++active_groups;
+		if (active_groups > 1) {
+			parameter_string += " OR ";
+		}
+
+		parameter_string += "(";
+		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
+			parameter_string += "(";
+			BetterQueryParameter subset_param = parameter_group[parameter_index];
+			std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
+			parameter_string += formatted_query;
+			parameter_string += ")";
+
+			if (parameter_index < parameter_group.size() - 1) {
+				parameter_string += " AND ";
 			}
 		}
 
 		parameter_string += ")";
-		if (group_index < subset_parameters.size() - 1) {
-			parameter_string += " OR ";
-		}
 	}
 
 	std::cout << parameter_string << std::endl;
@@ -328,8 +329,8 @@ int SortSubtableEntries(OutputEnvironment& output_environment) {
 
 	output_environment.subset_entries.clear();
 
-	std::string query_string = "SELECT * FROM submonsters "
-		+ GenerateSortingParameterString(output_environment.sorting_parameters) + ";";
+	std::string query_string = "SELECT * FROM submonsters;";
+		//+ GenerateSortingParameterString(output_environment.sorting_parameters) + ";";
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_string.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {

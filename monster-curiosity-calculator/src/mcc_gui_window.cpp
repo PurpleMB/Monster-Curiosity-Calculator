@@ -119,6 +119,11 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 	static ImU8 parameter_group = 0;
+
+	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
+		parameter_group = output_environment.subset_parameters.subset_parameters.size();
+	}
+
 	ImGui::Text("Set Parameter Group: ");
 	ImGui::SameLine();
 	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
@@ -129,10 +134,7 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 			param_type.query_format,
 			param_type.values[selected_value_index].second
 		);
-		if (parameter_group >= output_environment.subset_parameters.size()) {
-			output_environment.subset_parameters.push_back({});
-		}
-		output_environment.subset_parameters[parameter_group].push_back(subset_parameter);
+		output_environment.subset_parameters.AddParameter(subset_parameter, parameter_group);
 	}
 }
 
@@ -181,6 +183,9 @@ void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment
 	}
 
 	static ImU8 parameter_group = 0;
+	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
+		parameter_group = output_environment.subset_parameters.subset_parameters.size();
+	}
 	ImGui::Text("Set Parameter Group: ");
 	ImGui::SameLine();
 	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
@@ -190,10 +195,7 @@ void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment
 			param_type.query_format,
 			std::format("{0} AND {1}", lower_bound, upper_bound)
 		);
-		if (parameter_group >= output_environment.subset_parameters.size()) {
-			output_environment.subset_parameters.push_back({});
-		}
-		output_environment.subset_parameters[parameter_group].push_back(subset_parameter);
+		output_environment.subset_parameters.AddParameter(subset_parameter, parameter_group);
 	}
 }
 
@@ -227,8 +229,8 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 		// print log entries
 		int parameter_count = 0;
-		for (int group_index = 0; group_index < output_environment.subset_parameters.size(); group_index++) {
-			std::vector<BetterQueryParameter>& parameter_group = output_environment.subset_parameters[group_index];
+		for (int group_index = 0; group_index < output_environment.subset_parameters.subset_parameters.size(); group_index++) {
+			std::vector<BetterQueryParameter>& parameter_group = output_environment.subset_parameters.subset_parameters[group_index];
 			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
 				BetterQueryParameter& subset_parameter = parameter_group[parameter_index];
 				ImGui::TableNextRow();
@@ -249,7 +251,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(4);
 				std::string label = std::to_string(parameter_count) + " Remove Parameter";
 				if (ImGui::Button(label.c_str())) {
-					parameter_group.erase(parameter_group.begin() + parameter_index);
+					output_environment.subset_parameters.RemoveParameter(group_index, parameter_index);
 				}
 			}
 		}
