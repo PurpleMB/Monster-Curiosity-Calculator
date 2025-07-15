@@ -95,7 +95,7 @@ const std::string kRegionQueryFormat = "dex_number {0}";
 const ParameterType kRegionParam(kRegionDisplayName, kRegionQueryFormat, Enumerated, kRegionsList);
 
 const std::string kHealthDisplayName = "Health";
-const std::string kHealthQueryFormat = "hp BETWEEN {0}";
+const std::string kHealthQueryFormat = "hp {0}";
 const ParameterType kHealthParam(kHealthDisplayName, kHealthQueryFormat, Numerical, {{"0", "255"}});
 
 } // namespace monster_calculator

@@ -182,19 +182,22 @@ void DrawNumericalParameterSelector(ParameterType& param_type, BetterQueryParame
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 
-	if (selected_subtype_index == 0 || selected_subtype_index == 3 || selected_subtype_index == 4) {
+	if (parameter_subtypes[selected_subtype_index] == "Range") {
 		ImGui::Text("Set Lower Bound: ");
 		ImGui::SameLine();
 		ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	}
 
-	if (selected_subtype_index == 0 || selected_subtype_index == 1 || selected_subtype_index == 2) {
 		ImGui::Text("Set Upper Bound: ");
 		ImGui::SameLine();
 		ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	}
 
-	building_parameter.query_value = std::format("{0} AND {1}", lower_bound, upper_bound);
+		building_parameter.query_value = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
+	} else {
+		ImGui::Text("Set Inequality Value: ");
+		ImGui::SameLine();
+		ImGui::InputScalar("##inequality_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+		building_parameter.query_value = std::format("{0} {1}", parameter_subtypes[selected_subtype_index], lower_bound);
+	}
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
