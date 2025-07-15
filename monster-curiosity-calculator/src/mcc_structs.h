@@ -62,7 +62,7 @@ struct ParameterSet {
 		parameter_count = 0;
 	}
 
-	void AddParameter(const BetterQueryParameter& parameter, int parameter_group = 0) {
+	void AddParameter(const BetterQueryParameter parameter, int parameter_group = 0) {
 		if (parameter_group >= subset_parameters.size()) {
 			subset_parameters.push_back({});
 			parameter_group = subset_parameters.size() - 1;

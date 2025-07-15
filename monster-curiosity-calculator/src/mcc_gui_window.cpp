@@ -57,6 +57,11 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 
+	static BetterQueryParameter building_parameter(
+		parameter_types[0].query_format,
+		parameter_types[0].values[0].second
+	);
+
 	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select parameter");
 	}
@@ -65,23 +70,45 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		for (int i = 0; i < parameter_types.size(); i++) {
 			if (ImGui::Selectable(parameter_types[i].display_name.c_str())) {
 				selected_parameter_index = i;
+				building_parameter.query_format = parameter_types[selected_parameter_index].query_format;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
 	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
-		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], output_environment);
+		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], building_parameter);
 	} 
 	else if (parameter_types[selected_parameter_index].GetParameterCategory() == Numerical) {
-		DrawNumericalParameterSelector(parameter_types[selected_parameter_index], output_environment);
+		DrawNumericalParameterSelector(parameter_types[selected_parameter_index], building_parameter);
 	}
 	else {
 		ImGui::SameLine();
 		ImGui::Text("ERROR: UNDEFINED PARAMETER TYPE");
 	}
 
+
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+	static ImU8 parameter_group = 0;
+
+	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
+		parameter_group = output_environment.subset_parameters.subset_parameters.size();
+	}
+
+	ImGui::Text("Set Parameter Group: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+
+
+	if (ImGui::Button("Apply Parameter")) {
+		output_environment.subset_parameters.AddParameter(building_parameter, parameter_group);
+	}
+
+
 	DrawSubsetParameterTable(output_environment);
+
 
 	if (ImGui::Button("Clear All Parameters")) {
 		output_environment.subset_parameters.ClearAllParameters();
@@ -91,6 +118,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		CreateSubtable(output_environment);
 		SortSubtableEntries(output_environment);
 	}
+
 
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();
@@ -102,7 +130,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ImGui::End();
 }
 
-void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironment& output_environment) {
+void DrawEnumeratorParameterSelector(ParameterType& param_type, BetterQueryParameter& building_parameter) {
 	static int selected_value_index = 0;
 
 	std::string selected_value_name = param_type.values[selected_value_index].first;
@@ -119,30 +147,10 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, OutputEnvironmen
 		ImGui::EndPopup();
 	}
 
-	const ImU8 u8_one = 1;
-	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
-	static ImU8 parameter_group = 0;
-
-	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
-		parameter_group = output_environment.subset_parameters.subset_parameters.size();
-	}
-
-	ImGui::Text("Set Parameter Group: ");
-	ImGui::SameLine();
-	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-
-	ImGui::SameLine();
-	if (ImGui::Button("Apply Parameter")) {
-		BetterQueryParameter subset_parameter(
-			param_type.query_format,
-			param_type.values[selected_value_index].second
-		);
-		output_environment.subset_parameters.AddParameter(subset_parameter, parameter_group);
-	}
+	building_parameter.query_value = param_type.values[selected_value_index].second;
 }
 
-void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment& output_environment) {
+void DrawNumericalParameterSelector(ParameterType& param_type, BetterQueryParameter& building_parameter) {
 	static ImU8 lower_bound = 0;
 	static ImU8 upper_bound = 255;
 	
@@ -186,21 +194,7 @@ void DrawNumericalParameterSelector(ParameterType& param_type, OutputEnvironment
 		ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 	}
 
-	static ImU8 parameter_group = 0;
-	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
-		parameter_group = output_environment.subset_parameters.subset_parameters.size();
-	}
-	ImGui::Text("Set Parameter Group: ");
-	ImGui::SameLine();
-	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-
-	if (ImGui::Button("Apply Parameter")) {
-		BetterQueryParameter subset_parameter(
-			param_type.query_format,
-			std::format("{0} AND {1}", lower_bound, upper_bound)
-		);
-		output_environment.subset_parameters.AddParameter(subset_parameter, parameter_group);
-	}
+	building_parameter.query_value = std::format("{0} AND {1}", lower_bound, upper_bound);
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
