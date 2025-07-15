@@ -83,6 +83,10 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	DrawSubsetParameterTable(output_environment);
 
+	if (ImGui::Button("Clear All Parameters")) {
+		output_environment.subset_parameters.ClearAllParameters();
+	}
+
 	if (ImGui::Button("Find Matching Monsters")) {
 		CreateSubtable(output_environment);
 		SortSubtableEntries(output_environment);
