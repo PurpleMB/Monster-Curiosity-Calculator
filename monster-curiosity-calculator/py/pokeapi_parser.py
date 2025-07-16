@@ -27,40 +27,81 @@ async def gather_pokemon_data(session, species_data):
     return pokedex_data
 
 async def get_pokemon_info(session, dex_entry):
-    form_url = dex_entry["url"]
-    async with session.get(form_url) as form_response:
-        if form_response.status != 200:
-            print(f"API Request for {dex_entry["name"]} failed. Error code {api_response.status_code}")
+    poke_url = dex_entry["url"]
+    async with session.get(poke_url) as poke_response:
+        if poke_response.status != 200:
+            print(f"API Request for {dex_entry["name"]} failed. Error code {poke_response.status_code}")
             return None
-        form_data = await form_response.json()
+        poke_data = await poke_response.json()
 
-    species_url = form_data["species"]["url"]
+    species_url = poke_data["species"]["url"]
     async with session.get(species_url) as species_response:
         if species_response.status != 200:
-            print(f"API Request for {form_data["species"]["name"]} failed. Error code {species_response.status_code}")
+            print(f"API Request for {poke_data["species"]["name"]} failed. Error code {species_response.status_code}")
             return None
         species_data = await species_response.json()
 
-    pruned_species_data = prune_pokemon_info(species_data,form_data)
+    form_url = poke_data["forms"][0]["url"]
+    async with session.get(form_url) as form_response:
+        if form_response.status != 200:
+            print(f"API Request for {poke_data["forms"][0]["url"]} failed. Error code {form_response.status_code}")
+            return None
+        form_data = await form_response.json()
+
+    url_data = {
+        "poke": poke_url,
+        "species": species_url,
+        "form": form_url
+    }
+
+    pruned_species_data = prune_pokemon_info(species_data, poke_data, form_data, url_data)
     return pruned_species_data
         
 
-def prune_pokemon_info(species_info, form_info):
+def prune_pokemon_info(species_info, poke_info, form_info, url_info):
     pruned_info = {}
 
 
     # basic identification info
-    pruned_info["name"] = form_info["name"]
+    pruned_info["name"] = poke_info["name"]
     pruned_info["dex_number"] = species_info["id"]
     pruned_info["generation"] = species_info["generation"]["name"]
-    pruned_info["unique_id"] = form_info["id"]
+    pruned_info["unique_id"] = poke_info["id"]
     pruned_info["form_switchable"] = species_info["forms_switchable"]
     pruned_info["color"] = species_info["color"]["name"]
     pruned_info["shape"] = species_info["shape"]["name"]
+    
+    # pretty name generation
+    if form_info["id"] == species_info["id"]:
+        for species_name in species_info["names"]:
+            if(species_name["language"]["name"] == "en"):
+                pruned_info["pretty_name"] = species_name["name"]
+    else:
+        name_found = False
+        for form_name in form_info["names"]:
+            if(form_name["language"]["name"] == "en"):
+                pruned_info["pretty_name"] = form_name["name"]
+                name_found = True
+        if not name_found:
+            # this is only here for annoying Koraidon/Miraidon forms
+            pretty_base_name = ""
+            for species_name in species_info["names"]:
+                if(species_name["language"]["name"] == "en"):
+                    pretty_base_name = species_name["name"]
+            pretty_form_name = ""
+            for form_name in form_info["form_names"]:
+                if(form_name["language"]["name"] == "en"):
+                    pretty_form_name = form_name["name"]
+            pruned_info["pretty_name"] = f"{pretty_base_name} ({pretty_form_name})"
+
+    # API source info
+    pruned_info["species_url"] = url_info["species"]
+    pruned_info["poke_url"] = url_info["poke"]
+    pruned_info["form_url"] = url_info["form"]
 
     # breeding/growth info
     pruned_info["growth_rate"] = species_info["growth_rate"]["name"]
-    pruned_info["base_experience"] = form_info["base_experience"]
+    pruned_info["base_experience"] = poke_info["base_experience"]
     pruned_info["base_happiness"] = species_info["base_happiness"]
     pruned_info["catch_rate"] = species_info["capture_rate"]
     pruned_info["hatch_counter"] = species_info["hatch_counter"]
@@ -77,19 +118,19 @@ def prune_pokemon_info(species_info, form_info):
 
     
     # classification info
-    pruned_info["is_default"] = form_info["is_default"]
+    pruned_info["is_default"] = poke_info["is_default"]
     pruned_info["is_baby"] = species_info["is_baby"]
     pruned_info["is_legendary"] = species_info["is_legendary"]
     pruned_info["is_mythical"] = species_info["is_mythical"]
     
     # size info
-    pruned_info["weight(kg)"] = form_info["weight"] / 10
-    pruned_info["height(m)"] = form_info["height"] / 10
+    pruned_info["weight(kg)"] = poke_info["weight"] / 10
+    pruned_info["height(m)"] = poke_info["height"] / 10
     
     # base stat info
     poke_stats = {}
     stat_total = 0
-    for stat in form_info["stats"]:
+    for stat in poke_info["stats"]:
         poke_stats[stat["stat"]["name"]] = stat["base_stat"]
         stat_total += stat["base_stat"]
     poke_stats["total"] = stat_total
@@ -97,9 +138,9 @@ def prune_pokemon_info(species_info, form_info):
     
     # typing info
     poke_types = {}
-    poke_types["primary"] = form_info["types"][0]["type"]["name"]
-    if len(form_info["types"]) > 1:
-        poke_types["secondary"] = form_info["types"][1]["type"]["name"]
+    poke_types["primary"] = poke_info["types"][0]["type"]["name"]
+    if len(poke_info["types"]) > 1:
+        poke_types["secondary"] = poke_info["types"][1]["type"]["name"]
     else:
         poke_types["secondary"] = "-"
     pruned_info["types"] = poke_types
@@ -108,7 +149,7 @@ def prune_pokemon_info(species_info, form_info):
     poke_abilities = {}
     abilities = ["-", "-", "-"]
 
-    for ability in form_info["abilities"]:
+    for ability in poke_info["abilities"]:
         abilities[ability["slot"]-1] = ability["ability"]["name"]
 
     poke_abilities["first"] = abilities[0]
