@@ -76,7 +76,7 @@ struct ParameterSet {
 		if (target_group >= subset_parameters.size()) {
 			return;
 		}
-		if (group_index >= subset_parameters[group_index].size()) {
+		if (group_index >= subset_parameters[target_group].size()) {
 			return;
 		}
 
