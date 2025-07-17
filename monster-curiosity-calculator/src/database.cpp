@@ -78,7 +78,7 @@ int ClearMainTable(OutputEnvironment& output_environment) {
 	int exit = sqlite3_open(database_path, &db);
 
 	char* error_message;
-	std::string clear {"DELETE FROM monsters"};
+	std::string clear {"DELETE FROM monsters;"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, error_message);
@@ -125,6 +125,7 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	// into the format to add a single row to to the sql database
 	std::string unique_id = mon_info["unique_id"].asString();
 	std::string mon_name = mon_info["name"].asString();
+	std::string pretty_name = mon_info["pretty_name"].asString();
 	std::string dex_num = mon_info["dex_number"].asString();
 
 	std::string generation = mon_info["generation"].asString();
@@ -167,10 +168,15 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	std::string speed = mon_info["stats"]["speed"].asString();
 	std::string stat_total = mon_info["stats"]["total"].asString();
 
+	std::string poke_url = mon_info["poke_url"].asString();
+	std::string species_url = mon_info["species_url"].asString();
+	std::string form_url = mon_info["form_url"].asString();
+
 	std::string data_schema {
 		"INSERT INTO monsters ("
 		"id"
 		", name"
+		", pretty_name"
 		", dex_number"
 		", generation"
 		", form_switchable"
@@ -203,10 +209,14 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 		", special_defense"
 		", speed"
 		", stat_total"
+		", poke_url"
+		", species_url"
+		", form_url"
 		")VALUES('"
 	};
 	data_schema += unique_id + "', '";
-	data_schema += mon_name + "', '";
+	data_schema += mon_name + "', \"";
+	data_schema += pretty_name + "\", '";
 	data_schema += dex_num + "', '";
 
 	data_schema += generation + "', '";
@@ -247,7 +257,12 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	data_schema += spe_atk + "', '";
 	data_schema += spe_def + "', '";
 	data_schema += speed + "', '";
-	data_schema += stat_total;
+	data_schema += stat_total + "', '";
+
+	data_schema += poke_url + "', '";
+	data_schema += species_url + "', '";
+	data_schema += form_url;
+
 	data_schema += "');";
 
 	return data_schema;
@@ -260,7 +275,7 @@ int CreateSubtable(OutputEnvironment& output_environment) {
 
 	// make sure to clear existing sub-table if it exists
 	char* error_message;
-	std::string clear {"DROP TABLE IF EXISTS submonsters"};
+	std::string clear {"DROP TABLE IF EXISTS submonsters;"};
 	exit = sqlite3_exec(db, clear.c_str(), NULL, 0, &error_message);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, error_message);

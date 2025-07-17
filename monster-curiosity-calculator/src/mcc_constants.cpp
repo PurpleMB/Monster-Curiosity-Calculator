@@ -7,6 +7,7 @@ const std::string kMainTableScheme = (
 	"CREATE TABLE IF NOT EXISTS monsters("
 	"id INTEGER PRIMARY KEY,"
 	"name TEXT NOT NULL,"
+	"pretty_name TEXT NOT NULL,"
 	"dex_number INTEGER NOT NULL,"
 	"generation TEXT NOT NULL,"
 	"form_switchable INT NOT NULL,"
@@ -38,7 +39,10 @@ const std::string kMainTableScheme = (
 	"special_attack INTEGER NOT NULL,"
 	"special_defense INTEGER NOT NULL,"
 	"speed INTEGER NOT NULL,"
-	"stat_total INTEGER NOT NULL"
+	"stat_total INTEGER NOT NULL,"
+	"poke_url TEXT NOT NULL,"
+	"species_url TEXT NOT NULL,"
+	"form_url TEXT NOT NULL"
 	");"
 );
 

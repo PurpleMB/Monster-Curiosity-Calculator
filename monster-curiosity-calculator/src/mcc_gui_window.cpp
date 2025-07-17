@@ -7,6 +7,7 @@
 #include <tchar.h>
 
 #include <format>
+#include <iostream>
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -291,7 +292,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
-	static SubsetColumnInfo name_col_info("Name", "name", true, false);
+	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false);
 	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", false, true);
 	static SubsetColumnInfo color_info("Color", "color", false, true);
 	static SubsetColumnInfo shape_info("Shape", "shape", false, true);
@@ -359,7 +360,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 			ImGui::TableNextRow();
 			for (SubsetColumnInfo active_column : active_columns) {
 				ImGui::TableNextColumn();
-				ImGui::Text(subset_entry[active_column.query_name].c_str());
+				std::string query_val = subset_entry[active_column.query_name];
+				std::cout << query_val << std::endl;
+				ImGui::Text(query_val.c_str());
 			}
 		}
 		ImGui::EndTable();

@@ -72,15 +72,16 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info):
     pruned_info["shape"] = species_info["shape"]["name"]
     
     # pretty name generation
+    pretty_name = ""
     if form_info["id"] == species_info["id"]:
         for species_name in species_info["names"]:
             if(species_name["language"]["name"] == "en"):
-                pruned_info["pretty_name"] = species_name["name"]
+                pretty_name = species_name["name"]
     else:
         name_found = False
         for form_name in form_info["names"]:
             if(form_name["language"]["name"] == "en"):
-                pruned_info["pretty_name"] = form_name["name"]
+                pretty_name = form_name["name"]
                 name_found = True
         if not name_found:
             # this is only here for annoying Koraidon/Miraidon forms
@@ -92,7 +93,13 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info):
             for form_name in form_info["form_names"]:
                 if(form_name["language"]["name"] == "en"):
                     pretty_form_name = form_name["name"]
-            pruned_info["pretty_name"] = f"{pretty_base_name} ({pretty_form_name})"
+            pretty_name = f"{pretty_base_name} ({pretty_form_name})"
+
+    pretty_name = pretty_name.replace(u"\u2018", "\'")
+    pretty_name = pretty_name.replace(u"\u2019", "\'")
+    pretty_name = pretty_name.replace(u"\u2640", " (F)")
+    pretty_name = pretty_name.replace(u"\u2642", " (M)")
+    pruned_info["pretty_name"] = pretty_name
 
     # API source info
     pruned_info["species_url"] = url_info["species"]
