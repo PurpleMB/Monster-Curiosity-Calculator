@@ -352,13 +352,13 @@ int SortSubtableEntries(OutputEnvironment& output_environment) {
 		LogEvent(output_environment, exit, "Error preparing to re-order subset");
 	}
 	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
-		std::unordered_map<std::string, std::string> entry_info_map;
+		SubsetEntry subset_entry;
 		for (int i = 0; i < sqlite3_column_count(stmt); i++) {
 			std::string col_name = sqlite3_column_name(stmt, i);
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
-			entry_info_map[col_name] = col_val;
+			subset_entry.AddData(col_name, col_val);
 		}
-		output_environment.subset_entries.push_back(entry_info_map);
+		output_environment.subset_entries.push_back(subset_entry);
 	}
 
 	LogEvent(output_environment, 0, "Successfully re-ordered data subset");

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 #include "imgui.h"
 
@@ -91,9 +92,56 @@ struct ParameterSet {
 	}
 };
 
+struct SubsetEntry {
+	std::unordered_map<std::string, std::string> entry_data;
+
+	void AddData(std::string label, std::string value) {
+		entry_data[label] = value;
+	}
+
+	std::string GetData(std::string label) {
+		if (entry_data.contains(label)) {
+			return entry_data[label];
+		}
+		return "No data found";
+	}
+};
+
+struct SubsetComparator {
+	ImGuiTableSortSpecs* sort_specs;
+
+	SubsetComparator(ImGuiTableSortSpecs* specs) {
+		sort_specs = specs;
+	}
+
+	bool operator()(SubsetEntry& lhs, SubsetEntry& rhs) {
+		for (int i = 0; i < sort_specs->SpecsCount; i++) {
+			const ImGuiTableColumnSortSpecs* sort_spec = &sort_specs->Specs[i];
+			int delta = 0;
+			switch (sort_spec->ColumnIndex) {
+				case 0:
+					delta = lhs.GetData("pretty_name").compare(rhs.GetData("pretty_name"));
+					break;
+				case 1:
+					delta = std::stoi(lhs.GetData("dex_number")) - std::stoi(rhs.GetData("dex_number"));
+					break;
+				default:
+					std::cout << "OOPSIES" << std::endl;
+			}
+			if (delta > 0) {
+				return (sort_spec->SortDirection == ImGuiSortDirection_Ascending) ? 1 : 0;
+			}
+			else if (delta < 0) {
+				return (sort_spec->SortDirection == ImGuiSortDirection_Ascending) ? 0 : 1;
+			}
+		}
+		return (std::stoi(lhs.GetData("id")) - std::stoi(rhs.GetData("id"))) < 0;
+	}
+};
+
 struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
-	std::vector<std::unordered_map<std::string, std::string>> subset_entries;
+	std::vector<SubsetEntry> subset_entries;
 	ParameterSet subset_parameters;
 	//std::vector<BetterQueryParameter> sorting_parameters;
 

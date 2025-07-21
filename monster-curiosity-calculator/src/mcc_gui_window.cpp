@@ -365,6 +365,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
 	const int kTableFlags = 
+		ImGuiTableFlags_Sortable |
 		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY |
@@ -373,9 +374,11 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	static int frozen_rows = 1;
 	if (ImGui::BeginTable("subset_entries", active_column_count, kTableFlags, outer_size)) {
 		// column setup
+		int col_id = 0;
 		for (SubsetColumnInfo active_column : active_columns) {
 			std::string col_name = active_column.display_name;
-			ImGui::TableSetupColumn(col_name.c_str(), ImGuiTableColumnFlags_WidthFixed);
+			ImGui::TableSetupColumn(col_name.c_str(), ImGuiTableColumnFlags_WidthFixed, 0.0f, col_id);
+			col_id++;
 		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
@@ -387,6 +390,18 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 			ImGui::TableHeader(column_name);
 		}
 
+		// table sorting via ImGui
+		if (ImGuiTableSortSpecs* sort_specs = ImGui::TableGetSortSpecs()) {
+			if (sort_specs->SpecsDirty) {
+				std::sort(
+					output_environment.subset_entries.begin(),
+					output_environment.subset_entries.end(),
+					SubsetComparator(sort_specs)
+				);
+				sort_specs->SpecsDirty = false;
+			}
+		}
+
 		// printing entry rows
 		int starting_index = page_size * subset_page;
 		int ending_index = min(output_environment.subset_entries.size(), starting_index + page_size);
@@ -395,7 +410,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 			ImGui::TableNextRow();
 			for (SubsetColumnInfo active_column : active_columns) {
 				ImGui::TableNextColumn();
-				ImGui::Text(subset_entry[active_column.query_name].c_str());
+				ImGui::Text(subset_entry.GetData(active_column.query_name).c_str());
 			}
 		}
 		ImGui::EndTable();
