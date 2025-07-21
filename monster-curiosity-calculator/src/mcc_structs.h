@@ -14,6 +14,17 @@ enum ParameterCategory {
 	Undefined
 };
 
+enum SubsetColumnsIds {
+	NameColumnId,
+	DexColumnId,
+	ColorColumnId,
+	ShapeColumnId,
+	HeightColumnId,
+	WeightColumnId,
+	PrimaryTypeColumnId,
+	SecondaryTypeColumnId
+};
+
 // TODO: use this to define display and possible values of different metrics we can refine query by
 struct ParameterType {
 	std::string display_name;
@@ -117,16 +128,35 @@ struct SubsetComparator {
 	bool operator()(SubsetEntry& lhs, SubsetEntry& rhs) {
 		for (int i = 0; i < sort_specs->SpecsCount; i++) {
 			const ImGuiTableColumnSortSpecs* sort_spec = &sort_specs->Specs[i];
-			int delta = 0;
-			switch (sort_spec->ColumnIndex) {
-				case 0:
+			double delta = 0;
+			switch (sort_spec->ColumnUserID) {
+				case NameColumnId:
 					delta = lhs.GetData("pretty_name").compare(rhs.GetData("pretty_name"));
 					break;
-				case 1:
+				case DexColumnId:
 					delta = std::stoi(lhs.GetData("dex_number")) - std::stoi(rhs.GetData("dex_number"));
 					break;
+				case ColorColumnId:
+					delta = lhs.GetData("color").compare(rhs.GetData("color"));
+					break;
+				case ShapeColumnId:
+					delta = lhs.GetData("shape").compare(rhs.GetData("shape"));
+					break;
+				case HeightColumnId:
+					delta = std::stof(lhs.GetData("height")) - std::stof(rhs.GetData("height"));
+					break;
+				case WeightColumnId:
+					delta = std::stod(lhs.GetData("weight")) - std::stod(rhs.GetData("weight"));
+					break;
+				case PrimaryTypeColumnId:
+					delta = lhs.GetData("primary_type").compare(rhs.GetData("primary_type"));
+					break;
+				case SecondaryTypeColumnId:
+					delta = lhs.GetData("secondary_type").compare(rhs.GetData("secondary_type"));
+					break;
 				default:
-					std::cout << "OOPSIES" << std::endl;
+					std::cout << "ERROR: Attempting to sort unrecognized column" << std::endl;
+					break;
 			}
 			if (delta > 0) {
 				return (sort_spec->SortDirection == ImGuiSortDirection_Ascending) ? 1 : 0;
@@ -157,6 +187,7 @@ struct SubsetColumnInfo {
 	std::string query_name;
 	bool enabled;
 	bool togglable;
+	int column_id;
 };
 
 } // namespace monster_calculator
