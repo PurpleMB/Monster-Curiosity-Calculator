@@ -330,6 +330,25 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	int active_column_count = active_columns.size();
 	ImGui::Text("Active Columns: %d", active_column_count);
 
+	// pagination of table for performance reasons
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+	static ImU8 subset_page = 0;
+
+	static int page_size = 3000;
+	ImU8 page_count = output_environment.subset_entries.size() / page_size;
+
+	if (subset_page > page_count) {
+		subset_page = page_count;
+	}
+
+	ImGui::Text(std::to_string(page_count).c_str());
+	ImGui::Text(std::to_string(page_size).c_str());
+	ImGui::Text(std::to_string(subset_page).c_str());
+
+	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
 	const int kTableFlags = 
@@ -356,13 +375,14 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		}
 
 		// printing entry rows
-		for (auto subset_entry : output_environment.subset_entries) {
+		int starting_index = page_size * subset_page;
+		int ending_index = min(output_environment.subset_entries.size(), starting_index + page_size);
+		for (int subset_index = starting_index; subset_index < ending_index; subset_index++) {
+			auto subset_entry = output_environment.subset_entries[subset_index];
 			ImGui::TableNextRow();
 			for (SubsetColumnInfo active_column : active_columns) {
 				ImGui::TableNextColumn();
-				std::string query_val = subset_entry[active_column.query_name];
-				std::cout << query_val << std::endl;
-				ImGui::Text(query_val.c_str());
+				ImGui::Text(subset_entry[active_column.query_name].c_str());
 			}
 		}
 		ImGui::EndTable();
