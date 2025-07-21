@@ -336,17 +336,30 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 	static ImU8 subset_page = 0;
 
-	static int page_size = 3000;
-	ImU8 page_count = output_environment.subset_entries.size() / page_size;
+	std::vector<std::string> page_size_labels = {"None", "15", "30", "50", "100"};
+	std::vector<int> page_sizes = {10000, 15, 30, 50, 100};
+	static int selected_page_size_index = 0;
+	static int page_size = page_sizes[0];
 
+	ImGui::Text("Page size limit: ");
+	ImGui::SameLine();
+	if (ImGui::Button(page_size_labels[selected_page_size_index].c_str())) {
+		ImGui::OpenPopup("##Select page size limit:");
+	}
+	if (ImGui::BeginPopup("##Select page size limit:")) {
+		for (int i = 0; i < page_size_labels.size(); i++) {
+			if (ImGui::Selectable(page_size_labels[i].c_str())) {
+				selected_page_size_index = i;
+				page_size = page_sizes[i];
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	ImU8 page_count = output_environment.subset_entries.size() / page_size;
 	if (subset_page > page_count) {
 		subset_page = page_count;
 	}
-
-	ImGui::Text(std::to_string(page_count).c_str());
-	ImGui::Text(std::to_string(page_size).c_str());
-	ImGui::Text(std::to_string(subset_page).c_str());
-
 	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 
 	// subset display table
