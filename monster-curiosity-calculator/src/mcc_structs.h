@@ -188,6 +188,7 @@ struct SubsetColumnInfo {
 	std::string query_name;
 	bool enabled;
 	bool togglable;
+	int column_flags;
 	int column_id;
 };
 
