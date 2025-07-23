@@ -205,7 +205,7 @@ void DrawNumericalParameterSelector(ParameterType& param_type, BetterQueryParame
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	ImGui::Text("Current subset parameters:");
 
-	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
+	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
 	const int kColumnCount = 5;
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
@@ -259,10 +259,13 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(subset_parameter.query_value.c_str());
 
 				ImGui::TableSetColumnIndex(4);
-				std::string label = std::to_string(parameter_count) + " Remove Parameter";
-				if (ImGui::Button(label.c_str())) {
+				std::string button_id = "##Remove" + std::to_string(parameter_index);
+				ImGui::PushID(button_id.c_str());
+				std::string label = "Remove Parameter";
+				if (ImGui::SmallButton(label.c_str())) {
 					output_environment.subset_parameters.RemoveParameter(group_index, parameter_index);
 				}
+				ImGui::PopID();
 			}
 		}
 		ImGui::EndTable();
@@ -302,7 +305,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoSort, NumberColumnId);
 	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, ImGuiTableColumnFlags_WidthFixed, NameColumnId);
-	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort, DexColumnId);
+	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed, DexColumnId);
 	static SubsetColumnInfo color_info("Color", "color", false, true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId);
 	static SubsetColumnInfo shape_info("Shape", "shape", false, true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId);
 	static SubsetColumnInfo height_info("Height (m)", "height", false, true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId);
@@ -373,9 +376,10 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	}
 
 	// subset display table
-	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
+	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 16);
 	const int kTableFlags = 
 		ImGuiTableFlags_Sortable |
+		ImGuiTableFlags_Reorderable |
 		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY |
