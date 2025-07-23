@@ -20,7 +20,8 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
-
+		CreateSubtable(output_environment);
+		SortSubtableEntries(output_environment);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
