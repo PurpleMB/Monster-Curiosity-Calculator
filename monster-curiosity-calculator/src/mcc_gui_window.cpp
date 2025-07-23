@@ -8,6 +8,7 @@
 
 #include <format>
 #include <iostream>
+#include <cstring> // for strcmp
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -292,6 +293,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
+	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, NumberColumnId);
 	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, NameColumnId);
 	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", false, true, DexColumnId);
 	static SubsetColumnInfo color_info("Color", "color", false, true, ColorColumnId);
@@ -302,6 +304,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	static SubsetColumnInfo sec_type_info("Secondary Type", "secondary_type", false, true, SecondaryTypeColumnId);
 
 	static std::vector<SubsetColumnInfo> column_infos = {
+		result_num_col_info,
 		name_col_info, 
 		dex_col_info,
 		color_info,
@@ -409,6 +412,11 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 			ImGui::TableNextRow();
 			for (SubsetColumnInfo active_column : active_columns) {
 				ImGui::TableNextColumn();
+				if (std::strcmp(ImGui::TableGetColumnName(), "Result #") == 0) {
+					int displayed_index = subset_index + 1;
+					ImGui::Text(std::to_string(displayed_index).c_str());
+					continue;
+				}
 				ImGui::Text(subset_entry.GetData(active_column.query_name).c_str());
 			}
 		}

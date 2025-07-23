@@ -15,6 +15,7 @@ enum ParameterCategory {
 };
 
 enum SubsetColumnsIds {
+	NumberColumnId,
 	NameColumnId,
 	DexColumnId,
 	ColorColumnId,
