@@ -242,6 +242,13 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(++parameter_count).c_str());
 
 				ImGui::TableSetColumnIndex(1);
+				std::vector<ImVec4> group_colors = {
+					ImVec4(0.7f, 0.2f, 0.2f, 0.65f),
+					ImVec4(0.2f, 0.7f, 0.2f, 0.65f),
+					ImVec4(0.2f, 0.2f, 0.7f, 0.65f),
+				};
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_colors[group_index % group_colors.size()]);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				int displayed_group_index = group_index + 1;
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
