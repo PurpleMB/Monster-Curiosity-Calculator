@@ -367,10 +367,10 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	}
 
 	ImU8 page_count = output_environment.subset_entries.size() / page_size;
+	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 	if (subset_page > page_count) {
 		subset_page = page_count;
 	}
-	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f, 400.0f);
