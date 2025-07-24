@@ -387,7 +387,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	// pagination of table for performance reasons
 	const ImU8 u8_one = 1;
 	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
 	static ImU8 subset_page = 0;
 
 	std::vector<std::string> page_size_labels = {"None", "15", "30", "50", "100"};
@@ -397,7 +397,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 	ImGui::Text("Page size limit: ");
 	ImGui::SameLine();
-	if (ImGui::Button(page_size_labels[selected_page_size_index].c_str())) {
+	if (ImGui::SmallButton(page_size_labels[selected_page_size_index].c_str())) {
 		ImGui::OpenPopup("##Select page size limit:");
 	}
 	if (ImGui::BeginPopup("##Select page size limit:")) {
@@ -410,7 +410,11 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		ImGui::EndPopup();
 	}
 
+	ImGui::Text("Set displayed page: ");
+	ImGui::SameLine();
 	ImU8 page_count = output_environment.subset_entries.size() / page_size;
+	float page_text_width = 75.0f;
+	ImGui::SetNextItemWidth(page_text_width);
 	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 	if (subset_page > page_count) {
 		subset_page = page_count;
@@ -475,6 +479,12 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		}
 		ImGui::EndTable();
 	}
+
+	// display current page info
+	int shown_page_index = subset_page + 1;
+	int shown_page_count = page_count + 1;
+	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
+	ImGui::Text(curr_page_text.c_str());
 
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();
