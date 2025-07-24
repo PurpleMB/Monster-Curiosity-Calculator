@@ -283,7 +283,6 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	std::vector<ValueType> value_types = {kAverageValue, kMinimumValue};
 	static int selected_value_index = 0;
 	std::string selected_value_name = value_types[selected_value_index].display_name;
-
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select value type");
 	}
@@ -296,13 +295,13 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 		ImGui::EndPopup();
 	}
 
-	static int selected_argument_index = 0;
+	ImGui::SameLine();
 
+	static int selected_argument_index = 0;
 	std::string selected_argument_name = value_types[selected_value_index].values[selected_argument_index].first;
 	if (ImGui::Button(selected_argument_name.c_str())) {
 		ImGui::OpenPopup("Select parameter argument");
 	}
-
 	if (ImGui::BeginPopup("Select parameter argument")) {
 		for (int i = 0; i < value_types[selected_value_index].values.size(); i++) {
 			if (ImGui::Selectable(value_types[selected_value_index].values[i].first.c_str())) {
@@ -312,7 +311,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 		ImGui::EndPopup();
 	}
 
-	if (ImGui::Button("TODO: Calculate value")) {
+	if (ImGui::Button("Calculate value")) {
 		BetterQueryParameter value_query(
 			value_types[selected_value_index].query_format,
 			value_types[selected_value_index].values[selected_argument_index].second
@@ -363,13 +362,17 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		sec_type_info
 	};
 	
-	if (ImGui::TreeNode("Column Options")) {
+	if (ImGui::Button("Column Toggles")) {
+		ImGui::OpenPopup("column_toggle_popup");
+	}
+
+	if (ImGui::BeginPopup("column_toggle_popup")) {
 		for (SubsetColumnInfo& col_info : column_infos) {
 			if (col_info.togglable) {
 				ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
 			}
 		}
-		ImGui::TreePop();
+		ImGui::EndPopup();
 	}
 
 	std::vector<SubsetColumnInfo> active_columns = {};
