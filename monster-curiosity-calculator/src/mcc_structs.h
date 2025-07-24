@@ -206,6 +206,7 @@ struct SubsetColumnInfo {
 	bool togglable;
 	int column_flags;
 	int column_id;
+	float column_width = 0.0f;
 };
 
 } // namespace monster_calculator

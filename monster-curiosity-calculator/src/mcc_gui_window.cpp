@@ -340,15 +340,15 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
-	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoSort, NumberColumnId);
-	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, ImGuiTableColumnFlags_WidthFixed, NameColumnId);
-	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed, DexColumnId);
-	static SubsetColumnInfo color_info("Color", "color", false, true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId);
-	static SubsetColumnInfo shape_info("Shape", "shape", false, true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId);
-	static SubsetColumnInfo height_info("Height (m)", "height", false, true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId);
-	static SubsetColumnInfo weight_info("Weight (kg)", "weight", false, true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId);
-	static SubsetColumnInfo prim_type_info("Primary Type", "primary_type", false, true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId);
-	static SubsetColumnInfo sec_type_info("Secondary Type", "secondary_type", false, true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId);
+	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoSort, NumberColumnId, 0);
+	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f);
+	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0);
+	static SubsetColumnInfo color_info("Color", "color", false, true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0);
+	static SubsetColumnInfo shape_info("Shape", "shape", false, true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId, 0);
+	static SubsetColumnInfo height_info("Height (m)", "height", false, true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId, 0);
+	static SubsetColumnInfo weight_info("Weight (kg)", "weight", false, true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId, 0);
+	static SubsetColumnInfo prim_type_info("Primary Type", "primary_type", false, true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId, 0);
+	static SubsetColumnInfo sec_type_info("Secondary Type", "secondary_type", false, true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId, 0);
 
 	static std::vector<SubsetColumnInfo> column_infos = {
 		result_num_col_info,
@@ -425,8 +425,8 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	const int kTableFlags = 
 		ImGuiTableFlags_Sortable |
 		ImGuiTableFlags_Reorderable |
+		ImGuiTableFlags_Resizable |
 		ImGuiTableFlags_Borders |
-		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY |
 		ImGuiTableFlags_ScrollX;
 	static int frozen_columns = 1;
@@ -437,7 +437,8 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 			std::string col_name = active_column.display_name;
 			int col_flags = active_column.column_flags;
 			int col_id = active_column.column_id;
-			ImGui::TableSetupColumn(col_name.c_str(), col_flags, 0.0f, col_id);
+			float col_width = active_column.column_width;
+			ImGui::TableSetupColumn(col_name.c_str(), col_flags, col_width, col_id);
 		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
