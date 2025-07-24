@@ -145,6 +145,9 @@ struct SubsetComparator {
 			const ImGuiTableColumnSortSpecs* sort_spec = &sort_specs->Specs[i];
 			double delta = 0;
 			switch (sort_spec->ColumnUserID) {
+			case NumberColumnId:
+					delta = std::stoi(lhs.GetData("id")) - std::stoi(rhs.GetData("id"));
+					break;
 				case NameColumnId:
 					delta = lhs.GetData("pretty_name").compare(rhs.GetData("pretty_name"));
 					break;

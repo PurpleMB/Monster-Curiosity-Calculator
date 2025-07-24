@@ -340,7 +340,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
-	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoSort, NumberColumnId, 0);
+	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, 
+		ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, 
+		NumberColumnId, 0);
 	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f);
 	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0);
 	static SubsetColumnInfo color_info("Color", "color", false, true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0);
@@ -428,7 +430,8 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		ImGuiTableFlags_Resizable |
 		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_ScrollY |
-		ImGuiTableFlags_ScrollX;
+		ImGuiTableFlags_ScrollX |
+		ImGuiTableFlags_NoSavedSettings;
 	static int frozen_columns = 1;
 	static int frozen_rows = 1;
 	if (ImGui::BeginTable("subset_entries", active_column_count, kTableFlags, outer_size)) {
