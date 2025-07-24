@@ -47,6 +47,20 @@ struct ParameterType {
 	}
 };
 
+struct ValueType {
+	std::string display_name;
+	std::string query_format;
+	std::vector<std::pair<std::string, std::string>> values;
+
+	ValueType(std::string name, std::string q_name, std::vector<std::pair<std::string, std::string>> vals) {
+		display_name = name;
+		query_format = q_name;
+		values = vals;
+	}
+
+	virtual ~ValueType() = default;
+};
+
 struct BetterQueryParameter {
 	std::string query_format;
 	std::string query_value;
@@ -174,12 +188,14 @@ struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<SubsetEntry> subset_entries;
 	ParameterSet subset_parameters;
+	BetterQueryParameter value_parameter;
 	//std::vector<BetterQueryParameter> sorting_parameters;
 
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
 		subset_parameters = ParameterSet();
+		value_parameter = BetterQueryParameter();
 	}
 };
 

@@ -102,4 +102,17 @@ const std::string kHealthDisplayName = "Health";
 const std::string kHealthQueryFormat = "hp {0}";
 const ParameterType kHealthParam(kHealthDisplayName, kHealthQueryFormat, Numerical, {{"0", "255"}});
 
+const std::vector<std::pair<std::string, std::string>> kNumericalValueTypesList = {
+	{"Health", "hp"},
+	{"BST", "stat_total"}
+};
+
+const std::string kAvgDisplayName = "Average";
+const std::string kAvgQueryFormat = "SELECT AVG({0}) FROM submonsters;";
+const ValueType kAverageValue(kAvgDisplayName, kAvgQueryFormat, kNumericalValueTypesList);
+
+const std::string kMinDisplayName = "Minimum";
+const std::string kMinQueryFormat = "SELECT MIN({0}) FROM submonsters;";
+const ValueType kMinimumValue(kMinDisplayName, kMinQueryFormat, kNumericalValueTypesList);
+
 } // namespace monster_calculator

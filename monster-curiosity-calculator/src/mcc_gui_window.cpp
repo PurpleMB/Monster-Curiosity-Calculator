@@ -279,8 +279,46 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("Choose value to calculate:");
+
+	std::vector<ValueType> value_types = {kAverageValue, kMinimumValue};
+	static int selected_value_index = 0;
+	std::string selected_value_name = value_types[selected_value_index].display_name;
+
+	if (ImGui::Button(selected_value_name.c_str())) {
+		ImGui::OpenPopup("Select value type");
+	}
+	if (ImGui::BeginPopup("Select value type")) {
+		for (int i = 0; i < value_types.size(); i++) {
+			if (ImGui::Selectable(value_types[i].display_name.c_str())) {
+				selected_value_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	static int selected_argument_index = 0;
+
+	std::string selected_argument_name = value_types[selected_value_index].values[selected_argument_index].first;
+	if (ImGui::Button(selected_argument_name.c_str())) {
+		ImGui::OpenPopup("Select parameter argument");
+	}
+
+	if (ImGui::BeginPopup("Select parameter argument")) {
+		for (int i = 0; i < value_types[selected_value_index].values.size(); i++) {
+			if (ImGui::Selectable(value_types[selected_value_index].values[i].first.c_str())) {
+				selected_argument_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
 	if (ImGui::Button("TODO: Calculate value")) {
-		
+		BetterQueryParameter value_query(
+			value_types[selected_value_index].query_format,
+			value_types[selected_value_index].values[selected_argument_index].second
+		);
+		output_environment.value_parameter = value_query;
+		QuerySubtable(output_environment);
 	}
 
 	if (window_parameters.window_size.x == 0) {

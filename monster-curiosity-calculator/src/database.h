@@ -22,6 +22,8 @@ int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName
 std::string GenerateQueryParameterString(ParameterSet& subset_parameters);
 std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& sorting_parameter);
 
+int QuerySubtable(OutputEnvironment& output_environment);
+
 // logging/debugging
 int LogEvent(OutputEnvironment& output_environment, const int error_code, const char* error_msg);
 int DebugCallback(void* not_used, int argc, char** argv, char** azColName);

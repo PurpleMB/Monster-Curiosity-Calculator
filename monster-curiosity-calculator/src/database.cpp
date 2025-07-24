@@ -382,6 +382,36 @@ std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& so
 	//return sorting_string;
 }
 
+int QuerySubtable(OutputEnvironment& output_environment) {
+	const char* database_path = kDbPath.c_str();
+	sqlite3* db;
+	int exit = sqlite3_open(database_path, &db);
+
+	std::string query_format = output_environment.value_parameter.query_format;
+	std::string query_value = output_environment.value_parameter.query_value;
+	std::string formatted_query = std::vformat(query_format, std::make_format_args(query_value));
+	std::cout << formatted_query;
+	sqlite3_stmt* stmt;
+	exit = sqlite3_prepare_v2(db, formatted_query.c_str(), -1, &stmt, NULL);
+	if (exit != SQLITE_OK) {
+		LogEvent(output_environment, exit, "Error preparing to calculate subset values");
+	}
+	while ((exit = sqlite3_step(stmt)) == SQLITE_ROW) {
+		for (int i = 0; i < sqlite3_column_count(stmt); i++) {
+			std::string col_name = sqlite3_column_name(stmt, i);
+			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
+			std::string log_entry = std::vformat("{0}: {1}", std::make_format_args(col_name, col_val));
+			LogEvent(output_environment, 0, log_entry.c_str());
+		}
+	}
+
+	LogEvent(output_environment, 0, "Finished calculating values");
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return 0;
+}
+
 int LogEvent(OutputEnvironment& output_environment, const int event_code, const char* event_msg) {
 	namespace ch = std::chrono;
 	auto curr_time = ch::floor<ch::seconds>(ch::system_clock::now());

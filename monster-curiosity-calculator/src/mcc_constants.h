@@ -18,4 +18,7 @@ extern const ParameterType kRegionParam;
 					  
 extern const ParameterType kHealthParam;
 
+extern const ValueType kAverageValue;
+extern const ValueType kMinimumValue;
+
 } // namespace monster_calculator
