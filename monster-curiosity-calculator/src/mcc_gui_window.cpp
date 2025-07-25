@@ -207,18 +207,22 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
 	const int kColumnCount = 5;
-	const int kTableFlags = ImGuiTableFlags_Borders |
+	const int kTableFlags =
+		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY;
 	static int frozen_columns = 0;
 	static int frozen_rows = 1;
+	const float col_width = 50.0f;
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
-		ImGui::TableSetupColumn("Parameter #", ImGuiTableColumnFlags_WidthFixed);
-		ImGui::TableSetupColumn("Parameter Group", ImGuiTableColumnFlags_WidthFixed);
-		ImGui::TableSetupColumn("Column", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("#", ImGuiTableColumnFlags_WidthFixed, col_width);
+		ImGui::TableSetupColumn("Group", ImGuiTableColumnFlags_WidthFixed, col_width);
+		ImGui::TableSetupColumn("Column", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthFixed);
-		ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("", 
+			ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel |
+			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
 
 		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
@@ -230,7 +234,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 
 
-		// print log entries
+		// print parameters
 		int parameter_count = 0;
 		for (int group_index = 0; group_index < output_environment.subset_parameters.subset_parameters.size(); group_index++) {
 			std::vector<BetterQueryParameter>& parameter_group = output_environment.subset_parameters.subset_parameters[group_index];
@@ -261,7 +265,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(4);
 				std::string button_id = "##Remove" + std::to_string(parameter_index);
 				ImGui::PushID(button_id.c_str());
-				std::string label = "Remove Parameter";
+				std::string label = "X";
 				if (ImGui::SmallButton(label.c_str())) {
 					output_environment.subset_parameters.RemoveParameter(group_index, parameter_index);
 				}
