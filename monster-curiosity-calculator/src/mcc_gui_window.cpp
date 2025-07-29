@@ -263,7 +263,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(subset_parameter.query_value.c_str());
 
 				ImGui::TableSetColumnIndex(4);
-				std::string button_id = "##Remove" + std::to_string(parameter_index);
+				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);
 				ImGui::PushID(button_id.c_str());
 				std::string label = "X";
 				if (ImGui::SmallButton(label.c_str())) {
