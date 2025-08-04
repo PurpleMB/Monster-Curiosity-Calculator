@@ -6,6 +6,8 @@
 
 #include "imgui.h"
 
+#include "mcc_parameter_structs.h"
+
 namespace monster_calculator {
 
 enum ParameterCategory {
@@ -26,7 +28,6 @@ enum SubsetColumnsIds {
 	SecondaryTypeColumnId
 };
 
-// TODO: use this to define display and possible values of different metrics we can refine query by
 struct ParameterType {
 	std::string display_name;
 	std::string query_format;
@@ -61,10 +62,14 @@ struct ValueType {
 	virtual ~ValueType() = default;
 };
 
+/*
 struct BetterQueryParameter {
 	std::string query_format;
 	std::string query_value;
+	std::string display_format;
+	std::string display_value;
 };
+*/
 
 struct WindowParameters {
 	std::string name;
@@ -80,6 +85,7 @@ struct LogEntry {
 	std::string log_message;
 };
 
+/*
 struct ParameterSet {
 	std::vector<std::vector<BetterQueryParameter>> subset_parameters;
 	int parameter_count;
@@ -117,6 +123,7 @@ struct ParameterSet {
 		parameter_count = 0;
 	}
 };
+*/
 
 struct SubsetEntry {
 	std::unordered_map<std::string, std::string> entry_data;
@@ -191,14 +198,14 @@ struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<SubsetEntry> subset_entries;
 	ParameterSet subset_parameters;
-	BetterQueryParameter value_parameter;
+	QueryParameter value_parameter;
 	//std::vector<BetterQueryParameter> sorting_parameters;
 
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
 		subset_parameters = ParameterSet();
-		value_parameter = BetterQueryParameter();
+		value_parameter = QueryParameter();
 	}
 };
 

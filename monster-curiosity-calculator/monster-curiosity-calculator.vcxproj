@@ -162,6 +162,7 @@
     <ClInclude Include="src\database.h" />
     <ClInclude Include="src\mcc_constants.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />
+    <ClInclude Include="src\mcc_parameter_structs.h" />
     <ClInclude Include="src\mcc_structs.h" />
   </ItemGroup>
   <ItemGroup>

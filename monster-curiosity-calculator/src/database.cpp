@@ -14,6 +14,7 @@
 
 #include "mcc_structs.h"
 #include "mcc_constants.h"
+#include "mcc_parameter_structs.h"
 
 namespace monster_calculator {
 
@@ -299,14 +300,14 @@ int CreateSubtable(OutputEnvironment& output_environment) {
 }
 
 std::string GenerateQueryParameterString(ParameterSet& subset_parameters) {
-	if (subset_parameters.parameter_count == 0) {
+	if (subset_parameters.total_parameter_count == 0) {
 		return "";
 	}
 
 	int active_groups = 0;
 	std::string parameter_string = "WHERE ";
-	for (int group_index = 0; group_index < subset_parameters.subset_parameters.size(); group_index++) {
-		std::vector<BetterQueryParameter> parameter_group = subset_parameters.subset_parameters[group_index];
+	for (int group_index = 0; group_index < subset_parameters.GetGroupCount(); group_index++) {
+		std::vector<QueryParameter> parameter_group = subset_parameters.parameter_groups[group_index];
 		if (parameter_group.size() == 0) {
 			continue;
 		}
@@ -319,9 +320,10 @@ std::string GenerateQueryParameterString(ParameterSet& subset_parameters) {
 		parameter_string += "(";
 		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
 			parameter_string += "(";
-			BetterQueryParameter subset_param = parameter_group[parameter_index];
-			std::string formatted_query = std::vformat(subset_param.query_format, std::make_format_args(subset_param.query_value));
-			parameter_string += formatted_query;
+			QueryParameter param = parameter_group[parameter_index];
+			std::string query_statement = param.database_statement.EvaluateStatement();
+			std::cout << query_statement;
+			parameter_string += query_statement;
 			parameter_string += ")";
 
 			if (parameter_index < parameter_group.size() - 1) {
@@ -372,27 +374,14 @@ int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName
 	return 0;
 }
 
-std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& sorting_parameters) {
-	if (sorting_parameters.size() == 0) {
-		return "";
-	}
-	
-	return "";
-	//std::string sorting_string = "ORDER BY " + query_parameter.parameter_name + " " + query_parameter.parameter_value;
-	//return sorting_string;
-}
-
 int QuerySubtable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string query_format = output_environment.value_parameter.query_format;
-	std::string query_value = output_environment.value_parameter.query_value;
-	std::string formatted_query = std::vformat(query_format, std::make_format_args(query_value));
-	std::cout << formatted_query;
+	std::string query_statement = output_environment.value_parameter.database_statement.EvaluateStatement();
 	sqlite3_stmt* stmt;
-	exit = sqlite3_prepare_v2(db, formatted_query.c_str(), -1, &stmt, NULL);
+	exit = sqlite3_prepare_v2(db, query_statement.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {
 		LogEvent(output_environment, exit, "Error preparing to calculate subset values");
 	}

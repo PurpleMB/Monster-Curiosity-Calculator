@@ -5,6 +5,7 @@
 #include <json/value.h>
 
 #include "mcc_structs.h"
+#include "mcc_parameter_structs.h"
 
 namespace monster_calculator {
 // basic database creation
@@ -20,7 +21,6 @@ int CreateSubtable(OutputEnvironment& output_environment);
 int SortSubtableEntries(OutputEnvironment& output_environment);
 int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName);
 std::string GenerateQueryParameterString(ParameterSet& subset_parameters);
-std::string GenerateSortingParameterString(std::vector<BetterQueryParameter>& sorting_parameter);
 
 int QuerySubtable(OutputEnvironment& output_environment);
 

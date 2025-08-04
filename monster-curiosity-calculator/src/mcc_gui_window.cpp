@@ -18,6 +18,7 @@
 #include "database.h"
 #include "mcc_structs.h"
 #include "mcc_constants.h"
+#include "mcc_parameter_structs.h"
 
 namespace monster_calculator {
 
@@ -59,10 +60,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 
-	static BetterQueryParameter building_parameter(
-		parameter_types[0].query_format,
-		parameter_types[0].values[0].second
-	);
+	static QueryParameter building_parameter;
 
 	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select parameter");
@@ -72,11 +70,13 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		for (int i = 0; i < parameter_types.size(); i++) {
 			if (ImGui::Selectable(parameter_types[i].display_name.c_str())) {
 				selected_parameter_index = i;
-				building_parameter.query_format = parameter_types[selected_parameter_index].query_format;
 			}
 		}
 		ImGui::EndPopup();
 	}
+
+	building_parameter.database_statement.format = parameter_types[selected_parameter_index].query_format;
+	building_parameter.display_statement.format = parameter_types[selected_parameter_index].display_name;
 
 	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
 		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], building_parameter);
@@ -95,8 +95,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 	static ImU8 parameter_group = 0;
 
-	if (parameter_group > output_environment.subset_parameters.subset_parameters.size()) {
-		parameter_group = output_environment.subset_parameters.subset_parameters.size();
+	if (parameter_group > output_environment.subset_parameters.GetGroupCount()) {
+		parameter_group = output_environment.subset_parameters.GetGroupCount();
 	}
 
 	ImGui::Text("Set Parameter Group: ");
@@ -132,7 +132,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ImGui::End();
 }
 
-void DrawEnumeratorParameterSelector(ParameterType& param_type, BetterQueryParameter& building_parameter) {
+void DrawEnumeratorParameterSelector(ParameterType& param_type, QueryParameter& building_parameter) {
 	static int selected_value_index = 0;
 
 	std::string selected_value_name = param_type.values[selected_value_index].first;
@@ -149,10 +149,11 @@ void DrawEnumeratorParameterSelector(ParameterType& param_type, BetterQueryParam
 		ImGui::EndPopup();
 	}
 
-	building_parameter.query_value = param_type.values[selected_value_index].second;
+	building_parameter.database_statement.argument = std::string(param_type.values[selected_value_index].second);
+	building_parameter.display_statement.argument = std::string(param_type.values[selected_value_index].first);
 }
 
-void DrawNumericalParameterSelector(ParameterType& param_type, BetterQueryParameter& building_parameter) {
+void DrawNumericalParameterSelector(ParameterType& param_type, QueryParameter& building_parameter) {
 	static ImU8 lower_bound = 0;
 	static ImU8 upper_bound = 255;
 	
@@ -193,12 +194,14 @@ void DrawNumericalParameterSelector(ParameterType& param_type, BetterQueryParame
 		ImGui::SameLine();
 		ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
 
-		building_parameter.query_value = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
+		building_parameter.database_statement.argument = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
+		building_parameter.display_statement.argument = std::format("[{0}, {1}]", lower_bound, upper_bound);
 	} else {
 		ImGui::Text("Set Inequality Value: ");
 		ImGui::SameLine();
 		ImGui::InputScalar("##inequality_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-		building_parameter.query_value = std::format("{0} {1}", parameter_subtypes[selected_subtype_index], lower_bound);
+		building_parameter.database_statement.argument = std::format("{0} {1}", parameter_subtypes[selected_subtype_index], lower_bound);
+		building_parameter.display_statement.argument = std::format("{0} {1}", parameter_subtypes[selected_subtype_index], lower_bound);
 	}
 }
 
@@ -236,10 +239,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 		// print parameters
 		int parameter_count = 0;
-		for (int group_index = 0; group_index < output_environment.subset_parameters.subset_parameters.size(); group_index++) {
-			std::vector<BetterQueryParameter>& parameter_group = output_environment.subset_parameters.subset_parameters[group_index];
+		for (int group_index = 0; group_index < output_environment.subset_parameters.GetGroupCount(); group_index++) {
+			std::vector<QueryParameter>& parameter_group = output_environment.subset_parameters.parameter_groups[group_index];
 			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-				BetterQueryParameter& subset_parameter = parameter_group[parameter_index];
+				QueryParameter& subset_parameter = parameter_group[parameter_index];
 				ImGui::TableNextRow();
 
 				ImGui::TableSetColumnIndex(0);
@@ -257,10 +260,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
 				ImGui::TableSetColumnIndex(2);
-				ImGui::Text(subset_parameter.query_format.c_str());
+				ImGui::Text(subset_parameter.database_statement.EvaluateStatement().c_str());
 
 				ImGui::TableSetColumnIndex(3);
-				ImGui::Text(subset_parameter.query_value.c_str());
+				ImGui::Text(subset_parameter.display_statement.EvaluateStatement().c_str());
 
 				ImGui::TableSetColumnIndex(4);
 				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);
@@ -316,10 +319,12 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	}
 
 	if (ImGui::Button("Calculate value")) {
-		BetterQueryParameter value_query(
-			value_types[selected_value_index].query_format,
-			value_types[selected_value_index].values[selected_argument_index].second
-		);
+		QueryParameter value_query;
+			//value_types[selected_value_index].query_format,
+			//value_types[selected_value_index].values[selected_argument_index].second,
+			//value_types[selected_value_index].display_name,
+			//value_types[selected_value_index].values[selected_argument_index].first
+		//);
 		output_environment.value_parameter = value_query;
 		QuerySubtable(output_environment);
 	}
