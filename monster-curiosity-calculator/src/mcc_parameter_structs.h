@@ -7,6 +7,51 @@
 
 namespace monster_calculator {
 
+// This enum defines the possible types of parameters the user may set.
+// Undefined is only used for improperly defined ParameterTypes,
+// while Enumerated represents things like Type, Region, etc. while
+// Numerical is used for values such as Health, Speed, etc.
+enum ParameterCategory {
+	Enumerated,
+	Numerical,
+	Undefined
+};
+
+// This struct encapsulates the data for a single possible value of a ParameterType.
+// For example, a parameter value for a monster typing may have values like "normal", "Normal"
+// and an ImVec4 that looks white when interpreted as a color.
+struct ParameterValue {
+	std::string display_name;
+	std::string database_name;
+	ImVec4 value_color;
+};
+
+
+// This struct defines the general structure of an entire type of value that may be parameterized
+// (Health, Dex #, etc.) and contains info about how the database wants to see that parameter,
+// how to show the user that parameter, and information regarding all possible values for the type.
+struct ParameterType {
+	ParameterCategory category;
+	std::string display_name;
+	std::string database_format;
+	std::string display_format;
+	std::vector<ParameterValue> values;
+
+	ParameterType(ParameterCategory cat, std::string dis_name, std::string dis_format, std::string db_format, std::vector<ParameterValue> vals) {
+		category = cat;
+		display_name = dis_name;
+		display_format = dis_format;
+		database_format = db_format;
+		values = vals;
+	}
+
+	virtual ~ParameterType() = default;
+
+	virtual ParameterCategory GetParameterCategory() {
+		return category;
+	}
+};
+
 // This struct is meant to hold a format string and some amount of argument strings
 // These strings can then be evaluated to form a single dynamic query statement for use
 // with the SQL database
@@ -113,7 +158,6 @@ struct ParameterSet {
 
 		parameter_groups[parameter_group].push_back(parameter);
 		total_parameter_count++;
-		std::cout << total_parameter_count;
 	}
 
 	void RemoveParameter(const int target_group, const int group_index) {

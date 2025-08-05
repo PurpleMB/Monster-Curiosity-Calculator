@@ -82,6 +82,7 @@ const std::vector<std::pair<std::string, std::string>> kRegionsList = {
 	{"Any", "BETWEEN 0 AND 2500"},
 };
 
+/*
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryQueryFormat = "primary_type {0}";
 const ParameterType kPrimaryTypeParam(kPrimaryDisplayName, kPrimaryQueryFormat, Enumerated, kTypesList);
@@ -114,5 +115,5 @@ const ValueType kAverageValue(kAvgDisplayName, kAvgQueryFormat, kNumericalValueT
 const std::string kMinDisplayName = "Minimum";
 const std::string kMinQueryFormat = "SELECT MIN({0}) FROM submonsters;";
 const ValueType kMinimumValue(kMinDisplayName, kMinQueryFormat, kNumericalValueTypesList);
-
+*/
 } // namespace monster_calculator

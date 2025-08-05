@@ -10,11 +10,13 @@
 
 namespace monster_calculator {
 
+/*
 enum ParameterCategory {
 	Enumerated,
 	Numerical,
 	Undefined
 };
+*/
 
 enum SubsetColumnsIds {
 	NumberColumnId,
@@ -28,6 +30,7 @@ enum SubsetColumnsIds {
 	SecondaryTypeColumnId
 };
 
+/*
 struct ParameterType {
 	std::string display_name;
 	std::string query_format;
@@ -61,6 +64,7 @@ struct ValueType {
 
 	virtual ~ValueType() = default;
 };
+*/
 
 /*
 struct BetterQueryParameter {

@@ -8,6 +8,7 @@ namespace monster_calculator {
 
 extern const std::string kMainTableScheme;
 
+/*
 extern const std::vector<std::pair<std::string, std::string>> kTypesList;
 extern const std::vector<std::pair<std::string, std::string>> kRegionsList;
 
@@ -20,5 +21,6 @@ extern const ParameterType kHealthParam;
 
 extern const ValueType kAverageValue;
 extern const ValueType kMinimumValue;
+*/
 
 } // namespace monster_calculator

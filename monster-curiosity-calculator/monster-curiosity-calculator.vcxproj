@@ -146,6 +146,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mcc_constants.cpp" />
     <ClCompile Include="src\mcc_gui_window.cpp" />
+    <ClCompile Include="src\mcc_parameter_constants.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json-forwards.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="src\database.h" />
     <ClInclude Include="src\mcc_constants.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />
+    <ClInclude Include="src\mcc_parameter_constants.h" />
     <ClInclude Include="src\mcc_parameter_structs.h" />
     <ClInclude Include="src\mcc_structs.h" />
   </ItemGroup>

@@ -19,6 +19,7 @@
 #include "mcc_structs.h"
 #include "mcc_constants.h"
 #include "mcc_parameter_structs.h"
+#include "mcc_parameter_constants.h"
 
 namespace monster_calculator {
 
@@ -56,7 +57,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Text("Select parameter to filter by:");
 
-	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam, kSecondaryTypeParam, kEitherTypeParam, kHealthParam, kRegionParam};
+	std::vector<ParameterType> parameter_types = {kPrimaryTypeParam};
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index].display_name;
 
@@ -75,8 +76,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 
-	building_parameter.database_statement.format = parameter_types[selected_parameter_index].query_format;
-	building_parameter.display_statement.format = parameter_types[selected_parameter_index].display_name;
+	building_parameter.database_statement.format = parameter_types[selected_parameter_index].database_format;
+	building_parameter.display_statement.format = parameter_types[selected_parameter_index].display_format;
 
 	if (parameter_types[selected_parameter_index].GetParameterCategory() == Enumerated) {
 		DrawEnumeratorParameterSelector(parameter_types[selected_parameter_index], building_parameter);
@@ -135,22 +136,22 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 void DrawEnumeratorParameterSelector(ParameterType& param_type, QueryParameter& building_parameter) {
 	static int selected_value_index = 0;
 
-	std::string selected_value_name = param_type.values[selected_value_index].first;
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select parameter value");
 	}
 
 	if (ImGui::BeginPopup("Select parameter value")) {
 		for (int i = 0; i < param_type.values.size(); i++) {
-			if (ImGui::Selectable(param_type.values[i].first.c_str())) {
+			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
 				selected_value_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	building_parameter.database_statement.argument = std::string(param_type.values[selected_value_index].second);
-	building_parameter.display_statement.argument = std::string(param_type.values[selected_value_index].first);
+	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
+	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
 }
 
 void DrawNumericalParameterSelector(ParameterType& param_type, QueryParameter& building_parameter) {
@@ -287,6 +288,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 
 	ImGui::Text("Choose value to calculate:");
 
+	/*
 	std::vector<ValueType> value_types = {kAverageValue, kMinimumValue};
 	static int selected_value_index = 0;
 	std::string selected_value_name = value_types[selected_value_index].display_name;
@@ -335,6 +337,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	if (window_parameters.window_size.y == 0) {
 		window_parameters.window_size.y = ImGui::GetWindowHeight();
 	}
+	*/
 
 	ImGui::End();
 }
