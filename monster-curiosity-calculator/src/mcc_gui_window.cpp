@@ -63,6 +63,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
+		std::make_shared<NumericalParameterType>(kDexNumParam),
 		std::make_shared<NumericalParameterType>(kHealthParam),
 		std::make_shared<NumericalParameterType>(kStatTotalParam)
 	};

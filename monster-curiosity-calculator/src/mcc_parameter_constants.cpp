@@ -113,13 +113,29 @@ extern const std::vector<ParameterValue> kStandardNumericalOperations = {
     ParameterValue("Greater Than",	">",		ImVec4(0, 0, 0, 0))
 };
 
+
+const
+
+// numerical parameters
+const int kDexNumMin = 1;
+const int kDexNumMax = 1025;
+
+const std::string kDexNumDisplayName = "Dex Number";
+const std::string kDexNumDatabaseFormat = "dex_number {0}";
+const std::string kDexNumDisplayFormat = "Dex #: {0}";
+extern const NumericalParameterType kDexNumParam = NumericalParameterType(
+    kDexNumDisplayName,
+    kDexNumDisplayFormat,
+    kDexNumDatabaseFormat,
+    kStandardNumericalOperations,
+    kDexNumMin,
+    kDexNumMax
+);
+
+
 const int kSingleStatMin = 0;
 const int kSingleStatMax = 255;
 
-const int kStatTotalMin = 0;
-const int kStatTotalMax = 1530;
-
-// numerical parameters
 const std::string kHealthDisplayName = "Health";
 const std::string kHealthDatabaseFormat = "hp {0}";
 const std::string kHealthDisplayFormat = "Health: {0}";
@@ -131,6 +147,9 @@ extern const NumericalParameterType kHealthParam = NumericalParameterType(
     kSingleStatMin,
     kSingleStatMax
 );
+
+const int kStatTotalMin = 0;
+const int kStatTotalMax = 1530;
 
 const std::string kBaseStatTotalDisplayName = "Base Stat Total";
 const std::string kBaseStatTotalDatabaseFormat = "stat_total {0}";

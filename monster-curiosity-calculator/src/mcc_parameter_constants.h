@@ -21,6 +21,7 @@ extern const EnumeratedParameterType kShapeParam;
 extern const std::vector<ParameterValue> kStandardNumericalOperations;
 
 // numerical parameters
+extern const NumericalParameterType kDexNumParam;
 extern const NumericalParameterType kHealthParam;
 extern const NumericalParameterType kStatTotalParam;
 
