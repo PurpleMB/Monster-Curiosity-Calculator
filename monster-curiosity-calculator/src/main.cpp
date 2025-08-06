@@ -10,6 +10,7 @@
 #include "mcc_gui_windows.h"
 #include "mcc_structs.h"
 #include "mcc_parameter_structs.h"
+#include "mcc_parameter_constants.h"
 
 namespace monster_calculator {
 
@@ -61,7 +62,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetParameterWindow(window_params, output_environment);
+			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types);
 
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
@@ -113,6 +114,17 @@ private:
 											ImGuiWindowFlags_NoCollapse | 
 											ImGuiWindowFlags_NoMove;
 	const float kWindowMargin = 25;
+
+	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
+		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
+		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
+		std::make_shared<EnumeratedParameterType>(kColorParam),
+		std::make_shared<EnumeratedParameterType>(kShapeParam),
+		std::make_shared<NumericalParameterType>(kDexNumParam),
+		std::make_shared<NumericalParameterType>(kCatchRateParam),
+		std::make_shared<NumericalParameterType>(kHealthParam),
+		std::make_shared<NumericalParameterType>(kStatTotalParam)
+	};
 
 	OutputEnvironment output_environment;
 };

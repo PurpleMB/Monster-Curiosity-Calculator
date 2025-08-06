@@ -6,6 +6,7 @@
 #include <d3d9.h>
 #include <tchar.h>
 
+#include <vector>
 #include <format>
 #include <iostream>
 #include <cstring> // for strcmp
@@ -51,25 +52,15 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& o
 	ImGui::End();
 }
 
-void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
+void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment,
+	std::vector<std::shared_ptr<ParameterType>> parameter_types) 
+{
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
 	ImGui::Text("Select parameter to filter by:");
-
-	static std::vector<std::shared_ptr<ParameterType>> parameter_types = {
-		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
-		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
-		std::make_shared<EnumeratedParameterType>(kColorParam),
-		std::make_shared<EnumeratedParameterType>(kShapeParam),
-		std::make_shared<NumericalParameterType>(kDexNumParam),
-		std::make_shared<NumericalParameterType>(kCatchRateParam),
-		std::make_shared<NumericalParameterType>(kHealthParam),
-		std::make_shared<NumericalParameterType>(kStatTotalParam)
-	};
-
 
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
