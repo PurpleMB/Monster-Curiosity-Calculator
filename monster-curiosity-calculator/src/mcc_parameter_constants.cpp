@@ -29,6 +29,11 @@ extern const std::vector<ParameterValue> kTypeValuesList = {
 	ParameterValue("Fairy",		"= 'fairy'",	ImVec4(0, 0, 0, 0))
 };
 
+extern const std::vector<ParameterValue> kBinaryValuesList = {
+	ParameterValue("True",		"= 1",			ImVec4(0, 0, 0, 0)),
+	ParameterValue("False",		"= 0",		ImVec4(0, 0, 0, 0))
+};
+
 // enumerated parameters
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
@@ -38,6 +43,16 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
 	kPrimaryDisplayFormat,
 	kPrimaryDatabaseFormat,
 	kTypeValuesList
+);
+
+const std::string kBabyDisplayName = "Is A Baby";
+const std::string kBabyDatabaseFormat = "is_baby {0}";
+const std::string kBabyDisplayFormat = "Baby: {0}";
+extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
+	kBabyDisplayName,
+	kBabyDisplayFormat,
+	kBabyDatabaseFormat,
+	kBinaryValuesList
 );
 
 // numerical parameter operations and values
