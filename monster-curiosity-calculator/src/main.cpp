@@ -22,9 +22,18 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
+		std::vector<ImVec4> param_group_colors = {
+			ImVec4(1.0f, 0.0f, 0.0f, 0.6f),
+			ImVec4(1.0f, 0.0f, 1.0f, 0.6f),
+			ImVec4(0.0f, 0.0f, 1.0f, 0.6f),
+			ImVec4(0.0f, 1.0f, 1.0f, 0.6f),
+			ImVec4(0.0f, 1.0f, 0.0f, 0.6f),
+			ImVec4(1.0f, 1.0f, 0.0f, 0.6f)
+		};
 		ParameterSet param_set = ParameterSet(
 			6,
-			false
+			false,
+			param_group_colors
 		);
 		output_environment.subset_parameters = param_set;
 

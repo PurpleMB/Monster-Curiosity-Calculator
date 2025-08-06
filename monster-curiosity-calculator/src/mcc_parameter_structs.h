@@ -149,12 +149,14 @@ struct QueryParameter {
 struct ParameterSet {
 	int group_count;
 	std::vector<std::vector<QueryParameter>> parameter_groups;
+	std::vector<ImVec4> group_colors;
 	int total_parameter_count;
 	bool resizable;
 
 	ParameterSet() {
 		group_count = 1;
 		parameter_groups = {{}};
+		group_colors = {ImVec4(0, 0, 0, 0)};
 		total_parameter_count = 0;
 		resizable = false;
 	}
@@ -165,6 +167,18 @@ struct ParameterSet {
 		for (int i = 0; i < group_count; i++) {
 			parameter_groups.push_back({});
 		}
+		group_colors = {ImVec4(0, 0, 0, 0)};
+		total_parameter_count = 0;
+		resizable = allow_resize;
+	}
+
+	ParameterSet(int groups, bool allow_resize, std::vector<ImVec4>& colors) {
+		group_count = groups;
+		parameter_groups = {};
+		for (int i = 0; i < group_count; i++) {
+			parameter_groups.push_back({});
+		}
+		group_colors = colors;
 		total_parameter_count = 0;
 		resizable = allow_resize;
 	}
