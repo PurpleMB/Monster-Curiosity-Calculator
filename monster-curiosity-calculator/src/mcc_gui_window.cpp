@@ -10,6 +10,7 @@
 #include <iostream>
 #include <cstring> // for strcmp
 #include <memory>
+#include <algorithm> // for clamp, min, and max
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -170,8 +171,8 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, QueryP
 }
 
 void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryParameter& building_parameter) {
-	static int lower_bound = 0;
-	static int upper_bound = 255;
+	int min_val = param_type.min_value;
+	int max_val = param_type.max_value;
 	
 	static int selected_subtype_index = 0;
 	std::vector<ParameterValue> operations = param_type.operations;
@@ -183,34 +184,44 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryPar
 		for (int i = 0; i < operations.size(); i++) {
 			if (ImGui::Selectable(operations[i].display_name.c_str())) {
 				selected_subtype_index = i;
-				upper_bound = 255;
-				lower_bound = 0;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	const ImU8 u8_one = 1;
+	const int u32_one = 1;
 	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
 
 	if (operations[selected_subtype_index].display_name == "Range") {
+		static int lower_bound = min_val;
+		static int upper_bound = max_val;
+
 		ImGui::Text("Set Lower Bound: ");
 		ImGui::SameLine();
-		ImGui::InputScalar("##lower_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+		ImGui::InputScalar("##lower_bound", ImGuiDataType_U32, &lower_bound, inputs_step ? &u32_one : NULL, NULL, "%u", flags);
 
 		ImGui::Text("Set Upper Bound: ");
 		ImGui::SameLine();
-		ImGui::InputScalar("##upper_bound", ImGuiDataType_U8, &upper_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+		ImGui::InputScalar("##upper_bound", ImGuiDataType_U32, &upper_bound, inputs_step ? &u32_one : NULL, NULL, "%u", flags);
+
+		int lower_max = std::min<int>(max_val, upper_bound);
+		lower_bound = std::clamp(lower_bound, min_val, lower_max);
+		int upper_min = std::max<int>(min_val, lower_bound);
+		upper_bound = std::clamp(upper_bound, upper_min, max_val);
 
 		building_parameter.database_statement.argument = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
 		building_parameter.display_statement.argument = std::format("[{0}, {1}]", lower_bound, upper_bound);
 	} else {
+		static int bound = min_val;
 		ImGui::Text("Set Inequality Value: ");
 		ImGui::SameLine();
-		ImGui::InputScalar("##inequality_bound", ImGuiDataType_U8, &lower_bound, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-		building_parameter.database_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].database_name, lower_bound);
-		building_parameter.display_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].display_name, lower_bound);
+		ImGui::InputScalar("##inequality_bound", ImGuiDataType_U32, &bound, inputs_step ? &u32_one : NULL, NULL, "%u", flags);
+
+		bound = std::clamp(bound, min_val, max_val);
+
+		building_parameter.database_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].database_name, bound);
+		building_parameter.display_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].display_name, bound);
 	}
 }
 
