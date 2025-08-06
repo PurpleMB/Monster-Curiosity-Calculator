@@ -31,7 +31,20 @@ extern const std::vector<ParameterValue> kTypeValuesList = {
 
 extern const std::vector<ParameterValue> kBinaryValuesList = {
 	ParameterValue("True",		"= 1",			ImVec4(0, 0, 0, 0)),
-	ParameterValue("False",		"= 0",		ImVec4(0, 0, 0, 0))
+	ParameterValue("False",		"= 0",			ImVec4(0, 0, 0, 0))
+};
+
+extern const std::vector<ParameterValue> kColorValuesList = {
+	ParameterValue("Red",		"= 'red'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Blue",		"= 'blue'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Yellow",	"= 'yellow'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Green",		"= 'green'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Black",		"= 'black'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Brown",		"= 'brown'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Purple",	"= 'purple'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Gray",		"= 'gray'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("White",		"= 'white'",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Pink",		"= 'pink'",		ImVec4(0, 0, 0, 0))
 };
 
 // enumerated parameters
@@ -53,6 +66,16 @@ extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
 	kBabyDisplayFormat,
 	kBabyDatabaseFormat,
 	kBinaryValuesList
+);
+
+const std::string kColorDisplayName = "Color";
+const std::string kColorDatabaseFormat = "color {0}";
+const std::string kColorDisplayFormat = "Color: {0}";
+extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
+	kColorDisplayName,
+	kColorDisplayFormat,
+	kColorDatabaseFormat,
+	kColorValuesList
 );
 
 // numerical parameter operations and values
