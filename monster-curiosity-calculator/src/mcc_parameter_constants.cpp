@@ -132,6 +132,22 @@ extern const NumericalParameterType kDexNumParam = NumericalParameterType(
     kDexNumMax
 );
 
+const int kCatchRateMin = 0;
+const int kCatchRateMax = 255;
+
+
+const std::string kCatchRateDisplayName = "Catch Rate";
+const std::string kCatchRateDatabaseFormat = "catch_rate {0}";
+const std::string kCatchRateDisplayFormat = "Catch Rate: {0}";
+extern const NumericalParameterType kCatchRateParam = NumericalParameterType(
+    kCatchRateDisplayName,
+    kCatchRateDisplayFormat,
+    kCatchRateDatabaseFormat,
+    kStandardNumericalOperations,
+    kCatchRateMin,
+    kCatchRateMax
+);
+
 
 const int kSingleStatMin = 0;
 const int kSingleStatMax = 255;
