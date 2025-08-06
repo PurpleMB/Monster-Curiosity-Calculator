@@ -60,7 +60,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	static std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
-		std::make_shared<NumericalParameterType>(kHealthParam)
+		std::make_shared<NumericalParameterType>(kHealthParam),
+		std::make_shared<NumericalParameterType>(kStatTotalParam)
 	};
 
 

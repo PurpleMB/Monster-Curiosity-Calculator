@@ -42,12 +42,17 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
 
 // numerical parameter operations and values
 extern const std::vector<ParameterValue> kStandardNumericalOperations = {
-	ParameterValue("Range",		"BETWEEN",	ImVec4(0, 0, 0, 0)),
-	ParameterValue("Equal",		"=",		ImVec4(0, 0, 0, 0))
+	ParameterValue("Range",			"BETWEEN",	ImVec4(0, 0, 0, 0)),
+	ParameterValue("Equal",			"=",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Less Than",		"<",		ImVec4(0, 0, 0, 0)),
+	ParameterValue("Greater Than",	">",		ImVec4(0, 0, 0, 0))
 };
 
-const int kByteMin = 0;
-const int kByteMax = 255;
+const int kSingleStatMin = 0;
+const int kSingleStatMax = 255;
+
+const int kStatTotalMin = 0;
+const int kStatTotalMax = 1530;
 
 // numerical parameters
 const std::string kHealthDisplayName = "Health";
@@ -58,8 +63,20 @@ extern const NumericalParameterType kHealthParam = NumericalParameterType(
 	kHealthDisplayFormat,
 	kHealthDatabaseFormat,
 	kStandardNumericalOperations,
-	kByteMin,
-	kByteMax
+	kSingleStatMin,
+	kSingleStatMax
+);
+
+const std::string kBaseStatTotalDisplayName = "Base Stat Total";
+const std::string kBaseStatTotalDatabaseFormat = "stat_total {0}";
+const std::string kBaseStatTotalDisplayFormat = "Base Stat Total: {0}";
+extern const NumericalParameterType kStatTotalParam = NumericalParameterType(
+	kBaseStatTotalDisplayName,
+	kBaseStatTotalDisplayFormat,
+	kBaseStatTotalDatabaseFormat,
+	kStandardNumericalOperations,
+	kStatTotalMin,
+	kStatTotalMax
 );
 
 } //namespace monster_calculator
