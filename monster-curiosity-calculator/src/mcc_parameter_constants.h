@@ -9,9 +9,12 @@ namespace monster_calculator {
 extern const std::vector<ParameterValue> kTypeValuesList;
 
 // enumerated parameters
-extern const ParameterType kPrimaryTypeParam;
+extern const EnumeratedParameterType kPrimaryTypeParam;
+
+// numerical parameter operations and values
+extern const std::vector<ParameterValue> kStandardNumericalOperations;
 
 // numerical parameters
-extern const ParameterType kHealthParam;
+extern const NumericalParameterType kHealthParam;
 
 } //namespace monster_calculator

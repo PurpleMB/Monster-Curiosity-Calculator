@@ -31,24 +31,51 @@ struct ParameterValue {
 // (Health, Dex #, etc.) and contains info about how the database wants to see that parameter,
 // how to show the user that parameter, and information regarding all possible values for the type.
 struct ParameterType {
-	ParameterCategory category;
 	std::string display_name;
 	std::string database_format;
 	std::string display_format;
-	std::vector<ParameterValue> values;
 
-	ParameterType(ParameterCategory cat, std::string dis_name, std::string dis_format, std::string db_format, std::vector<ParameterValue> vals) {
-		category = cat;
+	ParameterType(std::string dis_name, std::string dis_format, std::string db_format) {
 		display_name = dis_name;
 		display_format = dis_format;
 		database_format = db_format;
-		values = vals;
 	}
 
 	virtual ~ParameterType() = default;
 
 	virtual ParameterCategory GetParameterCategory() {
-		return category;
+		return Undefined;
+	}
+};
+
+struct EnumeratedParameterType : ParameterType {
+	std::vector<ParameterValue> values;
+
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, std::vector<ParameterValue> vals) :
+		ParameterType(dis_name, dis_format, db_format) {
+		values = vals;
+	}
+
+	virtual ParameterCategory GetParameterCategory() {
+		return Enumerated;
+	}
+};
+
+struct NumericalParameterType : ParameterType {
+	std::vector<ParameterValue> operations;
+	int min_value;
+	int max_value;
+
+	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format,
+		std::vector<ParameterValue> ops, int min, int max) :
+		ParameterType(dis_name, dis_format, db_format) {
+		operations = ops;
+		min_value = min;
+		max_value = max;
+	}
+
+	virtual ParameterCategory GetParameterCategory() {
+		return Numerical;
 	}
 };
 
@@ -109,8 +136,8 @@ struct QueryParameter {
 	}
 
 	QueryParameter(FormatStatement db_statement, DisplayStatement dis_statement) {
-		this->database_statement = db_statement;
-		this->display_statement = dis_statement;
+		database_statement = db_statement;
+		display_statement = dis_statement;
 	}
 };
 

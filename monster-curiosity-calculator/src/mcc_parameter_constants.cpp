@@ -5,7 +5,7 @@
 
 namespace monster_calculator {
 
-// parameter values
+// enum parameter values
 extern const std::vector<ParameterValue> kTypeValuesList = {
 	ParameterValue("Any",		"!= '-'",		ImVec4(0, 0, 0, 0)),
 	ParameterValue("None",		"= '-'",		ImVec4(0, 0, 0, 0)),
@@ -33,15 +33,33 @@ extern const std::vector<ParameterValue> kTypeValuesList = {
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
 const std::string kPrimaryDisplayFormat = "Primary Type: {0}";
-extern const ParameterType kPrimaryTypeParam = ParameterType(
-	Enumerated,
+extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType(
 	kPrimaryDisplayName,
 	kPrimaryDisplayFormat,
 	kPrimaryDatabaseFormat,
 	kTypeValuesList
 );
 
+// numerical parameter operations and values
+extern const std::vector<ParameterValue> kStandardNumericalOperations = {
+	ParameterValue("Range",		"BETWEEN",	ImVec4(0, 0, 0, 0)),
+	ParameterValue("Equal",		"=",		ImVec4(0, 0, 0, 0))
+};
+
+const int kByteMin = 0;
+const int kByteMax = 255;
+
 // numerical parameters
-extern const ParameterType kHealthParam;
+const std::string kHealthDisplayName = "Health";
+const std::string kHealthDatabaseFormat = "hp {0}";
+const std::string kHealthDisplayFormat = "Health {0}";
+extern const NumericalParameterType kHealthParam = NumericalParameterType(
+	kHealthDisplayName,
+	kHealthDisplayFormat,
+	kHealthDatabaseFormat,
+	kStandardNumericalOperations,
+	kByteMin,
+	kByteMax
+);
 
 } //namespace monster_calculator
