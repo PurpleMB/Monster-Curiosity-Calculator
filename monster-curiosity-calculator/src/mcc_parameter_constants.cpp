@@ -52,7 +52,7 @@ const int kByteMax = 255;
 // numerical parameters
 const std::string kHealthDisplayName = "Health";
 const std::string kHealthDatabaseFormat = "hp {0}";
-const std::string kHealthDisplayFormat = "Health {0}";
+const std::string kHealthDisplayFormat = "Health: {0}";
 extern const NumericalParameterType kHealthParam = NumericalParameterType(
 	kHealthDisplayName,
 	kHealthDisplayFormat,

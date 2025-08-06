@@ -8,7 +8,8 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_gui_windows.h"
-#include  "mcc_structs.h"
+#include "mcc_structs.h"
+#include "mcc_parameter_structs.h"
 
 namespace monster_calculator {
 
@@ -20,6 +21,12 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
+		ParameterSet param_set = ParameterSet(
+			6,
+			false
+		);
+		output_environment.subset_parameters = param_set;
+
 		CreateSubtable(output_environment);
 		SortSubtableEntries(output_environment);
 	}
