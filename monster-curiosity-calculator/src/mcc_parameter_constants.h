@@ -14,6 +14,7 @@ extern const std::vector<ParameterValue> kShapeValuesList;
 // enumerated parameters
 extern const EnumeratedParameterType kPrimaryTypeParam;
 extern const EnumeratedParameterType kEitherTypeParam;
+extern const EnumeratedParameterType kIsDefaultParam;
 extern const EnumeratedParameterType kIsBabyParam;
 extern const EnumeratedParameterType kColorParam;
 extern const EnumeratedParameterType kShapeParam;

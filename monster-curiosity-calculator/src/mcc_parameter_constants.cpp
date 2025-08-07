@@ -89,6 +89,18 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kTypeValuesList
 );
 
+const std::string kIsDefaultDisplayName = "Is Base Form";
+const std::string kIsDefaultDatabaseFormat = "is_default {0}";
+const std::string kIsDefaultDisplayFormat = "Base Form: {0}";
+const ImVec4 kIsDefaultParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+extern const EnumeratedParameterType kIsDefaultParam = EnumeratedParameterType(
+    kIsDefaultDisplayName,
+    kIsDefaultDisplayFormat,
+    kIsDefaultDatabaseFormat,
+    kIsDefaultParamColor,
+    kBinaryValuesList
+);
+
 const std::string kBabyDisplayName = "Is A Baby";
 const std::string kBabyDatabaseFormat = "is_baby {0}";
 const std::string kBabyDisplayFormat = "Baby: {0}";

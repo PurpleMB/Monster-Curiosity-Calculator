@@ -127,6 +127,7 @@ private:
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
 		std::make_shared<EnumeratedParameterType>(kEitherTypeParam),
+		std::make_shared<EnumeratedParameterType>(kIsDefaultParam),
 		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
