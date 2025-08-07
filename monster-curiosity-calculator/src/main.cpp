@@ -131,6 +131,7 @@ private:
 		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
+		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
 		std::make_shared<NumericalParameterType>(kDexNumParam),
 		std::make_shared<NumericalParameterType>(kCatchRateParam),
 		std::make_shared<NumericalParameterType>(kHealthParam),

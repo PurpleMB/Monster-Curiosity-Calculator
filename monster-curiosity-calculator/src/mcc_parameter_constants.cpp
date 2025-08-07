@@ -48,20 +48,38 @@ extern const std::vector<ParameterValue> kColorValuesList = {
 };
 
 extern const std::vector<ParameterValue> kShapeValuesList = {
-    ParameterValue("Ball",		"= 'ball'",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Squiggle",	"= 'squiggle'",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Fish",		"= 'fish'",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Arms",		"= 'arms'",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Blob",		"= 'blob'",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Upright",	"= 'upright'",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Legs",		"= 'legs'",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Quadruped",	"= 'quadruped'",ImVec4(0, 0, 0, 0)),
-    ParameterValue("Wings",		"= 'wings'",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Tentacles",	"= 'tentacles'",ImVec4(0, 0, 0, 0)),
-    ParameterValue("Heads",		"= 'heads'",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Humanoid",	"= 'humanoid'",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Insect",	"= 'bug-wings'",ImVec4(0, 0, 0, 0)),
+    ParameterValue("Ball",		"= 'ball'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Squiggle",	"= 'squiggle'",	    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Fish",		"= 'fish'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Arms",		"= 'arms'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Blob",		"= 'blob'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Upright",	"= 'upright'",	    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Legs",		"= 'legs'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Quadruped",	"= 'quadruped'",    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Wings",		"= 'wings'",	    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Tentacles",	"= 'tentacles'",    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Heads",		"= 'heads'",	    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Humanoid",	"= 'humanoid'",	    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Insect",	"= 'bug-wings'",    ImVec4(0, 0, 0, 0)),
     ParameterValue("Armor",		"= 'armor'",		ImVec4(0, 0, 0, 0))
+};
+
+extern const std::vector<ParameterValue> kEggGroupValuesList = {
+    ParameterValue("Mineral",		"= 'mineral'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Amorphous",		"= 'indeterminate'",	ImVec4(0, 0, 0, 0)),
+    ParameterValue("Grass",		    "= 'plant'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Water 3",		"= 'water3'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Water 2",		"= 'water2'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Water 1",		"= 'water1'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Bug",		    "= 'bug'",		        ImVec4(0, 0, 0, 0)),
+    ParameterValue("Dragon",		"= 'dragon'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Flying",		"= 'flying'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Field",		    "= 'ground'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Human-like",	"= 'humanshape'",		ImVec4(0, 0, 0, 0)),
+    ParameterValue("Fairy",		    "= 'fairy'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Monster",		"= 'monster'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Ditto",		    "= 'ditto'",		    ImVec4(0, 0, 0, 0)),
+    ParameterValue("Undiscovered",	"= 'no-eggs'",		    ImVec4(0, 0, 0, 0)),
 };
 
 // enumerated parameters
@@ -137,6 +155,18 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kShapeValuesList
 );
 
+const std::string kPrimaryEggDisplayName = "Primary Egg Group";
+const std::string kPrimaryEggDatabaseFormat = "primary_egg_group {0}";
+const std::string kPrimaryEggDisplayFormat = "Primary Egg Group: {0}";
+const ImVec4 kPrimaryEggParamColor = ImVec4(1.0f, 0.6f, 0.6f, 0.6f);
+extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
+    kPrimaryEggDisplayName,
+    kPrimaryEggDisplayFormat,
+    kPrimaryEggDatabaseFormat,
+    kPrimaryEggParamColor,
+    kEggGroupValuesList
+);
+
 // numerical parameter operations and values
 extern const std::vector<ParameterValue> kStandardNumericalOperations = {
     ParameterValue("Range",			"BETWEEN",	ImVec4(1.0f, 0.0f, 0.0f, 0.6f)),
@@ -144,9 +174,6 @@ extern const std::vector<ParameterValue> kStandardNumericalOperations = {
     ParameterValue("Less Than",		"<",		ImVec4(0.0f, 0.0f, 1.0f, 0.6f)),
     ParameterValue("Greater Than",	">",		ImVec4(1.0f, 1.0f, 0.0f, 0.6f))
 };
-
-
-const
 
 // numerical parameters
 const int kDexNumMin = 1;
