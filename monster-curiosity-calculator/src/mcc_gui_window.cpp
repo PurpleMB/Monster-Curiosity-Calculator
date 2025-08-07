@@ -158,6 +158,7 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, QueryP
 	}
 
 	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
+	building_parameter.display_statement.parameter_name = param_type.display_name;
 	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
 }
 
@@ -202,6 +203,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryPar
 		upper_bound = std::clamp(upper_bound, upper_min, max_val);
 
 		building_parameter.database_statement.argument = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
+		building_parameter.display_statement.parameter_name = param_type.display_name;
 		building_parameter.display_statement.argument = std::format("[{0}, {1}]", lower_bound, upper_bound);
 	} else {
 		static int bound = min_val;
@@ -212,6 +214,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryPar
 		bound = std::clamp(bound, min_val, max_val);
 
 		building_parameter.database_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].database_name, bound);
+		building_parameter.display_statement.parameter_name = param_type.display_name;
 		building_parameter.display_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].display_name, bound);
 	}
 }
@@ -272,10 +275,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
 				ImGui::TableSetColumnIndex(2);
-				ImGui::Text(subset_parameter.database_statement.EvaluateStatement().c_str());
+				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
 
 				ImGui::TableSetColumnIndex(3);
-				ImGui::Text(subset_parameter.display_statement.EvaluateStatement().c_str());
+				ImGui::Text(subset_parameter.display_statement.GetArgumentName().c_str());
 
 				ImGui::TableSetColumnIndex(4);
 				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);

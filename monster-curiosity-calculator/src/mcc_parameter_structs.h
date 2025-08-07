@@ -82,14 +82,14 @@ struct NumericalParameterType : ParameterType {
 // This struct is meant to hold a format string and some amount of argument strings
 // These strings can then be evaluated to form a single dynamic query statement for use
 // with the SQL database
-// ex: "health = {0}" with an argument of "10" convets to "health = 10"
+// ex: "health = {0}" with an argument of "10" converts to "health = 10"
 struct FormatStatement {
 	std::string format;
 	std::string argument;
 
 	FormatStatement() {
-		format = "";
-		argument = "";
+		format = "UNINITIALIZED FORMAT";
+		argument = "UNINITIALIZED ARGUMENT NAME";
 	}
 
 	FormatStatement(std::string form, std::string arg) {
@@ -107,18 +107,29 @@ struct FormatStatement {
 // displaying the statement inside a user-facing table. This includes such things as
 // desired table cell colors for the statement of arguments
 struct DisplayStatement : FormatStatement {
-	ImVec4 format_color;
+	std::string parameter_name;
+	ImVec4 parameter_color;
 	ImVec4 argument_color;
 
 	DisplayStatement() : FormatStatement() {
-		format_color = ImVec4(0, 0, 0, 0);
+		parameter_name = "UNITIALIZED PARAMETER NAME";
+		parameter_color = ImVec4(0, 0, 0, 0);
 		argument_color = ImVec4(0, 0, 0, 0);
 	}
 
-	DisplayStatement(std::string form, std::string arg, ImVec4 format_col, ImVec4 arg_col) : FormatStatement(form, arg) 
+	DisplayStatement(std::string form, std::string arg, std::string param_name, ImVec4 param_col, ImVec4 arg_col) : FormatStatement(form, arg) 
 	{
-		format_color = format_col;
+		parameter_name = param_name;
+		parameter_color = param_col;
 		argument_color = arg_col;
+	}
+
+	std::string GetParameterName() {
+		return parameter_name;
+	}
+
+	std::string GetArgumentName() {
+		return argument;
 	}
 };
 
