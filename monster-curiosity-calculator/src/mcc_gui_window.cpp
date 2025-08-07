@@ -102,8 +102,11 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	const ImU8 u8_one = 1;
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
-	static ImU8 parameter_group = 0;
+	static ImU8 parameter_group = 1;
 
+	if (parameter_group < 1) {
+		parameter_group = 1;
+	}
 	if (parameter_group > output_environment.subset_parameters.GetGroupCount()) {
 		parameter_group = output_environment.subset_parameters.GetGroupCount();
 	}
@@ -114,7 +117,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 
 	if (ImGui::Button("Apply Parameter")) {
-		output_environment.subset_parameters.AddParameter(building_parameter, parameter_group);
+		output_environment.subset_parameters.AddParameter(building_parameter, (parameter_group - 1));
 	}
 
 
