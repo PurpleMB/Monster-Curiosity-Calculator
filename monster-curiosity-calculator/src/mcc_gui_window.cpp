@@ -160,6 +160,8 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, QueryP
 	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
 	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
+	//building_parameter.display_statement.parameter_color = param_type.
+	building_parameter.display_statement.argument_color = param_type.values[selected_value_index].value_color;
 }
 
 void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryParameter& building_parameter) {
@@ -205,6 +207,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryPar
 		building_parameter.database_statement.argument = std::format("BETWEEN {0} AND {1}", lower_bound, upper_bound);
 		building_parameter.display_statement.parameter_name = param_type.display_name;
 		building_parameter.display_statement.argument = std::format("[{0}, {1}]", lower_bound, upper_bound);
+		building_parameter.display_statement.argument_color = operations[selected_subtype_index].value_color;
 	} else {
 		static int bound = min_val;
 		ImGui::Text("Set Inequality Value: ");
@@ -216,6 +219,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryPar
 		building_parameter.database_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].database_name, bound);
 		building_parameter.display_statement.parameter_name = param_type.display_name;
 		building_parameter.display_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].display_name, bound);
+		building_parameter.display_statement.argument_color = operations[selected_subtype_index].value_color;
 	}
 }
 
@@ -278,6 +282,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
 
 				ImGui::TableSetColumnIndex(3);
+				if (column_color_enabled) {
+					ImU32 cell_bg_color = ImGui::GetColorU32(subset_parameter.display_statement.argument_color);
+					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+				}
 				ImGui::Text(subset_parameter.display_statement.GetArgumentName().c_str());
 
 				ImGui::TableSetColumnIndex(4);

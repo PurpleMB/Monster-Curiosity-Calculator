@@ -107,10 +107,10 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
 
 // numerical parameter operations and values
 extern const std::vector<ParameterValue> kStandardNumericalOperations = {
-    ParameterValue("Range",			"BETWEEN",	ImVec4(0, 0, 0, 0)),
-    ParameterValue("Equal",			"=",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Less Than",		"<",		ImVec4(0, 0, 0, 0)),
-    ParameterValue("Greater Than",	">",		ImVec4(0, 0, 0, 0))
+    ParameterValue("Range",			"BETWEEN",	ImVec4(1.0f, 0.0f, 0.0f, 0.6f)),
+    ParameterValue("Equal",			"=",		ImVec4(0.0f, 1.0f, 0.0f, 0.6f)),
+    ParameterValue("Less Than",		"<",		ImVec4(0.0f, 0.0f, 1.0f, 0.6f)),
+    ParameterValue("Greater Than",	">",		ImVec4(1.0f, 1.0f, 0.0f, 0.6f))
 };
 
 
