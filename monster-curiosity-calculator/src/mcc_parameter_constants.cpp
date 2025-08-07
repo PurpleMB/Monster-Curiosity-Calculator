@@ -77,6 +77,18 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kTypeValuesList
 );
 
+const std::string kEitherTypeDisplayName = "Either Type";
+const std::string kEitherTypeDatabaseFormat = "primary_type {0} OR secondary_type {0}";
+const std::string kEitherTypeDisplayFormat = "Either Type: {0}";
+const ImVec4 kEitherTypeParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
+    kEitherTypeDisplayName,
+    kEitherTypeDisplayFormat,
+    kEitherTypeDatabaseFormat,
+    kEitherTypeParamColor,
+    kTypeValuesList
+);
+
 const std::string kBabyDisplayName = "Is A Baby";
 const std::string kBabyDatabaseFormat = "is_baby {0}";
 const std::string kBabyDisplayFormat = "Baby: {0}";
