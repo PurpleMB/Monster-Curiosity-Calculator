@@ -34,11 +34,13 @@ struct ParameterType {
 	std::string display_name;
 	std::string database_format;
 	std::string display_format;
+	ImVec4 parameter_color;
 
-	ParameterType(std::string dis_name, std::string dis_format, std::string db_format) {
+	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color) {
 		display_name = dis_name;
 		display_format = dis_format;
 		database_format = db_format;
+		parameter_color = color;
 	}
 
 	virtual ~ParameterType() = default;
@@ -51,8 +53,8 @@ struct ParameterType {
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
 
-	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, std::vector<ParameterValue> vals) :
-		ParameterType(dis_name, dis_format, db_format) {
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color, std::vector<ParameterValue> vals) :
+		ParameterType(dis_name, dis_format, db_format, color) {
 		values = vals;
 	}
 
@@ -66,9 +68,9 @@ struct NumericalParameterType : ParameterType {
 	int min_value;
 	int max_value;
 
-	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format,
+	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color,
 		std::vector<ParameterValue> ops, int min, int max) :
-		ParameterType(dis_name, dis_format, db_format) {
+		ParameterType(dis_name, dis_format, db_format, color) {
 		operations = ops;
 		min_value = min;
 		max_value = max;

@@ -68,40 +68,48 @@ extern const std::vector<ParameterValue> kShapeValuesList = {
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
 const std::string kPrimaryDisplayFormat = "Primary Type: {0}";
+const ImVec4 kPrimaryParamColor = ImVec4(1.0f, 0.0f, 1.0f, 1.0f);
 extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType(
     kPrimaryDisplayName,
     kPrimaryDisplayFormat,
     kPrimaryDatabaseFormat,
+    kPrimaryParamColor,
     kTypeValuesList
 );
 
 const std::string kBabyDisplayName = "Is A Baby";
 const std::string kBabyDatabaseFormat = "is_baby {0}";
 const std::string kBabyDisplayFormat = "Baby: {0}";
+const ImVec4 kBabyParamColor = ImVec4(0.0f, 1.0f, 1.0f, 1.0f);
 extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
     kBabyDisplayName,
     kBabyDisplayFormat,
     kBabyDatabaseFormat,
+    kBabyParamColor,
     kBinaryValuesList
 );
 
 const std::string kColorDisplayName = "Color";
 const std::string kColorDatabaseFormat = "color {0}";
 const std::string kColorDisplayFormat = "Color: {0}";
+const ImVec4 kColorParamColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
 extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kColorDisplayName,
     kColorDisplayFormat,
     kColorDatabaseFormat,
+    kColorParamColor,
     kColorValuesList
 );
 
 const std::string kShapeDisplayName = "Shape";
 const std::string kShapeDatabaseFormat = "shape {0}";
 const std::string kShapeDisplayFormat = "Shape: {0}";
+const ImVec4 kShapeParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kShapeDisplayName,
     kShapeDisplayFormat,
     kShapeDatabaseFormat,
+    kShapeParamColor,
     kShapeValuesList
 );
 
@@ -123,10 +131,12 @@ const int kDexNumMax = 1025;
 const std::string kDexNumDisplayName = "Dex Number";
 const std::string kDexNumDatabaseFormat = "dex_number {0}";
 const std::string kDexNumDisplayFormat = "Dex #: {0}";
+const ImVec4 kDexNumParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 extern const NumericalParameterType kDexNumParam = NumericalParameterType(
     kDexNumDisplayName,
     kDexNumDisplayFormat,
     kDexNumDatabaseFormat,
+    kDexNumParamColor,
     kStandardNumericalOperations,
     kDexNumMin,
     kDexNumMax
@@ -139,10 +149,12 @@ const int kCatchRateMax = 255;
 const std::string kCatchRateDisplayName = "Catch Rate";
 const std::string kCatchRateDatabaseFormat = "catch_rate {0}";
 const std::string kCatchRateDisplayFormat = "Catch Rate: {0}";
+const ImVec4 kCatchRateParamColor = ImVec4(0.5f, 0.5f, 0.0f, 1.0f);
 extern const NumericalParameterType kCatchRateParam = NumericalParameterType(
     kCatchRateDisplayName,
     kCatchRateDisplayFormat,
     kCatchRateDatabaseFormat,
+    kCatchRateParamColor,
     kStandardNumericalOperations,
     kCatchRateMin,
     kCatchRateMax
@@ -155,10 +167,12 @@ const int kSingleStatMax = 255;
 const std::string kHealthDisplayName = "Health";
 const std::string kHealthDatabaseFormat = "hp {0}";
 const std::string kHealthDisplayFormat = "Health: {0}";
+const ImVec4 kHealthParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
 extern const NumericalParameterType kHealthParam = NumericalParameterType(
     kHealthDisplayName,
     kHealthDisplayFormat,
     kHealthDatabaseFormat,
+    kHealthParamColor,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -170,10 +184,12 @@ const int kStatTotalMax = 1530;
 const std::string kBaseStatTotalDisplayName = "Base Stat Total";
 const std::string kBaseStatTotalDatabaseFormat = "stat_total {0}";
 const std::string kBaseStatTotalDisplayFormat = "Base Stat Total: {0}";
+const ImVec4 kStatTotalParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 extern const NumericalParameterType kStatTotalParam = NumericalParameterType(
     kBaseStatTotalDisplayName,
     kBaseStatTotalDisplayFormat,
     kBaseStatTotalDatabaseFormat,
+    kStatTotalParamColor,
     kStandardNumericalOperations,
     kStatTotalMin,
     kStatTotalMax

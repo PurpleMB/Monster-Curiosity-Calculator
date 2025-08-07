@@ -83,6 +83,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
 	building_parameter.database_statement.format = selected_param->database_format;
 	building_parameter.display_statement.format = selected_param->display_format;
+	building_parameter.display_statement.parameter_color = selected_param->parameter_color;
 
 	if (parameter_types[selected_parameter_index]->GetParameterCategory() == Enumerated) {
 		EnumeratedParameterType enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
@@ -279,6 +280,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
 				ImGui::TableSetColumnIndex(2);
+				if (column_color_enabled) {
+					ImU32 cell_bg_color = ImGui::GetColorU32(subset_parameter.display_statement.parameter_color);
+					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+				}
 				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
 
 				ImGui::TableSetColumnIndex(3);
