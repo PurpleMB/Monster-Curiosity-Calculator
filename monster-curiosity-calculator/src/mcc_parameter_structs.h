@@ -13,6 +13,7 @@ namespace monster_calculator {
 // Numerical is used for values such as Health, Speed, etc.
 enum ParameterCategory {
 	Enumerated,
+	Open,
 	Numerical,
 	Undefined
 };
@@ -60,6 +61,16 @@ struct EnumeratedParameterType : ParameterType {
 
 	virtual ParameterCategory GetParameterCategory() {
 		return Enumerated;
+	}
+};
+
+struct OpenParameterType : ParameterType {
+	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color) :
+		ParameterType(dis_name, dis_format, db_format, color) {
+	}
+
+	virtual ParameterCategory GetParameterCategory() {
+		return Open;
 	}
 };
 
