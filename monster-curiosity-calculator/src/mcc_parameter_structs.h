@@ -18,16 +18,6 @@ enum ParameterCategory {
 	Undefined
 };
 
-// This struct encapsulates the data for a single possible value of a ParameterType.
-// For example, a parameter value for a monster typing may have values like "normal", "Normal"
-// and an ImVec4 that looks white when interpreted as a color.
-struct ParameterValue {
-	std::string display_name;
-	std::string database_name;
-	ImVec4 value_color;
-};
-
-
 // This struct defines the general structure of an entire type of value that may be parameterized
 // (Health, Dex #, etc.) and contains info about how the database wants to see that parameter,
 // how to show the user that parameter, and information regarding all possible values for the type.
@@ -36,6 +26,13 @@ struct ParameterType {
 	std::string database_format;
 	std::string display_format;
 	ImVec4 parameter_color;
+
+	ParameterType() {
+		display_name = "UNINITIALIZED DISPLAY NAME";
+		database_format = "UNINITIALIZED DATABASE FORMAT";
+		display_format = "UNINITIALIZED DISPLAY FORMAT";
+		parameter_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
 
 	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color) {
 		display_name = dis_name;
@@ -51,8 +48,27 @@ struct ParameterType {
 	}
 };
 
+// This struct encapsulates the data for a single possible value of a ParameterType.
+// For example, a parameter value for a monster typing may have values like "normal", "Normal"
+// and an ImVec4 that looks white when interpreted as a color.
+struct ParameterValue {
+	std::string display_name;
+	std::string database_name;
+	ImVec4 value_color;
+
+	ParameterValue(std::string dis_name, std::string db_name, ImVec4 color) {
+		display_name = dis_name;
+		database_name = db_name;
+		value_color = color;
+	}
+};
+
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
+
+	EnumeratedParameterType() : ParameterType() {
+		values = {};
+	}
 
 	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color, std::vector<ParameterValue> vals) :
 		ParameterType(dis_name, dis_format, db_format, color) {
@@ -64,9 +80,29 @@ struct EnumeratedParameterType : ParameterType {
 	}
 };
 
+struct ParameterOperation : ParameterValue{
+	std::vector<std::string> operands;
+
+	ParameterOperation(std::string dis_name, std::string db_name, ImVec4 color, std::vector<std::string> ops) :
+		ParameterValue(dis_name, db_name, color) {
+		operands = operands;
+	}
+};
+
 struct OpenParameterType : ParameterType {
-	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color) :
+	int data_type;
+	std::vector<ParameterOperation> operations;
+
+	OpenParameterType() : ParameterType() {
+		data_type = ImGuiDataType_Bool;
+		operations = {};
+	}
+
+	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color, 
+		int type, std::vector<ParameterOperation> ops) :
 		ParameterType(dis_name, dis_format, db_format, color) {
+		data_type = type;
+		operations = ops;
 	}
 
 	virtual ParameterCategory GetParameterCategory() {
@@ -74,15 +110,18 @@ struct OpenParameterType : ParameterType {
 	}
 };
 
-struct NumericalParameterType : ParameterType {
-	std::vector<ParameterValue> operations;
+struct NumericalParameterType : OpenParameterType {
 	int min_value;
 	int max_value;
 
+	NumericalParameterType() : OpenParameterType() {
+		min_value = -1;
+		max_value = -1;
+	}
+
 	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color,
-		std::vector<ParameterValue> ops, int min, int max) :
-		ParameterType(dis_name, dis_format, db_format, color) {
-		operations = ops;
+		int type, std::vector<ParameterOperation> ops, int min, int max) :
+		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
 		min_value = min;
 		max_value = max;
 	}

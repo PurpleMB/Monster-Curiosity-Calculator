@@ -89,19 +89,25 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	building_parameter.display_statement.format = selected_param->display_format;
 	building_parameter.display_statement.parameter_color = selected_param->parameter_color;
 
-	if (parameter_types[selected_parameter_index]->GetParameterCategory() == Enumerated) {
-		EnumeratedParameterType enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
-		DrawEnumeratorParameterSelector(enum_param, selected_subtype_index, building_parameter);
-	} 
-	else if (parameter_types[selected_parameter_index]->GetParameterCategory() == Numerical) {
-		NumericalParameterType numer_param = *dynamic_cast<NumericalParameterType*>(selected_param);
-		DrawNumericalParameterSelector(numer_param, selected_subtype_index, building_parameter);
-	}
-	else {
-		ImGui::SameLine();
-		ImGui::Text("ERROR: UNDEFINED PARAMETER TYPE");
-	}
 
+	EnumeratedParameterType enum_param;
+	NumericalParameterType numer_param;
+	switch (parameter_types[selected_parameter_index]->GetParameterCategory()) {
+		case Enumerated:
+			enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
+			DrawEnumeratorParameterSelector(enum_param, selected_subtype_index, building_parameter);
+			break;
+		case Open:
+			break;
+		case Numerical:
+			numer_param = *dynamic_cast<NumericalParameterType*>(selected_param);
+			DrawNumericalParameterSelector(numer_param, selected_subtype_index, building_parameter);
+			break;
+		default:
+			ImGui::SameLine();
+			ImGui::Text("ERROR: UNDEFINED PARAMETER TYPE");
+			break;
+	}
 
 	const ImU8 u8_one = 1;
 	static bool inputs_step = true;
@@ -173,7 +179,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, int& sel
 	int min_val = param_type.min_value;
 	int max_val = param_type.max_value;
 	
-	std::vector<ParameterValue> operations = param_type.operations;
+	std::vector<ParameterOperation> operations = param_type.operations;
 	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
 		ImGui::OpenPopup("##Select parameter subtype");
 	}
@@ -191,6 +197,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, int& sel
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
 
+	/*
 	if (operations[selected_subtype_index].display_name == "Range") {
 		static int lower_bound = min_val;
 		static int upper_bound = max_val;
@@ -225,6 +232,7 @@ void DrawNumericalParameterSelector(NumericalParameterType& param_type, int& sel
 		building_parameter.display_statement.argument = std::format("{0} {1}", operations[selected_subtype_index].display_name, bound);
 		building_parameter.display_statement.argument_color = operations[selected_subtype_index].value_color;
 	}
+	*/
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {

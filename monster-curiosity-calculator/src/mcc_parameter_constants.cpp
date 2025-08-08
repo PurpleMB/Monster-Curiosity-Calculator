@@ -170,12 +170,53 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kEggGroupValuesList
 );
 
+// open parameter values
+extern const std::vector<ParameterOperation> kNameOperations = {
+    ParameterOperation("Equals",		"= '{0}'",		    ImVec4(0, 0, 0, 0),
+        {
+            "Name"
+        }
+    ),
+    
+};
+
+// open parameters
+const std::string kNameDisplayName = "Name";
+const std::string kNameDatabaseFormat = "name {0}";
+const std::string kNameDisplayFormat = "Name: {0}";
+const ImVec4 kNameParamColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+extern const OpenParameterType kNameParam = OpenParameterType(
+    kNameDisplayName,
+    kNameDisplayFormat,
+    kNameDatabaseFormat,
+    kNameParamColor,
+    ImGuiDataType_String,
+    kNameOperations
+);
+
 // numerical parameter operations and values
-extern const std::vector<ParameterValue> kStandardNumericalOperations = {
-    ParameterValue("Range",			"BETWEEN",	ImVec4(1.0f, 0.0f, 0.0f, 0.6f)),
-    ParameterValue("Equal",			"=",		ImVec4(0.0f, 1.0f, 0.0f, 0.6f)),
-    ParameterValue("Less Than",		"<",		ImVec4(0.0f, 0.0f, 1.0f, 0.6f)),
-    ParameterValue("Greater Than",	">",		ImVec4(1.0f, 1.0f, 0.0f, 0.6f))
+extern const std::vector<ParameterOperation> kStandardNumericalOperations = {
+    ParameterOperation("Range",			"BETWEEN",	ImVec4(1.0f, 0.0f, 0.0f, 0.6f),
+        {
+            "Lower bound",
+            "Upper bound"
+        }
+    ),
+    ParameterOperation("Equal",			"=",		ImVec4(0.0f, 1.0f, 0.0f, 0.6f),
+        {
+            "Target value"
+        }
+    ),
+    ParameterOperation("Less Than",		"<",		ImVec4(0.0f, 0.0f, 1.0f, 0.6f),
+        {
+            "Maximum value"
+        }
+    ),
+    ParameterOperation("Greater Than",	">",		ImVec4(1.0f, 1.0f, 0.0f, 0.6f),
+        {
+            "Minimum value"
+        }
+    )
 };
 
 // numerical parameters
@@ -191,6 +232,7 @@ extern const NumericalParameterType kDexNumParam = NumericalParameterType(
     kDexNumDisplayFormat,
     kDexNumDatabaseFormat,
     kDexNumParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kDexNumMin,
     kDexNumMax
@@ -209,6 +251,7 @@ extern const NumericalParameterType kCatchRateParam = NumericalParameterType(
     kCatchRateDisplayFormat,
     kCatchRateDatabaseFormat,
     kCatchRateParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kCatchRateMin,
     kCatchRateMax
@@ -227,6 +270,7 @@ extern const NumericalParameterType kHealthParam = NumericalParameterType(
     kHealthDisplayFormat,
     kHealthDatabaseFormat,
     kHealthParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -241,6 +285,7 @@ extern const NumericalParameterType kAttackParam = NumericalParameterType(
     kAttackDisplayFormat,
     kAttackDatabaseFormat,
     kAttackParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -255,6 +300,7 @@ extern const NumericalParameterType kDefenseParam = NumericalParameterType(
     kDefenseDisplayFormat,
     kDefenseDatabaseFormat,
     kDefenseParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -269,6 +315,7 @@ extern const NumericalParameterType kSpeAtkParam = NumericalParameterType(
     kSpeAtkDisplayFormat,
     kSpeAtkDatabaseFormat,
     kSpeAtkParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -283,6 +330,7 @@ extern const NumericalParameterType kSpeDefParam = NumericalParameterType(
     kSpeDefDisplayFormat,
     kSpeDefDatabaseFormat,
     kSpeDefParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -297,6 +345,7 @@ extern const NumericalParameterType kSpeedParam = NumericalParameterType(
     kSpeedDisplayFormat,
     kSpeedDatabaseFormat,
     kSpeedParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -314,6 +363,7 @@ extern const NumericalParameterType kStatTotalParam = NumericalParameterType(
     kBaseStatTotalDisplayFormat,
     kBaseStatTotalDatabaseFormat,
     kStatTotalParamColor,
+    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kStatTotalMin,
     kStatTotalMax
