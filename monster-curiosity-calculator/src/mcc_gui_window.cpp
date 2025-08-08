@@ -64,6 +64,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	static int selected_parameter_index = 0;
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
+	static int selected_subtype_index = 0;
 
 	static QueryParameter building_parameter;
 
@@ -74,6 +75,9 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	if (ImGui::BeginPopup("Select parameter")) {
 		for (int i = 0; i < parameter_types.size(); i++) {
 			if (ImGui::Selectable(parameter_types[i]->display_name.c_str())) {
+				if (i != selected_parameter_index) {
+					selected_subtype_index = 0;
+				}
 				selected_parameter_index = i;
 			}
 		}
@@ -87,11 +91,11 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	if (parameter_types[selected_parameter_index]->GetParameterCategory() == Enumerated) {
 		EnumeratedParameterType enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
-		DrawEnumeratorParameterSelector(enum_param, building_parameter);
+		DrawEnumeratorParameterSelector(enum_param, selected_subtype_index, building_parameter);
 	} 
 	else if (parameter_types[selected_parameter_index]->GetParameterCategory() == Numerical) {
 		NumericalParameterType numer_param = *dynamic_cast<NumericalParameterType*>(selected_param);
-		DrawNumericalParameterSelector(numer_param, building_parameter);
+		DrawNumericalParameterSelector(numer_param, selected_subtype_index, building_parameter);
 	}
 	else {
 		ImGui::SameLine();
@@ -144,10 +148,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ImGui::End();
 }
 
-void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, QueryParameter& building_parameter) {
-	static int selected_value_index = 0;
-
-	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
+	std::string selected_value_name = param_type.values[selected_subtype_index].display_name;
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select parameter value");
 	}
@@ -155,24 +157,22 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, QueryP
 	if (ImGui::BeginPopup("Select parameter value")) {
 		for (int i = 0; i < param_type.values.size(); i++) {
 			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
-				selected_value_index = i;
+				selected_subtype_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
+	building_parameter.database_statement.argument = param_type.values[selected_subtype_index].database_name;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
-	//building_parameter.display_statement.parameter_color = param_type.
-	building_parameter.display_statement.argument_color = param_type.values[selected_value_index].value_color;
+	building_parameter.display_statement.argument = param_type.values[selected_subtype_index].display_name;
+	building_parameter.display_statement.argument_color = param_type.values[selected_subtype_index].value_color;
 }
 
-void DrawNumericalParameterSelector(NumericalParameterType& param_type, QueryParameter& building_parameter) {
+void DrawNumericalParameterSelector(NumericalParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
 	int min_val = param_type.min_value;
 	int max_val = param_type.max_value;
 	
-	static int selected_subtype_index = 0;
 	std::vector<ParameterValue> operations = param_type.operations;
 	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
 		ImGui::OpenPopup("##Select parameter subtype");
