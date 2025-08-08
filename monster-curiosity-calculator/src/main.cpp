@@ -135,6 +135,11 @@ private:
 		std::make_shared<NumericalParameterType>(kDexNumParam),
 		std::make_shared<NumericalParameterType>(kCatchRateParam),
 		std::make_shared<NumericalParameterType>(kHealthParam),
+		std::make_shared<NumericalParameterType>(kAttackParam),
+		std::make_shared<NumericalParameterType>(kDefenseParam),
+		std::make_shared<NumericalParameterType>(kSpeAtkParam),
+		std::make_shared<NumericalParameterType>(kSpeDefParam),
+		std::make_shared<NumericalParameterType>(kSpeedParam),
 		std::make_shared<NumericalParameterType>(kStatTotalParam)
 	};
 

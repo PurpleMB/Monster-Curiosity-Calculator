@@ -28,6 +28,11 @@ extern const std::vector<ParameterValue> kStandardNumericalOperations;
 extern const NumericalParameterType kDexNumParam;
 extern const NumericalParameterType kCatchRateParam;
 extern const NumericalParameterType kHealthParam;
+extern const NumericalParameterType kAttackParam;
+extern const NumericalParameterType kDefenseParam;
+extern const NumericalParameterType kSpeAtkParam;
+extern const NumericalParameterType kSpeDefParam;
+extern const NumericalParameterType kSpeedParam;
 extern const NumericalParameterType kStatTotalParam;
 
 } //namespace monster_calculator

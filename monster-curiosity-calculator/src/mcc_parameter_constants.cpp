@@ -229,6 +229,76 @@ extern const NumericalParameterType kHealthParam = NumericalParameterType(
     kSingleStatMax
 );
 
+const std::string kAttackDisplayName = "Attack";
+const std::string kAttackDatabaseFormat = "attack {0}";
+const std::string kAttackDisplayFormat = "Attack: {0}";
+const ImVec4 kAttackParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
+extern const NumericalParameterType kAttackParam = NumericalParameterType(
+    kAttackDisplayName,
+    kAttackDisplayFormat,
+    kAttackDatabaseFormat,
+    kAttackParamColor,
+    kStandardNumericalOperations,
+    kSingleStatMin,
+    kSingleStatMax
+);
+
+const std::string kDefenseDisplayName = "Defense";
+const std::string kDefenseDatabaseFormat = "defense {0}";
+const std::string kDefenseDisplayFormat = "Defense: {0}";
+const ImVec4 kDefenseParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
+extern const NumericalParameterType kDefenseParam = NumericalParameterType(
+    kDefenseDisplayName,
+    kDefenseDisplayFormat,
+    kDefenseDatabaseFormat,
+    kDefenseParamColor,
+    kStandardNumericalOperations,
+    kSingleStatMin,
+    kSingleStatMax
+);
+
+const std::string kSpeAtkDisplayName = "Special Attack";
+const std::string kSpeAtkDatabaseFormat = "special_attack {0}";
+const std::string kSpeAtkDisplayFormat = "Special Attack: {0}";
+const ImVec4 kSpeAtkParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
+extern const NumericalParameterType kSpeAtkParam = NumericalParameterType(
+    kSpeAtkDisplayName,
+    kSpeAtkDisplayFormat,
+    kSpeAtkDatabaseFormat,
+    kSpeAtkParamColor,
+    kStandardNumericalOperations,
+    kSingleStatMin,
+    kSingleStatMax
+);
+
+const std::string kSpeDefDisplayName = "Special Defense";
+const std::string kSpeDefDatabaseFormat = "special_defense {0}";
+const std::string kSpeDefDisplayFormat = "Special Defense: {0}";
+const ImVec4 kSpeDefParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
+extern const NumericalParameterType kSpeDefParam = NumericalParameterType(
+    kSpeDefDisplayName,
+    kSpeDefDisplayFormat,
+    kSpeDefDatabaseFormat,
+    kSpeDefParamColor,
+    kStandardNumericalOperations,
+    kSingleStatMin,
+    kSingleStatMax
+);
+
+const std::string kSpeedDisplayName = "Speed";
+const std::string kSpeedDatabaseFormat = "speed {0}";
+const std::string kSpeedDisplayFormat = "Speed: {0}";
+const ImVec4 kSpeedParamColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
+extern const NumericalParameterType kSpeedParam = NumericalParameterType(
+    kSpeedDisplayName,
+    kSpeedDisplayFormat,
+    kSpeedDatabaseFormat,
+    kSpeedParamColor,
+    kStandardNumericalOperations,
+    kSingleStatMin,
+    kSingleStatMax
+);
+
 const int kStatTotalMin = 0;
 const int kStatTotalMax = 1530;
 
