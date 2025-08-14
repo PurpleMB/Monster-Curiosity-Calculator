@@ -261,7 +261,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, int& selecte
 	}
 	ParameterOperation selected_operation = param_type.operations[selected_subtype_index];
 
-	const double double_one = 1.0;
+	const double f64_one = 1.0;
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
 	static std::vector<double> operand_values = {0, 0};
@@ -277,7 +277,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, int& selecte
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
 		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
-		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &double_one : NULL, NULL, "%u", flags);
+		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &f64_one : NULL, NULL, NULL, flags);
 	}
 
 	std::string operation_format = selected_operation.database_name;

@@ -209,7 +209,7 @@ extern const std::vector<ParameterOperation> kStandardNumericalOperations = {
     )
 };
 
-// numerical parameters
+// Integer parameters
 const int kDexNumMin = 1;
 const int kDexNumMax = 1025;
 
@@ -348,6 +348,23 @@ extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
     kStandardNumericalOperations,
     kStatTotalMin,
     kStatTotalMax
+);
+
+// decimal parameters
+const double kWeightMin = 0.0;
+const double kWeightMax = 2000.0;
+const std::string kWeightDisplayName = "Weight (kg)";
+const std::string kWeightDatabaseFormat = "weight {0}";
+const std::string kWeightDisplayFormat = "Weight: {0}";
+extern const DecimalParameterType kWeightParam = DecimalParameterType(
+    kWeightDisplayName,
+    kWeightDisplayFormat,
+    kWeightDatabaseFormat,
+    kRaspberryColor,
+    ImGuiDataType_Double,
+    kStandardNumericalOperations,
+    kWeightMin,
+    kWeightMax
 );
 
 } //namespace monster_calculator

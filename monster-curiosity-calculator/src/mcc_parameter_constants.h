@@ -30,7 +30,7 @@ extern const OpenParameterType kNameParam;
 // numerical parameter operations and values
 extern const std::vector<ParameterValue> kStandardNumericalOperations;
 
-// numerical parameters
+// integer parameters
 extern const IntegerParameterType kDexNumParam;
 extern const IntegerParameterType kCatchRateParam;
 extern const IntegerParameterType kHealthParam;
@@ -40,5 +40,8 @@ extern const IntegerParameterType kSpeAtkParam;
 extern const IntegerParameterType kSpeDefParam;
 extern const IntegerParameterType kSpeedParam;
 extern const IntegerParameterType kStatTotalParam;
+
+// decimal parameters
+extern const DecimalParameterType kWeightParam;
 
 } //namespace monster_calculator
