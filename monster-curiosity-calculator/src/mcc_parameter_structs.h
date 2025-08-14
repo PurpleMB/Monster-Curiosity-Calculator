@@ -17,7 +17,8 @@ namespace monster_calculator {
 enum ParameterCategory {
 	Enumerated,
 	Open,
-	Numerical,
+	Integer,
+	Decimal,
 	Undefined
 };
 
@@ -96,7 +97,7 @@ struct ParameterOperation : ParameterValue{
 
 	ParameterOperation(std::string dis_name, std::string db_name, DisplayColor color, std::vector<std::string> ops) :
 		ParameterValue(dis_name, db_name, color) {
-		operands = operands;
+		operands = ops;
 	}
 };
 
@@ -121,16 +122,16 @@ struct OpenParameterType : ParameterType {
 	}
 };
 
-struct NumericalParameterType : OpenParameterType {
+struct IntegerParameterType : OpenParameterType {
 	int min_value;
 	int max_value;
 
-	NumericalParameterType() : OpenParameterType() {
+	IntegerParameterType() : OpenParameterType() {
 		min_value = -1;
 		max_value = -1;
 	}
 
-	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
+	IntegerParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
 		int type, std::vector<ParameterOperation> ops, int min, int max) :
 		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
 		min_value = min;
@@ -138,7 +139,28 @@ struct NumericalParameterType : OpenParameterType {
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
-		return Numerical;
+		return Integer;
+	}
+};
+
+struct DecimalParameterType : OpenParameterType {
+	double min_value;
+	double max_value;
+
+	DecimalParameterType() : OpenParameterType() {
+		min_value = -1.0;
+		max_value = -1.0;
+	}
+
+	DecimalParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
+		int type, std::vector<ParameterOperation> ops, double min, double max) :
+		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
+		min_value = min;
+		max_value = max;
+	}
+
+	virtual ParameterCategory GetParameterCategory() const {
+		return Decimal;
 	}
 };
 

@@ -189,24 +189,20 @@ extern const OpenParameterType kNameParam = OpenParameterType(
 );
 
 // numerical parameter operations and values
+const std::vector<std::string> kRangeOperands = {"Lower bound", "Upper bound"};
 extern const std::vector<ParameterOperation> kStandardNumericalOperations = {
-    ParameterOperation("Range",			"BETWEEN",	kPurpleColor,
-        {
-            "Lower bound",
-            "Upper bound"
-        }
-    ),
-    ParameterOperation("Equal",			"=",		kGreenColor,
+    ParameterOperation("Range",			"BETWEEN {0} AND {1}",	kPurpleColor, kRangeOperands ),
+    ParameterOperation("Equal",			"= {0}",		kGreenColor,
         {
             "Target value"
         }
     ),
-    ParameterOperation("Less Than",		"<",		kRedColor,
+    ParameterOperation("Less Than",		"< {0}",		kRedColor,
         {
             "Maximum value"
         }
     ),
-    ParameterOperation("Greater Than",	">",		kBlueColor,
+    ParameterOperation("Greater Than",	"> {0}",		kBlueColor,
         {
             "Minimum value"
         }
@@ -220,7 +216,7 @@ const int kDexNumMax = 1025;
 const std::string kDexNumDisplayName = "Dex Number";
 const std::string kDexNumDatabaseFormat = "dex_number {0}";
 const std::string kDexNumDisplayFormat = "Dex #: {0}";
-extern const NumericalParameterType kDexNumParam = NumericalParameterType(
+extern const IntegerParameterType kDexNumParam = IntegerParameterType(
     kDexNumDisplayName,
     kDexNumDisplayFormat,
     kDexNumDatabaseFormat,
@@ -238,7 +234,7 @@ const int kCatchRateMax = 255;
 const std::string kCatchRateDisplayName = "Catch Rate";
 const std::string kCatchRateDatabaseFormat = "catch_rate {0}";
 const std::string kCatchRateDisplayFormat = "Catch Rate: {0}";
-extern const NumericalParameterType kCatchRateParam = NumericalParameterType(
+extern const IntegerParameterType kCatchRateParam = IntegerParameterType(
     kCatchRateDisplayName,
     kCatchRateDisplayFormat,
     kCatchRateDatabaseFormat,
@@ -256,7 +252,7 @@ const int kSingleStatMax = 255;
 const std::string kHealthDisplayName = "Health";
 const std::string kHealthDatabaseFormat = "hp {0}";
 const std::string kHealthDisplayFormat = "Health: {0}";
-extern const NumericalParameterType kHealthParam = NumericalParameterType(
+extern const IntegerParameterType kHealthParam = IntegerParameterType(
     kHealthDisplayName,
     kHealthDisplayFormat,
     kHealthDatabaseFormat,
@@ -270,7 +266,7 @@ extern const NumericalParameterType kHealthParam = NumericalParameterType(
 const std::string kAttackDisplayName = "Attack";
 const std::string kAttackDatabaseFormat = "attack {0}";
 const std::string kAttackDisplayFormat = "Attack: {0}";
-extern const NumericalParameterType kAttackParam = NumericalParameterType(
+extern const IntegerParameterType kAttackParam = IntegerParameterType(
     kAttackDisplayName,
     kAttackDisplayFormat,
     kAttackDatabaseFormat,
@@ -284,7 +280,7 @@ extern const NumericalParameterType kAttackParam = NumericalParameterType(
 const std::string kDefenseDisplayName = "Defense";
 const std::string kDefenseDatabaseFormat = "defense {0}";
 const std::string kDefenseDisplayFormat = "Defense: {0}";
-extern const NumericalParameterType kDefenseParam = NumericalParameterType(
+extern const IntegerParameterType kDefenseParam = IntegerParameterType(
     kDefenseDisplayName,
     kDefenseDisplayFormat,
     kDefenseDatabaseFormat,
@@ -298,7 +294,7 @@ extern const NumericalParameterType kDefenseParam = NumericalParameterType(
 const std::string kSpeAtkDisplayName = "Special Attack";
 const std::string kSpeAtkDatabaseFormat = "special_attack {0}";
 const std::string kSpeAtkDisplayFormat = "Special Attack: {0}";
-extern const NumericalParameterType kSpeAtkParam = NumericalParameterType(
+extern const IntegerParameterType kSpeAtkParam = IntegerParameterType(
     kSpeAtkDisplayName,
     kSpeAtkDisplayFormat,
     kSpeAtkDatabaseFormat,
@@ -312,7 +308,7 @@ extern const NumericalParameterType kSpeAtkParam = NumericalParameterType(
 const std::string kSpeDefDisplayName = "Special Defense";
 const std::string kSpeDefDatabaseFormat = "special_defense {0}";
 const std::string kSpeDefDisplayFormat = "Special Defense: {0}";
-extern const NumericalParameterType kSpeDefParam = NumericalParameterType(
+extern const IntegerParameterType kSpeDefParam = IntegerParameterType(
     kSpeDefDisplayName,
     kSpeDefDisplayFormat,
     kSpeDefDatabaseFormat,
@@ -326,7 +322,7 @@ extern const NumericalParameterType kSpeDefParam = NumericalParameterType(
 const std::string kSpeedDisplayName = "Speed";
 const std::string kSpeedDatabaseFormat = "speed {0}";
 const std::string kSpeedDisplayFormat = "Speed: {0}";
-extern const NumericalParameterType kSpeedParam = NumericalParameterType(
+extern const IntegerParameterType kSpeedParam = IntegerParameterType(
     kSpeedDisplayName,
     kSpeedDisplayFormat,
     kSpeedDatabaseFormat,
@@ -343,7 +339,7 @@ const int kStatTotalMax = 1530;
 const std::string kBaseStatTotalDisplayName = "Base Stat Total";
 const std::string kBaseStatTotalDatabaseFormat = "stat_total {0}";
 const std::string kBaseStatTotalDisplayFormat = "Base Stat Total: {0}";
-extern const NumericalParameterType kStatTotalParam = NumericalParameterType(
+extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
     kBaseStatTotalDisplayName,
     kBaseStatTotalDisplayFormat,
     kBaseStatTotalDatabaseFormat,

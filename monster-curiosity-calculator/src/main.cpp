@@ -138,15 +138,15 @@ private:
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
 		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
-		std::make_shared<NumericalParameterType>(kDexNumParam),
-		std::make_shared<NumericalParameterType>(kCatchRateParam),
-		std::make_shared<NumericalParameterType>(kHealthParam),
-		std::make_shared<NumericalParameterType>(kAttackParam),
-		std::make_shared<NumericalParameterType>(kDefenseParam),
-		std::make_shared<NumericalParameterType>(kSpeAtkParam),
-		std::make_shared<NumericalParameterType>(kSpeDefParam),
-		std::make_shared<NumericalParameterType>(kSpeedParam),
-		std::make_shared<NumericalParameterType>(kStatTotalParam)
+		std::make_shared<IntegerParameterType>(kDexNumParam),
+		std::make_shared<IntegerParameterType>(kCatchRateParam),
+		std::make_shared<IntegerParameterType>(kHealthParam),
+		std::make_shared<IntegerParameterType>(kAttackParam),
+		std::make_shared<IntegerParameterType>(kDefenseParam),
+		std::make_shared<IntegerParameterType>(kSpeAtkParam),
+		std::make_shared<IntegerParameterType>(kSpeDefParam),
+		std::make_shared<IntegerParameterType>(kSpeedParam),
+		std::make_shared<IntegerParameterType>(kStatTotalParam)
 	};
 
 	OutputEnvironment output_environment;
