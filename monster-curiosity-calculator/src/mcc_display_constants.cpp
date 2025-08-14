@@ -120,6 +120,16 @@ extern const DisplayColor kLinenColor = DisplayColor(
 	"Linen",
 	ImVec4(233.0f / 255.0f, 220.0f / 255.0f, 240.0f / 255.0f, kColorIntensity)
 );
+extern const DisplayColor kPearlColor = DisplayColor(
+	"Pearl",
+	ImVec4(226.0f / 255.0f, 223.0f / 255.0f, 210.0f / 255.0f, kColorIntensity)
+);
+
+// Grays
+extern const DisplayColor kGrayColor = DisplayColor(
+	"Gray",
+	ImVec4(128.0f / 255.0f, 128.0f / 255.0f, 128.0f / 255.0f, kColorIntensity)
+);
 
 // Blacks
 extern const DisplayColor kBlackColor = DisplayColor(

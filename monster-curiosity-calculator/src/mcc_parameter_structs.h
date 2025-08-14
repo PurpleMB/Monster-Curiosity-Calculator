@@ -5,6 +5,9 @@
 
 #include "imgui.h"	// for access to ImGui color type
 
+#include "mcc_display_structs.h"
+#include "mcc_display_constants.h"
+
 namespace monster_calculator {
 
 // This enum defines the possible types of parameters the user may set.
@@ -25,16 +28,16 @@ struct ParameterType {
 	std::string display_name;
 	std::string database_format;
 	std::string display_format;
-	ImVec4 parameter_color;
+	DisplayColor parameter_color;
 
 	ParameterType() {
 		display_name = "UNINITIALIZED DISPLAY NAME";
 		database_format = "UNINITIALIZED DATABASE FORMAT";
 		display_format = "UNINITIALIZED DISPLAY FORMAT";
-		parameter_color = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+		parameter_color = kWhiteColor;
 	}
 
-	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color) {
+	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color) {
 		display_name = dis_name;
 		display_format = dis_format;
 		database_format = db_format;
@@ -43,8 +46,12 @@ struct ParameterType {
 
 	virtual ~ParameterType() = default;
 
-	virtual ParameterCategory GetParameterCategory() {
+	virtual ParameterCategory GetParameterCategory() const {
 		return Undefined;
+	}
+
+	ImVec4 GetParameterColor() const {
+		return parameter_color.GetColorValues();
 	}
 };
 
@@ -54,12 +61,16 @@ struct ParameterType {
 struct ParameterValue {
 	std::string display_name;
 	std::string database_name;
-	ImVec4 value_color;
+	DisplayColor value_color;
 
-	ParameterValue(std::string dis_name, std::string db_name, ImVec4 color) {
+	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color) {
 		display_name = dis_name;
 		database_name = db_name;
 		value_color = color;
+	}
+
+	ImVec4 GetParameterColor() const {
+		return value_color.GetColorValues();
 	}
 };
 
@@ -70,12 +81,12 @@ struct EnumeratedParameterType : ParameterType {
 		values = {};
 	}
 
-	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color, std::vector<ParameterValue> vals) :
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterValue> vals) :
 		ParameterType(dis_name, dis_format, db_format, color) {
 		values = vals;
 	}
 
-	virtual ParameterCategory GetParameterCategory() {
+	virtual ParameterCategory GetParameterCategory() const {
 		return Enumerated;
 	}
 };
@@ -83,7 +94,7 @@ struct EnumeratedParameterType : ParameterType {
 struct ParameterOperation : ParameterValue{
 	std::vector<std::string> operands;
 
-	ParameterOperation(std::string dis_name, std::string db_name, ImVec4 color, std::vector<std::string> ops) :
+	ParameterOperation(std::string dis_name, std::string db_name, DisplayColor color, std::vector<std::string> ops) :
 		ParameterValue(dis_name, db_name, color) {
 		operands = operands;
 	}
@@ -98,14 +109,14 @@ struct OpenParameterType : ParameterType {
 		operations = {};
 	}
 
-	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color, 
+	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, 
 		int type, std::vector<ParameterOperation> ops) :
 		ParameterType(dis_name, dis_format, db_format, color) {
 		data_type = type;
 		operations = ops;
 	}
 
-	virtual ParameterCategory GetParameterCategory() {
+	virtual ParameterCategory GetParameterCategory() const {
 		return Open;
 	}
 };
@@ -119,14 +130,14 @@ struct NumericalParameterType : OpenParameterType {
 		max_value = -1;
 	}
 
-	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format, ImVec4 color,
+	NumericalParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
 		int type, std::vector<ParameterOperation> ops, int min, int max) :
 		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
 		min_value = min;
 		max_value = max;
 	}
 
-	virtual ParameterCategory GetParameterCategory() {
+	virtual ParameterCategory GetParameterCategory() const {
 		return Numerical;
 	}
 };
@@ -149,7 +160,7 @@ struct FormatStatement {
 		argument = arg;
 	}
 
-	std::string EvaluateStatement() {
+	std::string EvaluateStatement() const {
 		std::string evaluated_statement = std::vformat(format, std::make_format_args(argument));
 		return evaluated_statement;
 	}
@@ -160,16 +171,16 @@ struct FormatStatement {
 // desired table cell colors for the statement of arguments
 struct DisplayStatement : FormatStatement {
 	std::string parameter_name;
-	ImVec4 parameter_color;
-	ImVec4 argument_color;
+	DisplayColor parameter_color;
+	DisplayColor argument_color;
 
 	DisplayStatement() : FormatStatement() {
 		parameter_name = "UNITIALIZED PARAMETER NAME";
-		parameter_color = ImVec4(0, 0, 0, 0);
-		argument_color = ImVec4(0, 0, 0, 0);
+		parameter_color = DisplayColor();
+		argument_color = DisplayColor();
 	}
 
-	DisplayStatement(std::string form, std::string arg, std::string param_name, ImVec4 param_col, ImVec4 arg_col) : FormatStatement(form, arg) 
+	DisplayStatement(std::string form, std::string arg, std::string param_name, DisplayColor param_col, DisplayColor arg_col) : FormatStatement(form, arg) 
 	{
 		parameter_name = param_name;
 		parameter_color = param_col;
@@ -182,6 +193,14 @@ struct DisplayStatement : FormatStatement {
 
 	std::string GetArgumentName() {
 		return argument;
+	}
+
+	ImVec4 GetParameterColor() {
+		return parameter_color.GetColorValues();
+	}
+
+	ImVec4 GetArgumentColor() {
+		return argument_color.GetColorValues();
 	}
 };
 
@@ -212,14 +231,14 @@ struct QueryParameter {
 struct ParameterSet {
 	int group_count;
 	std::vector<std::vector<QueryParameter>> parameter_groups;
-	std::vector<ImVec4> group_colors;
+	std::vector<DisplayColor> group_colors;
 	int total_parameter_count;
 	bool resizable;
 
 	ParameterSet() {
 		group_count = 1;
 		parameter_groups = {{}};
-		group_colors = {ImVec4(0, 0, 0, 0)};
+		group_colors = {kWhiteColor};
 		total_parameter_count = 0;
 		resizable = false;
 	}
@@ -230,12 +249,12 @@ struct ParameterSet {
 		for (int i = 0; i < group_count; i++) {
 			parameter_groups.push_back({});
 		}
-		group_colors = {ImVec4(0, 0, 0, 0)};
+		group_colors = {kWhiteColor};
 		total_parameter_count = 0;
 		resizable = allow_resize;
 	}
 
-	ParameterSet(int groups, bool allow_resize, std::vector<ImVec4>& colors) {
+	ParameterSet(int groups, bool allow_resize, std::vector<DisplayColor>& colors) {
 		group_count = groups;
 		parameter_groups = {};
 		for (int i = 0; i < group_count; i++) {
@@ -282,6 +301,12 @@ struct ParameterSet {
 			param_group.clear();
 		}
 		total_parameter_count = 0;
+	}
+
+	ImVec4 GetGroupColor(int group_index) const {
+		int color_index = group_index % group_colors.size();
+		DisplayColor group_display_color = group_colors[color_index];
+		return group_display_color.GetColorValues();
 	}
 };
 

@@ -44,6 +44,10 @@ extern const DisplayColor kFuschiaColor;
 extern const DisplayColor kWhiteColor;
 extern const DisplayColor kSeashellColor;
 extern const DisplayColor kLinenColor;
+extern const DisplayColor kPearlColor;
+
+// Grays
+extern const DisplayColor kGrayColor;
 
 // Blacks
 extern const DisplayColor kBlackColor;

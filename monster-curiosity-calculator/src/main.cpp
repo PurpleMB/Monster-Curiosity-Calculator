@@ -7,10 +7,15 @@
 
 #include "app.h"
 #include "database.h"
+
 #include "mcc_gui_windows.h"
 #include "mcc_structs.h"
+
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
+
+#include "mcc_display_structs.h"
+#include "mcc_display_constants.h"
 
 namespace monster_calculator {
 
@@ -22,13 +27,14 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
-		std::vector<ImVec4> param_group_colors = {
-			ImVec4(1.0f, 0.0f, 0.0f, 0.6f),
-			ImVec4(1.0f, 0.0f, 1.0f, 0.6f),
-			ImVec4(0.0f, 0.0f, 1.0f, 0.6f),
-			ImVec4(0.0f, 1.0f, 1.0f, 0.6f),
-			ImVec4(0.0f, 1.0f, 0.0f, 0.6f),
-			ImVec4(1.0f, 1.0f, 0.0f, 0.6f)
+		std::vector<DisplayColor> param_group_colors = {
+			kRedColor,
+			kBlueColor,
+			kGreenColor,
+			kYellowColor,
+			kOrangeColor,
+			kPurpleColor,
+			kPinkColor
 		};
 		ParameterSet param_set = ParameterSet(
 			6,

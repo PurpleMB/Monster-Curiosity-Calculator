@@ -283,8 +283,8 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 				ImGui::TableSetColumnIndex(1);
 				if (column_color_enabled) {
-					std::vector<ImVec4> group_colors = output_environment.subset_parameters.group_colors;
-					ImU32 cell_bg_color = ImGui::GetColorU32(group_colors[group_index % group_colors.size()]);
+					ImVec4 group_cell_color = output_environment.subset_parameters.GetGroupColor(group_index);
+					ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				int displayed_group_index = group_index + 1;
@@ -292,14 +292,16 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 				ImGui::TableSetColumnIndex(2);
 				if (column_color_enabled) {
-					ImU32 cell_bg_color = ImGui::GetColorU32(subset_parameter.display_statement.parameter_color);
+					ImVec4 param_cell_color = subset_parameter.display_statement.GetParameterColor();
+					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
 
 				ImGui::TableSetColumnIndex(3);
 				if (column_color_enabled) {
-					ImU32 cell_bg_color = ImGui::GetColorU32(subset_parameter.display_statement.argument_color);
+					ImVec4 arg_cell_color = subset_parameter.display_statement.GetArgumentColor();
+					ImU32 cell_bg_color = ImGui::GetColorU32(arg_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				ImGui::Text(subset_parameter.display_statement.GetArgumentName().c_str());
