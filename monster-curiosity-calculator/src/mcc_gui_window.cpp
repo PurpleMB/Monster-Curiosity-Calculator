@@ -16,6 +16,7 @@
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
+#include <misc/cpp/imgui_stdlib.h>
 
 #include "app.h"
 #include "database.h"
@@ -184,7 +185,52 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, int& s
 }
 
 void DrawOpenParameterSelector(OpenParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
+	std::vector<ParameterOperation> operations = param_type.operations;
+	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
+		ImGui::OpenPopup("##Select parameter subtype");
+	}
 
+	if (ImGui::BeginPopup("##Select parameter subtype")) {
+		for (int i = 0; i < operations.size(); i++) {
+			if (ImGui::Selectable(operations[i].display_name.c_str())) {
+				selected_subtype_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+	ParameterOperation selected_operation = param_type.operations[selected_subtype_index];
+
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
+	static std::string buffer = "";
+
+	int operand_count = selected_operation.operands.size();
+	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
+		std::string operand = selected_operation.operands[operand_index];
+		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
+		ImGui::Text(label.c_str());
+		ImGui::SameLine();
+		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
+		ImGui::InputText(input_label.c_str(), &buffer);
+	}
+
+	std::string operation_format = selected_operation.database_name;
+	std::string formatted_operation;
+	std::string formatted_display;
+	if (operand_count == 1) {
+		std::string first_arg = buffer;
+		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg));
+		formatted_display = std::vformat("{0} {1}", std::make_format_args(selected_operation.database_name, first_arg));
+	}	
+	else if (operand_count == 2) {
+		std::string first_arg = buffer;
+		std::string second_arg = buffer;
+		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg, second_arg));
+		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(selected_operation.database_name, first_arg, second_arg));
+	}
+	building_parameter.database_statement.argument = formatted_operation;
+	building_parameter.display_statement.parameter_name = param_type.display_name;
+	building_parameter.display_statement.argument = formatted_display;
+	building_parameter.display_statement.argument_color = selected_operation.value_color;
 }
 
 void DrawIntegerParameterSelector(IntegerParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {

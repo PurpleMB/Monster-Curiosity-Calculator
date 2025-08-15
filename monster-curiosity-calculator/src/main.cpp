@@ -138,6 +138,7 @@ private:
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
 		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
+		std::make_shared<OpenParameterType>(kNameParam),
 		std::make_shared<IntegerParameterType>(kDexNumParam),
 		std::make_shared<IntegerParameterType>(kCatchRateParam),
 		std::make_shared<IntegerParameterType>(kHealthParam),
