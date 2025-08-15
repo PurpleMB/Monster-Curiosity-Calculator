@@ -61,14 +61,12 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	ImGui::Text("Select parameter to filter by:");
-
 	static int selected_parameter_index = 0;
+	static int selected_operation_index = 0;
+	static int selected_value_index = 0;
+
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
-	static int selected_subtype_index = 0;
-
-	static QueryParameter building_parameter;
-
+	ImGui::Text("Select parameter to filter by:");
 	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select parameter");
 	}
@@ -77,18 +75,35 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		for (int i = 0; i < parameter_types.size(); i++) {
 			if (ImGui::Selectable(parameter_types[i]->display_name.c_str())) {
 				if (i != selected_parameter_index) {
-					selected_subtype_index = 0;
+					selected_operation_index = 0;
+					selected_value_index = 0;
 				}
 				selected_parameter_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
-
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
+
+	static QueryParameter building_parameter;
 	building_parameter.database_statement.format = selected_param->database_format;
 	building_parameter.display_statement.format = selected_param->display_format;
 	building_parameter.display_statement.parameter_color = selected_param->parameter_color;
+
+	std::vector<ParameterOperation> operations = selected_param->operations;
+	if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
+		ImGui::OpenPopup("##Select parameter operation");
+	}
+
+	if (ImGui::BeginPopup("##Select parameter operation")) {
+		for (int i = 0; i < operations.size(); i++) {
+			if (ImGui::Selectable(operations[i].display_name.c_str())) {
+				selected_operation_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
 
 
 	EnumeratedParameterType enum_param;
@@ -98,19 +113,19 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	switch (parameter_types[selected_parameter_index]->GetParameterCategory()) {
 		case Enumerated:
 			enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
-			DrawEnumeratorParameterSelector(enum_param, selected_subtype_index, building_parameter);
+			DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 			break;
 		case Open:
 			open_param = *dynamic_cast<OpenParameterType*>(selected_param);
-			DrawOpenParameterSelector(open_param, selected_subtype_index, building_parameter);
+			DrawOpenParameterSelector(open_param, selected_operation, building_parameter);
 			break;
 		case Integer:
 			int_param = *dynamic_cast<IntegerParameterType*>(selected_param);
-			DrawIntegerParameterSelector(int_param, selected_subtype_index, building_parameter);
+			DrawIntegerParameterSelector(int_param, selected_operation, building_parameter);
 			break;
 		case Decimal:
 			dec_param = *dynamic_cast<DecimalParameterType*>(selected_param);
-			DrawDecimalParameterSelector(dec_param, selected_subtype_index, building_parameter);
+			DrawDecimalParameterSelector(dec_param, selected_operation, building_parameter);
 			break;
 		default:
 			ImGui::SameLine();
@@ -163,8 +178,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 	ImGui::End();
 }
 
-void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
-	std::string selected_value_name = param_type.values[selected_subtype_index].display_name;
+void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select parameter value");
 	}
@@ -172,40 +187,25 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, int& s
 	if (ImGui::BeginPopup("Select parameter value")) {
 		for (int i = 0; i < param_type.values.size(); i++) {
 			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
-				selected_subtype_index = i;
+				selected_value_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	building_parameter.database_statement.argument = param_type.values[selected_subtype_index].database_name;
+	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = param_type.values[selected_subtype_index].display_name;
-	building_parameter.display_statement.argument_color = param_type.values[selected_subtype_index].value_color;
+	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
+	building_parameter.display_statement.argument_color = param_type.values[selected_value_index].value_color;
 }
 
-void DrawOpenParameterSelector(OpenParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
-	std::vector<ParameterOperation> operations = param_type.operations;
-	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
-		ImGui::OpenPopup("##Select parameter subtype");
-	}
-
-	if (ImGui::BeginPopup("##Select parameter subtype")) {
-		for (int i = 0; i < operations.size(); i++) {
-			if (ImGui::Selectable(operations[i].display_name.c_str())) {
-				selected_subtype_index = i;
-			}
-		}
-		ImGui::EndPopup();
-	}
-	ParameterOperation selected_operation = param_type.operations[selected_subtype_index];
-
+void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
 	static std::string buffer = "";
 
-	int operand_count = selected_operation.operands.size();
+	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
-		std::string operand = selected_operation.operands[operand_index];
+		std::string operand = operation.operands[operand_index];
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
@@ -213,57 +213,42 @@ void DrawOpenParameterSelector(OpenParameterType& param_type, int& selected_subt
 		ImGui::InputText(input_label.c_str(), &buffer);
 	}
 
-	std::string operation_format = selected_operation.database_name;
+	std::string operation_format = operation.database_name;
 	std::string formatted_operation;
 	std::string formatted_display;
 	if (operand_count == 1) {
 		std::string first_arg = buffer;
 		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg));
-		formatted_display = std::vformat("{0} {1}", std::make_format_args(selected_operation.database_name, first_arg));
+		formatted_display = std::vformat("{0} {1}", std::make_format_args(operation.database_name, first_arg));
 	}	
 	else if (operand_count == 2) {
 		std::string first_arg = buffer;
 		std::string second_arg = buffer;
 		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg, second_arg));
-		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(selected_operation.database_name, first_arg, second_arg));
+		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, first_arg, second_arg));
 	}
 	building_parameter.database_statement.argument = formatted_operation;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
 	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = selected_operation.value_color;
+	building_parameter.display_statement.argument_color = operation.value_color;
 }
 
-void DrawIntegerParameterSelector(IntegerParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
+void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
 	int min_val = param_type.min_value;
 	int max_val = param_type.max_value;
-
-	std::vector<ParameterOperation> operations = param_type.operations;
-	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
-		ImGui::OpenPopup("##Select parameter subtype");
-	}
-
-	if (ImGui::BeginPopup("##Select parameter subtype")) {
-		for (int i = 0; i < operations.size(); i++) {
-			if (ImGui::Selectable(operations[i].display_name.c_str())) {
-				selected_subtype_index = i;
-			}
-		}
-		ImGui::EndPopup();
-	}
-	ParameterOperation selected_operation = param_type.operations[selected_subtype_index];
 
 	const int u32_one = 1;
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
 	static std::vector<int> operand_values = {0, 0};
 
-	int operand_count = selected_operation.operands.size();
+	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
 		while (operand_index >= operand_values.size()) {
 			operand_values.push_back(0);
 		}
 
-		std::string operand = selected_operation.operands[operand_index];
+		std::string operand = operation.operands[operand_index];
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
@@ -271,54 +256,39 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, int& selecte
 		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_U32, &operand_values[operand_index], inputs_step ? &u32_one : NULL, NULL, "%u", flags);
 	}
 
-	std::string operation_format = selected_operation.database_name;
+	std::string operation_format = operation.database_name;
 	std::string formatted_operation;
 	std::string formatted_display;
 	if (operand_count == 1) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
-		formatted_display = std::vformat("{0} {1}", std::make_format_args(selected_operation.database_name, operand_values[0]));
+		formatted_display = std::vformat("{0} {1}", std::make_format_args(operation.database_name, operand_values[0]));
 	}
 	else if (operand_count == 2) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
-		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(selected_operation.database_name, operand_values[0], operand_values[1]));
+		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
 	}
 	building_parameter.database_statement.argument = formatted_operation;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
 	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = selected_operation.value_color;
+	building_parameter.display_statement.argument_color = operation.value_color;
 }
 
-void DrawDecimalParameterSelector(DecimalParameterType& param_type, int& selected_subtype_index, QueryParameter& building_parameter) {
+void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
 	double min_val = param_type.min_value;
 	double max_val = param_type.max_value;
-
-	std::vector<ParameterOperation> operations = param_type.operations;
-	if (ImGui::Button(operations[selected_subtype_index].display_name.c_str())) {
-		ImGui::OpenPopup("##Select parameter subtype");
-	}
-
-	if (ImGui::BeginPopup("##Select parameter subtype")) {
-		for (int i = 0; i < operations.size(); i++) {
-			if (ImGui::Selectable(operations[i].display_name.c_str())) {
-				selected_subtype_index = i;
-			}
-		}
-		ImGui::EndPopup();
-	}
-	ParameterOperation selected_operation = param_type.operations[selected_subtype_index];
 
 	const double f64_one = 1.0;
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
 	static std::vector<double> operand_values = {0, 0};
 
-	int operand_count = selected_operation.operands.size();
+	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
 		while (operand_index >= operand_values.size()) {
 			operand_values.push_back(0);
 		}
 
-		std::string operand = selected_operation.operands[operand_index];
+		std::string operand = operation.operands[operand_index];
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
@@ -326,21 +296,21 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, int& selecte
 		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &f64_one : NULL, NULL, NULL, flags);
 	}
 
-	std::string operation_format = selected_operation.database_name;
+	std::string operation_format = operation.database_name;
 	std::string formatted_operation;
 	std::string formatted_display;
 	if (operand_count == 1) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
-		formatted_display = std::vformat("{0} {1}", std::make_format_args(selected_operation.database_name, operand_values[0]));
+		formatted_display = std::vformat("{0} {1}", std::make_format_args(operation.database_name, operand_values[0]));
 	}
 	else if (operand_count == 2) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
-		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(selected_operation.database_name, operand_values[0], operand_values[1]));
+		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
 	}
 	building_parameter.database_statement.argument = formatted_operation;
 	building_parameter.display_statement.parameter_name = param_type.display_name;
 	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = selected_operation.value_color;
+	building_parameter.display_statement.argument_color = operation.value_color;
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
