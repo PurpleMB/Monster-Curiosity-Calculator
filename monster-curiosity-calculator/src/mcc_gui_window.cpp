@@ -307,7 +307,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	static bool operation_color_enabled = false;
 	static bool value_color_enabled = false;
 	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &operation_color_enabled, &value_color_enabled};
-	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter Type", "Parameter Value"};
+	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter", "Operation", "Value"};
 	if (ImGui::Button("Column Coloring Toggles")) {
 		ImGui::OpenPopup("column_color_popup");
 	}
@@ -330,9 +330,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	const float col_width = 50.0f;
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
-		ImGui::TableSetupColumn("#", ImGuiTableColumnFlags_WidthFixed, col_width);
 		ImGui::TableSetupColumn("Group", ImGuiTableColumnFlags_WidthFixed, col_width);
-		ImGui::TableSetupColumn("Column", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Parameter", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("", 
 			ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel |
