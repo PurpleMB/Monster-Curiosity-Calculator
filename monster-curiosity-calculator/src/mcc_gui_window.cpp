@@ -346,8 +346,21 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, int& selecte
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	ImGui::Text("Current subset parameters:");
 
-	static bool column_color_enabled = false;
-	ImGui::Checkbox("Enable column coloring", &column_color_enabled);
+	static bool group_color_enabled = false;
+	static bool parameter_color_enabled = false;
+	static bool value_color_enabled = false;
+	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &value_color_enabled};
+	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter Type", "Parameter Value"};
+	if (ImGui::Button("Column Coloring Toggles")) {
+		ImGui::OpenPopup("column_color_popup");
+	}
+
+	if (ImGui::BeginPopup("column_color_popup")) {
+		for (int i = 0; i < column_color_toggles.size(); i++) {
+			ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+		}
+		ImGui::EndPopup();
+	}
 
 	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
 	const int kColumnCount = 5;
@@ -390,7 +403,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(++parameter_count).c_str());
 
 				ImGui::TableSetColumnIndex(1);
-				if (column_color_enabled) {
+				if (group_color_enabled) {
 					ImVec4 group_cell_color = output_environment.subset_parameters.GetGroupColor(group_index);
 					ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -399,7 +412,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
 				ImGui::TableSetColumnIndex(2);
-				if (column_color_enabled) {
+				if (parameter_color_enabled) {
 					ImVec4 param_cell_color = subset_parameter.display_statement.GetParameterColor();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -407,7 +420,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
 
 				ImGui::TableSetColumnIndex(3);
-				if (column_color_enabled) {
+				if (value_color_enabled) {
 					ImVec4 arg_cell_color = subset_parameter.display_statement.GetArgumentColor();
 					ImU32 cell_bg_color = ImGui::GetColorU32(arg_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
