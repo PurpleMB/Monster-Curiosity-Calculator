@@ -45,5 +45,6 @@ extern const IntegerParameterType kStatTotalParam;
 
 // decimal parameters
 extern const DecimalParameterType kWeightParam;
+extern const DecimalParameterType kHeightParam;
 
 } //namespace monster_calculator

@@ -389,4 +389,19 @@ extern const DecimalParameterType kWeightParam = DecimalParameterType(
     kWeightMax
 );
 
+const double kHeightMin = 0.0;
+const double kHeightMax = 2000.0;
+const std::string kHeightDisplayName = "Height(m)";
+const std::string kHeightDatabaseFormat = "height {0}";
+const std::string kHeightDisplayFormat = "Height: {0}";
+extern const DecimalParameterType kHeightParam = DecimalParameterType(
+    kHeightDisplayName,
+    kHeightDisplayFormat,
+    kHeightDatabaseFormat,
+    kGoldenrodColor,
+    kStandardNumericalOperations,
+    kHeightMin,
+    kHeightMax
+);
+
 } //namespace monster_calculator

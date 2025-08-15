@@ -148,7 +148,8 @@ private:
 		std::make_shared<IntegerParameterType>(kSpeDefParam),
 		std::make_shared<IntegerParameterType>(kSpeedParam),
 		std::make_shared<IntegerParameterType>(kStatTotalParam),
-		std::make_shared<DecimalParameterType>(kWeightParam)
+		std::make_shared<DecimalParameterType>(kWeightParam),
+		std::make_shared<DecimalParameterType>(kHeightParam)
 	};
 
 	OutputEnvironment output_environment;
