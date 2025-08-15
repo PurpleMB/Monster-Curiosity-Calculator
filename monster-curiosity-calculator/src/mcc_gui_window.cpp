@@ -61,6 +61,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
+	static QueryParameter building_parameter;
+
 	static int selected_parameter_index = 0;
 	static int selected_operation_index = 0;
 	static int selected_value_index = 0;
@@ -84,11 +86,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
-
-	static QueryParameter building_parameter;
-	building_parameter.database_statement.format = selected_param->database_format;
-	building_parameter.display_statement.format = selected_param->display_format;
-	building_parameter.display_statement.parameter_color = selected_param->parameter_color;
+	building_parameter.SetParameterInfo(ColumnDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
@@ -104,6 +102,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
+	building_parameter.SetOperationInfo(ColumnDisplayInfo(selected_operation.display_name, selected_operation.value_color));
 
 
 	EnumeratedParameterType enum_param;
@@ -192,45 +191,30 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 		}
 		ImGui::EndPopup();
 	}
+	ParameterValue selected_value = param_type.values[selected_value_index];
+	building_parameter.SetValueInfo(ColumnDisplayInfo(selected_value.display_name, selected_value.value_color));
 
-	building_parameter.database_statement.argument = param_type.values[selected_value_index].database_name;
-	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = param_type.values[selected_value_index].display_name;
-	building_parameter.display_statement.argument_color = param_type.values[selected_value_index].value_color;
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
 }
 
 void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
 	static std::string buffer = "";
 
-	int operand_count = operation.operands.size();
-	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
-		std::string operand = operation.operands[operand_index];
-		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
-		ImGui::Text(label.c_str());
-		ImGui::SameLine();
-		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
-		ImGui::InputText(input_label.c_str(), &buffer);
-	}
+	std::string operand = operation.operands[0];
+	std::string label = std::vformat("Set {0}:", std::make_format_args(operand));
+	ImGui::Text(label.c_str());
+	ImGui::SameLine();
+	std::string input_label = "##text_value_input";
+	ImGui::InputText(input_label.c_str(), &buffer);
 
-	std::string operation_format = operation.database_name;
-	std::string formatted_operation;
-	std::string formatted_display;
-	if (operand_count == 1) {
-		std::string first_arg = buffer;
-		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg));
-		formatted_display = std::vformat("{0} {1}", std::make_format_args(operation.database_name, first_arg));
-	}	
-	else if (operand_count == 2) {
-		std::string first_arg = buffer;
-		std::string second_arg = buffer;
-		formatted_operation = std::vformat(operation_format, std::make_format_args(first_arg, second_arg));
-		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, first_arg, second_arg));
-	}
-	building_parameter.database_statement.argument = formatted_operation;
-	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = operation.value_color;
+	building_parameter.SetValueInfo(ColumnDisplayInfo(buffer, DisplayColor()));
+
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(buffer));
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
 }
 
 void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
@@ -261,16 +245,17 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 	std::string formatted_display;
 	if (operand_count == 1) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
-		formatted_display = std::vformat("{0} {1}", std::make_format_args(operation.database_name, operand_values[0]));
+		formatted_display = std::vformat("{0}", std::make_format_args(operand_values[0]));
 	}
 	else if (operand_count == 2) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
-		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
+		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
 	}
-	building_parameter.database_statement.argument = formatted_operation;
-	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = operation.value_color;
+
+	building_parameter.SetValueInfo(ColumnDisplayInfo(formatted_display, DisplayColor()));
+
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
 }
 
 void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
@@ -307,10 +292,11 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("{0} [{1}, {2}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
 	}
-	building_parameter.database_statement.argument = formatted_operation;
-	building_parameter.display_statement.parameter_name = param_type.display_name;
-	building_parameter.display_statement.argument = formatted_display;
-	building_parameter.display_statement.argument_color = operation.value_color;
+
+	building_parameter.SetValueInfo(ColumnDisplayInfo(formatted_display, DisplayColor()));
+
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
@@ -318,8 +304,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 	static bool group_color_enabled = false;
 	static bool parameter_color_enabled = false;
+	static bool operation_color_enabled = false;
 	static bool value_color_enabled = false;
-	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &value_color_enabled};
+	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &operation_color_enabled, &value_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter Type", "Parameter Value"};
 	if (ImGui::Button("Column Coloring Toggles")) {
 		ImGui::OpenPopup("column_color_popup");
@@ -370,9 +357,6 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableNextRow();
 
 				ImGui::TableSetColumnIndex(0);
-				ImGui::Text(std::to_string(++parameter_count).c_str());
-
-				ImGui::TableSetColumnIndex(1);
 				if (group_color_enabled) {
 					ImVec4 group_cell_color = output_environment.subset_parameters.GetGroupColor(group_index);
 					ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
@@ -381,21 +365,32 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				int displayed_group_index = group_index + 1;
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
-				ImGui::TableSetColumnIndex(2);
+				ImGui::TableSetColumnIndex(1);
+				ColumnDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
 				if (parameter_color_enabled) {
-					ImVec4 param_cell_color = subset_parameter.display_statement.GetParameterColor();
+					ImVec4 param_cell_color = parameter_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
-				ImGui::Text(subset_parameter.display_statement.GetParameterName().c_str());
+				ImGui::Text(parameter_column_info.GetText().c_str());
 
-				ImGui::TableSetColumnIndex(3);
-				if (value_color_enabled) {
-					ImVec4 arg_cell_color = subset_parameter.display_statement.GetArgumentColor();
-					ImU32 cell_bg_color = ImGui::GetColorU32(arg_cell_color);
+				ImGui::TableSetColumnIndex(2);
+				ColumnDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
+				if (operation_color_enabled) {
+					ImVec4 param_cell_color = operation_column_info.GetColor().GetColorValues();
+					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
-				ImGui::Text(subset_parameter.display_statement.GetArgumentName().c_str());
+				ImGui::Text(operation_column_info.GetText().c_str());
+
+				ImGui::TableSetColumnIndex(3);
+				ColumnDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
+				if (value_color_enabled) {
+					ImVec4 param_cell_color = value_column_info.GetColor().GetColorValues();
+					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
+					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+				}
+				ImGui::Text(value_column_info.GetText().c_str());
 
 				ImGui::TableSetColumnIndex(4);
 				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);

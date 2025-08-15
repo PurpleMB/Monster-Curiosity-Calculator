@@ -224,22 +224,80 @@ struct DisplayStatement : FormatStatement {
 	}
 };
 
+struct ColumnDisplayInfo {
+private:
+	std::string column_text;
+	DisplayColor column_color;
+
+public:
+	ColumnDisplayInfo() {
+		column_text = "UNINITIALIZED COLUMN TEXT";
+		column_color = DisplayColor();
+	}
+
+	ColumnDisplayInfo(std::string text, DisplayColor color) {
+		column_text = text;
+		column_color = color;
+	}
+
+	std::string GetText() const {
+		return column_text;
+	}
+
+	DisplayColor GetColor() const {
+		return column_color;
+	}
+};
+
 // This struct is meant to hold the sum of data needed to pass a query component 
 // to the database as well as display that query in a pleasing way to the user.
 // Thus, this struct contains a FormatStatement and DisplayStatement that ideally
 // contain data representing the same query as seen by the DB and the user.
 struct QueryParameter {
-	FormatStatement database_statement;
-	DisplayStatement display_statement;
+private:
+	std::string query_string;
+	ColumnDisplayInfo parameter_info;
+	ColumnDisplayInfo operation_info;
+	ColumnDisplayInfo value_info;
 
+public:
 	QueryParameter() {
-		database_statement = FormatStatement();
-		display_statement = DisplayStatement();
+		query_string = "UNINITIALIZED QUERY STRING";
+		parameter_info = ColumnDisplayInfo();
+		operation_info = ColumnDisplayInfo();
+		value_info = ColumnDisplayInfo();
 	}
 
-	QueryParameter(FormatStatement db_statement, DisplayStatement dis_statement) {
-		database_statement = db_statement;
-		display_statement = dis_statement;
+	void SetQuery(std::string query) {
+		query_string = query;
+	}
+
+	void SetParameterInfo(ColumnDisplayInfo param_info) {
+		parameter_info = param_info;
+	}
+
+	void SetOperationInfo(ColumnDisplayInfo oper_info) {
+		operation_info = oper_info;
+	}
+
+	void SetValueInfo(ColumnDisplayInfo val_info) {
+		value_info = val_info;
+	}
+
+	std::string GetQuery() {
+		return query_string;
+	}
+
+	ColumnDisplayInfo GetParameterDisplayInfo() {
+		return parameter_info;
+	}
+
+	ColumnDisplayInfo GetOperationDisplayInfo() {
+		return operation_info;
+	}
+
+	ColumnDisplayInfo GetValueDisplayInfo() {
+		return value_info;
 	}
 };
 

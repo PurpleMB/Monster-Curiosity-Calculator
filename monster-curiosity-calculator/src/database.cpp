@@ -321,7 +321,7 @@ std::string GenerateQueryParameterString(ParameterSet& subset_parameters) {
 		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
 			parameter_string += "(";
 			QueryParameter param = parameter_group[parameter_index];
-			std::string query_statement = param.database_statement.EvaluateStatement();
+			std::string query_statement = param.GetQuery();
 			std::cout << query_statement;
 			parameter_string += query_statement;
 			parameter_string += ")";
@@ -379,7 +379,7 @@ int QuerySubtable(OutputEnvironment& output_environment) {
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string query_statement = output_environment.value_parameter.database_statement.EvaluateStatement();
+	std::string query_statement = output_environment.value_parameter.GetQuery();
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_statement.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {
