@@ -200,19 +200,19 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 }
 
 void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
-	static std::string buffer = "";
-
 	std::string operand = operation.operands[0];
 	std::string label = std::vformat("Set {0}:", std::make_format_args(operand));
 	ImGui::Text(label.c_str());
 	ImGui::SameLine();
+
 	std::string input_label = "##text_value_input";
-	ImGui::InputText(input_label.c_str(), &buffer);
+	static std::string value_text = "";
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
+	ImGui::InputText(input_label.c_str(), &value_text, flags);
 
-	building_parameter.SetValueInfo(ColumnDisplayInfo(buffer, DisplayColor()));
+	building_parameter.SetValueInfo(ColumnDisplayInfo(value_text, DisplayColor()));
 
-	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(buffer));
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(value_text));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
 }
