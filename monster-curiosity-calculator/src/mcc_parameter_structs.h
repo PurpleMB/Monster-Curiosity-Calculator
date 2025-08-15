@@ -10,6 +10,34 @@
 
 namespace monster_calculator {
 
+// This struct encapsulates the data for a single possible value of a ParameterType.
+// For example, a parameter value for a monster typing may have values like "normal", "Normal"
+// and an ImVec4 that looks white when interpreted as a color.
+struct ParameterValue {
+	std::string display_name;
+	std::string database_name;
+	DisplayColor value_color;
+
+	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color) {
+		display_name = dis_name;
+		database_name = db_name;
+		value_color = color;
+	}
+
+	ImVec4 GetParameterColor() const {
+		return value_color.GetColorValues();
+	}
+};
+
+struct ParameterOperation : ParameterValue {
+	std::vector<std::string> operands;
+
+	ParameterOperation(std::string dis_name, std::string db_name, DisplayColor color, std::vector<std::string> ops) :
+		ParameterValue(dis_name, db_name, color) {
+		operands = ops;
+	}
+};
+
 // This enum defines the possible types of parameters the user may set.
 // Undefined is only used for improperly defined ParameterTypes,
 // while Enumerated represents things like Type, Region, etc. while
@@ -30,19 +58,22 @@ struct ParameterType {
 	std::string database_format;
 	std::string display_format;
 	DisplayColor parameter_color;
+	std::vector<ParameterOperation> operations;
 
 	ParameterType() {
 		display_name = "UNINITIALIZED DISPLAY NAME";
 		database_format = "UNINITIALIZED DATABASE FORMAT";
 		display_format = "UNINITIALIZED DISPLAY FORMAT";
 		parameter_color = kWhiteColor;
+		operations = {};
 	}
 
-	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color) {
+	ParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops) {
 		display_name = dis_name;
 		display_format = dis_format;
 		database_format = db_format;
 		parameter_color = color;
+		operations = ops;
 	}
 
 	virtual ~ParameterType() = default;
@@ -56,25 +87,6 @@ struct ParameterType {
 	}
 };
 
-// This struct encapsulates the data for a single possible value of a ParameterType.
-// For example, a parameter value for a monster typing may have values like "normal", "Normal"
-// and an ImVec4 that looks white when interpreted as a color.
-struct ParameterValue {
-	std::string display_name;
-	std::string database_name;
-	DisplayColor value_color;
-
-	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color) {
-		display_name = dis_name;
-		database_name = db_name;
-		value_color = color;
-	}
-
-	ImVec4 GetParameterColor() const {
-		return value_color.GetColorValues();
-	}
-};
-
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
 
@@ -82,8 +94,8 @@ struct EnumeratedParameterType : ParameterType {
 		values = {};
 	}
 
-	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterValue> vals) :
-		ParameterType(dis_name, dis_format, db_format, color) {
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
+		ParameterType(dis_name, dis_format, db_format, color, ops) {
 		values = vals;
 	}
 
@@ -92,29 +104,15 @@ struct EnumeratedParameterType : ParameterType {
 	}
 };
 
-struct ParameterOperation : ParameterValue{
-	std::vector<std::string> operands;
-
-	ParameterOperation(std::string dis_name, std::string db_name, DisplayColor color, std::vector<std::string> ops) :
-		ParameterValue(dis_name, db_name, color) {
-		operands = ops;
-	}
-};
-
 struct OpenParameterType : ParameterType {
-	int data_type;
-	std::vector<ParameterOperation> operations;
 
 	OpenParameterType() : ParameterType() {
-		data_type = ImGuiDataType_Bool;
-		operations = {};
+
 	}
 
-	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, 
-		int type, std::vector<ParameterOperation> ops) :
-		ParameterType(dis_name, dis_format, db_format, color) {
-		data_type = type;
-		operations = ops;
+	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops) :
+		ParameterType(dis_name, dis_format, db_format, color, ops) {
+
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
@@ -132,8 +130,8 @@ struct IntegerParameterType : OpenParameterType {
 	}
 
 	IntegerParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
-		int type, std::vector<ParameterOperation> ops, int min, int max) :
-		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
+		std::vector<ParameterOperation> ops, int min, int max) :
+		OpenParameterType(dis_name, dis_format, db_format, color, ops) {
 		min_value = min;
 		max_value = max;
 	}
@@ -153,8 +151,8 @@ struct DecimalParameterType : OpenParameterType {
 	}
 
 	DecimalParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
-		int type, std::vector<ParameterOperation> ops, double min, double max) :
-		OpenParameterType(dis_name, dis_format, db_format, color, type, ops) {
+		std::vector<ParameterOperation> ops, double min, double max) :
+		OpenParameterType(dis_name, dis_format, db_format, color, ops) {
 		min_value = min;
 		max_value = max;
 	}

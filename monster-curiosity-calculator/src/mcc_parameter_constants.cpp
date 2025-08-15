@@ -87,6 +87,19 @@ extern const std::vector<ParameterValue> kEggGroupValuesList = {
     ParameterValue("Undiscovered",	"= 'no-eggs'",		    kGrayColor),
 };
 
+extern const std::vector<ParameterOperation> kEnumOperations = {
+    ParameterOperation("Equals",		"= {0}",		    kGreenColor,
+        {
+            "Required value"
+        }
+    ),
+    ParameterOperation("Not Equals" ,  "!= {0}",      kRedColor,
+        {
+            "Forbidden value"
+        }
+    )
+};
+
 // enumerated parameters
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
@@ -96,6 +109,7 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kPrimaryDisplayFormat,
     kPrimaryDatabaseFormat,
     kRedColor,
+    kEnumOperations,
     kTypeValuesList
 );
 
@@ -107,6 +121,7 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kEitherTypeDisplayFormat,
     kEitherTypeDatabaseFormat,
     kPurpleColor,
+    kEnumOperations,
     kTypeValuesList
 );
 
@@ -118,6 +133,7 @@ extern const EnumeratedParameterType kIsDefaultParam = EnumeratedParameterType(
     kIsDefaultDisplayFormat,
     kIsDefaultDatabaseFormat,
     kOrangeColor,
+    kEnumOperations,
     kBinaryValuesList
 );
 
@@ -129,6 +145,7 @@ extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
     kBabyDisplayFormat,
     kBabyDatabaseFormat,
     kPinkColor,
+    kEnumOperations,
     kBinaryValuesList
 );
 
@@ -140,6 +157,7 @@ extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kColorDisplayFormat,
     kColorDatabaseFormat,
     kCeladonColor,
+    kEnumOperations,
     kColorValuesList
 );
 
@@ -151,6 +169,7 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kShapeDisplayFormat,
     kShapeDatabaseFormat,
     kYellowColor,
+    kEnumOperations,
     kShapeValuesList
 );
 
@@ -162,10 +181,11 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPrimaryEggDisplayFormat,
     kPrimaryEggDatabaseFormat,
     kPeriwinkleColor,
+    kEnumOperations,
     kEggGroupValuesList
 );
 
-// open parameter values
+// open parameter values & operations
 extern const std::vector<ParameterOperation> kNameOperations = {
     ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
         {
@@ -198,7 +218,6 @@ extern const OpenParameterType kNameParam = OpenParameterType(
     kNameDisplayFormat,
     kNameDatabaseFormat,
     kMauveColor,
-    ImGuiDataType_String,
     kNameOperations
 );
 
@@ -235,7 +254,6 @@ extern const IntegerParameterType kDexNumParam = IntegerParameterType(
     kDexNumDisplayFormat,
     kDexNumDatabaseFormat,
     kIndigoColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kDexNumMin,
     kDexNumMax
@@ -253,7 +271,6 @@ extern const IntegerParameterType kCatchRateParam = IntegerParameterType(
     kCatchRateDisplayFormat,
     kCatchRateDatabaseFormat,
     kMahoganyColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kCatchRateMin,
     kCatchRateMax
@@ -271,7 +288,6 @@ extern const IntegerParameterType kHealthParam = IntegerParameterType(
     kHealthDisplayFormat,
     kHealthDatabaseFormat,
     kRedColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -285,7 +301,6 @@ extern const IntegerParameterType kAttackParam = IntegerParameterType(
     kAttackDisplayFormat,
     kAttackDatabaseFormat,
     kBlueColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -299,7 +314,6 @@ extern const IntegerParameterType kDefenseParam = IntegerParameterType(
     kDefenseDisplayFormat,
     kDefenseDatabaseFormat,
     kGreenColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -313,7 +327,6 @@ extern const IntegerParameterType kSpeAtkParam = IntegerParameterType(
     kSpeAtkDisplayFormat,
     kSpeAtkDatabaseFormat,
     kPurpleColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -327,7 +340,6 @@ extern const IntegerParameterType kSpeDefParam = IntegerParameterType(
     kSpeDefDisplayFormat,
     kSpeDefDatabaseFormat,
     kPinkColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -341,7 +353,6 @@ extern const IntegerParameterType kSpeedParam = IntegerParameterType(
     kSpeedDisplayFormat,
     kSpeedDatabaseFormat,
     kYellowColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kSingleStatMin,
     kSingleStatMax
@@ -358,7 +369,6 @@ extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
     kBaseStatTotalDisplayFormat,
     kBaseStatTotalDatabaseFormat,
     kFuschiaColor,
-    ImGuiDataType_U32,
     kStandardNumericalOperations,
     kStatTotalMin,
     kStatTotalMax
@@ -375,7 +385,6 @@ extern const DecimalParameterType kWeightParam = DecimalParameterType(
     kWeightDisplayFormat,
     kWeightDatabaseFormat,
     kRaspberryColor,
-    ImGuiDataType_Double,
     kStandardNumericalOperations,
     kWeightMin,
     kWeightMax
