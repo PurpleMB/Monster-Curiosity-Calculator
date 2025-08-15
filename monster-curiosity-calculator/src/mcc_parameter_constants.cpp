@@ -172,7 +172,21 @@ extern const std::vector<ParameterOperation> kNameOperations = {
             "Name"
         }
     ),
-    
+    ParameterOperation("Starts With" ,  "LIKE '{0}%'",       kRedColor,
+        {
+            "Name Prefix"
+        }
+    ),
+    ParameterOperation("Ends With" ,  "LIKE '%{0}'",         kBlueColor,
+        {
+            "Name Suffix"
+        }
+    ),
+    ParameterOperation("Contains" ,  "LIKE '%{0}%'",         kPurpleColor,
+        {
+            "Name Component"
+        }
+    )
 };
 
 // open parameters
