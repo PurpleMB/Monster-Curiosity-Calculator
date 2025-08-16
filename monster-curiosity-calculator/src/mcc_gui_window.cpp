@@ -114,6 +114,9 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 			enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
 			DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 			break;
+		case EnumeratedSlider:
+			// TODO: ADD SOMETHING HERE FOR A SLIDER PARAMETER LIKE GENDER RATE
+			break;
 		case Open:
 			open_param = *dynamic_cast<OpenParameterType*>(selected_param);
 			DrawOpenParameterSelector(open_param, selected_operation, building_parameter);

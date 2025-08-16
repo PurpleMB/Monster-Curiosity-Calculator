@@ -44,6 +44,7 @@ struct ParameterOperation : ParameterValue {
 // Numerical is used for values such as Health, Speed, etc.
 enum ParameterCategory {
 	Enumerated,
+	EnumeratedSlider,
 	Open,
 	Integer,
 	Decimal,
