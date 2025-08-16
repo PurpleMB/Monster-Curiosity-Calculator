@@ -258,6 +258,38 @@ extern const IntegerParameterType kDexNumParam = IntegerParameterType(
     kDexNumMax
 );
 
+const int kBaseExpMin = 1;
+const int kBaseExpMax = 1024;
+
+const std::string kBaseExpDisplayName = "Base Experience";
+const std::string kBaseExpDatabaseFormat = "base_experience {0}";
+const std::string kBaseExpDisplayFormat = "Base Experience: {0}";
+extern const IntegerParameterType kBaseExpParam = IntegerParameterType(
+    kBaseExpDisplayName,
+    kBaseExpDisplayFormat,
+    kBaseExpDatabaseFormat,
+    kVermillionColor,
+    kStandardNumericalOperations,
+    kBaseExpMin,
+    kBaseExpMax
+);
+
+const int kBaseHappyMin = 0;
+const int kBaseHappyMax = 255;
+
+const std::string kBaseHappyDisplayName = "Base Happiness";
+const std::string kBaseHappyDatabaseFormat = "base_happiness {0}";
+const std::string kBaseHappyDisplayFormat = "Base Happiness: {0}";
+extern const IntegerParameterType kBaseHappyParam = IntegerParameterType(
+    kBaseHappyDisplayName,
+    kBaseHappyDisplayFormat,
+    kBaseHappyDatabaseFormat,
+    kSeashellColor,
+    kStandardNumericalOperations,
+    kBaseHappyMin,
+    kBaseHappyMax
+);
+
 const int kCatchRateMin = 0;
 const int kCatchRateMax = 255;
 
@@ -273,6 +305,23 @@ extern const IntegerParameterType kCatchRateParam = IntegerParameterType(
     kStandardNumericalOperations,
     kCatchRateMin,
     kCatchRateMax
+);
+
+const int kHatchCountMin = 1;
+const int kHatchCountMax = 255;
+
+
+const std::string kHatchCountDisplayName = "Hatch Cycles";
+const std::string kHatchCountDatabaseFormat = "hatch_counter {0}";
+const std::string kHatchCountDisplayFormat = "Hatch Cycles: {0}";
+extern const IntegerParameterType kHatchCountParam = IntegerParameterType(
+    kHatchCountDisplayName,
+    kHatchCountDisplayFormat,
+    kHatchCountDatabaseFormat,
+    kPeriwinkleColor,
+    kStandardNumericalOperations,
+    kHatchCountMin,
+    kHatchCountMax
 );
 
 

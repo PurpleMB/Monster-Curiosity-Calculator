@@ -34,7 +34,10 @@ extern const std::vector<ParameterValue> kStandardNumericalOperations;
 
 // integer parameters
 extern const IntegerParameterType kDexNumParam;
+extern const IntegerParameterType kBaseExpParam;
+extern const IntegerParameterType kBaseHappyParam;
 extern const IntegerParameterType kCatchRateParam;
+extern const IntegerParameterType kHatchCountParam;
 extern const IntegerParameterType kHealthParam;
 extern const IntegerParameterType kAttackParam;
 extern const IntegerParameterType kDefenseParam;
