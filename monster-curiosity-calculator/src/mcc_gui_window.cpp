@@ -249,7 +249,7 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 	}
 	else if (operand_count == 2) {
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
-		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operation.database_name, operand_values[0], operand_values[1]));
+		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
 
 	building_parameter.SetValueInfo(ColumnDisplayInfo(formatted_display, DisplayColor()));
