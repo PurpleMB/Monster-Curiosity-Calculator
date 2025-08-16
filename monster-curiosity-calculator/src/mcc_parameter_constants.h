@@ -25,9 +25,13 @@ extern const EnumeratedParameterType kPrimaryEggParam;
 
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;
+extern const std::vector<ParameterOperation> kAbilityOperations;
 
 // open parameters
 extern const OpenParameterType kNameParam;
+extern const OpenParameterType kAbilityParam;
+extern const OpenParameterType kHiddenAbilityParam;
+extern const OpenParameterType kAnyAbilityParam;
 
 // numerical parameter operations and values
 extern const std::vector<ParameterValue> kStandardNumericalOperations;

@@ -208,6 +208,30 @@ extern const std::vector<ParameterOperation> kNameOperations = {
     )
 };
 
+// open parameter values & operations
+extern const std::vector<ParameterOperation> kAbilityOperations = {
+    ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
+        {
+            "Ability"
+        }
+    ),
+    ParameterOperation("Starts With" ,  "LIKE '{0}%'",      kRedColor,
+        {
+            "Ability Prefix"
+        }
+    ),
+    ParameterOperation("Ends With" ,    "LIKE '%{0}'",      kBlueColor,
+        {
+            "Ability Suffix"
+        }
+    ),
+    ParameterOperation("Contains" ,     "LIKE '%{0}%'",     kPurpleColor,
+        {
+            "Ability Component"
+        }
+    )
+};
+
 // open parameters
 const std::string kNameDisplayName = "Name";
 const std::string kNameDatabaseFormat = "name {0}";
@@ -218,6 +242,39 @@ extern const OpenParameterType kNameParam = OpenParameterType(
     kNameDatabaseFormat,
     kMauveColor,
     kNameOperations
+);
+
+const std::string kAbilityDisplayName = "Normal Ability";
+const std::string kAbilityDatabaseFormat = "ability_1 {0} OR ability_2 {0}";
+const std::string kAbilityDisplayFormat = "Normal Ability: {0}";
+extern const OpenParameterType kAbilityParam = OpenParameterType(
+    kAbilityDisplayName,
+    kAbilityDisplayFormat,
+    kAbilityDatabaseFormat,
+    kSaffronColor,
+    kAbilityOperations
+);
+
+const std::string kHiddenAbilityDisplayName = "Hidden Ability";
+const std::string kHiddenAbilityDatabaseFormat = "hidden_ability {0}";
+const std::string kHiddenAbilityDisplayFormat = "Hidden Ability: {0}";
+extern const OpenParameterType kHiddenAbilityParam = OpenParameterType(
+    kHiddenAbilityDisplayName,
+    kHiddenAbilityDisplayFormat,
+    kHiddenAbilityDatabaseFormat,
+    kRubyRedColor,
+    kAbilityOperations
+);
+
+const std::string kAnyAbilityDisplayName = "Any Ability";
+const std::string kAnyAbilityDatabaseFormat = "ability_1 {0} OR ability_2 {0} OR hidden_ability {0}";
+const std::string kAnyAbilityDisplayFormat = "Any Ability: {0}";
+extern const OpenParameterType kAnyAbilityParam = OpenParameterType(
+    kAnyAbilityDisplayName,
+    kAnyAbilityDisplayFormat,
+    kAnyAbilityDatabaseFormat,
+    kTangerineColor,
+    kAbilityOperations
 );
 
 // numerical parameter operations and values
