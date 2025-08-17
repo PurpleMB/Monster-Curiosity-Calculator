@@ -144,6 +144,8 @@ private:
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
 		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
 		std::make_shared<EnumeratedParameterType>(kSecondaryEggParam),
+		std::make_shared<EnumeratedParameterType>(kGenerationParam),
+		std::make_shared<EnumeratedParameterType>(kGrowthRateParam),
 		std::make_shared<OpenParameterType>(kNameParam),
 		std::make_shared<OpenParameterType>(kAbilityParam),
 		std::make_shared<OpenParameterType>(kHiddenAbilityParam),

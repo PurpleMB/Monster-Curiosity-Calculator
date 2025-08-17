@@ -86,6 +86,27 @@ extern const std::vector<ParameterValue> kEggGroupValuesList = {
     ParameterValue("Undiscovered",	"'no-eggs'",		    kGrayColor),
 };
 
+extern const std::vector<ParameterValue> kGenerationValuesList = {
+    ParameterValue("Generation I",      "'generation-i'",     kRedColor),
+    ParameterValue("Generation II",     "'generation-ii'",    kSeashellColor),
+    ParameterValue("Generation III",    "'generation-iii'",   kRubyRedColor),
+    ParameterValue("Generation IV",     "'generation-iv'",    kPinkColor),
+    ParameterValue("Generation V",      "'generation-v'",     kGrayColor),
+    ParameterValue("Generation VI",     "'generation-vi'",    kVermillionColor),
+    ParameterValue("Generation VII",    "'generation-vii'",   kPurpleColor),
+    ParameterValue("Generation VIII",   "'generation-viii'",  kBrassColor),
+    ParameterValue("Generation IX",     "'generation-ix'",    kIndigoColor)
+};
+
+extern const std::vector<ParameterValue> kGrowthRateValuesList = {
+    ParameterValue("Fluctuating",   "'fast-then-very-slow'",  kRedColor),
+    ParameterValue("Slow",          "'slow'",                 kGreenColor),
+    ParameterValue("Medium Slow",   "'medium-slow'",          kBlueColor),
+    ParameterValue("Medium Fast",   "'medium'",               kPurpleColor),
+    ParameterValue("Fast",          "'fast'",                 kOrangeColor),
+    ParameterValue("Erratic",       "'slow-then-very-fast'",  kPinkColor),
+};
+
 extern const std::vector<ParameterOperation> kEnumOperations = {
     ParameterOperation("Equals",		"= {0}",		    kGreenColor,
         {
@@ -254,6 +275,30 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kLinenColor,
     kEnumOperations,
     kEggGroupValuesList
+);
+
+const std::string kGenerationDisplayName = "Generation";
+const std::string kGenerationDatabaseFormat = "generation {0}";
+const std::string kGenerationDisplayFormat = "Generation: {0}";
+extern const EnumeratedParameterType kGenerationParam = EnumeratedParameterType(
+    kGenerationDisplayName,
+    kGenerationDisplayFormat,
+    kGenerationDatabaseFormat,
+    kSeashellColor,
+    kEnumOperations,
+    kGenerationValuesList
+);
+
+const std::string kGrowthRateDisplayName = "Growth Rate";
+const std::string kGrowthRateDatabaseFormat = "growth_rate {0}";
+const std::string kGrowthRateDisplayFormat = "Growth Rate: {0}";
+extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
+    kGrowthRateDisplayName,
+    kGrowthRateDisplayFormat,
+    kGrowthRateDatabaseFormat,
+    kBrownColor,
+    kEnumOperations,
+    kGrowthRateValuesList
 );
 
 // open parameter values & operations

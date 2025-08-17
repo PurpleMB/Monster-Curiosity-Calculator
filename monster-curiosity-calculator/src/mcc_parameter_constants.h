@@ -11,6 +11,8 @@ extern const std::vector<ParameterValue> kBinaryValuesList;
 extern const std::vector<ParameterValue> kColorValuesList;
 extern const std::vector<ParameterValue> kShapeValuesList;
 extern const std::vector<ParameterValue> kEggGroupValuesList;
+extern const std::vector<ParameterValue> kGenerationValuesList;
+extern const std::vector<ParameterValue> kGrowthRateValuesList;
 
 extern const std::vector<ParameterOperation> kEnumOperations;
 
@@ -28,6 +30,8 @@ extern const EnumeratedParameterType kColorParam;
 extern const EnumeratedParameterType kShapeParam;
 extern const EnumeratedParameterType kPrimaryEggParam;
 extern const EnumeratedParameterType kSecondaryEggParam;
+extern const EnumeratedParameterType kGenerationParam;
+extern const EnumeratedParameterType kGrowthRateParam;
 
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;
