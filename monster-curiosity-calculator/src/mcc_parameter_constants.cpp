@@ -112,6 +112,18 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kTypeValuesList
 );
 
+const std::string kSecondaryDisplayName = "Secondary Type";
+const std::string kSecondaryDatabaseFormat = "secondary_type {0}";
+const std::string kSecondaryDisplayFormat = "Secondary Type: {0}";
+extern const EnumeratedParameterType kSecondaryTypeParam = EnumeratedParameterType(
+    kSecondaryDisplayName,
+    kSecondaryDisplayFormat,
+    kSecondaryDatabaseFormat,
+    kBlueColor,
+    kEnumOperations,
+    kTypeValuesList
+);
+
 const std::string kEitherTypeDisplayName = "Either Type";
 const std::string kEitherTypeDatabaseFormat = "primary_type {0} OR secondary_type {0}";
 const std::string kEitherTypeDisplayFormat = "Either Type: {0}";
@@ -122,6 +134,18 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kPurpleColor,
     kEnumOperations,
     kTypeValuesList
+);
+
+const std::string kDimorphicDisplayName = "Is Dimorphic";
+const std::string kDimorphicDatabaseFormat = "dimorphic {0}";
+const std::string kDimorphicDisplayFormat = "Dimorphic: {0}";
+extern const EnumeratedParameterType kDimorphicParam = EnumeratedParameterType(
+    kDimorphicDisplayName,
+    kDimorphicDisplayFormat,
+    kDimorphicDatabaseFormat,
+    kMahoganyColor,
+    kEnumOperations,
+    kBinaryValuesList
 );
 
 const std::string kIsDefaultDisplayName = "Is Base Form";
@@ -136,6 +160,18 @@ extern const EnumeratedParameterType kIsDefaultParam = EnumeratedParameterType(
     kBinaryValuesList
 );
 
+const std::string kCanSwitchDisplayName = "Form Switchable";
+const std::string kCanSwitchDatabaseFormat = "form_switchable {0}";
+const std::string kCanSwitchDisplayFormat = "Can Switch Form: {0}";
+extern const EnumeratedParameterType kCanSwitchParam = EnumeratedParameterType(
+    kCanSwitchDisplayName,
+    kCanSwitchDisplayFormat,
+    kCanSwitchDatabaseFormat,
+    kVermillionColor,
+    kEnumOperations,
+    kBinaryValuesList
+);
+
 const std::string kBabyDisplayName = "Is A Baby";
 const std::string kBabyDatabaseFormat = "is_baby {0}";
 const std::string kBabyDisplayFormat = "Baby: {0}";
@@ -144,6 +180,30 @@ extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
     kBabyDisplayFormat,
     kBabyDatabaseFormat,
     kPinkColor,
+    kEnumOperations,
+    kBinaryValuesList
+);
+
+const std::string kLegendDisplayName = "Is Legendary";
+const std::string kLegendDatabaseFormat = "is_legendary {0}";
+const std::string kLegendDisplayFormat = "Legendary: {0}";
+extern const EnumeratedParameterType kIsLegendParam = EnumeratedParameterType(
+    kLegendDisplayName,
+    kLegendDisplayFormat,
+    kLegendDatabaseFormat,
+    kIndigoColor,
+    kEnumOperations,
+    kBinaryValuesList
+);
+
+const std::string kMythicDisplayName = "Is Mythical";
+const std::string kMythicDatabaseFormat = "is_mythical {0}";
+const std::string kMythicDisplayFormat = "Mythical: {0}";
+extern const EnumeratedParameterType kIsMythicParam = EnumeratedParameterType(
+    kMythicDisplayName,
+    kMythicDisplayFormat,
+    kMythicDatabaseFormat,
+    kOrchidColor,
     kEnumOperations,
     kBinaryValuesList
 );
@@ -180,6 +240,18 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPrimaryEggDisplayFormat,
     kPrimaryEggDatabaseFormat,
     kPeriwinkleColor,
+    kEnumOperations,
+    kEggGroupValuesList
+);
+
+const std::string kSecondaryEggDisplayName = "Secondary Egg Group";
+const std::string kSecondaryEggDatabaseFormat = "secondary_egg_group {0}";
+const std::string kSecondaryEggDisplayFormat = "Secondary Egg Group: {0}";
+extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterType(
+    kSecondaryEggDisplayName,
+    kSecondaryEggDisplayFormat,
+    kSecondaryEggDatabaseFormat,
+    kLinenColor,
     kEnumOperations,
     kEggGroupValuesList
 );

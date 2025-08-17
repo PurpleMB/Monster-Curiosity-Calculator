@@ -132,12 +132,18 @@ private:
 
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
+		std::make_shared<EnumeratedParameterType>(kSecondaryTypeParam),
 		std::make_shared<EnumeratedParameterType>(kEitherTypeParam),
+		std::make_shared<EnumeratedParameterType>(kDimorphicParam),
 		std::make_shared<EnumeratedParameterType>(kIsDefaultParam),
+		std::make_shared<EnumeratedParameterType>(kCanSwitchParam),
 		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
+		std::make_shared<EnumeratedParameterType>(kIsLegendParam),
+		std::make_shared<EnumeratedParameterType>(kIsMythicParam),
 		std::make_shared<EnumeratedParameterType>(kColorParam),
 		std::make_shared<EnumeratedParameterType>(kShapeParam),
 		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
+		std::make_shared<EnumeratedParameterType>(kSecondaryEggParam),
 		std::make_shared<OpenParameterType>(kNameParam),
 		std::make_shared<OpenParameterType>(kAbilityParam),
 		std::make_shared<OpenParameterType>(kHiddenAbilityParam),

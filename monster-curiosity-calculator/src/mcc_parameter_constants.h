@@ -16,12 +16,18 @@ extern const std::vector<ParameterOperation> kEnumOperations;
 
 // enumerated parameters
 extern const EnumeratedParameterType kPrimaryTypeParam;
+extern const EnumeratedParameterType kSecondaryTypeParam;
 extern const EnumeratedParameterType kEitherTypeParam;
+extern const EnumeratedParameterType kDimorphicParam;
 extern const EnumeratedParameterType kIsDefaultParam;
+extern const EnumeratedParameterType kCanSwitchParam;
 extern const EnumeratedParameterType kIsBabyParam;
+extern const EnumeratedParameterType kIsLegendParam;
+extern const EnumeratedParameterType kIsMythicParam;
 extern const EnumeratedParameterType kColorParam;
 extern const EnumeratedParameterType kShapeParam;
 extern const EnumeratedParameterType kPrimaryEggParam;
+extern const EnumeratedParameterType kSecondaryEggParam;
 
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;
