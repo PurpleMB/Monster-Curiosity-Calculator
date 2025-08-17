@@ -145,7 +145,7 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\mcc_constants.cpp" />
+    <ClCompile Include="src\mcc_database_constants.cpp" />
     <ClCompile Include="src\mcc_display_constants.cpp" />
     <ClCompile Include="src\mcc_gui_window.cpp" />
     <ClCompile Include="src\mcc_parameter_constants.cpp" />
@@ -164,7 +164,7 @@
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="src\database.h" />
-    <ClInclude Include="src\mcc_constants.h" />
+    <ClInclude Include="src\mcc_database_constants.h" />
     <ClInclude Include="src\mcc_display_constants.h" />
     <ClInclude Include="src\mcc_display_structs.h" />
     <ClInclude Include="src\mcc_gui_windows.h" />

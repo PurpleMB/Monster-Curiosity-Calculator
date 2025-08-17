@@ -21,7 +21,7 @@
 #include "app.h"
 #include "database.h"
 #include "mcc_structs.h"
-#include "mcc_constants.h"
+#include "mcc_database_constants.h"
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
 

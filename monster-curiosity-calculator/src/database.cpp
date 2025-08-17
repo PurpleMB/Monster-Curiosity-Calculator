@@ -13,7 +13,7 @@
 #include <json/value.h>
 
 #include "mcc_structs.h"
-#include "mcc_constants.h"
+#include "mcc_database_constants.h"
 #include "mcc_parameter_structs.h"
 
 namespace monster_calculator {
@@ -38,7 +38,7 @@ int CreateDatabase(OutputEnvironment& output_environment) {
 
 int CreateMainTable(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
-	const char* table_schema = kMainTableScheme.c_str();
+	const char* table_schema = kMainTableSchema.c_str();
 
 	sqlite3* db;
 	int exit = 0;
