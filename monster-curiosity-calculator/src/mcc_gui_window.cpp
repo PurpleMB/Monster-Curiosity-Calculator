@@ -205,19 +205,13 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 }
 
 void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+	std::string user_prompt = std::vformat("Set {0}", std::make_format_args(operation.operands[0]));
+	ImGui::Text(user_prompt.c_str());
+	
 	std::string selected_value_name = param_type.values[selected_value_index].display_name;
-	if (ImGui::Button(selected_value_name.c_str())) {
-		ImGui::OpenPopup("Select parameter value");
-	}
+	int options_count = param_type.values.size();
+	ImGui::SliderInt("", &selected_value_index, 0, options_count - 1, selected_value_name.c_str());
 
-	if (ImGui::BeginPopup("Select parameter value")) {
-		for (int i = 0; i < param_type.values.size(); i++) {
-			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
-				selected_value_index = i;
-			}
-		}
-		ImGui::EndPopup();
-	}
 	ParameterValue selected_value = param_type.values[selected_value_index];
 	building_parameter.SetValueInfo(ColumnDisplayInfo(selected_value.display_name, selected_value.value_color));
 

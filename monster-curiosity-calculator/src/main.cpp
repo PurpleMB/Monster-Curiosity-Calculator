@@ -50,8 +50,11 @@ public:
 	// Put any logic for the GUI that needs to be drawn every frame in here
 	virtual void Update() final {
 		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-		if (show_demo_window_)
+		if (show_demo_window_) {
+			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::ShowDemoWindow(&show_demo_window_);
+		}
+
 
 		ImVec2 window_size = {550, 0};
 		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
