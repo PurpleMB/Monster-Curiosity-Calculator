@@ -11,6 +11,7 @@ namespace monster_calculator {
 	void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment, 
 		std::vector<std::shared_ptr<ParameterType>> parameter_types);
 	void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
+	void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
 	void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);

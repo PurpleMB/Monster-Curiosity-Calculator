@@ -301,6 +301,41 @@ extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
     kGrowthRateValuesList
 );
 
+// enumerated slider parameter values and operations
+extern const std::vector<ParameterValue> kGenderRateValuesList = {
+    ParameterValue("Gender Unknown",	"-1",	kPearlColor),
+    ParameterValue("100% Male",	        "0",	kPeriwinkleColor),
+    ParameterValue("87.5% Male",	    "1",	kPeriwinkleColor),
+    ParameterValue("75% Male ",	        "2",	kPeriwinkleColor),
+    ParameterValue("62.5% Male Male",	"3",	kPeriwinkleColor),
+    ParameterValue("50/50",	            "4",	kOrchidColor),
+    ParameterValue("62.5% Female",	    "5",	kPinkColor),
+    ParameterValue("75% Female",	    "6",	kPinkColor),
+    ParameterValue("87.5% Female",	    "7",	kPinkColor),
+    ParameterValue("100% Female",	    "8",	kPinkColor)
+};
+
+extern const std::vector<ParameterOperation> kSliderEnumOperations = {
+    ParameterOperation("Equals",        "= {0}",        kGreenColor,
+        {
+            "Target value"
+        }
+    )
+};
+
+// enumerated slider parameters
+const std::string kGenderRateDisplayName = "Gender Rate";
+const std::string kGenderRateDatabaseFormat = "gender_rate {0}";
+const std::string kGenderRateDisplayFormat = "Gender Rate: {0}";
+extern const SliderEnumeratedParameterType kGenderRateParam = SliderEnumeratedParameterType(
+    kGenderRateDisplayName,
+    kGenderRateDisplayFormat,
+    kGenderRateDatabaseFormat,
+    kSaffronColor,
+    kSliderEnumOperations,
+    kGenderRateValuesList
+);
+
 // open parameter values & operations
 extern const std::vector<ParameterOperation> kNameOperations = {
     ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,

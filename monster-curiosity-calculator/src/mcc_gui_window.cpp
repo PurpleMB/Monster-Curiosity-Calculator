@@ -106,6 +106,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 
 	EnumeratedParameterType enum_param;
+	SliderEnumeratedParameterType slider_param;
 	OpenParameterType open_param;
 	IntegerParameterType int_param;
 	DecimalParameterType dec_param;
@@ -115,7 +116,8 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 			DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 			break;
 		case EnumeratedSlider:
-			// TODO: ADD SOMETHING HERE FOR A SLIDER PARAMETER LIKE GENDER RATE
+			slider_param = * dynamic_cast<SliderEnumeratedParameterType*>(selected_param);
+			DrawSliderParameterSelector(slider_param, selected_operation, selected_value_index, building_parameter);
 			break;
 		case Open:
 			open_param = *dynamic_cast<OpenParameterType*>(selected_param);
@@ -181,6 +183,28 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 }
 
 void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+	if (ImGui::Button(selected_value_name.c_str())) {
+		ImGui::OpenPopup("Select parameter value");
+	}
+
+	if (ImGui::BeginPopup("Select parameter value")) {
+		for (int i = 0; i < param_type.values.size(); i++) {
+			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
+				selected_value_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+	ParameterValue selected_value = param_type.values[selected_value_index];
+	building_parameter.SetValueInfo(ColumnDisplayInfo(selected_value.display_name, selected_value.value_color));
+
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
+}
+
+void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
 	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select parameter value");

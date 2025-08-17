@@ -105,6 +105,21 @@ struct EnumeratedParameterType : ParameterType {
 	}
 };
 
+struct SliderEnumeratedParameterType : EnumeratedParameterType {
+	SliderEnumeratedParameterType() : EnumeratedParameterType() {
+
+	}
+
+	SliderEnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
+		EnumeratedParameterType(dis_name, dis_format, db_format, color, ops, vals) {
+
+	}
+
+	virtual ParameterCategory GetParameterCategory() const {
+		return EnumeratedSlider;
+	}
+};
+
 struct OpenParameterType : ParameterType {
 
 	OpenParameterType() : ParameterType() {

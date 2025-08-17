@@ -5,7 +5,7 @@
 
 namespace monster_calculator {
 
-// parameter values and operations
+// enumerated parameter values and operations
 extern const std::vector<ParameterValue> kTypeValuesList;
 extern const std::vector<ParameterValue> kBinaryValuesList;
 extern const std::vector<ParameterValue> kColorValuesList;
@@ -32,6 +32,14 @@ extern const EnumeratedParameterType kPrimaryEggParam;
 extern const EnumeratedParameterType kSecondaryEggParam;
 extern const EnumeratedParameterType kGenerationParam;
 extern const EnumeratedParameterType kGrowthRateParam;
+
+// enumerated slider parameter values and operations
+extern const std::vector<ParameterValue> kGenderRateValuesList;
+
+extern const std::vector<ParameterOperation> kSliderEnumOperations;
+
+// enumerated slider parameters
+extern const SliderEnumeratedParameterType kGenderRateParam;
 
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;
