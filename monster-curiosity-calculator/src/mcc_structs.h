@@ -10,14 +10,6 @@
 
 namespace monster_calculator {
 
-/*
-enum ParameterCategory {
-	Enumerated,
-	Numerical,
-	Undefined
-};
-*/
-
 enum SubsetColumnsIds {
 	NumberColumnId,
 	NameColumnId,
@@ -29,51 +21,6 @@ enum SubsetColumnsIds {
 	PrimaryTypeColumnId,
 	SecondaryTypeColumnId
 };
-
-/*
-struct ParameterType {
-	std::string display_name;
-	std::string query_format;
-	ParameterCategory catergory;
-	std::vector<std::pair<std::string, std::string>> values;
-
-	ParameterType(std::string name, std::string q_name, ParameterCategory cat, std::vector<std::pair<std::string, std::string>> vals) {
-		display_name = name;
-		query_format = q_name;
-		catergory = cat;
-		values = vals;
-	}
-
-	virtual ~ParameterType() = default;
-
-	virtual ParameterCategory GetParameterCategory() {
-		return catergory;
-	}
-};
-
-struct ValueType {
-	std::string display_name;
-	std::string query_format;
-	std::vector<std::pair<std::string, std::string>> values;
-
-	ValueType(std::string name, std::string q_name, std::vector<std::pair<std::string, std::string>> vals) {
-		display_name = name;
-		query_format = q_name;
-		values = vals;
-	}
-
-	virtual ~ValueType() = default;
-};
-*/
-
-/*
-struct BetterQueryParameter {
-	std::string query_format;
-	std::string query_value;
-	std::string display_format;
-	std::string display_value;
-};
-*/
 
 struct WindowParameters {
 	std::string name;
@@ -88,46 +35,6 @@ struct LogEntry {
 	std::string message_code;
 	std::string log_message;
 };
-
-/*
-struct ParameterSet {
-	std::vector<std::vector<BetterQueryParameter>> subset_parameters;
-	int parameter_count;
-
-	ParameterSet() {
-		subset_parameters = {{}};
-		parameter_count = 0;
-	}
-
-	void AddParameter(const BetterQueryParameter parameter, int parameter_group = 0) {
-		if (parameter_group >= subset_parameters.size()) {
-			subset_parameters.push_back({});
-			parameter_group = subset_parameters.size() - 1;
-		}
-
-		subset_parameters[parameter_group].push_back(parameter);
-		parameter_count++;
-	}
-
-	void RemoveParameter(const int target_group, const int group_index) {
-		if (target_group >= subset_parameters.size()) {
-			return;
-		}
-		if (group_index >= subset_parameters[target_group].size()) {
-			return;
-		}
-
-		std::vector<BetterQueryParameter>& param_group = subset_parameters[target_group];
-		param_group.erase(param_group.begin() + group_index);
-		parameter_count--;
-	}
-
-	void ClearAllParameters() {
-		subset_parameters.clear();
-		parameter_count = 0;
-	}
-};
-*/
 
 struct SubsetEntry {
 	std::unordered_map<std::string, std::string> entry_data;
@@ -213,14 +120,31 @@ struct OutputEnvironment {
 	}
 };
 
-struct SubsetColumnInfo {
+struct ColumnInfo {
 	std::string display_name;
 	std::string query_name;
-	bool enabled;
 	bool togglable;
 	int column_flags;
 	int column_id;
-	float column_width = 0.0f;
+	float column_width;
+};
+
+struct ColumnStatus {
+	ColumnInfo column_info;
+	bool enabled = false;
+
+	ColumnStatus(ColumnInfo column, bool start_enabled) {
+		column_info = column;
+		enabled = start_enabled;
+	}
+
+	ColumnInfo GetColumnInfo() {
+		return column_info;
+	}
+
+	bool IsEnabled() {
+		return enabled;
+	}
 };
 
 } // namespace monster_calculator

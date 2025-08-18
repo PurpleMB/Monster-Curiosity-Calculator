@@ -489,7 +489,7 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 	ImGui::End();
 }
 
-void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
+void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
@@ -498,48 +498,24 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	// text line showing # of entries in subset
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
-
-	static SubsetColumnInfo result_num_col_info("Result #", "", true, false, 
-		ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, 
-		NumberColumnId, 0);
-	static SubsetColumnInfo name_col_info("Name", "pretty_name", true, false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f);
-	static SubsetColumnInfo dex_col_info("Dex #", "dex_number", true, true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0);
-	static SubsetColumnInfo color_info("Color", "color", false, true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0);
-	static SubsetColumnInfo shape_info("Shape", "shape", false, true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId, 0);
-	static SubsetColumnInfo height_info("Height (m)", "height", false, true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId, 0);
-	static SubsetColumnInfo weight_info("Weight (kg)", "weight", false, true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId, 0);
-	static SubsetColumnInfo prim_type_info("Primary Type", "primary_type", false, true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId, 0);
-	static SubsetColumnInfo sec_type_info("Secondary Type", "secondary_type", false, true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId, 0);
-
-	static std::vector<SubsetColumnInfo> column_infos = {
-		result_num_col_info,
-		name_col_info, 
-		dex_col_info,
-		color_info,
-		shape_info,
-		height_info,
-		weight_info,
-		prim_type_info,
-		sec_type_info
-	};
 	
 	if (ImGui::Button("Column Toggles")) {
 		ImGui::OpenPopup("column_toggle_popup");
 	}
 
 	if (ImGui::BeginPopup("column_toggle_popup")) {
-		for (SubsetColumnInfo& col_info : column_infos) {
-			if (col_info.togglable) {
-				ImGui::Checkbox(col_info.display_name.c_str(), &col_info.enabled);
+		for (ColumnStatus& col : column_statuses) {
+			if (col.GetColumnInfo().togglable) {
+				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.enabled);
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	std::vector<SubsetColumnInfo> active_columns = {};
-	for (SubsetColumnInfo& col_info : column_infos) {
-		if (col_info.enabled) {
-			active_columns.push_back(col_info);
+	std::vector<ColumnInfo> active_columns = {};
+	for (ColumnStatus col : column_statuses) {
+		if (col.enabled) {
+			active_columns.push_back(col.GetColumnInfo());
 		}
 	}
 	int active_column_count = active_columns.size();
@@ -595,7 +571,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	static int frozen_rows = 1;
 	if (ImGui::BeginTable("subset_entries", active_column_count, kTableFlags, outer_size)) {
 		// column setup
-		for (SubsetColumnInfo active_column : active_columns) {
+		for (ColumnInfo active_column : active_columns) {
 			std::string col_name = active_column.display_name;
 			int col_flags = active_column.column_flags;
 			int col_id = active_column.column_id;
@@ -630,7 +606,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 		for (int subset_index = starting_index; subset_index < ending_index; subset_index++) {
 			auto subset_entry = output_environment.subset_entries[subset_index];
 			ImGui::TableNextRow();
-			for (SubsetColumnInfo active_column : active_columns) {
+			for (ColumnInfo active_column : active_columns) {
 				ImGui::TableNextColumn();
 				if (std::strcmp(ImGui::TableGetColumnName(), "Result #") == 0) {
 					int displayed_index = subset_index + 1;
