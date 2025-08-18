@@ -30,4 +30,31 @@ public:
 	}
 };
 
+struct ColumnInfo {
+	std::string display_name;
+	std::string query_name;
+	bool togglable;
+	int column_flags;
+	int column_id;
+	float column_width;
+};
+
+struct ColumnStatus {
+	ColumnInfo column_info;
+	bool enabled = false;
+
+	ColumnStatus(ColumnInfo column, bool start_enabled) {
+		column_info = column;
+		enabled = start_enabled;
+	}
+
+	ColumnInfo GetColumnInfo() {
+		return column_info;
+	}
+
+	bool IsEnabled() {
+		return enabled;
+	}
+};
+
 } //  namespace monster_calculator

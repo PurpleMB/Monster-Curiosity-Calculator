@@ -59,4 +59,15 @@ extern const DisplayColor kBrownColor;
 extern const DisplayColor kMahoganyColor;
 extern const DisplayColor kBrassColor;
 
+// Browns;
+extern const ColumnInfo kResNumColInfo;
+extern const ColumnInfo kNameColInfo;
+extern const ColumnInfo kDexNumColInfo;
+extern const ColumnInfo kColorColInfo;
+extern const ColumnInfo kShapeColInfo;
+extern const ColumnInfo kHeightColInfo;
+extern const ColumnInfo kWeightColInfo;
+extern const ColumnInfo kPrimTypeColInfo;
+extern const ColumnInfo kSecTypeColInfo;
+
 } //  namespace monster_calculator

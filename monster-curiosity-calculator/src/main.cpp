@@ -171,15 +171,15 @@ private:
 	};
 
 	std::vector<ColumnStatus> subset_column_statuses = {
-		ColumnStatus(ColumnInfo("Result #", "", false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, NumberColumnId, 0), true),
-		ColumnStatus(ColumnInfo("Name", "pretty_name", false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f), true),
-		ColumnStatus(ColumnInfo("Dex #", "dex_number", true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0), true),
-		ColumnStatus(ColumnInfo("Color", "color", true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0), false),
-		ColumnStatus(ColumnInfo("Shape", "shape", true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId, 0), false), 
-		ColumnStatus(ColumnInfo("Height (m)", "height", true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId, 0), false),
-		ColumnStatus(ColumnInfo("Weight (kg)", "weight", true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId, 0), false),
-		ColumnStatus(ColumnInfo("Primary Type", "primary_type", true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId, 0), false),
-		ColumnStatus(ColumnInfo("Secondary Type", "secondary_type", true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId, 0), false)
+		ColumnStatus(kResNumColInfo, true),
+		ColumnStatus(kNameColInfo, true),
+		ColumnStatus(kDexNumColInfo, true),
+		ColumnStatus(kColorColInfo, false),
+		ColumnStatus(kShapeColInfo, false), 
+		ColumnStatus(kHeightColInfo, false),
+		ColumnStatus(kWeightColInfo, false),
+		ColumnStatus(kPrimTypeColInfo, false),
+		ColumnStatus(kSecTypeColInfo, false)
 	};
 
 	OutputEnvironment output_environment;

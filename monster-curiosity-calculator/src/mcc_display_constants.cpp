@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mcc_display_structs.h"
+#include "mcc_structs.h"
 
 #include "mcc_display_constants.h"
 
@@ -158,5 +159,16 @@ extern const DisplayColor kBrassColor = DisplayColor(
 	"Brass",
 	ImVec4(225.0f / 255.0f, 193.0f / 255.0f, 110.0f / 255.0f, kColorIntensity)
 );
+
+// ColumnInfo constants
+extern const ColumnInfo kResNumColInfo = ColumnInfo("Result #", "", false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, NumberColumnId, 0);
+extern const ColumnInfo kNameColInfo = ColumnInfo("Name", "pretty_name", false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f);
+extern const ColumnInfo kDexNumColInfo = ColumnInfo("Dex #", "dex_number", true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0);
+extern const ColumnInfo kColorColInfo = ColumnInfo("Color", "color", true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0);
+extern const ColumnInfo kShapeColInfo = ColumnInfo("Shape", "shape", true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId, 0);
+extern const ColumnInfo kHeightColInfo = ColumnInfo("Height (m)", "height", true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId, 0);
+extern const ColumnInfo kWeightColInfo = ColumnInfo("Weight (kg)", "weight", true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId, 0);
+extern const ColumnInfo kPrimTypeColInfo = ColumnInfo("Primary Type", "primary_type", true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId, 0);
+extern const ColumnInfo kSecTypeColInfo = ColumnInfo("Secondary Type", "secondary_type", true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId, 0);
 
 } //  namespace monster_calculator
