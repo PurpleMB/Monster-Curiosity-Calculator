@@ -179,7 +179,30 @@ private:
 		ColumnStatus(kHeightColInfo, false),
 		ColumnStatus(kWeightColInfo, false),
 		ColumnStatus(kPrimTypeColInfo, false),
-		ColumnStatus(kSecTypeColInfo, false)
+		ColumnStatus(kSecTypeColInfo, false),
+		ColumnStatus(kGenerationColInfo, false),
+		ColumnStatus(kFormSwitchColInfo, false),
+		ColumnStatus(kGrowthRateColInfo, false),
+		ColumnStatus(kBaseExpColInfo, false),
+		ColumnStatus(kBaseHappyColInfo, false),
+		ColumnStatus(kCatchRateColInfo, false),
+		ColumnStatus(kDimorphicColInfo, false),
+		ColumnStatus(kPrimEggColInfo, false),
+		ColumnStatus(kSecEggColInfo, false),
+		ColumnStatus(kIsDefaultColInfo, false),
+		ColumnStatus(kIsBabyColInfo, false),
+		ColumnStatus(kIsLegendColInfo, false),
+		ColumnStatus(kIsMythColInfo, false),
+		ColumnStatus(kAbilOneColInfo, false),
+		ColumnStatus(kAbilTwoColInfo, false),
+		ColumnStatus(kAbilHiddenColInfo, false),
+		ColumnStatus(kHealthColInfo, false),
+		ColumnStatus(kAttackColInfo, false),
+		ColumnStatus(kDefenseColInfo, false),
+		ColumnStatus(kSpeAtkColInfo, false),
+		ColumnStatus(kSpeDefColInfo, false),
+		ColumnStatus(kSpeedColInfo, false),
+		ColumnStatus(kStatTotalColInfo, false)
 	};
 
 	OutputEnvironment output_environment;

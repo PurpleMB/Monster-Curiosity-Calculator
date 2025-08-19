@@ -40,7 +40,30 @@ enum SubsetColumnsIds {
 	HeightColumnId,
 	WeightColumnId,
 	PrimaryTypeColumnId,
-	SecondaryTypeColumnId
+	SecondaryTypeColumnId,
+	GenerationColumnId,
+	FormSwitchColumnId,
+	GrowthRateColumnId,
+	BaseExpColumnId,
+	BaseHappyColumnId,
+	CatchRateColumnId,
+	DimorphicColumnId,
+	PrimEggColumnId,
+	SecEggColumnId,
+	IsDefaultColumnId,
+	IsBabyColumnId,
+	IsLegendColumnId,
+	IsMythColumnId,
+	AbilOneColumnId,
+	AbilTwoColumnId,
+	AbilHiddenColumnId,
+	HealthColumnId,
+	AttackColumnId,
+	DefenseColumnId,
+	SpeAtkColumnId,
+	SpeDefColumnId,
+	SpeedColumnId,
+	StatTotalColumnId
 };
 
 struct ColumnInfo {
@@ -125,7 +148,6 @@ struct SubsetComparator {
 				delta = lhs.GetData("secondary_type").compare(rhs.GetData("secondary_type"));
 				break;
 			default:
-				std::cout << "ERROR: Attempting to sort unrecognized column" << std::endl;
 				break;
 			}
 			if (delta > 0) {
