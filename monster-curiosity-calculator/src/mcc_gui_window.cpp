@@ -1,4 +1,7 @@
 #pragma once
+
+#define NOMINMAX
+
 #include "mcc_gui_windows.h"
 
 #include <cstdlib>
@@ -250,10 +253,6 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 
 	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
-		while (operand_index >= operand_values.size()) {
-			operand_values.push_back(0);
-		}
-
 		std::string operand = operation.operands[operand_index];
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
@@ -266,10 +265,13 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 	std::string formatted_operation;
 	std::string formatted_display;
 	if (operand_count == 1) {
+		operand_values[0] = std::clamp(operand_values[0], min_val, max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
 		formatted_display = std::vformat("{0}", std::make_format_args(operand_values[0]));
 	}
 	else if (operand_count == 2) {
+		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
+		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
@@ -291,10 +293,6 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 
 	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
-		while (operand_index >= operand_values.size()) {
-			operand_values.push_back(0);
-		}
-
 		std::string operand = operation.operands[operand_index];
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
@@ -307,10 +305,13 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	std::string formatted_operation;
 	std::string formatted_display;
 	if (operand_count == 1) {
+		operand_values[0] = std::clamp(operand_values[0], min_val, max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
 		formatted_display = std::vformat("{0}", std::make_format_args(operand_values[0]));
 	}
 	else if (operand_count == 2) {
+		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
+		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
@@ -603,7 +604,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 
 		// printing entry rows
 		int starting_index = page_size * subset_page;
-		int ending_index = min(output_environment.subset_entries.size(), starting_index + page_size);
+		int ending_index = std::min((int)output_environment.subset_entries.size(), starting_index + page_size);
 		for (int subset_index = starting_index; subset_index < ending_index; subset_index++) {
 			auto subset_entry = output_environment.subset_entries[subset_index];
 			ImGui::TableNextRow();
