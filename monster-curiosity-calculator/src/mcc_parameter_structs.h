@@ -17,15 +17,35 @@ struct ParameterValue {
 	std::string display_name;
 	std::string database_name;
 	DisplayColor value_color;
+	int sorting_value; // really only used for enum parameter values to allow custom sorting order
+
+	ParameterValue() {
+		display_name = "UNINITIALIZED PARAMETER VALUE DISPLAY NAME";
+		database_name = "UNINITIALIZED PARAMETER VALUE DATABASE NAME";
+		value_color = kRedColor;
+		sorting_value = -1;
+	}
 
 	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color) {
 		display_name = dis_name;
 		database_name = db_name;
 		value_color = color;
+		sorting_value = -1;
+	}
+
+	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color, int sort_val) {
+		display_name = dis_name;
+		database_name = db_name;
+		value_color = color;
+		sorting_value = sort_val;
 	}
 
 	ImVec4 GetParameterColor() const {
 		return value_color.GetColorValues();
+	}
+
+	int GetSortValue() const {
+		return sorting_value;
 	}
 };
 

@@ -615,7 +615,7 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 					ImGui::Text(std::to_string(displayed_index).c_str());
 					continue;
 				}
-				ImGui::Text(subset_entry.GetData(active_column.query_name).c_str());
+				ImGui::Text(subset_entry.GetRawData(active_column.query_name).c_str());
 			}
 		}
 		ImGui::EndTable();

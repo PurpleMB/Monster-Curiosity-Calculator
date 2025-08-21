@@ -59,7 +59,7 @@ extern const DisplayColor kBrownColor;
 extern const DisplayColor kMahoganyColor;
 extern const DisplayColor kBrassColor;
 
-// Browns;
+// Subset Display ColumnInfos
 extern const ColumnInfo kResNumColInfo;
 extern const ColumnInfo kNameColInfo;
 extern const ColumnInfo kDexNumColInfo;

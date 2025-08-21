@@ -94,17 +94,37 @@ struct ColumnStatus {
 };
 
 struct SubsetEntry {
-	std::unordered_map<std::string, std::string> entry_data;
+	std::unordered_map<std::string, std::string> raw_entry_data;
+	std::unordered_map<std::string, ParameterValue&> converted_entry_data;
 
 	void AddData(std::string label, std::string value) {
-		entry_data[label] = value;
+		raw_entry_data[label] = value;
 	}
 
-	std::string GetData(std::string label) {
-		if (entry_data.contains(label)) {
-			return entry_data[label];
+	std::string GetRawData(std::string label) {
+		if (raw_entry_data.contains(label)) {
+			return raw_entry_data[label];
 		}
 		return "No data found";
+	}
+
+	bool HasConvertedData(std::string label) {
+		return converted_entry_data.contains(label);
+	}
+
+	std::string GetConvertedData(std::string label) {
+		if (converted_entry_data.contains(label)) {
+			ParameterValue param_val = converted_entry_data[label];
+			return param_val.display_name;
+		}
+		return "CONVERTED DATA NOT FOUND";
+	}
+
+	ParameterValue GetParameterValue(std::string label) {
+		if (converted_entry_data.contains(label)) {
+			return converted_entry_data[label];
+		}
+		return ParameterValue();
 	}
 };
 
@@ -121,100 +141,100 @@ struct SubsetComparator {
 			double delta = 0;
 			switch (sort_spec->ColumnUserID) {
 			case NumberColumnId:
-				delta = std::stoi(lhs.GetData("id")) - std::stoi(rhs.GetData("id"));
+				delta = std::stoi(lhs.GetRawData("id")) - std::stoi(rhs.GetRawData("id"));
 				break;
 			case NameColumnId:
-				delta = lhs.GetData("pretty_name").compare(rhs.GetData("pretty_name"));
+				delta = lhs.GetRawData("pretty_name").compare(rhs.GetRawData("pretty_name"));
 				break;
 			case DexColumnId:
-				delta = std::stoi(lhs.GetData("dex_number")) - std::stoi(rhs.GetData("dex_number"));
+				delta = std::stoi(lhs.GetRawData("dex_number")) - std::stoi(rhs.GetRawData("dex_number"));
 				break;
 			case ColorColumnId:
-				delta = lhs.GetData("color").compare(rhs.GetData("color"));
+				delta = lhs.GetRawData("color").compare(rhs.GetRawData("color"));
 				break;
 			case ShapeColumnId:
-				delta = lhs.GetData("shape").compare(rhs.GetData("shape"));
+				delta = lhs.GetRawData("shape").compare(rhs.GetRawData("shape"));
 				break;
 			case HeightColumnId:
-				delta = std::stof(lhs.GetData("height")) - std::stof(rhs.GetData("height"));
+				delta = std::stof(lhs.GetRawData("height")) - std::stof(rhs.GetRawData("height"));
 				break;
 			case WeightColumnId:
-				delta = std::stod(lhs.GetData("weight")) - std::stod(rhs.GetData("weight"));
+				delta = std::stod(lhs.GetRawData("weight")) - std::stod(rhs.GetRawData("weight"));
 				break;
 			case PrimaryTypeColumnId:
-				delta = lhs.GetData("primary_type").compare(rhs.GetData("primary_type"));
+				delta = lhs.GetRawData("primary_type").compare(rhs.GetRawData("primary_type"));
 				break;
 			case SecondaryTypeColumnId:
-				delta = lhs.GetData("secondary_type").compare(rhs.GetData("secondary_type"));
+				delta = lhs.GetRawData("secondary_type").compare(rhs.GetRawData("secondary_type"));
 				break;
 			case GenerationColumnId:
-				delta = lhs.GetData("generation").compare(rhs.GetData("generation"));
+				delta = lhs.GetRawData("generation").compare(rhs.GetRawData("generation"));
 				break;
 			case FormSwitchColumnId:
-				delta = std::stoi(lhs.GetData("form_switchable")) - std::stoi(rhs.GetData("form_switchable"));
+				delta = std::stoi(lhs.GetRawData("form_switchable")) - std::stoi(rhs.GetRawData("form_switchable"));
 				break;
 			case GrowthRateColumnId:
-				delta = lhs.GetData("growth_rate").compare(rhs.GetData("growth_rate"));
+				delta = lhs.GetRawData("growth_rate").compare(rhs.GetRawData("growth_rate"));
 				break;
 			case BaseExpColumnId:
-				delta = std::stoi(lhs.GetData("base_experience")) - std::stoi(rhs.GetData("base_experience"));
+				delta = std::stoi(lhs.GetRawData("base_experience")) - std::stoi(rhs.GetRawData("base_experience"));
 				break;
 			case BaseHappyColumnId:
-				delta = std::stoi(lhs.GetData("base_happiness")) - std::stoi(rhs.GetData("base_happiness"));
+				delta = std::stoi(lhs.GetRawData("base_happiness")) - std::stoi(rhs.GetRawData("base_happiness"));
 				break;
 			case CatchRateColumnId:
-				delta = std::stoi(lhs.GetData("catch_rate")) - std::stoi(rhs.GetData("catch_rate"));
+				delta = std::stoi(lhs.GetRawData("catch_rate")) - std::stoi(rhs.GetRawData("catch_rate"));
 				break;
 			case DimorphicColumnId:
-				delta = std::stoi(lhs.GetData("dimorphic")) - std::stoi(rhs.GetData("dimorphic"));
+				delta = std::stoi(lhs.GetRawData("dimorphic")) - std::stoi(rhs.GetRawData("dimorphic"));
 				break;
 			case PrimEggColumnId:
-				delta = lhs.GetData("primary_egg_group").compare(rhs.GetData("primary_egg_group"));
+				delta = lhs.GetRawData("primary_egg_group").compare(rhs.GetRawData("primary_egg_group"));
 				break;
 			case SecEggColumnId:
-				delta = lhs.GetData("secondary_egg_group").compare(rhs.GetData("secondary_egg_group"));
+				delta = lhs.GetRawData("secondary_egg_group").compare(rhs.GetRawData("secondary_egg_group"));
 				break;
 			case IsDefaultColumnId:
-				delta = std::stoi(lhs.GetData("is_default")) - std::stoi(rhs.GetData("is_default"));
+				delta = std::stoi(lhs.GetRawData("is_default")) - std::stoi(rhs.GetRawData("is_default"));
 				break;
 			case IsBabyColumnId:
-				delta = std::stoi(lhs.GetData("is_baby")) - std::stoi(rhs.GetData("is_baby"));
+				delta = std::stoi(lhs.GetRawData("is_baby")) - std::stoi(rhs.GetRawData("is_baby"));
 				break;
 			case IsLegendColumnId:
-				delta = std::stoi(lhs.GetData("is_legendary")) - std::stoi(rhs.GetData("is_legendary"));
+				delta = std::stoi(lhs.GetRawData("is_legendary")) - std::stoi(rhs.GetRawData("is_legendary"));
 				break;
 			case IsMythColumnId:
-				delta = std::stoi(lhs.GetData("is_mythical")) - std::stoi(rhs.GetData("is_mythical"));
+				delta = std::stoi(lhs.GetRawData("is_mythical")) - std::stoi(rhs.GetRawData("is_mythical"));
 				break;
 			case AbilOneColumnId:
-				delta = lhs.GetData("ability_1").compare(rhs.GetData("ability_1"));
+				delta = lhs.GetRawData("ability_1").compare(rhs.GetRawData("ability_1"));
 				break;
 			case AbilTwoColumnId:
-				delta = lhs.GetData("ability_2").compare(rhs.GetData("ability_2"));
+				delta = lhs.GetRawData("ability_2").compare(rhs.GetRawData("ability_2"));
 				break;
 			case AbilHiddenColumnId:
-				delta = lhs.GetData("hidden_ability").compare(rhs.GetData("hidden_ability"));
+				delta = lhs.GetRawData("hidden_ability").compare(rhs.GetRawData("hidden_ability"));
 				break;
 			case HealthColumnId:
-				delta = std::stoi(lhs.GetData("hp")) - std::stoi(rhs.GetData("hp"));
+				delta = std::stoi(lhs.GetRawData("hp")) - std::stoi(rhs.GetRawData("hp"));
 				break;
 			case AttackColumnId:
-				delta = std::stoi(lhs.GetData("attack")) - std::stoi(rhs.GetData("attack"));
+				delta = std::stoi(lhs.GetRawData("attack")) - std::stoi(rhs.GetRawData("attack"));
 				break;
 			case DefenseColumnId:
-				delta = std::stoi(lhs.GetData("defense")) - std::stoi(rhs.GetData("defense"));
+				delta = std::stoi(lhs.GetRawData("defense")) - std::stoi(rhs.GetRawData("defense"));
 				break;
 			case SpeAtkColumnId:
-				delta = std::stoi(lhs.GetData("special_attack")) - std::stoi(rhs.GetData("special_attack"));
+				delta = std::stoi(lhs.GetRawData("special_attack")) - std::stoi(rhs.GetRawData("special_attack"));
 				break;
 			case SpeDefColumnId:
-				delta = std::stoi(lhs.GetData("special_defense")) - std::stoi(rhs.GetData("special_defense"));
+				delta = std::stoi(lhs.GetRawData("special_defense")) - std::stoi(rhs.GetRawData("special_defense"));
 				break;
 			case SpeedColumnId:
-				delta = std::stoi(lhs.GetData("speed")) - std::stoi(rhs.GetData("speed"));
+				delta = std::stoi(lhs.GetRawData("speed")) - std::stoi(rhs.GetRawData("speed"));
 				break;
 			case StatTotalColumnId:
-				delta = std::stoi(lhs.GetData("stat_total")) - std::stoi(rhs.GetData("stat_total"));
+				delta = std::stoi(lhs.GetRawData("stat_total")) - std::stoi(rhs.GetRawData("stat_total"));
 				break;
 			default:
 				break;
@@ -226,7 +246,7 @@ struct SubsetComparator {
 				return (sort_spec->SortDirection == ImGuiSortDirection_Ascending) ? 0 : 1;
 			}
 		}
-		return (std::stoi(lhs.GetData("id")) - std::stoi(rhs.GetData("id"))) < 0;
+		return (std::stoi(lhs.GetRawData("id")) - std::stoi(rhs.GetRawData("id"))) < 0;
 	}
 };
 
