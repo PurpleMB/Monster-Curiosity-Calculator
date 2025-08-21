@@ -14,7 +14,8 @@ extern const std::vector<ParameterValue> kEggGroupValuesList;
 extern const std::vector<ParameterValue> kGenerationValuesList;
 extern const std::vector<ParameterValue> kGrowthRateValuesList;
 
-extern const std::vector<ParameterOperation> kEnumOperations;
+extern const std::vector<ParameterOperation> kTextEnumOperations;
+extern const std::vector<ParameterOperation> kValueEnumOperations;
 
 // enumerated parameters
 extern const EnumeratedParameterType kPrimaryTypeParam;

@@ -14,25 +14,25 @@ namespace monster_calculator {
 
 // enum parameter values
 extern const std::vector<ParameterValue> kTypeValuesList = {
-    ParameterValue("Normal",	"'normal'",	    kLinenColor,        0),
-    ParameterValue("Fire",		"'fire'",		kVermillionColor,   1),
-    ParameterValue("Fighting",	"'fighting'",   kMahoganyColor,     2),
-    ParameterValue("Water",		"'water'",	    kBlueColor,         3),
-    ParameterValue("Flying",	"'flying'",	    kPeriwinkleColor,   4),
-    ParameterValue("Grass",		"'grass'",	    kViridianColor,     5),
-    ParameterValue("Poison",	"'poison'",	    kPurpleColor,       6),
-    ParameterValue("Electric",	"'electric'",   kSaffronColor,      7),
-    ParameterValue("Ground",	"'ground'",	    kBrassColor,        8),
-    ParameterValue("Psychic",	"'psychic'",	kFuschiaColor,      9),
-    ParameterValue("Rock",		"'rock'",		kBrownColor,        10),
-    ParameterValue("Ice",		"'ice'",		kSeashellColor,     11),
-    ParameterValue("Bug",		"'bug'",		kGreenColor,        12),
-    ParameterValue("Dragon",	"'dragon'",	    kRubyRedColor,      13),
-    ParameterValue("Ghost",		"'ghost'",	    kRaspberryColor,    14),
-    ParameterValue("Dark",		"'dark'",		kMidnightColor,     15),
-    ParameterValue("Steel",		"'steel'",	    kPearlColor,        16),
-    ParameterValue("Fairy",		"'fairy'",      kPinkColor,         17),
-    ParameterValue("None",		"'-'",		    kCharcoalColor,     18)
+    ParameterValue("Normal",	"normal",	    kLinenColor,        0),
+    ParameterValue("Fire",		"fire",		    kVermillionColor,   1),
+    ParameterValue("Fighting",	"fighting",     kMahoganyColor,     2),
+    ParameterValue("Water",		"water",	    kBlueColor,         3),
+    ParameterValue("Flying",	"flying",	    kPeriwinkleColor,   4),
+    ParameterValue("Grass",		"grass",	    kViridianColor,     5),
+    ParameterValue("Poison",	"poison",	    kPurpleColor,       6),
+    ParameterValue("Electric",	"electric",     kSaffronColor,      7),
+    ParameterValue("Ground",	"ground",	    kBrassColor,        8),
+    ParameterValue("Psychic",	"psychic",	    kFuschiaColor,      9),
+    ParameterValue("Rock",		"rock",		    kBrownColor,        10),
+    ParameterValue("Ice",		"ice",		    kSeashellColor,     11),
+    ParameterValue("Bug",		"bug",		    kGreenColor,        12),
+    ParameterValue("Dragon",	"dragon",	    kRubyRedColor,      13),
+    ParameterValue("Ghost",		"ghost",	    kRaspberryColor,    14),
+    ParameterValue("Dark",		"dark",		    kMidnightColor,     15),
+    ParameterValue("Steel",		"steel",	    kPearlColor,        16),
+    ParameterValue("Fairy",		"fairy",        kPinkColor,         17),
+    ParameterValue("None",		"-",		    kCharcoalColor,     18)
 };
 
 extern const std::vector<ParameterValue> kBinaryValuesList = {
@@ -41,75 +41,88 @@ extern const std::vector<ParameterValue> kBinaryValuesList = {
 };
 
 extern const std::vector<ParameterValue> kColorValuesList = {
-    ParameterValue("Red",		"'red'",		kRedColor,      0),
-    ParameterValue("Blue",		"'blue'",		kBlueColor,     1),
-    ParameterValue("Yellow",	"'yellow'",	    kYellowColor,   2),
-    ParameterValue("Green",		"'green'",	    kGreenColor,    3),
-    ParameterValue("Black",		"'black'",	    kBlackColor,    4),
-    ParameterValue("Brown",		"'brown'",	    kBrownColor,    5),
-    ParameterValue("Purple",	"'purple'",	    kPurpleColor,   6),
-    ParameterValue("Gray",		"'gray'",		kGrayColor,     7),
-    ParameterValue("White",		"'white'",	    kWhiteColor,    8),
-    ParameterValue("Pink",		"'pink'",		kPinkColor,     9)
+    ParameterValue("Red",		"red",		    kRedColor,      0),
+    ParameterValue("Blue",		"blue",		    kBlueColor,     1),
+    ParameterValue("Yellow",	"yellow",	    kYellowColor,   2),
+    ParameterValue("Green",		"green",	    kGreenColor,    3),
+    ParameterValue("Black",		"black",	    kBlackColor,    4),
+    ParameterValue("Brown",		"brown",	    kBrownColor,    5),
+    ParameterValue("Purple",	"purple",	    kPurpleColor,   6),
+    ParameterValue("Gray",		"gray",		    kGrayColor,     7),
+    ParameterValue("White",		"white",	    kWhiteColor,    8),
+    ParameterValue("Pink",		"pink",		    kPinkColor,     9)
 };
 
 extern const std::vector<ParameterValue> kShapeValuesList = {
-    ParameterValue("Ball",		"'ball'",		    kVermillionColor,   0),
-    ParameterValue("Squiggle",	"'squiggle'",	    kOrchidColor,       1),
-    ParameterValue("Fish",		"'fish'",		    kBlueColor,         2),
-    ParameterValue("Arms",		"'arms'",		    kBrassColor,        3),
-    ParameterValue("Blob",		"'blob'",		    kCeladonColor,      4),
-    ParameterValue("Upright",	"'upright'",	    kLinenColor,        5),
-    ParameterValue("Legs",		"'legs'",		    kGoldenrodColor,    6),
-    ParameterValue("Quadruped",	"'quadruped'",      kMahoganyColor,     7),
-    ParameterValue("Wings",		"'wings'",	        kPeriwinkleColor,   8),
-    ParameterValue("Tentacles",	"'tentacles'",      kIndigoColor,       9),
-    ParameterValue("Heads",		"'heads'",	        kFuschiaColor,      10),
-    ParameterValue("Humanoid",	"'humanoid'",	    kPinkColor,         11),
-    ParameterValue("Insect",	"'bug-wings'",      kGreenColor,        12),
-    ParameterValue("Armor",		"'armor'",		    kPurpleColor,       13)
+    ParameterValue("Ball",		"ball",		    kVermillionColor,   0),
+    ParameterValue("Squiggle",	"squiggle",	    kOrchidColor,       1),
+    ParameterValue("Fish",		"fish",		    kBlueColor,         2),
+    ParameterValue("Arms",		"arms",		    kBrassColor,        3),
+    ParameterValue("Blob",		"blob",		    kCeladonColor,      4),
+    ParameterValue("Upright",	"upright",	    kLinenColor,        5),
+    ParameterValue("Legs",		"legs",		    kGoldenrodColor,    6),
+    ParameterValue("Quadruped",	"quadruped",    kMahoganyColor,     7),
+    ParameterValue("Wings",		"wings",	    kPeriwinkleColor,   8),
+    ParameterValue("Tentacles",	"tentacles",    kIndigoColor,       9),
+    ParameterValue("Heads",		"heads",	    kFuschiaColor,      10),
+    ParameterValue("Humanoid",	"humanoid",	    kPinkColor,         11),
+    ParameterValue("Insect",	"bug-wings",    kGreenColor,        12),
+    ParameterValue("Armor",		"armor",		kPurpleColor,       13)
 };
 
 extern const std::vector<ParameterValue> kEggGroupValuesList = {
-    ParameterValue("Mineral",		"'mineral'",		kBrassColor,        0),
-    ParameterValue("Amorphous",		"'indeterminate'",	kRaspberryColor,    1),
-    ParameterValue("Grass",		    "'plant'",		    kViridianColor,     2),
-    ParameterValue("Water 3",		"'water3'",		    kBlueColor,         3),
-    ParameterValue("Water 2",		"'water2'",		    kMidnightColor,     4),
-    ParameterValue("Water 1",		"'water1'",		    kIndigoColor,       5),
-    ParameterValue("Bug",		    "'bug'",		    kGreenColor,        6),
-    ParameterValue("Dragon",		"'dragon'",		    kRubyRedColor,      7),
-    ParameterValue("Flying",		"'flying'",		    kPeriwinkleColor,   8),
-    ParameterValue("Field",		    "'ground'",		    kCeladonColor,      9),
-    ParameterValue("Human-like",	"'humanshape'",		kLinenColor,        10),
-    ParameterValue("Fairy",		    "'fairy'",		    kPinkColor,         11),
-    ParameterValue("Monster",		"'monster'",		kTangerineColor,    12),
-    ParameterValue("Ditto",		    "'ditto'",		    kFuschiaColor,      13),
-    ParameterValue("Undiscovered",	"'no-eggs'",		kGrayColor,         14)
+    ParameterValue("Mineral",		"mineral",		    kBrassColor,        0),
+    ParameterValue("Amorphous",		"indeterminate",	kRaspberryColor,    1),
+    ParameterValue("Grass",		    "plant",		    kViridianColor,     2),
+    ParameterValue("Water 3",		"water3",		    kBlueColor,         3),
+    ParameterValue("Water 2",		"water2",		    kMidnightColor,     4),
+    ParameterValue("Water 1",		"water1",		    kIndigoColor,       5),
+    ParameterValue("Bug",		    "bug",		        kGreenColor,        6),
+    ParameterValue("Dragon",		"dragon",		    kRubyRedColor,      7),
+    ParameterValue("Flying",		"flying",		    kPeriwinkleColor,   8),
+    ParameterValue("Field",		    "ground",		    kCeladonColor,      9),
+    ParameterValue("Human-like",	"humanshape",		kLinenColor,        10),
+    ParameterValue("Fairy",		    "fairy",		    kPinkColor,         11),
+    ParameterValue("Monster",		"monster",		    kTangerineColor,    12),
+    ParameterValue("Ditto",		    "ditto",		    kFuschiaColor,      13),
+    ParameterValue("Undiscovered",	"no-eggs",		    kGrayColor,         14)
 };
 
 extern const std::vector<ParameterValue> kGenerationValuesList = {
-    ParameterValue("I",      "'generation-i'",     kRedColor,           0),
-    ParameterValue("II",     "'generation-ii'",    kSeashellColor,      1),
-    ParameterValue("III",    "'generation-iii'",   kRubyRedColor,       2),
-    ParameterValue("IV",     "'generation-iv'",    kPinkColor,          3),
-    ParameterValue("V",      "'generation-v'",     kGrayColor,          4),
-    ParameterValue("VI",     "'generation-vi'",    kVermillionColor,    5),
-    ParameterValue("VII",    "'generation-vii'",   kPurpleColor,        6),
-    ParameterValue("VIII",   "'generation-viii'",  kBrassColor,         7),
-    ParameterValue("IX",     "'generation-ix'",    kIndigoColor,        8)
+    ParameterValue("I",      "generation-i",        kRedColor,           0),
+    ParameterValue("II",     "generation-ii",       kSeashellColor,      1),
+    ParameterValue("III",    "generation-iii",      kRubyRedColor,       2),
+    ParameterValue("IV",     "generation-iv",       kPinkColor,          3),
+    ParameterValue("V",      "generation-v",        kGrayColor,          4),
+    ParameterValue("VI",     "generation-vi",       kVermillionColor,    5),
+    ParameterValue("VII",    "generation-vii",      kPurpleColor,        6),
+    ParameterValue("VIII",   "generation-viii",     kBrassColor,         7),
+    ParameterValue("IX",     "generation-ix",       kIndigoColor,        8)
 };
 
 extern const std::vector<ParameterValue> kGrowthRateValuesList = {
-    ParameterValue("Fluctuating",   "'fast-then-very-slow'",  kRedColor,        0),
-    ParameterValue("Slow",          "'slow'",                 kGreenColor,      1),
-    ParameterValue("Medium Slow",   "'medium-slow'",          kBlueColor,       2),
-    ParameterValue("Medium Fast",   "'medium'",               kPurpleColor,     3),
-    ParameterValue("Fast",          "'fast'",                 kOrangeColor,     4),
-    ParameterValue("Erratic",       "'slow-then-very-fast'",  kPinkColor,       5)
+    ParameterValue("Fluctuating",   "fast-then-very-slow",      kRedColor,        0),
+    ParameterValue("Slow",          "slow",                     kGreenColor,      1),
+    ParameterValue("Medium Slow",   "medium-slow",              kBlueColor,       2),
+    ParameterValue("Medium Fast",   "medium",                   kPurpleColor,     3),
+    ParameterValue("Fast",          "fast",                     kOrangeColor,     4),
+    ParameterValue("Erratic",       "slow-then-very-fast",      kPinkColor,       5)
 };
 
-extern const std::vector<ParameterOperation> kEnumOperations = {
+extern const std::vector<ParameterOperation> kTextEnumOperations = {
+    ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
+        {
+            "Required value"
+        }
+    ),
+    ParameterOperation("Not Equals" ,  "!= '{0}'",      kRedColor,
+        {
+            "Forbidden value"
+        }
+    )
+};
+
+extern const std::vector<ParameterOperation> kValueEnumOperations = {
     ParameterOperation("Equals",		"= {0}",		    kGreenColor,
         {
             "Required value"
@@ -131,7 +144,7 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kPrimaryDisplayFormat,
     kPrimaryDatabaseFormat,
     kRedColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kTypeValuesList
 );
 
@@ -143,7 +156,7 @@ extern const EnumeratedParameterType kSecondaryTypeParam = EnumeratedParameterTy
     kSecondaryDisplayFormat,
     kSecondaryDatabaseFormat,
     kBlueColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kTypeValuesList
 );
 
@@ -155,7 +168,7 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kEitherTypeDisplayFormat,
     kEitherTypeDatabaseFormat,
     kPurpleColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kTypeValuesList
 );
 
@@ -167,7 +180,7 @@ extern const EnumeratedParameterType kDimorphicParam = EnumeratedParameterType(
     kDimorphicDisplayFormat,
     kDimorphicDatabaseFormat,
     kMahoganyColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -179,7 +192,7 @@ extern const EnumeratedParameterType kIsDefaultParam = EnumeratedParameterType(
     kIsDefaultDisplayFormat,
     kIsDefaultDatabaseFormat,
     kOrangeColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -191,7 +204,7 @@ extern const EnumeratedParameterType kCanSwitchParam = EnumeratedParameterType(
     kCanSwitchDisplayFormat,
     kCanSwitchDatabaseFormat,
     kVermillionColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -203,7 +216,7 @@ extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
     kBabyDisplayFormat,
     kBabyDatabaseFormat,
     kPinkColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -215,7 +228,7 @@ extern const EnumeratedParameterType kIsLegendParam = EnumeratedParameterType(
     kLegendDisplayFormat,
     kLegendDatabaseFormat,
     kIndigoColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -227,7 +240,7 @@ extern const EnumeratedParameterType kIsMythicParam = EnumeratedParameterType(
     kMythicDisplayFormat,
     kMythicDatabaseFormat,
     kOrchidColor,
-    kEnumOperations,
+    kValueEnumOperations,
     kBinaryValuesList
 );
 
@@ -239,7 +252,7 @@ extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kColorDisplayFormat,
     kColorDatabaseFormat,
     kCeladonColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kColorValuesList
 );
 
@@ -251,7 +264,7 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kShapeDisplayFormat,
     kShapeDatabaseFormat,
     kYellowColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kShapeValuesList
 );
 
@@ -263,7 +276,7 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPrimaryEggDisplayFormat,
     kPrimaryEggDatabaseFormat,
     kPeriwinkleColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kEggGroupValuesList
 );
 
@@ -275,7 +288,7 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kSecondaryEggDisplayFormat,
     kSecondaryEggDatabaseFormat,
     kLinenColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kEggGroupValuesList
 );
 
@@ -287,7 +300,7 @@ extern const EnumeratedParameterType kGenerationParam = EnumeratedParameterType(
     kGenerationDisplayFormat,
     kGenerationDatabaseFormat,
     kSeashellColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kGenerationValuesList
 );
 
@@ -299,7 +312,7 @@ extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
     kGrowthRateDisplayFormat,
     kGrowthRateDatabaseFormat,
     kBrownColor,
-    kEnumOperations,
+    kTextEnumOperations,
     kGrowthRateValuesList
 );
 
