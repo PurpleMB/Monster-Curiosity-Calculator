@@ -5,6 +5,9 @@
 
 #include "imgui.h" // for acces to ImVec4 datatype
 
+#include "mcc_parameter_structs.h"
+#include "mcc_parameter_constants.h"
+
 namespace monster_calculator {
 
 struct DisplayColor {
@@ -31,6 +34,7 @@ public:
 		return color_value;
 	}
 };
+
 enum SubsetColumnsIds {
 	NumberColumnId,
 	NameColumnId,
@@ -95,7 +99,7 @@ struct ColumnStatus {
 
 struct SubsetEntry {
 	std::unordered_map<std::string, std::string> raw_entry_data;
-	std::unordered_map<std::string, ParameterValue&> converted_entry_data;
+	std::unordered_map<std::string, ParameterValue> converted_entry_data;
 
 	void AddData(std::string label, std::string value) {
 		raw_entry_data[label] = value;
@@ -107,12 +111,12 @@ struct SubsetEntry {
 		}
 		return "No data found";
 	}
-
+	
 	bool HasConvertedData(std::string label) {
 		return converted_entry_data.contains(label);
 	}
 
-	std::string GetConvertedData(std::string label) {
+	std::string GetConvertedDataName(std::string label) {
 		if (converted_entry_data.contains(label)) {
 			ParameterValue param_val = converted_entry_data[label];
 			return param_val.display_name;
@@ -126,6 +130,7 @@ struct SubsetEntry {
 		}
 		return ParameterValue();
 	}
+	
 };
 
 struct SubsetComparator {
@@ -248,6 +253,100 @@ struct SubsetComparator {
 		}
 		return (std::stoi(lhs.GetRawData("id")) - std::stoi(rhs.GetRawData("id"))) < 0;
 	}
+};
+
+
+// this struct is designed to allow for the conversion of a raw database column name to the associated 
+// ParameterType to allow for access to the helpful display and formatting info not contained in the database info
+struct ParameterTypeConverter {
+private:
+	std::unordered_map<std::string, ParameterType> column_type_map;
+
+public:
+	ParameterTypeConverter(std::unordered_map<std::string, ParameterType> column_type_mappings) {
+		column_type_map = column_type_mappings;
+	}
+
+	
+	ParameterType GetParamTypeByName(std::string col_name) {
+		if (column_type_map.contains(col_name)) {
+			return column_type_map[col_name];
+		}
+		return ParameterType();
+	}
+
+	// this seemingly redundant function simply reroutes requests using ColumnInfo ID values to column names
+	ParameterType GetParamById(int col_id) {
+		switch (col_id) {
+		case NumberColumnId:
+			return GetParamTypeByName("id");
+		case NameColumnId:
+			return GetParamTypeByName("pretty_name");
+		case DexColumnId:
+			return GetParamTypeByName("dex_number");
+		case ColorColumnId:
+			return GetParamTypeByName("color");
+		case ShapeColumnId:
+			return GetParamTypeByName("shape");
+		case HeightColumnId:
+			return GetParamTypeByName("height");
+		case WeightColumnId:
+			return GetParamTypeByName("weight");
+		case PrimaryTypeColumnId:
+			return GetParamTypeByName("primary_type");
+		case SecondaryTypeColumnId:
+			return GetParamTypeByName("secondary_type");
+		case GenerationColumnId:
+			return GetParamTypeByName("generation");
+		case FormSwitchColumnId:
+			return GetParamTypeByName("form_switchable");
+		case GrowthRateColumnId:
+			return GetParamTypeByName("growth_rate");
+		case BaseExpColumnId:
+			return GetParamTypeByName("base_experience");
+		case BaseHappyColumnId:
+			return GetParamTypeByName("base_happiness");
+		case CatchRateColumnId:
+			return GetParamTypeByName("catch_rate");
+		case DimorphicColumnId:
+			return GetParamTypeByName("dimorphic");
+		case PrimEggColumnId:
+			return GetParamTypeByName("primary_egg_group");
+		case SecEggColumnId:
+			return GetParamTypeByName("secondary_egg_group");
+		case IsDefaultColumnId:
+			return GetParamTypeByName("is_default");
+		case IsBabyColumnId:
+			return GetParamTypeByName("is_baby");
+		case IsLegendColumnId:
+			return GetParamTypeByName("is_legendary");
+		case IsMythColumnId:
+			return GetParamTypeByName("is_mythical");
+		case AbilOneColumnId:
+			return GetParamTypeByName("ability_1");
+		case AbilTwoColumnId:
+			return GetParamTypeByName("ability_2");
+		case AbilHiddenColumnId:
+			return GetParamTypeByName("hidden_ability");
+		case HealthColumnId:
+			return GetParamTypeByName("hp");
+		case AttackColumnId:
+			return GetParamTypeByName("attack");
+		case DefenseColumnId:
+			return GetParamTypeByName("defense");
+		case SpeAtkColumnId:
+			return GetParamTypeByName("special_attack");
+		case SpeDefColumnId:
+			return GetParamTypeByName("special_defense");
+		case SpeedColumnId:
+			return GetParamTypeByName("speed");
+		case StatTotalColumnId:
+			return GetParamTypeByName("stat_total");
+		default:
+			return ParameterType();
+		}
+	}
+	
 };
 
 } //  namespace monster_calculator

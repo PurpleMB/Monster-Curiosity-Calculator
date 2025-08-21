@@ -94,4 +94,7 @@ extern const ColumnInfo kSpeDefColInfo;
 extern const ColumnInfo kSpeedColInfo;
 extern const ColumnInfo kStatTotalColInfo;
 
+// column value converters
+extern const ParameterTypeConverter kColToTypeConverter;
+
 } //  namespace monster_calculator
