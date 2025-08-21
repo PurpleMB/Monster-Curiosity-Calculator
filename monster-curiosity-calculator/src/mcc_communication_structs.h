@@ -1,22 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <unordered_map>
-#include <iostream>
-
-#include "imgui.h"
 
 #include "mcc_parameter_structs.h"
+#include "mcc_subset_structs.h"
 
 namespace monster_calculator {
-
-struct WindowParameters {
-	std::string name;
-	ImVec2 window_size;
-	ImVec2 window_position;
-	int imgui_window_settings;
-	float internal_margin;
-};
 
 struct LogEntry {
 	std::string timestamp;
@@ -40,4 +29,3 @@ struct OutputEnvironment {
 };
 
 } // namespace monster_calculator
- 

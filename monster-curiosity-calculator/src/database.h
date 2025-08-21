@@ -4,8 +4,8 @@
 #include <json/json.h>
 #include <json/value.h>
 
-#include "mcc_structs.h"
 #include "mcc_parameter_structs.h"
+#include "mcc_communication_structs.h"
 
 namespace monster_calculator {
 // basic database creation

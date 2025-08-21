@@ -1,9 +1,7 @@
 #pragma once
 #include <string>	// for string
 #include <vector>	// for vector
-#include <format>	// for string formatting
-
-#include "imgui.h"	// for access to ImGui color type
+#include <unordered_map> // used by converters
 
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
@@ -198,80 +196,38 @@ struct DecimalParameterType : OpenParameterType {
 	}
 };
 
-// This struct is meant to hold a format string and some amount of argument strings
-// These strings can then be evaluated to form a single dynamic query statement for use
-// with the SQL database
-// ex: "health = {0}" with an argument of "10" converts to "health = 10"
-struct FormatStatement {
-	std::string format;
-	std::string argument;
+struct ParameterTypeConverter {
+private:
+	std::unordered_map<std::string, ParameterType> column_type_map;
+	std::unordered_map<int, std::string> column_id_name_map;
 
-	FormatStatement() {
-		format = "UNINITIALIZED FORMAT";
-		argument = "UNINITIALIZED ARGUMENT NAME";
+public:
+	ParameterTypeConverter(std::unordered_map<std::string, ParameterType> column_type_mappings) {
+		column_type_map = column_type_mappings;
 	}
 
-	FormatStatement(std::string form, std::string arg) {
-		format = form;
-		argument = arg;
-	}
 
-	std::string EvaluateStatement() const {
-		std::string evaluated_statement = std::vformat(format, std::make_format_args(argument));
-		return evaluated_statement;
+	ParameterType GetParamTypeByName(std::string col_name) {
+		if (column_type_map.contains(col_name)) {
+			return column_type_map[col_name];
+		}
+		return ParameterType();
 	}
 };
 
-// This struct is a child of FormatStatement meant to add additional data for 
-// displaying the statement inside a user-facing table. This includes such things as
-// desired table cell colors for the statement of arguments
-struct DisplayStatement : FormatStatement {
-	std::string parameter_name;
-	DisplayColor parameter_color;
-	DisplayColor argument_color;
 
-	DisplayStatement() : FormatStatement() {
-		parameter_name = "UNITIALIZED PARAMETER NAME";
-		parameter_color = DisplayColor();
-		argument_color = DisplayColor();
-	}
-
-	DisplayStatement(std::string form, std::string arg, std::string param_name, DisplayColor param_col, DisplayColor arg_col) : FormatStatement(form, arg) 
-	{
-		parameter_name = param_name;
-		parameter_color = param_col;
-		argument_color = arg_col;
-	}
-
-	std::string GetParameterName() {
-		return parameter_name;
-	}
-
-	std::string GetArgumentName() {
-		return argument;
-	}
-
-	ImVec4 GetParameterColor() {
-		return parameter_color.GetColorValues();
-	}
-
-	ImVec4 GetArgumentColor() {
-		return argument_color.GetColorValues();
-	}
-};
-
-struct ColumnDisplayInfo {
+struct ParamCellDisplayInfo {
 private:
 	std::string column_text;
 	DisplayColor column_color;
 
 public:
-	ColumnDisplayInfo() {
+	ParamCellDisplayInfo() {
 		column_text = "UNINITIALIZED COLUMN TEXT";
 		column_color = DisplayColor();
 	}
 
-	ColumnDisplayInfo(std::string text, DisplayColor color) {
+	ParamCellDisplayInfo(std::string text, DisplayColor color) {
 		column_text = text;
 		column_color = color;
 	}
@@ -292,31 +248,31 @@ public:
 struct QueryParameter {
 private:
 	std::string query_string;
-	ColumnDisplayInfo parameter_info;
-	ColumnDisplayInfo operation_info;
-	ColumnDisplayInfo value_info;
+	ParamCellDisplayInfo parameter_info;
+	ParamCellDisplayInfo operation_info;
+	ParamCellDisplayInfo value_info;
 
 public:
 	QueryParameter() {
 		query_string = "UNINITIALIZED QUERY STRING";
-		parameter_info = ColumnDisplayInfo();
-		operation_info = ColumnDisplayInfo();
-		value_info = ColumnDisplayInfo();
+		parameter_info = ParamCellDisplayInfo();
+		operation_info = ParamCellDisplayInfo();
+		value_info = ParamCellDisplayInfo();
 	}
 
 	void SetQuery(std::string query) {
 		query_string = query;
 	}
 
-	void SetParameterInfo(ColumnDisplayInfo param_info) {
+	void SetParameterInfo(ParamCellDisplayInfo param_info) {
 		parameter_info = param_info;
 	}
 
-	void SetOperationInfo(ColumnDisplayInfo oper_info) {
+	void SetOperationInfo(ParamCellDisplayInfo oper_info) {
 		operation_info = oper_info;
 	}
 
-	void SetValueInfo(ColumnDisplayInfo val_info) {
+	void SetValueInfo(ParamCellDisplayInfo val_info) {
 		value_info = val_info;
 	}
 
@@ -324,15 +280,15 @@ public:
 		return query_string;
 	}
 
-	ColumnDisplayInfo GetParameterDisplayInfo() {
+	ParamCellDisplayInfo GetParameterDisplayInfo() {
 		return parameter_info;
 	}
 
-	ColumnDisplayInfo GetOperationDisplayInfo() {
+	ParamCellDisplayInfo GetOperationDisplayInfo() {
 		return operation_info;
 	}
 
-	ColumnDisplayInfo GetValueDisplayInfo() {
+	ParamCellDisplayInfo GetValueDisplayInfo() {
 		return value_info;
 	}
 };

@@ -9,13 +9,11 @@
 #include "database.h"
 
 #include "mcc_gui_windows.h"
-#include "mcc_structs.h"
 
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
-
-#include "mcc_display_structs.h"
-#include "mcc_display_constants.h"
+#include "mcc_subset_structs.h"
+#include "mcc_subset_constants.h"
 
 namespace monster_calculator {
 

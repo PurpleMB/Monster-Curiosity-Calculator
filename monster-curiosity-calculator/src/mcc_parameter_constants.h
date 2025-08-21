@@ -52,7 +52,7 @@ extern const OpenParameterType kHiddenAbilityParam;
 extern const OpenParameterType kAnyAbilityParam;
 
 // numerical parameter operations and values
-extern const std::vector<ParameterValue> kStandardNumericalOperations;
+extern const std::vector<ParameterOperation> kStandardNumericalOperations;
 
 // integer parameters
 extern const IntegerParameterType kDexNumParam;
@@ -72,4 +72,8 @@ extern const IntegerParameterType kStatTotalParam;
 extern const DecimalParameterType kWeightParam;
 extern const DecimalParameterType kHeightParam;
 
-} //namespace monster_calculator
+
+// column value converters
+extern const ParameterTypeConverter kColToTypeConverter;
+
+} // namespace monster_calculator

@@ -3,7 +3,8 @@
 #include <vector>
 #include <memory>
 
-#include "mcc_structs.h"
+#include "mcc_parameter_structs.h"
+#include "mcc_communication_structs.h"
 
 namespace monster_calculator {
 

@@ -8,6 +8,7 @@
 #include "mcc_display_structs.h"
 
 #include "mcc_parameter_structs.h"
+#include "mcc_parameter_constants.h"
 
 namespace monster_calculator {
 
@@ -84,7 +85,7 @@ extern const std::vector<ParameterValue> kEggGroupValuesList = {
     ParameterValue("Fairy",		    "'fairy'",		    kPinkColor,         11),
     ParameterValue("Monster",		"'monster'",		kTangerineColor,    12),
     ParameterValue("Ditto",		    "'ditto'",		    kFuschiaColor,      13),
-    ParameterValue("Undiscovered",	"'no-eggs'",		kGrayColor,         14),
+    ParameterValue("Undiscovered",	"'no-eggs'",		kGrayColor,         14)
 };
 
 extern const std::vector<ParameterValue> kGenerationValuesList = {
@@ -105,7 +106,7 @@ extern const std::vector<ParameterValue> kGrowthRateValuesList = {
     ParameterValue("Medium Slow",   "'medium-slow'",          kBlueColor,       2),
     ParameterValue("Medium Fast",   "'medium'",               kPurpleColor,     3),
     ParameterValue("Fast",          "'fast'",                 kOrangeColor,     4),
-    ParameterValue("Erratic",       "'slow-then-very-fast'",  kPinkColor,       5),
+    ParameterValue("Erratic",       "'slow-then-very-fast'",  kPinkColor,       5)
 };
 
 extern const std::vector<ParameterOperation> kEnumOperations = {
@@ -433,7 +434,7 @@ extern const OpenParameterType kAnyAbilityParam = OpenParameterType(
 // numerical parameter operations and values
 const std::vector<std::string> kRangeOperands = {"Lower bound", "Upper bound"};
 extern const std::vector<ParameterOperation> kStandardNumericalOperations = {
-    ParameterOperation("Range",			"BETWEEN {0} AND {1}",	kPurpleColor, kRangeOperands ),
+    ParameterOperation("Range",			"BETWEEN {0} AND {1}",	kPurpleColor, kRangeOperands),
     ParameterOperation("Equal",			"= {0}",		kGreenColor,
         {
             "Target value"
@@ -662,5 +663,42 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
     kHeightMin,
     kHeightMax
 );
+
+
+// column value converters
+extern const ParameterTypeConverter kColToTypeConverter = ParameterTypeConverter
+({
+    {"pretty_name", kNameParam},
+    {"dex_number", kDexNumParam},
+    {"color", kColorParam},
+    {"shape", kShapeParam},
+    {"height", kHeightParam},
+    {"weight", kWeightParam},
+    {"primary_type", kPrimaryTypeParam},
+    {"secondary_type", kSecondaryTypeParam},
+    {"generation", kGenerationParam},
+    {"form_switchable", kCanSwitchParam},
+    {"growth_rate", kGrowthRateParam},
+    {"base_experience", kBaseExpParam},
+    {"base_happiness", kBaseHappyParam},
+    {"catch_rate", kCatchRateParam},
+    {"dimorphic", kDimorphicParam},
+    {"primary_egg_group", kPrimaryEggParam},
+    {"secondary_egg_group", kSecondaryEggParam},
+    {"is_default", kIsDefaultParam},
+    {"is_baby", kIsBabyParam},
+    {"is_legendary", kIsLegendParam},
+    {"is_mythical", kIsMythicParam},
+    {"ability_1", kAbilityParam},
+    {"ability_2", kAbilityParam},
+    {"hidden_ability", kHiddenAbilityParam},
+    {"hp", kHealthParam},
+    {"attack", kAttackParam},
+    {"defense", kDefenseParam},
+    {"special_attack", kSpeAtkParam},
+    {"special_defense", kSpeDefParam},
+    {"speed", kSpeedParam},
+    {"stat_total", kStatTotalParam}
+    });
 
 } //namespace monster_calculator

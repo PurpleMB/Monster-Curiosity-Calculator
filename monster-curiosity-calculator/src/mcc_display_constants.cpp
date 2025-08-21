@@ -2,11 +2,6 @@
 
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
-#include "mcc_structs.h"
-#include "mcc_parameter_structs.h"
-#include "mcc_parameter_constants.h"
-
-
 
 namespace monster_calculator {
 
@@ -163,75 +158,4 @@ extern const DisplayColor kBrassColor = DisplayColor(
 	ImVec4(225.0f / 255.0f, 193.0f / 255.0f, 110.0f / 255.0f, kColorIntensity)
 );
 
-// ColumnInfo constants
-extern const ColumnInfo kResNumColInfo = ColumnInfo("Result #", "", false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, NumberColumnId, 0);
-extern const ColumnInfo kNameColInfo = ColumnInfo("Name", "pretty_name", false, ImGuiTableColumnFlags_WidthFixed, NameColumnId, 90.0f);
-extern const ColumnInfo kDexNumColInfo = ColumnInfo("Dex #", "dex_number", true, ImGuiTableColumnFlags_WidthFixed, DexColumnId, 0);
-extern const ColumnInfo kColorColInfo = ColumnInfo("Color", "color", true, ImGuiTableColumnFlags_WidthFixed, ColorColumnId, 0);
-extern const ColumnInfo kShapeColInfo = ColumnInfo("Shape", "shape", true, ImGuiTableColumnFlags_WidthFixed, ShapeColumnId, 0);
-extern const ColumnInfo kHeightColInfo = ColumnInfo("Height (m)", "height", true, ImGuiTableColumnFlags_WidthFixed, HeightColumnId, 0);
-extern const ColumnInfo kWeightColInfo = ColumnInfo("Weight (kg)", "weight", true, ImGuiTableColumnFlags_WidthFixed, WeightColumnId, 0);
-extern const ColumnInfo kPrimTypeColInfo = ColumnInfo("Primary Type", "primary_type", true, ImGuiTableColumnFlags_WidthFixed, PrimaryTypeColumnId, 0);
-extern const ColumnInfo kSecTypeColInfo = ColumnInfo("Secondary Type", "secondary_type", true, ImGuiTableColumnFlags_WidthFixed, SecondaryTypeColumnId, 0);
-
-extern const ColumnInfo kGenerationColInfo = ColumnInfo("Generation", "generation", true, ImGuiTableColumnFlags_WidthFixed, GenerationColumnId, 0);
-extern const ColumnInfo kFormSwitchColInfo = ColumnInfo("Form Switchable", "form_switchable", true, ImGuiTableColumnFlags_WidthFixed, FormSwitchColumnId, 0);
-extern const ColumnInfo kGrowthRateColInfo = ColumnInfo("Growth Rate", "growth_rate", true, ImGuiTableColumnFlags_WidthFixed, GrowthRateColumnId, 0);
-extern const ColumnInfo kBaseExpColInfo = ColumnInfo("Base Experience", "base_experience", true, ImGuiTableColumnFlags_WidthFixed, BaseExpColumnId, 0);
-extern const ColumnInfo kBaseHappyColInfo = ColumnInfo("Base Happiness", "base_happiness", true, ImGuiTableColumnFlags_WidthFixed, BaseHappyColumnId, 0);
-extern const ColumnInfo kCatchRateColInfo = ColumnInfo("Catch Rate", "catch_rate", true, ImGuiTableColumnFlags_WidthFixed, CatchRateColumnId, 0);
-extern const ColumnInfo kDimorphicColInfo = ColumnInfo("Dimorphic", "dimorphic", true, ImGuiTableColumnFlags_WidthFixed, DimorphicColumnId, 0);
-extern const ColumnInfo kPrimEggColInfo = ColumnInfo("Primary Egg Group", "primary_egg_group", true, ImGuiTableColumnFlags_WidthFixed, PrimEggColumnId, 0);
-extern const ColumnInfo kSecEggColInfo = ColumnInfo("Secondary Egg Group", "secondary_egg_group", true, ImGuiTableColumnFlags_WidthFixed, SecEggColumnId, 0);
-extern const ColumnInfo kIsDefaultColInfo = ColumnInfo("Base Form", "is_default", true, ImGuiTableColumnFlags_WidthFixed, IsDefaultColumnId, 0);
-extern const ColumnInfo kIsBabyColInfo = ColumnInfo("Baby", "is_baby", true, ImGuiTableColumnFlags_WidthFixed, IsBabyColumnId, 0);
-extern const ColumnInfo kIsLegendColInfo = ColumnInfo("Legendary", "is_legendary", true, ImGuiTableColumnFlags_WidthFixed, IsLegendColumnId, 0);
-extern const ColumnInfo kIsMythColInfo = ColumnInfo("Mythical", "is_mythical", true, ImGuiTableColumnFlags_WidthFixed, IsMythColumnId, 0);
-extern const ColumnInfo kAbilOneColInfo = ColumnInfo("Ability 1", "ability_1", true, ImGuiTableColumnFlags_WidthFixed, AbilOneColumnId, 0);
-extern const ColumnInfo kAbilTwoColInfo = ColumnInfo("Ability 2", "ability_2", true, ImGuiTableColumnFlags_WidthFixed, AbilTwoColumnId, 0);
-extern const ColumnInfo kAbilHiddenColInfo = ColumnInfo("Hidden Ability", "hidden_ability", true, ImGuiTableColumnFlags_WidthFixed, AbilHiddenColumnId, 0);
-extern const ColumnInfo kHealthColInfo = ColumnInfo("Health", "hp", true, ImGuiTableColumnFlags_WidthFixed, HealthColumnId, 0);
-extern const ColumnInfo kAttackColInfo = ColumnInfo("Attack", "attack", true, ImGuiTableColumnFlags_WidthFixed, AttackColumnId, 0);
-extern const ColumnInfo kDefenseColInfo = ColumnInfo("Defense", "defense", true, ImGuiTableColumnFlags_WidthFixed, DefenseColumnId, 0);
-extern const ColumnInfo kSpeAtkColInfo = ColumnInfo("Special Attack", "special_attack", true, ImGuiTableColumnFlags_WidthFixed, SpeAtkColumnId, 0);
-extern const ColumnInfo kSpeDefColInfo = ColumnInfo("Special Defense", "special_defense", true, ImGuiTableColumnFlags_WidthFixed, SpeDefColumnId, 0);
-extern const ColumnInfo kSpeedColInfo = ColumnInfo("Speed", "speed", true, ImGuiTableColumnFlags_WidthFixed, SpeedColumnId, 0);
-extern const ColumnInfo kStatTotalColInfo = ColumnInfo("Stat Total", "stat_total", true, ImGuiTableColumnFlags_WidthFixed, StatTotalColumnId, 0);
-
-// column value converters
-extern const ParameterTypeConverter kColToTypeConverter = ParameterTypeConverter
-({
-	{"pretty_name", kNameParam},
-	{"dex_number", kDexNumParam},
-	{"color", kColorParam},
-	{"shape", kShapeParam},
-	{"height", kHeightParam},
-	{"weight", kWeightParam},
-	{"primary_type", kPrimaryTypeParam},
-	{"secondary_type", kSecondaryTypeParam},
-	{"generation", kGenerationParam},
-	{"form_switchable", kCanSwitchParam},
-	{"growth_rate", kGrowthRateParam},
-	{"base_experience", kBaseExpParam},
-	{"base_happiness", kBaseHappyParam},
-	{"catch_rate", kCatchRateParam},
-	{"dimorphic", kDimorphicParam},
-	{"primary_egg_group", kPrimaryEggParam},
-	{"secondary_egg_group", kSecondaryEggParam},
-	{"is_default", kIsDefaultParam},
-	{"is_baby", kIsBabyParam},
-	{"is_legendary", kIsLegendParam},
-	{"is_mythical", kIsMythicParam},
-	{"ability_1", kAbilityParam},
-	{"ability_2", kAbilityParam},
-	{"hidden_ability", kHiddenAbilityParam},
-	{"hp", kHealthParam},
-	{"attack", kAttackParam},
-	{"defense", kDefenseParam},
-	{"special_attack", kSpeAtkParam},
-	{"special_defense", kSpeDefParam},
-	{"speed", kSpeedParam},
-	{"stat_total", kStatTotalParam}
-});
-
-} //  namespace monster_calculator
+} // namespace monster_calculator

@@ -23,11 +23,11 @@
 
 #include "app.h"
 #include "database.h"
+
 #include "mcc_display_structs.h"
-#include "mcc_structs.h"
-#include "mcc_database_constants.h"
 #include "mcc_parameter_structs.h"
-#include "mcc_parameter_constants.h"
+#include "mcc_subset_structs.h"
+#include "mcc_communication_structs.h"
 
 namespace monster_calculator {
 
@@ -90,7 +90,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
-	building_parameter.SetParameterInfo(ColumnDisplayInfo(selected_param->display_name, selected_param->parameter_color));
+	building_parameter.SetParameterInfo(ParamCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
@@ -106,7 +106,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		ImGui::EndPopup();
 	}
 	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
-	building_parameter.SetOperationInfo(ColumnDisplayInfo(selected_operation.display_name, selected_operation.value_color));
+	building_parameter.SetOperationInfo(ParamCellDisplayInfo(selected_operation.display_name, selected_operation.value_color));
 
 
 	EnumeratedParameterType enum_param;
@@ -201,7 +201,7 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 		ImGui::EndPopup();
 	}
 	ParameterValue selected_value = param_type.values[selected_value_index];
-	building_parameter.SetValueInfo(ColumnDisplayInfo(selected_value.display_name, selected_value.value_color));
+	building_parameter.SetValueInfo(ParamCellDisplayInfo(selected_value.display_name, selected_value.value_color));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -217,7 +217,7 @@ void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, Para
 	ImGui::SliderInt("", &selected_value_index, 0, options_count - 1, selected_value_name.c_str());
 
 	ParameterValue selected_value = param_type.values[selected_value_index];
-	building_parameter.SetValueInfo(ColumnDisplayInfo(selected_value.display_name, selected_value.value_color));
+	building_parameter.SetValueInfo(ParamCellDisplayInfo(selected_value.display_name, selected_value.value_color));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -235,7 +235,7 @@ void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
 	ImGui::InputText(input_label.c_str(), &value_text, flags);
 
-	building_parameter.SetValueInfo(ColumnDisplayInfo(value_text, DisplayColor()));
+	building_parameter.SetValueInfo(ParamCellDisplayInfo(value_text, DisplayColor()));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(value_text));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -276,7 +276,7 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
 
-	building_parameter.SetValueInfo(ColumnDisplayInfo(formatted_display, DisplayColor()));
+	building_parameter.SetValueInfo(ParamCellDisplayInfo(formatted_display, DisplayColor()));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
@@ -316,7 +316,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
 
-	building_parameter.SetValueInfo(ColumnDisplayInfo(formatted_display, DisplayColor()));
+	building_parameter.SetValueInfo(ParamCellDisplayInfo(formatted_display, DisplayColor()));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
@@ -389,7 +389,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(std::to_string(displayed_group_index).c_str());
 
 				ImGui::TableSetColumnIndex(1);
-				ColumnDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
+				ParamCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
 				if (parameter_color_enabled) {
 					ImVec4 param_cell_color = parameter_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
@@ -398,7 +398,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(parameter_column_info.GetText().c_str());
 
 				ImGui::TableSetColumnIndex(2);
-				ColumnDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
+				ParamCellDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
 				if (operation_color_enabled) {
 					ImVec4 param_cell_color = operation_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
@@ -407,7 +407,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(operation_column_info.GetText().c_str());
 
 				ImGui::TableSetColumnIndex(3);
-				ColumnDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
+				ParamCellDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
 				if (value_color_enabled) {
 					ImVec4 param_cell_color = value_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
