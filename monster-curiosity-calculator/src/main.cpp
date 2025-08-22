@@ -42,7 +42,7 @@ public:
 		output_environment.subset_parameters = param_set;
 
 		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
+		SortSubtableEntries(output_environment, enum_type_converter);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
@@ -78,7 +78,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types);
+			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types, enum_type_converter);
 
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
@@ -131,42 +131,95 @@ private:
 											ImGuiWindowFlags_NoMove;
 	const float kWindowMargin = 25;
 
+	std::shared_ptr<EnumeratedParameterType> prim_type_ptr = std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam);
+	std::shared_ptr<EnumeratedParameterType> sec_type_ptr = std::make_shared<EnumeratedParameterType>(kSecondaryTypeParam);
+	std::shared_ptr<EnumeratedParameterType> either_type_ptr = std::make_shared<EnumeratedParameterType>(kEitherTypeParam);
+	std::shared_ptr<EnumeratedParameterType> dimorphic_ptr = std::make_shared<EnumeratedParameterType>(kDimorphicParam);
+	std::shared_ptr<EnumeratedParameterType> is_default_ptr = std::make_shared<EnumeratedParameterType>(kIsDefaultParam);
+	std::shared_ptr<EnumeratedParameterType> can_switch_ptr = std::make_shared<EnumeratedParameterType>(kCanSwitchParam);
+	std::shared_ptr<EnumeratedParameterType> is_baby_ptr = std::make_shared<EnumeratedParameterType>(kIsBabyParam);
+	std::shared_ptr<EnumeratedParameterType> is_legend_ptr = std::make_shared<EnumeratedParameterType>(kIsLegendParam);
+	std::shared_ptr<EnumeratedParameterType> is_mythic_ptr = std::make_shared<EnumeratedParameterType>(kIsMythicParam);
+	std::shared_ptr<EnumeratedParameterType> color_ptr = std::make_shared<EnumeratedParameterType>(kColorParam);
+	std::shared_ptr<EnumeratedParameterType> shape_ptr = std::make_shared<EnumeratedParameterType>(kShapeParam);
+	std::shared_ptr<EnumeratedParameterType> prim_egg_ptr = std::make_shared<EnumeratedParameterType>(kPrimaryEggParam);
+	std::shared_ptr<EnumeratedParameterType> sec_egg_ptr = std::make_shared<EnumeratedParameterType>(kSecondaryEggParam);
+	std::shared_ptr<EnumeratedParameterType> generation_ptr = std::make_shared<EnumeratedParameterType>(kGenerationParam);
+	std::shared_ptr<EnumeratedParameterType> growth_rate_ptr = std::make_shared<EnumeratedParameterType>(kGrowthRateParam);
+	std::shared_ptr<SliderEnumeratedParameterType> gender_rate_ptr = std::make_shared<SliderEnumeratedParameterType>(kGenderRateParam);
+	std::shared_ptr<OpenParameterType> name_ptr = std::make_shared<OpenParameterType>(kNameParam);
+	std::shared_ptr<OpenParameterType> ability_ptr = std::make_shared<OpenParameterType>(kAbilityParam);
+	std::shared_ptr<OpenParameterType> hidden_ability_ptr = std::make_shared<OpenParameterType>(kHiddenAbilityParam);
+	std::shared_ptr<OpenParameterType> any_ability_ptr = std::make_shared<OpenParameterType>(kAnyAbilityParam);
+	std::shared_ptr<IntegerParameterType> dex_num_ptr = std::make_shared<IntegerParameterType>(kDexNumParam);
+	std::shared_ptr<IntegerParameterType> base_exp_ptr = std::make_shared<IntegerParameterType>(kBaseExpParam);
+	std::shared_ptr<IntegerParameterType> base_happy_ptr = std::make_shared<IntegerParameterType>(kBaseHappyParam);
+	std::shared_ptr<IntegerParameterType> catch_rate_ptr = std::make_shared<IntegerParameterType>(kCatchRateParam);
+	std::shared_ptr<IntegerParameterType> hatch_count_ptr = std::make_shared<IntegerParameterType>(kHatchCountParam);
+	std::shared_ptr<IntegerParameterType> health_ptr = std::make_shared<IntegerParameterType>(kHealthParam);
+	std::shared_ptr<IntegerParameterType> attack_ptr = std::make_shared<IntegerParameterType>(kAttackParam);
+	std::shared_ptr<IntegerParameterType> defense_ptr = std::make_shared<IntegerParameterType>(kDefenseParam);
+	std::shared_ptr<IntegerParameterType> special_attack_ptr = std::make_shared<IntegerParameterType>(kSpeAtkParam);
+	std::shared_ptr<IntegerParameterType> special_defense_ptr = std::make_shared<IntegerParameterType>(kSpeDefParam);
+	std::shared_ptr<IntegerParameterType> speed_ptr = std::make_shared<IntegerParameterType>(kSpeedParam);
+	std::shared_ptr<IntegerParameterType> stat_total_ptr = std::make_shared<IntegerParameterType>(kStatTotalParam);
+	std::shared_ptr<DecimalParameterType> height_ptr = std::make_shared<DecimalParameterType>(kHeightParam);
+	std::shared_ptr<DecimalParameterType> weight_ptr = std::make_shared<DecimalParameterType>(kWeightParam);
+
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
-		std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam),
-		std::make_shared<EnumeratedParameterType>(kSecondaryTypeParam),
-		std::make_shared<EnumeratedParameterType>(kEitherTypeParam),
-		std::make_shared<EnumeratedParameterType>(kDimorphicParam),
-		std::make_shared<EnumeratedParameterType>(kIsDefaultParam),
-		std::make_shared<EnumeratedParameterType>(kCanSwitchParam),
-		std::make_shared<EnumeratedParameterType>(kIsBabyParam),
-		std::make_shared<EnumeratedParameterType>(kIsLegendParam),
-		std::make_shared<EnumeratedParameterType>(kIsMythicParam),
-		std::make_shared<EnumeratedParameterType>(kColorParam),
-		std::make_shared<EnumeratedParameterType>(kShapeParam),
-		std::make_shared<EnumeratedParameterType>(kPrimaryEggParam),
-		std::make_shared<EnumeratedParameterType>(kSecondaryEggParam),
-		std::make_shared<EnumeratedParameterType>(kGenerationParam),
-		std::make_shared<EnumeratedParameterType>(kGrowthRateParam),
-		std::make_shared<SliderEnumeratedParameterType>(kGenderRateParam),
-		std::make_shared<OpenParameterType>(kNameParam),
-		std::make_shared<OpenParameterType>(kAbilityParam),
-		std::make_shared<OpenParameterType>(kHiddenAbilityParam),
-		std::make_shared<OpenParameterType>(kAnyAbilityParam),
-		std::make_shared<IntegerParameterType>(kDexNumParam),
-		std::make_shared<IntegerParameterType>(kBaseExpParam),
-		std::make_shared<IntegerParameterType>(kBaseHappyParam),
-		std::make_shared<IntegerParameterType>(kCatchRateParam),
-		std::make_shared<IntegerParameterType>(kHatchCountParam),
-		std::make_shared<IntegerParameterType>(kHealthParam),
-		std::make_shared<IntegerParameterType>(kAttackParam),
-		std::make_shared<IntegerParameterType>(kDefenseParam),
-		std::make_shared<IntegerParameterType>(kSpeAtkParam),
-		std::make_shared<IntegerParameterType>(kSpeDefParam),
-		std::make_shared<IntegerParameterType>(kSpeedParam),
-		std::make_shared<IntegerParameterType>(kStatTotalParam),
-		std::make_shared<DecimalParameterType>(kWeightParam),
-		std::make_shared<DecimalParameterType>(kHeightParam)
+		prim_type_ptr,
+		sec_type_ptr,
+		either_type_ptr,
+		dimorphic_ptr,
+		is_default_ptr,
+		can_switch_ptr,
+		is_baby_ptr,
+		is_legend_ptr,
+		is_mythic_ptr,
+		color_ptr,
+		shape_ptr,
+		prim_egg_ptr,
+		sec_egg_ptr,
+		generation_ptr,
+		growth_rate_ptr,
+		gender_rate_ptr,
+		name_ptr,
+		ability_ptr,
+		hidden_ability_ptr,
+		any_ability_ptr,
+		dex_num_ptr,
+		base_exp_ptr,
+		base_happy_ptr,
+		catch_rate_ptr,
+		hatch_count_ptr,
+		health_ptr,
+		attack_ptr,
+		defense_ptr,
+		special_attack_ptr,
+		special_defense_ptr,
+		speed_ptr,
+		stat_total_ptr,
+		height_ptr,
+		weight_ptr
 	};
+
+	ParameterTypeConverter enum_type_converter = ParameterTypeConverter({
+		{"primary_type", prim_type_ptr},
+		{"secondary_type", sec_type_ptr},
+		{"dimorphic", dimorphic_ptr},
+		{"is_default", is_default_ptr},
+		{"form_switchable", can_switch_ptr},
+		{"is_baby", is_baby_ptr},
+		{"is_legendary", is_legend_ptr},
+		{"is_mythical", is_mythic_ptr},
+		{"color", color_ptr},
+		{"shape", shape_ptr},
+		{"primary_egg_group", prim_egg_ptr},
+		{"secondary_egg_group", sec_egg_ptr},
+		{"generation", generation_ptr},
+		{"growth_rate", growth_rate_ptr},
+		{"gender_rate", gender_rate_ptr}
+	});
 
 	std::vector<ColumnStatus> subset_column_statuses = {
 		ColumnStatus(kResNumColInfo, true),

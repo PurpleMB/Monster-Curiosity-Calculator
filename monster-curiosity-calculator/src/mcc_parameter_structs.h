@@ -2,6 +2,7 @@
 #include <string>	// for string
 #include <vector>	// for vector
 #include <unordered_map> // used by converters
+#include <memory>	//	shared_ptr in converters
 
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
@@ -108,18 +109,31 @@ struct ParameterType {
 
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
+	std::unordered_map<std::string, ParameterValue> db_name_val_map;
 
 	EnumeratedParameterType() : ParameterType() {
 		values = {};
+		db_name_val_map = {};
 	}
 
 	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
 		ParameterType(dis_name, dis_format, db_format, color, ops) {
 		values = vals;
+		db_name_val_map = {};
+		for (ParameterValue param_val : vals) {
+			db_name_val_map[param_val.database_name] = param_val;
+		}
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Enumerated;
+	}
+
+	ParameterValue RetrieveParamValFromRawName(std::string raw_name) {
+		if (db_name_val_map.contains(raw_name)) {
+			return db_name_val_map[raw_name];
+		}
+		return ParameterValue();
 	}
 };
 
@@ -198,20 +212,31 @@ struct DecimalParameterType : OpenParameterType {
 
 struct ParameterTypeConverter {
 private:
-	std::unordered_map<std::string, ParameterType> column_type_map;
+	std::unordered_map<std::string, std::shared_ptr<ParameterType>> column_type_map;
 	std::unordered_map<int, std::string> column_id_name_map;
 
 public:
-	ParameterTypeConverter(std::unordered_map<std::string, ParameterType> column_type_mappings) {
+	ParameterTypeConverter(std::unordered_map<std::string, std::shared_ptr<ParameterType>> column_type_mappings) {
 		column_type_map = column_type_mappings;
 	}
 
+	bool ContainsNameType(std::string col_name) const {
+		return column_type_map.contains(col_name);
+	}
 
-	ParameterType GetParamTypeByName(std::string col_name) {
+	ParameterType* GetParamTypeByName(std::string col_name) const {
 		if (column_type_map.contains(col_name)) {
-			return column_type_map[col_name];
+			ParameterType* param_type_ptr = column_type_map.at(col_name).get();
+			return param_type_ptr;
 		}
-		return ParameterType();
+		return nullptr;
+	}
+
+	ParameterCategory GetParamCategoryByName(std::string col_name) const {
+		if (column_type_map.contains(col_name)) {
+			return column_type_map.at(col_name).get()->GetParameterCategory();
+		}
+		return Undefined;
 	}
 };
 

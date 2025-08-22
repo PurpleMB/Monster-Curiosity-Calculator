@@ -18,7 +18,7 @@ std::string GenerateJsonDataString(Json::Value mon_info);
 
 // querying primary table
 int CreateSubtable(OutputEnvironment& output_environment);
-int SortSubtableEntries(OutputEnvironment& output_environment);
+int SortSubtableEntries(OutputEnvironment& output_environment, ParameterTypeConverter param_converter);
 int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName);
 std::string GenerateQueryParameterString(ParameterSet& subset_parameters);
 

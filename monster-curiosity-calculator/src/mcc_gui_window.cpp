@@ -58,7 +58,7 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& o
 }
 
 void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment,
-	std::vector<std::shared_ptr<ParameterType>> parameter_types) 
+	std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter)
 {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
@@ -172,7 +172,7 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 
 	if (ImGui::Button("Find Matching Monsters")) {
 		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
+		SortSubtableEntries(output_environment, param_converter);
 	}
 
 
@@ -615,7 +615,12 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 					ImGui::Text(std::to_string(displayed_index).c_str());
 					continue;
 				}
-				ImGui::Text(subset_entry.GetRawData(active_column.query_name).c_str());
+				if (subset_entry.HasConvertedData(active_column.query_name)) {
+					ImGui::Text(subset_entry.GetConvertedDataName(active_column.query_name).c_str());
+				}
+				else {
+					ImGui::Text(subset_entry.GetRawData(active_column.query_name).c_str());
+				}
 			}
 		}
 		ImGui::EndTable();

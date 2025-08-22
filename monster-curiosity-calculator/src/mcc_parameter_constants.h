@@ -73,8 +73,4 @@ extern const IntegerParameterType kStatTotalParam;
 extern const DecimalParameterType kWeightParam;
 extern const DecimalParameterType kHeightParam;
 
-
-// column value converters
-extern const ParameterTypeConverter kColToTypeConverter;
-
 } // namespace monster_calculator

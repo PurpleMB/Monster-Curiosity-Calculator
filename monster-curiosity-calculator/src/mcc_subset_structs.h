@@ -84,6 +84,10 @@ struct SubsetEntry {
 		return "No data found";
 	}
 
+	void AddConvertedData(std::string label, ParameterValue param_val) {
+		converted_entry_data[label] = param_val;
+	}
+
 	bool HasConvertedData(std::string label) {
 		return converted_entry_data.contains(label);
 	}

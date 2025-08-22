@@ -677,41 +677,4 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
     kHeightMax
 );
 
-
-// column value converters
-extern const ParameterTypeConverter kColToTypeConverter = ParameterTypeConverter
-({
-    {"pretty_name", kNameParam},
-    {"dex_number", kDexNumParam},
-    {"color", kColorParam},
-    {"shape", kShapeParam},
-    {"height", kHeightParam},
-    {"weight", kWeightParam},
-    {"primary_type", kPrimaryTypeParam},
-    {"secondary_type", kSecondaryTypeParam},
-    {"generation", kGenerationParam},
-    {"form_switchable", kCanSwitchParam},
-    {"growth_rate", kGrowthRateParam},
-    {"base_experience", kBaseExpParam},
-    {"base_happiness", kBaseHappyParam},
-    {"catch_rate", kCatchRateParam},
-    {"dimorphic", kDimorphicParam},
-    {"primary_egg_group", kPrimaryEggParam},
-    {"secondary_egg_group", kSecondaryEggParam},
-    {"is_default", kIsDefaultParam},
-    {"is_baby", kIsBabyParam},
-    {"is_legendary", kIsLegendParam},
-    {"is_mythical", kIsMythicParam},
-    {"ability_1", kAbilityParam},
-    {"ability_2", kAbilityParam},
-    {"hidden_ability", kHiddenAbilityParam},
-    {"hp", kHealthParam},
-    {"attack", kAttackParam},
-    {"defense", kDefenseParam},
-    {"special_attack", kSpeAtkParam},
-    {"special_defense", kSpeDefParam},
-    {"speed", kSpeedParam},
-    {"stat_total", kStatTotalParam}
-    });
-
 } //namespace monster_calculator

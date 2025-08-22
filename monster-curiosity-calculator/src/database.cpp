@@ -339,7 +339,7 @@ std::string GenerateQueryParameterString(ParameterSet& subset_parameters) {
 	return parameter_string;
 }
 
-int SortSubtableEntries(OutputEnvironment& output_environment) {
+int SortSubtableEntries(OutputEnvironment& output_environment, ParameterTypeConverter param_converter) {
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
@@ -359,6 +359,14 @@ int SortSubtableEntries(OutputEnvironment& output_environment) {
 			std::string col_name = sqlite3_column_name(stmt, i);
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, i)));
 			subset_entry.AddData(col_name, col_val);
+
+			if (param_converter.ContainsNameType(col_name)) {
+				if (param_converter.GetParamCategoryByName(col_name) == Enumerated) {
+					EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(param_converter.GetParamTypeByName(col_name));
+					ParameterValue param_value = param_type.RetrieveParamValFromRawName(col_val);
+					subset_entry.AddConvertedData(col_name, param_value);
+				}
+			}
 		}
 		output_environment.subset_entries.push_back(subset_entry);
 	}
