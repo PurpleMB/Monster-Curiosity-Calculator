@@ -42,7 +42,7 @@ public:
 		output_environment.subset_parameters = param_set;
 
 		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment, enum_type_converter);
+		SortSubtableEntries(output_environment, param_type_converter);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
@@ -78,7 +78,7 @@ public:
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 
-			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types, enum_type_converter);
+			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types, param_type_converter);
 
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
@@ -203,7 +203,7 @@ private:
 		weight_ptr
 	};
 
-	ParameterTypeConverter enum_type_converter = ParameterTypeConverter({
+	ParameterTypeConverter param_type_converter = ParameterTypeConverter({
 		{"primary_type", prim_type_ptr},
 		{"secondary_type", sec_type_ptr},
 		{"dimorphic", dimorphic_ptr},
@@ -218,7 +218,24 @@ private:
 		{"secondary_egg_group", sec_egg_ptr},
 		{"generation", generation_ptr},
 		{"growth_rate", growth_rate_ptr},
-		{"gender_rate", gender_rate_ptr}
+		{"gender_rate", gender_rate_ptr},
+		{"pretty_name", name_ptr},
+		{"ability_1", ability_ptr},
+		{"hidden_ability", hidden_ability_ptr},
+		{"dex_number", dex_num_ptr},
+		{"base_experience", base_exp_ptr},
+		{"base_happiness", base_happy_ptr},
+		{"catch_rate", catch_rate_ptr},
+		{"hatch_counter", hatch_count_ptr},
+		{"hp", health_ptr},
+		{"attack", attack_ptr},
+		{"defense", defense_ptr},
+		{"special_attack", special_attack_ptr},
+		{"special_defense", special_defense_ptr},
+		{"speed", speed_ptr},
+		{"stat_total", stat_total_ptr},
+		{"height", height_ptr},
+		{"weight", weight_ptr}
 	});
 
 	std::vector<ColumnStatus> subset_column_statuses = {
