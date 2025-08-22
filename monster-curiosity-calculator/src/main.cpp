@@ -42,7 +42,8 @@ public:
 		output_environment.subset_parameters = param_set;
 
 		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment, param_type_converter);
+		SortSubtableEntries(output_environment);
+		output_environment.ConvertSubsetEntries(param_type_converter);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here

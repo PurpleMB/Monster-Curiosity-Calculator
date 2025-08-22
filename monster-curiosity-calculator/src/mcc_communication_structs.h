@@ -26,6 +26,26 @@ struct OutputEnvironment {
 		subset_parameters = ParameterSet();
 		value_parameter = QueryParameter();
 	}
+
+	void ConvertSubsetEntries(ParameterTypeConverter converter) {
+		for (SubsetEntry& entry : subset_entries) {
+			for (auto subset_map_iter = entry.raw_entry_data.begin(); subset_map_iter != entry.raw_entry_data.end(); subset_map_iter++) {
+				std::string col_name = subset_map_iter->first;
+				std::string col_val = subset_map_iter->second;
+				if (converter.ContainsNameType(col_name)) {
+					ParameterCategory param_cat = converter.GetParamCategoryByName(col_name);
+					if (param_cat == Enumerated || param_cat == EnumeratedSlider) {
+						EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(converter.GetParamTypeByName(col_name));
+						ParameterValue param_value = param_type.RetrieveParamValFromRawName(col_val);
+						entry.AddConvertedData(col_name, param_value);
+					}
+					else {
+						// TODO: convert non-enum param types
+					}
+				}
+			}
+		}
+	}
 };
 
 } // namespace monster_calculator
