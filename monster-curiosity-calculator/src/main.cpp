@@ -25,18 +25,26 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
+		std::vector<std::string> param_group_names = {
+			"Cheri",
+			"Chesto",
+			"Pecha",
+			"Rawst",
+			"Aspear",
+			"Lum"
+		};
 		std::vector<DisplayColor> param_group_colors = {
-			kRedColor,
-			kBlueColor,
-			kGreenColor,
-			kYellowColor,
-			kOrangeColor,
-			kPurpleColor,
-			kPinkColor
+			kCheriColor,
+			kChestoColor,
+			kPechaColor,
+			kRawstColor,
+			kAspearColor,
+			kLumColor
 		};
 		ParameterSet param_set = ParameterSet(
 			6,
 			false,
+			param_group_names,
 			param_group_colors
 		);
 		output_environment.subset_parameters = param_set;

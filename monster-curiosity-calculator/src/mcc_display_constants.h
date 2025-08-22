@@ -9,21 +9,25 @@ namespace monster_calculator {
 extern const DisplayColor kRedColor;
 extern const DisplayColor kVermillionColor;
 extern const DisplayColor kRubyRedColor;
+extern const DisplayColor kCheriColor;
 
 // Blues
 extern const DisplayColor kBlueColor;
 extern const DisplayColor kPeriwinkleColor;
 extern const DisplayColor kIndigoColor;
+extern const DisplayColor kRawstColor;
 
 // Greens
 extern const DisplayColor kGreenColor;
 extern const DisplayColor kCeladonColor;
 extern const DisplayColor kViridianColor;
+extern const DisplayColor kLumColor;
 
 // Yellows
 extern const DisplayColor kYellowColor;
 extern const DisplayColor kSaffronColor;
 extern const DisplayColor kGoldenrodColor;
+extern const DisplayColor kAspearColor;
 
 // Oranges
 extern const DisplayColor kOrangeColor;
@@ -34,11 +38,13 @@ extern const DisplayColor kTangerineColor;
 extern const DisplayColor kPurpleColor;
 extern const DisplayColor kMauveColor;
 extern const DisplayColor kOrchidColor;
+extern const DisplayColor kChestoColor;
 
 // Pinks
 extern const DisplayColor kPinkColor;
 extern const DisplayColor kRaspberryColor;
 extern const DisplayColor kFuschiaColor;
+extern const DisplayColor kPechaColor;
 
 // Whites
 extern const DisplayColor kWhiteColor;

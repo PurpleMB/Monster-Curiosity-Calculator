@@ -20,6 +20,10 @@ extern const DisplayColor kRubyRedColor = DisplayColor(
 	"Ruby Red",
 	ImVec4(224.0f / 255.0f, 17.0f / 255.0f, 95.0f / 255.0f, kColorIntensity)
 );
+extern const DisplayColor kCheriColor = DisplayColor(
+	"Cheri",
+	ImVec4(210.0f / 255.0f, 4.0f / 255.0f, 45.0f / 255.0f, kColorIntensity)
+);
 
 // Blues
 extern const DisplayColor kBlueColor = DisplayColor(
@@ -33,6 +37,10 @@ extern const DisplayColor kPeriwinkleColor = DisplayColor(
 extern const DisplayColor kIndigoColor = DisplayColor(
 	"Indigo",
 	ImVec4(63.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f, kColorIntensity)
+);
+extern const DisplayColor kRawstColor = DisplayColor(
+	"Rawst",
+	ImVec4(135.0f / 255.0f, 206.0f / 255.0f, 235.0f / 255.0f, kColorIntensity)
 );
 
 
@@ -49,6 +57,10 @@ extern const DisplayColor kViridianColor = DisplayColor(
 	"Viridian",
 	ImVec4(64.0f / 255.0f, 130.0f / 255.0f, 109.0f / 255.0f, kColorIntensity)
 );
+extern const DisplayColor kLumColor = DisplayColor(
+	"Lum",
+	ImVec4(11.0f / 255.0f, 218.0f / 255.0f, 81.0f / 255.0f, kColorIntensity)
+);
 
 // Yellows
 extern const DisplayColor kYellowColor = DisplayColor(
@@ -62,6 +74,10 @@ extern const DisplayColor kSaffronColor = DisplayColor(
 extern const DisplayColor kGoldenrodColor = DisplayColor(
 	"Goldenrod",
 	ImVec4(218.0f / 255.0f, 165.0f / 255.0f, 32.0f / 255.0f, kColorIntensity)
+);
+extern const DisplayColor kAspearColor = DisplayColor(
+	"Aspear",
+	ImVec4(255.0f / 255.0f, 255.0f / 255.0f, 143.0f / 255.0f, kColorIntensity)
 );
 
 // Oranges
@@ -91,6 +107,10 @@ extern const DisplayColor kOrchidColor = DisplayColor(
 	"Orchid",
 	ImVec4(218.0f / 255.0f, 112.0f / 255.0f, 214.0f / 255.0f, kColorIntensity)
 );
+extern const DisplayColor kChestoColor = DisplayColor(
+	"Chesto",
+	ImVec4(112.0f / 255.0f, 41.0f / 255.0f, 99.0f / 255.0f, kColorIntensity)
+);
 
 // Pinks
 extern const DisplayColor kPinkColor = DisplayColor(
@@ -104,6 +124,10 @@ extern const DisplayColor kRaspberryColor = DisplayColor(
 extern const DisplayColor kFuschiaColor = DisplayColor(
 	"Fuschia",
 	ImVec4(255.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f, kColorIntensity)
+);
+extern const DisplayColor kPechaColor = DisplayColor(
+	"Pecha",
+	ImVec4(248.0f / 255.0f, 152.0f / 255.0f, 128.0f / 255.0f, kColorIntensity)
 );
 
 // Whites

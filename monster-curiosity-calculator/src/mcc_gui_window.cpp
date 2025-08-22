@@ -376,8 +376,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 					ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
-				int displayed_group_index = group_index + 1;
-				ImGui::Text(std::to_string(displayed_group_index).c_str());
+				//int displayed_group_index = group_index + 1;
+				//ImGui::Text(std::to_string(displayed_group_index).c_str());
+				std::string group_name = output_environment.subset_parameters.GetGroupName(group_index);
+				ImGui::Text(group_name.c_str());
 
 				ImGui::TableSetColumnIndex(1);
 				ParamCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();

@@ -326,6 +326,7 @@ public:
 struct ParameterSet {
 	int group_count;
 	std::vector<std::vector<QueryParameter>> parameter_groups;
+	std::vector<std::string> group_names;
 	std::vector<DisplayColor> group_colors;
 	int total_parameter_count;
 	bool resizable;
@@ -333,6 +334,7 @@ struct ParameterSet {
 	ParameterSet() {
 		group_count = 1;
 		parameter_groups = {{}};
+		group_names = {"A"};
 		group_colors = {kWhiteColor};
 		total_parameter_count = 0;
 		resizable = false;
@@ -341,20 +343,23 @@ struct ParameterSet {
 	ParameterSet(int groups, bool allow_resize) {
 		group_count = groups;
 		parameter_groups = {};
+		group_names = {};
 		for (int i = 0; i < group_count; i++) {
 			parameter_groups.push_back({});
+			group_names.push_back(std::to_string('A' + i));
 		}
 		group_colors = {kWhiteColor};
 		total_parameter_count = 0;
 		resizable = allow_resize;
 	}
 
-	ParameterSet(int groups, bool allow_resize, std::vector<DisplayColor>& colors) {
+	ParameterSet(int groups, bool allow_resize, std::vector<std::string> names, std::vector<DisplayColor>& colors) {
 		group_count = groups;
 		parameter_groups = {};
 		for (int i = 0; i < group_count; i++) {
 			parameter_groups.push_back({});
 		}
+		group_names = names;
 		group_colors = colors;
 		total_parameter_count = 0;
 		resizable = allow_resize;
@@ -396,6 +401,12 @@ struct ParameterSet {
 			param_group.clear();
 		}
 		total_parameter_count = 0;
+	}
+
+	std::string GetGroupName(int group_index) const {
+		int name_index = group_index % group_names.size();
+		std::string group_name = group_names[name_index];
+		return group_name;
 	}
 
 	ImVec4 GetGroupColor(int group_index) const {
