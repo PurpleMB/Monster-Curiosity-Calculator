@@ -31,22 +31,15 @@
 
 namespace monster_calculator {
 
-void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
+void BeginStyledWindow(WindowParameters& window_parameters) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 
-	if (ImGui::Button("Build Monster Database")) {
-		CreateDatabase(output_environment);
-		DeleteMainTable(output_environment);
-		CreateMainTable(output_environment);
-	}
-	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearMainTable(output_environment);
-		InsertDataFromJson(output_environment);
-	}
+}
 
+void EndStyledWindow(WindowParameters& window_parameters) {
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();
 	}
@@ -57,14 +50,21 @@ void DrawWelcomeWindow(WindowParameters& window_parameters, OutputEnvironment& o
 	ImGui::End();
 }
 
-void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment,
+void DrawWelcomeWindow(OutputEnvironment& output_environment) {
+	if (ImGui::Button("Build Monster Database")) {
+		CreateDatabase(output_environment);
+		DeleteMainTable(output_environment);
+		CreateMainTable(output_environment);
+	}
+	if (ImGui::Button("Parse Monster Json Info Into Database")) {
+		ClearMainTable(output_environment);
+		InsertDataFromJson(output_environment);
+	}
+}
+
+void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter)
 {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
-	ImGui::SetNextWindowPos(window_parameters.window_position);
-
-	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
-
 	static QueryParameter building_parameter;
 
 	static int selected_parameter_index = 0;
@@ -175,16 +175,6 @@ void DrawSetParameterWindow(WindowParameters& window_parameters, OutputEnvironme
 		SortSubtableEntries(output_environment);
 		output_environment.ConvertSubsetEntries(param_converter);
 	}
-
-
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-
-	ImGui::End();
 }
 
 void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
@@ -430,12 +420,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	}
 }
 
-void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
-	ImGui::SetNextWindowPos(window_parameters.window_position);
-
-	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
-
+void DrawValueParameterWindow(OutputEnvironment& output_environment) {
 	ImGui::Text("Choose value to calculate:");
 
 	/*
@@ -488,16 +473,9 @@ void DrawValueParameterWindow(WindowParameters& window_parameters, OutputEnviron
 		window_parameters.window_size.y = ImGui::GetWindowHeight();
 	}
 	*/
-
-	ImGui::End();
 }
 
-void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
-	ImGui::SetNextWindowPos(window_parameters.window_position);
-
-	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
-
+void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
 	// text line showing # of entries in subset
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
@@ -632,22 +610,9 @@ void DrawSetDisplayWindow(WindowParameters& window_parameters, OutputEnvironment
 	int shown_page_count = page_count + 1;
 	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
 	ImGui::Text(curr_page_text.c_str());
-
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-	ImGui::End();
 }
 
-void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment& output_environment) {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
-	ImGui::SetNextWindowPos(window_parameters.window_position);
-
-	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
-
+void DrawOutputLogWindow(OutputEnvironment& output_environment) {
 	ImVec2 outer_size = ImVec2(0.0f, 300.0f);
 	const int kColumnCount = 4;
 	const int kTableFlags = ImGuiTableFlags_Borders | 
@@ -693,15 +658,6 @@ void DrawOutputLogWindow(WindowParameters& window_parameters, OutputEnvironment&
 		}
 		ImGui::EndTable();
 	}
-
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-
-	ImGui::End();
 }
 
 } // namespace monster_calculator

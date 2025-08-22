@@ -65,9 +65,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawWelcomeWindow(window_params, output_environment);
+			monster_calculator::DrawWelcomeWindow(output_environment);
 
+			monster_calculator::EndStyledWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
@@ -78,9 +80,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawSetParameterWindow(window_params, output_environment, parameter_types, param_type_converter);
+			monster_calculator::DrawSetParameterWindow(output_environment, parameter_types, param_type_converter);
 
+			monster_calculator::EndStyledWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
@@ -91,9 +95,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawValueParameterWindow(window_params, output_environment);
+			monster_calculator::DrawValueParameterWindow(output_environment);
 
+			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
 			window_pos.y = kWindowMargin;
 		}
@@ -105,9 +111,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawSetDisplayWindow(window_params, output_environment, subset_column_statuses);
+			monster_calculator::DrawSetDisplayWindow(output_environment, subset_column_statuses);
 
+			monster_calculator::EndStyledWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
@@ -118,8 +126,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawOutputLogWindow(window_params, output_environment);
+			monster_calculator::DrawOutputLogWindow(output_environment);
+
+			monster_calculator::EndStyledWindow(window_params);
 		}
 	}
 
