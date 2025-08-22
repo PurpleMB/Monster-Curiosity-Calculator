@@ -234,6 +234,7 @@ private:
 		ColumnStatus(kGenerationColInfo, false),
 		ColumnStatus(kFormSwitchColInfo, false),
 		ColumnStatus(kGrowthRateColInfo, false),
+		ColumnStatus(kGenderRateColInfo, false),
 		ColumnStatus(kBaseExpColInfo, false),
 		ColumnStatus(kBaseHappyColInfo, false),
 		ColumnStatus(kCatchRateColInfo, false),

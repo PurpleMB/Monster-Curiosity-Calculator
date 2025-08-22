@@ -361,7 +361,8 @@ int SortSubtableEntries(OutputEnvironment& output_environment, ParameterTypeConv
 			subset_entry.AddData(col_name, col_val);
 
 			if (param_converter.ContainsNameType(col_name)) {
-				if (param_converter.GetParamCategoryByName(col_name) == Enumerated) {
+				ParameterCategory param_cat = param_converter.GetParamCategoryByName(col_name);
+				if (param_cat == Enumerated || param_cat == EnumeratedSlider) {
 					EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(param_converter.GetParamTypeByName(col_name));
 					ParameterValue param_value = param_type.RetrieveParamValFromRawName(col_val);
 					subset_entry.AddConvertedData(col_name, param_value);

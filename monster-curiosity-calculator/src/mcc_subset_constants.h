@@ -18,6 +18,7 @@ extern const ColumnInfo kSecTypeColInfo;
 extern const ColumnInfo kGenerationColInfo;
 extern const ColumnInfo kFormSwitchColInfo;
 extern const ColumnInfo kGrowthRateColInfo;
+extern const ColumnInfo kGenderRateColInfo;
 extern const ColumnInfo kBaseExpColInfo;
 extern const ColumnInfo kBaseHappyColInfo;
 extern const ColumnInfo kCatchRateColInfo;

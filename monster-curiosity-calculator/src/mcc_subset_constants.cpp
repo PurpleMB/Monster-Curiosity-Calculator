@@ -19,6 +19,7 @@ extern const ColumnInfo kSecTypeColInfo = ColumnInfo("Secondary Type", "secondar
 extern const ColumnInfo kGenerationColInfo = ColumnInfo("Generation", "generation", true, ImGuiTableColumnFlags_WidthFixed, GenerationColumnId, 0);
 extern const ColumnInfo kFormSwitchColInfo = ColumnInfo("Form Switchable", "form_switchable", true, ImGuiTableColumnFlags_WidthFixed, FormSwitchColumnId, 0);
 extern const ColumnInfo kGrowthRateColInfo = ColumnInfo("Growth Rate", "growth_rate", true, ImGuiTableColumnFlags_WidthFixed, GrowthRateColumnId, 0);
+extern const ColumnInfo kGenderRateColInfo = ColumnInfo("Gender Rate", "gender_rate", true, ImGuiTableColumnFlags_WidthFixed, GenderRateColumnId, 0);
 extern const ColumnInfo kBaseExpColInfo = ColumnInfo("Base Experience", "base_experience", true, ImGuiTableColumnFlags_WidthFixed, BaseExpColumnId, 0);
 extern const ColumnInfo kBaseHappyColInfo = ColumnInfo("Base Happiness", "base_happiness", true, ImGuiTableColumnFlags_WidthFixed, BaseHappyColumnId, 0);
 extern const ColumnInfo kCatchRateColInfo = ColumnInfo("Catch Rate", "catch_rate", true, ImGuiTableColumnFlags_WidthFixed, CatchRateColumnId, 0);
