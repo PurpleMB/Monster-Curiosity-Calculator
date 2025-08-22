@@ -33,14 +33,17 @@ struct OutputEnvironment {
 				std::string col_name = subset_map_iter->first;
 				std::string col_val = subset_map_iter->second;
 				if (converter.ContainsNameType(col_name)) {
+					ParameterType* param_type_ptr = converter.GetParamTypeByName(col_name);
 					ParameterCategory param_cat = converter.GetParamCategoryByName(col_name);
 					if (param_cat == Enumerated || param_cat == EnumeratedSlider) {
-						EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(converter.GetParamTypeByName(col_name));
+						EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(param_type_ptr);
 						ParameterValue param_value = param_type.RetrieveParamValFromRawName(col_val);
 						entry.AddConvertedData(col_name, param_value);
 					}
 					else {
-						// TODO: convert non-enum param types
+						ParameterValue constructed_param_val = ParameterValue(col_val);
+						param_type_ptr->SetValueColorForType(constructed_param_val);
+						entry.AddConvertedData(col_name, constructed_param_val);
 					}
 				}
 			}

@@ -25,6 +25,13 @@ struct ParameterValue {
 		sorting_value = -1;
 	}
 
+	ParameterValue(std::string value_name) {
+		display_name = value_name;
+		database_name = value_name;
+		value_color = kRedColor;
+		sorting_value = -1;
+	}
+
 	ParameterValue(std::string dis_name, std::string db_name, DisplayColor color) {
 		display_name = dis_name;
 		database_name = db_name;
@@ -100,6 +107,10 @@ struct ParameterType {
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Undefined;
+	}
+
+	virtual void SetValueColorForType(ParameterValue& value) const {
+		value.value_color = kRedColor;
 	}
 
 	ImVec4 GetParameterColor() const {

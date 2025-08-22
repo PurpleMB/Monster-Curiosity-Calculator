@@ -540,6 +540,10 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		subset_page = page_count;
 	}
 
+	static bool table_color_enabled = false;
+	ImGui::Checkbox("Enable table coloring", &table_color_enabled);
+
+
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 16);
 	const int kTableFlags = 
@@ -597,10 +601,17 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 					continue;
 				}
 				if (subset_entry.HasConvertedData(active_column.query_name)) {
+					ParameterValue param_val = subset_entry.GetParameterValue(active_column.query_name);
+					if (table_color_enabled) {
+						ImVec4 group_cell_color = param_val.GetParameterColor();
+						ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+						ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+					}
 					ImGui::Text(subset_entry.GetConvertedDataName(active_column.query_name).c_str());
 				}
 				else {
 					ImGui::Text(subset_entry.GetRawData(active_column.query_name).c_str());
+					std::cout << "NO CONVERTED DATA FOR " << active_column.query_name << std::endl;
 				}
 			}
 		}
