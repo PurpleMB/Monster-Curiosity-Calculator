@@ -489,16 +489,29 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	if (ImGui::BeginPopup("column_toggle_popup")) {
 		for (ColumnStatus& col : column_statuses) {
 			if (col.GetColumnInfo().togglable) {
-				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.enabled);
+				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.display_enabled);
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	std::vector<ColumnInfo> active_columns = {};
+	if (ImGui::Button("Column Coloring Toggles")) {
+		ImGui::OpenPopup("column_coloring_popup");
+	}
+
+	if (ImGui::BeginPopup("column_coloring_popup")) {
+		for (ColumnStatus& col : column_statuses) {
+			if (col.GetColumnInfo().colorable) {
+				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.coloring_enabled);
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	std::vector<ColumnStatus> active_columns = {};
 	for (ColumnStatus col : column_statuses) {
-		if (col.enabled) {
-			active_columns.push_back(col.GetColumnInfo());
+		if (col.IsEnabled()) {
+			active_columns.push_back(col);
 		}
 	}
 	int active_column_count = active_columns.size();
@@ -558,11 +571,12 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	static int frozen_rows = 1;
 	if (ImGui::BeginTable("subset_entries", active_column_count, kTableFlags, outer_size)) {
 		// column setup
-		for (ColumnInfo active_column : active_columns) {
-			std::string col_name = active_column.display_name;
-			int col_flags = active_column.column_flags;
-			int col_id = active_column.column_id;
-			float col_width = active_column.column_width;
+		for (ColumnStatus active_column : active_columns) {
+			ColumnInfo active_col_info = active_column.GetColumnInfo();
+			std::string col_name = active_col_info.display_name;
+			int col_flags = active_col_info.column_flags;
+			int col_id = active_col_info.column_id;
+			float col_width = active_col_info.column_width;
 			ImGui::TableSetupColumn(col_name.c_str(), col_flags, col_width, col_id);
 		}
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
@@ -593,25 +607,26 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		for (int subset_index = starting_index; subset_index < ending_index; subset_index++) {
 			auto subset_entry = output_environment.subset_entries[subset_index];
 			ImGui::TableNextRow();
-			for (ColumnInfo active_column : active_columns) {
+			for (ColumnStatus active_column : active_columns) {
+				ColumnInfo active_col_info = active_column.GetColumnInfo();
 				ImGui::TableNextColumn();
 				if (std::strcmp(ImGui::TableGetColumnName(), "Result #") == 0) {
 					int displayed_index = subset_index + 1;
 					ImGui::Text(std::to_string(displayed_index).c_str());
 					continue;
 				}
-				if (subset_entry.HasConvertedData(active_column.query_name)) {
-					ParameterValue param_val = subset_entry.GetParameterValue(active_column.query_name);
-					if (table_color_enabled) {
+				if (subset_entry.HasConvertedData(active_col_info.query_name)) {
+					ParameterValue param_val = subset_entry.GetParameterValue(active_col_info.query_name);
+					if (active_column.IsColored()) {
 						ImVec4 group_cell_color = param_val.GetParameterColor();
 						ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
 						ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 					}
-					ImGui::Text(subset_entry.GetConvertedDataName(active_column.query_name).c_str());
+					ImGui::Text(subset_entry.GetConvertedDataName(active_col_info.query_name).c_str());
 				}
 				else {
-					ImGui::Text(subset_entry.GetRawData(active_column.query_name).c_str());
-					std::cout << "NO CONVERTED DATA FOR " << active_column.query_name << std::endl;
+					ImGui::Text(subset_entry.GetRawData(active_col_info.query_name).c_str());
+					std::cout << "NO CONVERTED DATA FOR " << active_col_info.query_name << std::endl;
 				}
 			}
 		}

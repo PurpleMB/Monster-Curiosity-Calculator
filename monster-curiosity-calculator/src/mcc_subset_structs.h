@@ -47,6 +47,7 @@ struct ColumnInfo {
 	std::string display_name;
 	std::string query_name;
 	bool togglable;
+	bool colorable;
 	int column_flags;
 	int column_id;
 	float column_width;
@@ -54,11 +55,25 @@ struct ColumnInfo {
 
 struct ColumnStatus {
 	ColumnInfo column_info;
-	bool enabled = false;
+	bool display_enabled;
+	bool coloring_enabled;
+
+	ColumnStatus(ColumnInfo column) {
+		column_info = column;
+		display_enabled = false;
+		coloring_enabled = false;
+	}
 
 	ColumnStatus(ColumnInfo column, bool start_enabled) {
 		column_info = column;
-		enabled = start_enabled;
+		display_enabled = start_enabled;
+		coloring_enabled = false;
+	}
+
+	ColumnStatus(ColumnInfo column, bool start_enabled, bool start_colored) {
+		column_info = column;
+		display_enabled = start_enabled;
+		coloring_enabled = start_colored;
 	}
 
 	ColumnInfo GetColumnInfo() {
@@ -66,7 +81,11 @@ struct ColumnStatus {
 	}
 
 	bool IsEnabled() {
-		return enabled;
+		return display_enabled;
+	}
+
+	bool IsColored() {
+		return coloring_enabled;
 	}
 };
 
