@@ -412,14 +412,36 @@ extern const OpenParameterType kNameParam = OpenParameterType(
     kNameOperations
 );
 
-const std::string kAbilityDisplayName = "Normal Ability";
-const std::string kAbilityDatabaseFormat = "ability_1 {0} OR ability_2 {0}";
-const std::string kAbilityDisplayFormat = "Normal Ability: {0}";
-extern const OpenParameterType kAbilityParam = OpenParameterType(
-    kAbilityDisplayName,
-    kAbilityDisplayFormat,
-    kAbilityDatabaseFormat,
+const std::string kNormalAbilitiesDisplayName = "Normal Abilities";
+const std::string kNormalAbilitiesDatabaseFormat = "ability_1 {0} OR ability_2 {0}";
+const std::string kNormalAbilitiesDisplayFormat = "Normal Abilities: {0}";
+extern const OpenParameterType kNormalAbilitiesParam = OpenParameterType(
+    kNormalAbilitiesDisplayName,
+    kNormalAbilitiesDisplayFormat,
+    kNormalAbilitiesDatabaseFormat,
     kSaffronColor,
+    kAbilityOperations
+);
+
+const std::string kNormalAbilityOneDisplayName = "First Normal Ability";
+const std::string kNormalAbilityOneDatabaseFormat = "ability_1 {0}";
+const std::string kNormalAbilityOneDisplayFormat = "First Normal Ability: {0}";
+extern const OpenParameterType kNormalAbilityOneParam = OpenParameterType(
+    kNormalAbilityOneDisplayName,
+    kNormalAbilityOneDisplayFormat,
+    kNormalAbilityOneDatabaseFormat,
+    kRawstColor,
+    kAbilityOperations
+);
+
+const std::string kNormalAbilityTwoDisplayName = "Second Normal Ability";
+const std::string kNormalAbilityTwoDatabaseFormat = "ability_2 {0}";
+const std::string kNormalAbilityTwoDisplayFormat = "Second Normal Ability: {0}";
+extern const OpenParameterType kNormalAbilityTwoParam = OpenParameterType(
+    kNormalAbilityTwoDisplayName,
+    kNormalAbilityTwoDisplayFormat,
+    kNormalAbilityTwoDatabaseFormat,
+    kPechaColor,
     kAbilityOperations
 );
 

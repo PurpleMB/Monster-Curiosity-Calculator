@@ -48,7 +48,9 @@ extern const std::vector<ParameterOperation> kAbilityOperations;
 
 // open parameters
 extern const OpenParameterType kNameParam;
-extern const OpenParameterType kAbilityParam;
+extern const OpenParameterType kNormalAbilitiesParam;
+extern const OpenParameterType kNormalAbilityOneParam;
+extern const OpenParameterType kNormalAbilityTwoParam;
 extern const OpenParameterType kHiddenAbilityParam;
 extern const OpenParameterType kAnyAbilityParam;
 

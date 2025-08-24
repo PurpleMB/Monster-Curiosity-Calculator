@@ -168,7 +168,9 @@ private:
 	std::shared_ptr<EnumeratedParameterType> growth_rate_ptr = std::make_shared<EnumeratedParameterType>(kGrowthRateParam);
 	std::shared_ptr<SliderEnumeratedParameterType> gender_rate_ptr = std::make_shared<SliderEnumeratedParameterType>(kGenderRateParam);
 	std::shared_ptr<OpenParameterType> name_ptr = std::make_shared<OpenParameterType>(kNameParam);
-	std::shared_ptr<OpenParameterType> ability_ptr = std::make_shared<OpenParameterType>(kAbilityParam);
+	std::shared_ptr<OpenParameterType> normal_abilities_ptr = std::make_shared<OpenParameterType>(kNormalAbilitiesParam);
+	std::shared_ptr<OpenParameterType> normal_ability_one_ptr = std::make_shared<OpenParameterType>(kNormalAbilityOneParam);
+	std::shared_ptr<OpenParameterType> normal_ability_two_ptr = std::make_shared<OpenParameterType>(kNormalAbilityTwoParam);
 	std::shared_ptr<OpenParameterType> hidden_ability_ptr = std::make_shared<OpenParameterType>(kHiddenAbilityParam);
 	std::shared_ptr<OpenParameterType> any_ability_ptr = std::make_shared<OpenParameterType>(kAnyAbilityParam);
 	std::shared_ptr<IntegerParameterType> dex_num_ptr = std::make_shared<IntegerParameterType>(kDexNumParam);
@@ -204,7 +206,9 @@ private:
 		growth_rate_ptr,
 		gender_rate_ptr,
 		name_ptr,
-		ability_ptr,
+		normal_abilities_ptr,
+		normal_ability_one_ptr,
+		normal_ability_two_ptr,
 		hidden_ability_ptr,
 		any_ability_ptr,
 		dex_num_ptr,
@@ -240,7 +244,8 @@ private:
 		{"growth_rate", growth_rate_ptr},
 		{"gender_rate", gender_rate_ptr},
 		{"pretty_name", name_ptr},
-		{"ability_1", ability_ptr},
+		{"ability_1", normal_ability_one_ptr},
+		{"ability_2", normal_ability_two_ptr},
 		{"hidden_ability", hidden_ability_ptr},
 		{"dex_number", dex_num_ptr},
 		{"base_experience", base_exp_ptr},
