@@ -161,6 +161,10 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	std::string abil2 = mon_info["abilities"]["second"].asString();
 	std::string abil_hidden = mon_info["abilities"]["hidden"].asString();
 
+	std::string pretty_abil1 = mon_info["pretty_abilities"]["first"].asString();
+	std::string pretty_abil2 = mon_info["pretty_abilities"]["second"].asString();
+	std::string pretty_abil_hidden = mon_info["pretty_abilities"]["hidden"].asString();
+
 	std::string health = mon_info["stats"]["hp"].asString();
 	std::string attack = mon_info["stats"]["attack"].asString();
 	std::string defense = mon_info["stats"]["defense"].asString();
@@ -203,6 +207,9 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 		", ability_1"
 		", ability_2"
 		", hidden_ability"
+		", pretty_ability_1"
+		", pretty_ability_2"
+		", pretty_hidden_ability"
 		", hp"
 		", attack"
 		", defense"
@@ -251,6 +258,9 @@ std::string GenerateJsonDataString(Json::Value mon_info) {
 	data_schema += abil1 + "', '";
 	data_schema += abil2 + "', '";
 	data_schema += abil_hidden + "', '";
+	data_schema += pretty_abil1 + "', '";
+	data_schema += pretty_abil2 + "', '";
+	data_schema += pretty_abil_hidden + "', '";
 
 	data_schema += health + "', '";
 	data_schema += attack + "', '";
