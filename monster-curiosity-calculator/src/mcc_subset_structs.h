@@ -286,13 +286,13 @@ struct SubsetComparator {
 				}
 				break;
 			case AbilOneColumnId:
-				delta = lhs.GetRawData("ability_1").compare(rhs.GetRawData("ability_1"));
+				delta = lhs.GetRawData("pretty_ability_1").compare(rhs.GetRawData("pretty_ability_1"));
 				break;
 			case AbilTwoColumnId:
-				delta = lhs.GetRawData("ability_2").compare(rhs.GetRawData("ability_2"));
+				delta = lhs.GetRawData("pretty_ability_2").compare(rhs.GetRawData("pretty_ability_2"));
 				break;
 			case AbilHiddenColumnId:
-				delta = lhs.GetRawData("hidden_ability").compare(rhs.GetRawData("hidden_ability"));
+				delta = lhs.GetRawData("pretty_hidden_ability").compare(rhs.GetRawData("pretty_hidden_ability"));
 				break;
 			case HealthColumnId:
 				delta = std::stoi(lhs.GetRawData("hp")) - std::stoi(rhs.GetRawData("hp"));
