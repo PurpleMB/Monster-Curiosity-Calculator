@@ -131,6 +131,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Libraries\jsoncpp\dist\jsoncpp.cpp" />
@@ -177,8 +181,8 @@
     <ClInclude Include="src\mcc_gui_windows.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="db\mccdata.json" />
-    <None Include="db\test.db" />
+    <None Include="data\mccdata.json" />
+    <None Include="data\test.db" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

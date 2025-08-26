@@ -20,8 +20,8 @@ namespace monster_calculator {
 
 static const bool kDebug = false;
 
-static const std::string kDbPath = ".\\db\\test.db";
-static const std::string kJsonPath = ".\\db\\mccdata.json";
+static const std::string kDbPath = ".\\data\\test.db";
+static const std::string kJsonPath = ".\\data\\mccdata.json";
 
 int CreateDatabase(OutputEnvironment& output_environment) {
 	const char* database_path = kDbPath.c_str();
