@@ -46,6 +46,8 @@ extern const SliderEnumeratedParameterType kGenderRateParam;
 extern const std::vector<ParameterOperation> kNameOperations;
 extern const std::vector<ParameterOperation> kAbilityOperations;
 
+extern const std::vector<DisplayColor> kOpenParamColors;
+
 // open parameters
 extern const OpenParameterType kNameParam;
 extern const OpenParameterType kNormalAbilitiesParam;
@@ -56,6 +58,12 @@ extern const OpenParameterType kAnyAbilityParam;
 
 // numerical parameter operations and values
 extern const std::vector<ParameterOperation> kStandardNumericalOperations;
+
+extern const std::vector<DisplayColor> kStandardStatColors;
+extern const std::vector<float> kLinearThresholds;
+extern const std::vector<float> kStandardStatThresholds;
+extern const std::vector<float> kWeightThresholds;
+extern const std::vector<float> kHeightThresholds;
 
 // integer parameters
 extern const IntegerParameterType kDexNumParam;

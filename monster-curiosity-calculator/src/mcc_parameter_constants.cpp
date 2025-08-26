@@ -400,6 +400,18 @@ extern const std::vector<ParameterOperation> kAbilityOperations = {
     )
 };
 
+extern const std::vector<DisplayColor> kOpenParamColors = {
+    kRedColor, kRubyRedColor,
+    kBlueColor, kIndigoColor,
+    kGreenColor, kCeladonColor,
+    kYellowColor, kSaffronColor,
+    kOrangeColor, kTangerineColor,
+    kPurpleColor, kOrchidColor,
+    kPinkColor, kRaspberryColor,
+    kWhiteColor, kSeashellColor,
+    kBrassColor
+};
+
 // open parameters
 const std::string kNameDisplayName = "Name";
 const std::string kNameDatabaseFormat = "name {0}";
@@ -409,7 +421,8 @@ extern const OpenParameterType kNameParam = OpenParameterType(
     kNameDisplayFormat,
     kNameDatabaseFormat,
     kMauveColor,
-    kNameOperations
+    kNameOperations,
+    kOpenParamColors
 );
 
 const std::string kNormalAbilitiesDisplayName = "Normal Abilities";
@@ -420,7 +433,8 @@ extern const OpenParameterType kNormalAbilitiesParam = OpenParameterType(
     kNormalAbilitiesDisplayFormat,
     kNormalAbilitiesDatabaseFormat,
     kSaffronColor,
-    kAbilityOperations
+    kAbilityOperations,
+    kOpenParamColors
 );
 
 const std::string kNormalAbilityOneDisplayName = "First Normal Ability";
@@ -431,7 +445,8 @@ extern const OpenParameterType kNormalAbilityOneParam = OpenParameterType(
     kNormalAbilityOneDisplayFormat,
     kNormalAbilityOneDatabaseFormat,
     kRawstColor,
-    kAbilityOperations
+    kAbilityOperations,
+    kOpenParamColors
 );
 
 const std::string kNormalAbilityTwoDisplayName = "Second Normal Ability";
@@ -442,7 +457,8 @@ extern const OpenParameterType kNormalAbilityTwoParam = OpenParameterType(
     kNormalAbilityTwoDisplayFormat,
     kNormalAbilityTwoDatabaseFormat,
     kPechaColor,
-    kAbilityOperations
+    kAbilityOperations,
+    kOpenParamColors
 );
 
 const std::string kHiddenAbilityDisplayName = "Hidden Ability";
@@ -453,7 +469,8 @@ extern const OpenParameterType kHiddenAbilityParam = OpenParameterType(
     kHiddenAbilityDisplayFormat,
     kHiddenAbilityDatabaseFormat,
     kRubyRedColor,
-    kAbilityOperations
+    kAbilityOperations,
+    kOpenParamColors
 );
 
 const std::string kAnyAbilityDisplayName = "Any Ability";
@@ -464,7 +481,8 @@ extern const OpenParameterType kAnyAbilityParam = OpenParameterType(
     kAnyAbilityDisplayFormat,
     kAnyAbilityDatabaseFormat,
     kTangerineColor,
-    kAbilityOperations
+    kAbilityOperations,
+    kOpenParamColors
 );
 
 // numerical parameter operations and values
@@ -488,6 +506,24 @@ extern const std::vector<ParameterOperation> kStandardNumericalOperations = {
     )
 };
 
+extern const std::vector<DisplayColor> kStandardStatColors = {
+    kRedColor, kOrangeColor, kYellowColor, kGreenColor, kBlueColor, kPurpleColor
+};
+extern const std::vector<float> kLinearThresholds = {
+    0.0f, 0.16f, 0.33f, 0.5f, 0.67f, 0.83f
+};
+extern const std::vector<float> kStandardStatThresholds = {
+    0.0f, 0.15f, 0.3f, 0.5f, 0.7f, 0.9f
+};
+
+// slightly adjusted thresholds for weight and height due to uneven distribution of values
+extern const std::vector<float> kWeightThresholds = {
+    0.0f, 0.05f, 0.1f, 0.2f, 0.35f, 0.5f
+};
+extern const std::vector<float> kHeightThresholds = {
+    0.0f, 0.1f, 0.2, 0.35f, 0.5f, 0.7f
+};
+
 // Integer parameters
 const int kDexNumMin = 1;
 const int kDexNumMax = 1025;
@@ -501,8 +537,10 @@ extern const IntegerParameterType kDexNumParam = IntegerParameterType(
     kDexNumDatabaseFormat,
     kIndigoColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kDexNumMin,
-    kDexNumMax
+    kDexNumMax,
+    kLinearThresholds
 );
 
 const int kBaseExpMin = 1;
@@ -517,8 +555,10 @@ extern const IntegerParameterType kBaseExpParam = IntegerParameterType(
     kBaseExpDatabaseFormat,
     kVermillionColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kBaseExpMin,
-    kBaseExpMax
+    kBaseExpMax,
+    kStandardStatThresholds
 );
 
 const int kBaseHappyMin = 0;
@@ -533,8 +573,10 @@ extern const IntegerParameterType kBaseHappyParam = IntegerParameterType(
     kBaseHappyDatabaseFormat,
     kSeashellColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kBaseHappyMin,
-    kBaseHappyMax
+    kBaseHappyMax,
+    kLinearThresholds
 );
 
 const int kCatchRateMin = 0;
@@ -550,8 +592,10 @@ extern const IntegerParameterType kCatchRateParam = IntegerParameterType(
     kCatchRateDatabaseFormat,
     kMahoganyColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kCatchRateMin,
-    kCatchRateMax
+    kCatchRateMax,
+    kLinearThresholds
 );
 
 const int kHatchCountMin = 1;
@@ -567,8 +611,10 @@ extern const IntegerParameterType kHatchCountParam = IntegerParameterType(
     kHatchCountDatabaseFormat,
     kPeriwinkleColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kHatchCountMin,
-    kHatchCountMax
+    kHatchCountMax,
+    kLinearThresholds
 );
 
 
@@ -584,8 +630,10 @@ extern const IntegerParameterType kHealthParam = IntegerParameterType(
     kHealthDatabaseFormat,
     kRedColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const std::string kAttackDisplayName = "Attack";
@@ -597,8 +645,10 @@ extern const IntegerParameterType kAttackParam = IntegerParameterType(
     kAttackDatabaseFormat,
     kBlueColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const std::string kDefenseDisplayName = "Defense";
@@ -610,8 +660,10 @@ extern const IntegerParameterType kDefenseParam = IntegerParameterType(
     kDefenseDatabaseFormat,
     kGreenColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const std::string kSpeAtkDisplayName = "Special Attack";
@@ -623,8 +675,10 @@ extern const IntegerParameterType kSpeAtkParam = IntegerParameterType(
     kSpeAtkDatabaseFormat,
     kPurpleColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const std::string kSpeDefDisplayName = "Special Defense";
@@ -636,8 +690,10 @@ extern const IntegerParameterType kSpeDefParam = IntegerParameterType(
     kSpeDefDatabaseFormat,
     kPinkColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const std::string kSpeedDisplayName = "Speed";
@@ -649,8 +705,10 @@ extern const IntegerParameterType kSpeedParam = IntegerParameterType(
     kSpeedDatabaseFormat,
     kYellowColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kSingleStatMin,
-    kSingleStatMax
+    kSingleStatMax,
+    kStandardStatThresholds
 );
 
 const int kStatTotalMin = 0;
@@ -665,8 +723,10 @@ extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
     kBaseStatTotalDatabaseFormat,
     kFuschiaColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kStatTotalMin,
-    kStatTotalMax
+    kStatTotalMax,
+    kStandardStatThresholds
 );
 
 // decimal parameters
@@ -681,8 +741,10 @@ extern const DecimalParameterType kWeightParam = DecimalParameterType(
     kWeightDatabaseFormat,
     kRaspberryColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kWeightMin,
-    kWeightMax
+    kWeightMax,
+    kWeightThresholds
 );
 
 const double kHeightMin = 0.0;
@@ -696,8 +758,10 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
     kHeightDatabaseFormat,
     kGoldenrodColor,
     kStandardNumericalOperations,
+    kStandardStatColors,
     kHeightMin,
-    kHeightMax
+    kHeightMax,
+    kHeightThresholds
 );
 
 } //namespace monster_calculator

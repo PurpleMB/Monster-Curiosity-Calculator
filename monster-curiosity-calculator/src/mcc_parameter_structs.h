@@ -166,19 +166,18 @@ struct SliderEnumeratedParameterType : EnumeratedParameterType {
 };
 
 struct OpenParameterType : ParameterType {
+	// this vector should contain at least 2 colors for color interpolation in numerical parameters
 	std::vector<DisplayColor> possible_value_colors;
 
 	OpenParameterType() : ParameterType() {
 		possible_value_colors = {
-			kRedColor, kOrangeColor, kYellowColor, kGreenColor, kBlueColor, kPurpleColor, kPinkColor
+			kRedColor, kFuschiaColor
 		};
 	}
 
-	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops) :
+	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<DisplayColor> colors) :
 		ParameterType(dis_name, dis_format, db_format, color, ops) {
-		possible_value_colors = {
-			kRedColor, kOrangeColor, kYellowColor, kGreenColor, kBlueColor, kPurpleColor, kPinkColor
-		};
+		possible_value_colors = colors;
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
@@ -199,20 +198,28 @@ struct IntegerParameterType : OpenParameterType {
 	int min_value;
 	int max_value;
 
+	// this vector should be of size <= (possible_value_colors.size() - 1) to avoid OoB errors
 	std::vector<float> value_color_thresholds;
 
 	IntegerParameterType() : OpenParameterType() {
 		min_value = -1;
 		max_value = -1;
-		value_color_thresholds = {0.0f, 0.2f, 0.3f, 0.4f, 0.6f, 0.8f};
+		value_color_thresholds = {0.0f};
 	}
 
 	IntegerParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
-		std::vector<ParameterOperation> ops, int min, int max) :
-		OpenParameterType(dis_name, dis_format, db_format, color, ops) {
+		std::vector<ParameterOperation> ops, std::vector<DisplayColor> colors, int min, int max, std::vector<float> color_thresholds) :
+		OpenParameterType(dis_name, dis_format, db_format, color, ops, colors) {
 		min_value = min;
 		max_value = max;
-		value_color_thresholds = {0.0f, 0.2f, 0.3f, 0.4f, 0.6f, 0.8f};
+		if (color_thresholds.size() >= possible_value_colors.size()) {
+			auto threshold_start = color_thresholds.begin();
+			int threshold_size = possible_value_colors.size() > 2 ? possible_value_colors.size() -1 : 1;
+			auto threshold_end = threshold_start + threshold_size;
+			value_color_thresholds = std::vector(threshold_start, threshold_end);
+		} else {
+			value_color_thresholds = color_thresholds;
+		}
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
@@ -245,20 +252,54 @@ struct DecimalParameterType : OpenParameterType {
 	double min_value;
 	double max_value;
 
+	// this vector should be of size <= (possible_value_colors.size() - 1) to avoid OoB errors
+	std::vector<float> value_color_thresholds;
+
 	DecimalParameterType() : OpenParameterType() {
 		min_value = -1.0;
 		max_value = -1.0;
+		value_color_thresholds = {0.0f};
 	}
 
 	DecimalParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
-		std::vector<ParameterOperation> ops, double min, double max) :
-		OpenParameterType(dis_name, dis_format, db_format, color, ops) {
+		std::vector<ParameterOperation> ops, std::vector<DisplayColor> colors, double min, double max, std::vector<float> color_thresholds) :
+		OpenParameterType(dis_name, dis_format, db_format, color, ops, colors) {
 		min_value = min;
 		max_value = max;
+		if (color_thresholds.size() >= possible_value_colors.size()) {
+			auto threshold_start = color_thresholds.begin();
+			int threshold_size = possible_value_colors.size() > 2 ? possible_value_colors.size() - 1 : 1;
+			auto threshold_end = threshold_start + threshold_size;
+			value_color_thresholds = std::vector(threshold_start, threshold_end);
+		}
+		else {
+			value_color_thresholds = color_thresholds;
+		}
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Decimal;
+	}
+
+	virtual void SetValueColorForType(ParameterValue& value) const {
+		double converted_value = std::stod(value.display_name);
+		float value_range_percent = (converted_value - min_value) / (float)(max_value - min_value);
+		int floor_color_index = -1;
+		for (int i = 0; i < value_color_thresholds.size(); i++) {
+			if (value_range_percent >= value_color_thresholds[i]) {
+				floor_color_index = i;
+			}
+			else {
+				break;
+			}
+		}
+		float floor_threshold = value_color_thresholds[floor_color_index];
+		float ceil_threshold = (floor_color_index < value_color_thresholds.size() - 1) ? value_color_thresholds[floor_color_index + 1] : 1.0f;
+		DisplayColor floor_color = possible_value_colors[floor_color_index];
+		DisplayColor ceil_color = possible_value_colors[floor_color_index + 1];
+		float color_lerp_t = (value_range_percent - floor_threshold) / (ceil_threshold - floor_threshold);
+		DisplayColor lerped_color = DisplayColor::InterpolateColors(floor_color, ceil_color, color_lerp_t);
+		value.value_color = lerped_color;
 	}
 };
 
