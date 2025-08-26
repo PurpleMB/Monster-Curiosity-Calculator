@@ -4,6 +4,8 @@
 #include <unordered_map> // used by converters
 #include <memory>	//	shared_ptr in converters
 
+#include <iostream>
+
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
 
@@ -110,7 +112,7 @@ struct ParameterType {
 	}
 
 	virtual void SetValueColorForType(ParameterValue& value) const {
-		value.value_color = kRedColor;
+		value.value_color = kFuschiaColor;
 	}
 
 	ImVec4 GetParameterColor() const {
@@ -164,18 +166,32 @@ struct SliderEnumeratedParameterType : EnumeratedParameterType {
 };
 
 struct OpenParameterType : ParameterType {
+	std::vector<DisplayColor> possible_value_colors;
 
 	OpenParameterType() : ParameterType() {
-
+		possible_value_colors = {
+			kRedColor, kOrangeColor, kYellowColor, kGreenColor, kBlueColor, kPurpleColor, kPinkColor
+		};
 	}
 
 	OpenParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops) :
 		ParameterType(dis_name, dis_format, db_format, color, ops) {
-
+		possible_value_colors = {
+			kRedColor, kOrangeColor, kYellowColor, kGreenColor, kBlueColor, kPurpleColor, kPinkColor
+		};
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Open;
+	}
+
+	virtual void SetValueColorForType(ParameterValue& value) const {
+		// generate int sum of characters to index into colors list
+		int flat_value = 0;
+		for (char c : value.display_name) {
+			flat_value += (int)c;
+		}
+		value.value_color = possible_value_colors[flat_value % possible_value_colors.size()];
 	}
 };
 
@@ -183,9 +199,12 @@ struct IntegerParameterType : OpenParameterType {
 	int min_value;
 	int max_value;
 
+	std::vector<float> value_color_thresholds;
+
 	IntegerParameterType() : OpenParameterType() {
 		min_value = -1;
 		max_value = -1;
+		value_color_thresholds = {0.0f, 0.2f, 0.3f, 0.4f, 0.6f, 0.8f};
 	}
 
 	IntegerParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color,
@@ -193,10 +212,32 @@ struct IntegerParameterType : OpenParameterType {
 		OpenParameterType(dis_name, dis_format, db_format, color, ops) {
 		min_value = min;
 		max_value = max;
+		value_color_thresholds = {0.0f, 0.2f, 0.3f, 0.4f, 0.6f, 0.8f};
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Integer;
+	}
+
+	virtual void SetValueColorForType(ParameterValue& value) const {
+		int converted_value = std::stoi(value.display_name);
+		float value_range_percent = (converted_value - min_value) / (float)(max_value - min_value);
+		int floor_color_index = -1;
+		for (int i = 0; i < value_color_thresholds.size(); i++) {
+			if (value_range_percent >= value_color_thresholds[i]) {
+				floor_color_index = i;
+			}
+			else {
+				break;
+			}
+		}
+		float floor_threshold = value_color_thresholds[floor_color_index];
+		float ceil_threshold = (floor_color_index < value_color_thresholds.size() - 1) ? value_color_thresholds[floor_color_index + 1] : 1.0f;
+		DisplayColor floor_color = possible_value_colors[floor_color_index];
+		DisplayColor ceil_color = possible_value_colors[floor_color_index + 1];
+		float color_lerp_t = (value_range_percent - floor_threshold) / (ceil_threshold - floor_threshold);
+		DisplayColor lerped_color = DisplayColor::InterpolateColors(floor_color, ceil_color, color_lerp_t);
+		value.value_color = lerped_color;
 	}
 };
 

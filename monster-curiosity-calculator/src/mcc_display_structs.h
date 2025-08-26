@@ -29,6 +29,23 @@ public:
 	ImVec4 GetColorValues() const {
 		return color_value;
 	}
+
+	static DisplayColor InterpolateColors(DisplayColor color_a, DisplayColor color_b, float t) {
+		std::string blend_name = color_a.GetColorName() + "-" + color_b.GetColorName() + " Blend";
+		ImVec4 color_a_vals = color_a.GetColorValues();
+		ImVec4 color_b_vals = color_b.GetColorValues();
+		ImVec4 blend_values = ImVec4(
+			color_a_vals.x * (1 - t) + color_b_vals.x * t,
+			color_a_vals.y * (1 - t) + color_b_vals.y * t,
+			color_a_vals.z * (1 - t) + color_b_vals.z * t,
+			color_a_vals.w * (1 - t) + color_b_vals.w * t
+		);
+
+		DisplayColor color_blend = DisplayColor(
+			blend_name, blend_values
+		);
+		return color_blend;
+	}
 };
 
 struct WindowParameters {
