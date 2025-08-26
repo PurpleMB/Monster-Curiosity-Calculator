@@ -140,5 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="db\mccdata.json" />
+    <None Include="db\test.db" />
   </ItemGroup>
 </Project>
