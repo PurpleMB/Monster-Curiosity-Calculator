@@ -764,4 +764,30 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
     kHeightThresholds
 );
 
+// value calculation enum values
+extern const std::vector<ParameterOperation> kValueOperations = {
+    ParameterOperation("Average",			"avg({0})",		kGreenColor,
+        {
+            "Target metric"
+        }
+    )
+};
+
+extern const std::vector<ParameterValue> kValueCalcEnums = {
+    ParameterValue("Health",	"hp",	    kRedColor,        0),
+};
+
+const std::string kValueDisplayName = "Subset value";
+const std::string kValueDatabaseFormat = "{0}";
+// going for something like "Subset Average Health: 120"
+const std::string kValueDisplayFormat = "Subet {0} {1}: {2}";
+// value calculation types
+extern const EnumeratedParameterType kValueCalcParam = EnumeratedParameterType(
+    kValueDisplayName,
+    kValueDisplayFormat,
+    kValueDatabaseFormat,
+    kRedColor,
+    kValueOperations,
+    kValueCalcEnums
+);
 } //namespace monster_calculator

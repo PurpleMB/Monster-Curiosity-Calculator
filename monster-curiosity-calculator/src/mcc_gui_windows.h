@@ -10,8 +10,8 @@ namespace monster_calculator {
 
 	void BeginStyledWindow(WindowParameters& window_parameters);
 	void EndStyledWindow(WindowParameters& window_parameters);
-	void DrawWelcomeWindow( OutputEnvironment& output_environment);
-	void DrawSetParameterWindow( OutputEnvironment& output_environment, 
+	void DrawWelcomeWindow(OutputEnvironment& output_environment);
+	void DrawSetParameterWindow(OutputEnvironment& output_environment, 
 		std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter);
 	void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
 	void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
@@ -19,7 +19,7 @@ namespace monster_calculator {
 	void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawSubsetParameterTable(OutputEnvironment& output_environment);
-	void DrawValueParameterWindow(OutputEnvironment& output_environment);
+	void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared_ptr<EnumeratedParameterType> value_parameter);
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
 	void DrawOutputLogWindow(OutputEnvironment& output_environment);
 

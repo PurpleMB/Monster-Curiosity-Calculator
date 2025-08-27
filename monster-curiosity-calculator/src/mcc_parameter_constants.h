@@ -83,4 +83,12 @@ extern const IntegerParameterType kStatTotalParam;
 extern const DecimalParameterType kWeightParam;
 extern const DecimalParameterType kHeightParam;
 
+
+// value calculation enum values
+extern const std::vector<ParameterOperation> kValueOperations;
+extern const std::vector<ParameterValue> kValueCalcEnums;
+
+// value calculation types
+extern const EnumeratedParameterType kValueCalcParam;
+
 } // namespace monster_calculator

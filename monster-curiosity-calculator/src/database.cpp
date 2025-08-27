@@ -389,7 +389,8 @@ int QuerySubtable(OutputEnvironment& output_environment) {
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string query_statement = output_environment.value_parameter.GetQuery();
+	std::string query_statement = "SELECT " + output_environment.value_parameter.GetQuery() + " FROM submonsters";
+	std::cout << query_statement << std::endl;
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_statement.c_str(), -1, &stmt, NULL);
 	if (exit != SQLITE_OK) {

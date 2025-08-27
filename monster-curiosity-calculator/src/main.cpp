@@ -105,7 +105,7 @@ public:
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawValueParameterWindow(output_environment);
+			monster_calculator::DrawValueParameterWindow(output_environment, value_ptr);
 
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
@@ -187,6 +187,8 @@ private:
 	std::shared_ptr<IntegerParameterType> stat_total_ptr = std::make_shared<IntegerParameterType>(kStatTotalParam);
 	std::shared_ptr<DecimalParameterType> height_ptr = std::make_shared<DecimalParameterType>(kHeightParam);
 	std::shared_ptr<DecimalParameterType> weight_ptr = std::make_shared<DecimalParameterType>(kWeightParam);
+
+	std::shared_ptr<EnumeratedParameterType> value_ptr = std::make_shared<EnumeratedParameterType>(kValueCalcParam);
 
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		prim_type_ptr,

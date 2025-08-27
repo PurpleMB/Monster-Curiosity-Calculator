@@ -422,59 +422,56 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	}
 }
 
-void DrawValueParameterWindow(OutputEnvironment& output_environment) {
-	ImGui::Text("Choose value to calculate:");
+void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared_ptr<EnumeratedParameterType> value_parameter) {
+	static int selected_operation_index = 0;
+	std::string selected_operation_name = value_parameter->operations[selected_operation_index].display_name;
 
-	/*
-	std::vector<ValueType> value_types = {kAverageValue, kMinimumValue};
-	static int selected_value_index = 0;
-	std::string selected_value_name = value_types[selected_value_index].display_name;
-	if (ImGui::Button(selected_value_name.c_str())) {
-		ImGui::OpenPopup("Select value type");
+	ImGui::Text("Select value to calculate:");
+	if (ImGui::Button(selected_operation_name.c_str())) {
+		ImGui::OpenPopup("Select operation");
 	}
-	if (ImGui::BeginPopup("Select value type")) {
-		for (int i = 0; i < value_types.size(); i++) {
-			if (ImGui::Selectable(value_types[i].display_name.c_str())) {
+
+	if (ImGui::BeginPopup("Select operation")) {
+		for (int i = 0; i < value_parameter->operations.size(); i++) {
+			if (ImGui::Selectable(value_parameter->operations[i].display_name.c_str())) {
+				selected_operation_index = i;
+			}
+		}
+		ImGui::EndPopup();
+	}
+
+	static int selected_value_index = 0;
+	std::string selected_value_name = value_parameter->values[selected_value_index].display_name;
+
+	ImGui::Text("Select metric:");
+	if (ImGui::Button(selected_value_name.c_str())) {
+		ImGui::OpenPopup("Select value");
+	}
+
+	if (ImGui::BeginPopup("Select value")) {
+		for (int i = 0; i < value_parameter->values.size(); i++) {
+			if (ImGui::Selectable(value_parameter->values[i].display_name.c_str())) {
 				selected_value_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	ImGui::SameLine();
-
-	static int selected_argument_index = 0;
-	std::string selected_argument_name = value_types[selected_value_index].values[selected_argument_index].first;
-	if (ImGui::Button(selected_argument_name.c_str())) {
-		ImGui::OpenPopup("Select parameter argument");
-	}
-	if (ImGui::BeginPopup("Select parameter argument")) {
-		for (int i = 0; i < value_types[selected_value_index].values.size(); i++) {
-			if (ImGui::Selectable(value_types[selected_value_index].values[i].first.c_str())) {
-				selected_argument_index = i;
-			}
-		}
-		ImGui::EndPopup();
-	}
 
 	if (ImGui::Button("Calculate value")) {
 		QueryParameter value_query;
-			//value_types[selected_value_index].query_format,
-			//value_types[selected_value_index].values[selected_argument_index].second,
-			//value_types[selected_value_index].display_name,
-			//value_types[selected_value_index].values[selected_argument_index].first
-		//);
+		ParameterOperation selected_operation = value_parameter->operations[selected_operation_index];
+		ParameterValue selected_value = value_parameter->values[selected_value_index];
+		std::string query = std::vformat(selected_operation.database_name, std::make_format_args(selected_value.database_name));
+		value_query.SetQuery(query);
+		//value_types[selected_value_index].query_format,
+		//value_types[selected_value_index].values[selected_argument_index].second,
+		//value_types[selected_value_index].display_name,
+		//value_types[selected_value_index].values[selected_argument_index].first
+	//);
 		output_environment.value_parameter = value_query;
 		QuerySubtable(output_environment);
 	}
-
-	if (window_parameters.window_size.x == 0) {
-		window_parameters.window_size.x = ImGui::GetWindowWidth();
-	}
-	if (window_parameters.window_size.y == 0) {
-		window_parameters.window_size.y = ImGui::GetWindowHeight();
-	}
-	*/
 }
 
 void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
