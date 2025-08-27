@@ -422,26 +422,26 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	}
 }
 
-void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared_ptr<EnumeratedParameterType> value_parameter) {
-	static int selected_operation_index = 0;
-	std::string selected_operation_name = value_parameter->operations[selected_operation_index].display_name;
+void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<EnumeratedParameterType>> value_parameters) {
+	static int selected_parameter_index = 0;
+	std::string selected_parameter_name = value_parameters[selected_parameter_index]->display_name;
 
 	ImGui::Text("Select value to calculate:");
-	if (ImGui::Button(selected_operation_name.c_str())) {
+	if (ImGui::Button(selected_parameter_name.c_str())) {
 		ImGui::OpenPopup("Select operation");
 	}
 
 	if (ImGui::BeginPopup("Select operation")) {
-		for (int i = 0; i < value_parameter->operations.size(); i++) {
-			if (ImGui::Selectable(value_parameter->operations[i].display_name.c_str())) {
-				selected_operation_index = i;
+		for (int i = 0; i < value_parameters.size(); i++) {
+			if (ImGui::Selectable(value_parameters[i]->display_name.c_str())) {
+				selected_parameter_index = i;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
 	static int selected_value_index = 0;
-	std::string selected_value_name = value_parameter->values[selected_value_index].display_name;
+	std::string selected_value_name = value_parameters[selected_parameter_index]->values[selected_value_index].display_name;
 
 	ImGui::Text("Select metric:");
 	if (ImGui::Button(selected_value_name.c_str())) {
@@ -449,8 +449,8 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared
 	}
 
 	if (ImGui::BeginPopup("Select value")) {
-		for (int i = 0; i < value_parameter->values.size(); i++) {
-			if (ImGui::Selectable(value_parameter->values[i].display_name.c_str())) {
+		for (int i = 0; i < value_parameters[selected_parameter_index]->values.size(); i++) {
+			if (ImGui::Selectable(value_parameters[selected_parameter_index]->values[i].display_name.c_str())) {
 				selected_value_index = i;
 			}
 		}
@@ -460,9 +460,9 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared
 
 	if (ImGui::Button("Calculate value")) {
 		QueryParameter value_query;
-		ParameterOperation selected_operation = value_parameter->operations[selected_operation_index];
-		ParameterValue selected_value = value_parameter->values[selected_value_index];
-		std::string query = std::vformat(selected_operation.database_name, std::make_format_args(selected_value.database_name));
+		EnumeratedParameterType selected_parameter = *value_parameters[selected_parameter_index].get();
+		ParameterValue selected_value = selected_parameter.values[selected_value_index];
+		std::string query = std::vformat(selected_parameter.database_format, std::make_format_args(selected_value.database_name));
 		value_query.SetQuery(query);
 		//value_types[selected_value_index].query_format,
 		//value_types[selected_value_index].values[selected_argument_index].second,

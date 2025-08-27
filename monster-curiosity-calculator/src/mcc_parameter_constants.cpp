@@ -765,29 +765,29 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
 );
 
 // value calculation enum values
-extern const std::vector<ParameterOperation> kValueOperations = {
-    ParameterOperation("Average",			"avg({0})",		kGreenColor,
+extern const std::vector<ParameterValue> kNumericalCalcValues = {
+    ParameterValue("Health",	"hp",	    kRedColor,        0),
+};
+
+
+extern const std::vector<ParameterOperation> kAvgCalcOperation = {
+    ParameterOperation("Average",			"{0}",		kGreenColor,
         {
             "Target metric"
         }
     )
 };
-
-extern const std::vector<ParameterValue> kValueCalcEnums = {
-    ParameterValue("Health",	"hp",	    kRedColor,        0),
-};
-
-const std::string kValueDisplayName = "Subset value";
-const std::string kValueDatabaseFormat = "{0}";
+const std::string kAvgCalcDisplayName = "Subset Average";
+const std::string kAvgCalcDatabaseFormat = "avg({0})";
 // going for something like "Subset Average Health: 120"
-const std::string kValueDisplayFormat = "Subet {0} {1}: {2}";
+const std::string kAvgCalcDisplayFormat = "Subset Average {0}: {1}";
 // value calculation types
-extern const EnumeratedParameterType kValueCalcParam = EnumeratedParameterType(
-    kValueDisplayName,
-    kValueDisplayFormat,
-    kValueDatabaseFormat,
+extern const EnumeratedParameterType kAvgCalcParam = EnumeratedParameterType(
+    kAvgCalcDisplayName,
+    kAvgCalcDisplayFormat,
+    kAvgCalcDatabaseFormat,
     kRedColor,
-    kValueOperations,
-    kValueCalcEnums
+    kAvgCalcOperation,
+    kNumericalCalcValues
 );
 } //namespace monster_calculator

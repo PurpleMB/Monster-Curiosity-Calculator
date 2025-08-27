@@ -105,7 +105,7 @@ public:
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawValueParameterWindow(output_environment, value_ptr);
+			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types);
 
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
@@ -188,7 +188,7 @@ private:
 	std::shared_ptr<DecimalParameterType> height_ptr = std::make_shared<DecimalParameterType>(kHeightParam);
 	std::shared_ptr<DecimalParameterType> weight_ptr = std::make_shared<DecimalParameterType>(kWeightParam);
 
-	std::shared_ptr<EnumeratedParameterType> value_ptr = std::make_shared<EnumeratedParameterType>(kValueCalcParam);
+	std::shared_ptr<EnumeratedParameterType> avg_value_ptr = std::make_shared<EnumeratedParameterType>(kAvgCalcParam);
 
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		prim_type_ptr,
@@ -264,6 +264,10 @@ private:
 		{"height", height_ptr},
 		{"weight", weight_ptr}
 	});
+
+	std::vector<std::shared_ptr<EnumeratedParameterType>> value_calc_types = {
+		avg_value_ptr
+	};
 
 	std::vector<ColumnStatus> subset_column_statuses = {
 		ColumnStatus(kResNumColInfo, true),

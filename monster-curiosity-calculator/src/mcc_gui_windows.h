@@ -19,7 +19,7 @@ namespace monster_calculator {
 	void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	void DrawSubsetParameterTable(OutputEnvironment& output_environment);
-	void DrawValueParameterWindow(OutputEnvironment& output_environment, std::shared_ptr<EnumeratedParameterType> value_parameter);
+	void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<EnumeratedParameterType>> value_parameters);
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
 	void DrawOutputLogWindow(OutputEnvironment& output_environment);
 
