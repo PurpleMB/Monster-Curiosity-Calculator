@@ -766,7 +766,19 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
 
 // value calculation enum values
 extern const std::vector<ParameterValue> kNumericalCalcValues = {
-    ParameterValue("Health",	"hp",	    kRedColor,        0),
+    ParameterValue("Health",	        "hp",	            kRedColor,          0),
+    ParameterValue("Attack",	        "attack",	        kGreenColor,        0),
+    ParameterValue("Defense",	        "defense",	        kBlueColor,         0),
+    ParameterValue("Special Attack",	"special_attack",	kOrangeColor,       0),
+    ParameterValue("Special Defense",	"special_defense",	kPurpleColor,       0),
+    ParameterValue("Speed",	            "speed",	        kPinkColor,         0),
+    ParameterValue("Stat Total",	    "stat_total",	    kGrayColor,         0),
+    ParameterValue("Base Experience",	"base_experience",	kLinenColor,        0),
+    ParameterValue("Base Happiness",	"base_happiness",	kRaspberryColor,    0),
+    ParameterValue("Catch Rate",	    "catch_rate",	    kBrassColor,        0),
+    ParameterValue("Hatch Cycles",	    "hatch_counter",	kCeladonColor,      0),
+    ParameterValue("Height",	        "height",	        kSaffronColor,      0),
+    ParameterValue("Weight",	        "weight",	        kFuschiaColor,      0)
 };
 
 
@@ -788,6 +800,69 @@ extern const EnumeratedParameterType kAvgCalcParam = EnumeratedParameterType(
     kAvgCalcDatabaseFormat,
     kRedColor,
     kAvgCalcOperation,
+    kNumericalCalcValues
+);
+
+extern const std::vector<ParameterOperation> kMinCalcOperation = {
+    ParameterOperation("Minimum",			"{0}",		kPeriwinkleColor,
+        {
+            "Target metric"
+        }
+    )
+};
+const std::string kMinCalcDisplayName = "Subset Minimum";
+const std::string kMinCalcDatabaseFormat = "min({0})";
+// going for something like "Subset Average Health: 120"
+const std::string kMinCalcDisplayFormat = "Subset Minimum {0}: {1}";
+// value calculation types
+extern const EnumeratedParameterType kMinCalcParam = EnumeratedParameterType(
+    kMinCalcDisplayName,
+    kMinCalcDisplayFormat,
+    kMinCalcDatabaseFormat,
+    kPeriwinkleColor,
+    kMinCalcOperation,
+    kNumericalCalcValues
+);
+
+extern const std::vector<ParameterOperation> kMaxCalcOperation = {
+    ParameterOperation("Maximum",			"{0}",		kSeashellColor,
+        {
+            "Target metric"
+        }
+    )
+};
+const std::string kMaxCalcDisplayName = "Subset Maximum";
+const std::string kMaxCalcDatabaseFormat = "max({0})";
+// going for something like "Subset Average Health: 120"
+const std::string kMaxCalcDisplayFormat = "Subset Maximum {0}: {1}";
+// value calculation types
+extern const EnumeratedParameterType kMaxCalcParam = EnumeratedParameterType(
+    kMaxCalcDisplayName,
+    kMaxCalcDisplayFormat,
+    kMaxCalcDatabaseFormat,
+    kSeashellColor,
+    kMaxCalcOperation,
+    kNumericalCalcValues
+);
+
+extern const std::vector<ParameterOperation> kSumCalcOperation = {
+    ParameterOperation("Sum",			"{0}",		kOrchidColor,
+        {
+            "Target metric"
+        }
+    )
+};
+const std::string kSumCalcDisplayName = "Subset Sum";
+const std::string kSumCalcDatabaseFormat = "sum({0})";
+// going for something like "Subset Average Health: 120"
+const std::string kSumCalcDisplayFormat = "Subset Sum {0}: {1}";
+// value calculation types
+extern const EnumeratedParameterType kSumCalcParam = EnumeratedParameterType(
+    kSumCalcDisplayName,
+    kSumCalcDisplayFormat,
+    kSumCalcDatabaseFormat,
+    kOrchidColor,
+    kSumCalcOperation,
     kNumericalCalcValues
 );
 } //namespace monster_calculator

@@ -90,5 +90,11 @@ extern const std::vector<ParameterValue> kNumericalCalcValues;
 // value calculation types
 extern const std::vector<ParameterOperation> kAvgCalcOperation;
 extern const EnumeratedParameterType kAvgCalcParam;
+extern const std::vector<ParameterOperation> kMinCalcOperation;
+extern const EnumeratedParameterType kMinCalcParam;
+extern const std::vector<ParameterOperation> kMaxCalcOperation;
+extern const EnumeratedParameterType kMaxCalcParam;
+extern const std::vector<ParameterOperation> kSumCalcOperation;
+extern const EnumeratedParameterType kSumCalcParam;
 
 } // namespace monster_calculator

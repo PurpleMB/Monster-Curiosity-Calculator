@@ -188,8 +188,6 @@ private:
 	std::shared_ptr<DecimalParameterType> height_ptr = std::make_shared<DecimalParameterType>(kHeightParam);
 	std::shared_ptr<DecimalParameterType> weight_ptr = std::make_shared<DecimalParameterType>(kWeightParam);
 
-	std::shared_ptr<EnumeratedParameterType> avg_value_ptr = std::make_shared<EnumeratedParameterType>(kAvgCalcParam);
-
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		prim_type_ptr,
 		sec_type_ptr,
@@ -265,8 +263,16 @@ private:
 		{"weight", weight_ptr}
 	});
 
+	std::shared_ptr<EnumeratedParameterType> avg_value_ptr = std::make_shared<EnumeratedParameterType>(kAvgCalcParam);
+	std::shared_ptr<EnumeratedParameterType> min_value_ptr = std::make_shared<EnumeratedParameterType>(kMinCalcParam);
+	std::shared_ptr<EnumeratedParameterType> max_value_ptr = std::make_shared<EnumeratedParameterType>(kMaxCalcParam);
+	std::shared_ptr<EnumeratedParameterType> sum_value_ptr = std::make_shared<EnumeratedParameterType>(kSumCalcParam);
+
 	std::vector<std::shared_ptr<EnumeratedParameterType>> value_calc_types = {
-		avg_value_ptr
+		avg_value_ptr,
+		min_value_ptr,
+		max_value_ptr,
+		sum_value_ptr
 	};
 
 	std::vector<ColumnStatus> subset_column_statuses = {
