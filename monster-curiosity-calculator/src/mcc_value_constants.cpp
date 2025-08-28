@@ -92,7 +92,7 @@ extern const std::vector<ValueOperationArgument> kCountableCalcArguments = {
     kWeightArg
 };
 
-const std::string kAvgCalcDisplayName = "Subset Average";
+const std::string kAvgCalcDisplayName = "Average";
 const std::string kAvgCalcSelectFormat = "avg({0})";
 const std::string kAvgCalcGroupFormat = "";
 const std::string kAvgCalcOrderFormat = "";
@@ -107,7 +107,7 @@ extern const ValueOperation kAvgCalcOperation = ValueOperation(
     kNumericalCalcArguments
 );
 
-const std::string kMinCalcDisplayName = "Subset Minimum";
+const std::string kMinCalcDisplayName = "Minimum";
 const std::string kMinCalcSelectFormat = "min({0})";
 const std::string kMinCalcGroupFormat = "";
 const std::string kMinCalcOrderFormat = "";
@@ -122,7 +122,7 @@ extern const ValueOperation kMinCalcOperation = ValueOperation(
     kNumericalCalcArguments
 );
 
-const std::string kMaxCalcDisplayName = "Subset Maximum";
+const std::string kMaxCalcDisplayName = "Maximum";
 const std::string kMaxCalcSelectFormat = "max({0})";
 const std::string kMaxCalcGroupFormat = "";
 const std::string kMaxCalcOrderFormat = "";
@@ -137,7 +137,7 @@ extern const ValueOperation kMaxCalcOperation = ValueOperation(
     kNumericalCalcArguments
 );
 
-const std::string kSumCalcDisplayName = "Subset Sum";
+const std::string kSumCalcDisplayName = "Sum";
 const std::string kSumCalcSelectFormat = "sum({0})";
 const std::string kSumCalcGroupFormat = "";
 const std::string kSumCalcOrderFormat = "";
@@ -152,7 +152,7 @@ extern const ValueOperation kSumCalcOperation = ValueOperation(
     kNumericalCalcArguments
 );
 
-const std::string kModeCalcDisplayName = "Subset Mode";
+const std::string kModeCalcDisplayName = "Mode";
 const std::string kModeCalcSelectFormat = "{0}";
 const std::string kModeCalcGroupFormat = "{0}";
 const std::string kModeCalcOrderFormat = "COUNT({0}) DESC";

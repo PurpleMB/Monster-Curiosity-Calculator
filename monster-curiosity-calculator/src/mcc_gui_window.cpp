@@ -147,16 +147,10 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
 	static ImU8 parameter_group = 1;
 
-	if (parameter_group < 1) {
-		parameter_group = 1;
-	}
-	if (parameter_group > output_environment.subset_parameters.GetGroupCount()) {
-		parameter_group = output_environment.subset_parameters.GetGroupCount();
-	}
-
 	ImGui::Text("Set Parameter Group: ");
 	ImGui::SameLine();
 	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	parameter_group = std::clamp((int)parameter_group, 1, output_environment.subset_parameters.GetGroupCount());
 
 
 	if (ImGui::Button("Apply Parameter")) {
@@ -426,29 +420,32 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations) {
 	static int selected_operation_index = 0;
 	std::string selected_operation_name = value_operations[selected_operation_index]->display_name;
+	static int selected_arg_index = 0;
+	std::string selected_arg_name = value_operations[selected_operation_index]->arguments[selected_arg_index].display_name;
 
 	ImGui::Text("Select value to calculate:");
-	if (ImGui::Button(selected_operation_name.c_str())) {
+
+	ImGui::Text("Subset ");
+	ImGui::SameLine();
+	if (ImGui::SmallButton(selected_operation_name.c_str())) {
 		ImGui::OpenPopup("Select operation");
 	}
-
 	if (ImGui::BeginPopup("Select operation")) {
 		for (int i = 0; i < value_operations.size(); i++) {
 			if (ImGui::Selectable(value_operations[i]->display_name.c_str())) {
 				selected_operation_index = i;
+				selected_arg_index = 0;
 			}
 		}
 		ImGui::EndPopup();
 	}
 
-	static int selected_arg_index = 0;
-	std::string selected_arg_name = value_operations[selected_operation_index]->arguments[selected_arg_index].display_name;
-
-	ImGui::Text("Select metric:");
-	if (ImGui::Button(selected_arg_name.c_str())) {
+	ImGui::SameLine();
+	ImGui::Text(" of ");
+	ImGui::SameLine();
+	if (ImGui::SmallButton(selected_arg_name.c_str())) {
 		ImGui::OpenPopup("Select value");
 	}
-
 	if (ImGui::BeginPopup("Select value")) {
 		for (int i = 0; i < value_operations[selected_operation_index]->arguments.size(); i++) {
 			if (ImGui::Selectable(value_operations[selected_operation_index]->arguments[i].display_name.c_str())) {
@@ -572,8 +569,8 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
 	static ImU8 subset_page = 0;
 
-	std::vector<std::string> page_size_labels = {"None", "15", "30", "50", "100"};
-	std::vector<int> page_sizes = {10000, 15, 30, 50, 100};
+	std::vector<std::string> page_size_labels = {"15", "30", "50", "100", "None"};
+	std::vector<int> page_sizes = {15, 30, 50, 100, 10000};
 	static int selected_page_size_index = 0;
 	static int page_size = page_sizes[0];
 
@@ -601,10 +598,6 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	if (subset_page > page_count) {
 		subset_page = page_count;
 	}
-
-	static bool table_color_enabled = false;
-	ImGui::Checkbox("Enable table coloring", &table_color_enabled);
-
 
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 16);
