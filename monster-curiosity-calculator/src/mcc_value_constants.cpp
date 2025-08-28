@@ -7,20 +7,89 @@
 namespace monster_calculator {
 
 // value calculation arguments
+const ValueOperationArgument kGenerationArg = ValueOperationArgument("Generation", "generation", kOrchidColor);
+const ValueOperationArgument kFormSwitchArg = ValueOperationArgument("Form Switchable", "form_switchable", kLinenColor);
+const ValueOperationArgument kColorArg = ValueOperationArgument("Color", "color", kPeriwinkleColor);
+const ValueOperationArgument kShapeArg = ValueOperationArgument("Shape", "shape", kGoldenrodColor);
+const ValueOperationArgument kGrowthRateArg = ValueOperationArgument("Growth Rate", "growth_rate", kRubyRedColor);
+const ValueOperationArgument kGenderRateArg = ValueOperationArgument("Gender Rate", "gender_rate", kViridianColor);
+const ValueOperationArgument kDimorphicArg = ValueOperationArgument("Dimorphic", "dimorphic", kSeashellColor);
+const ValueOperationArgument kPrimEggGroupArg = ValueOperationArgument("Primary Egg Group", "primary_egg_group", kBrownColor);
+const ValueOperationArgument kSecEggGroupArg = ValueOperationArgument("Secondary Egg Group", "secondary_egg_group", kVermillionColor);
+const ValueOperationArgument kIsBaseArg = ValueOperationArgument("Is Base Form", "is_default", kRedColor);
+const ValueOperationArgument kIsBabyArg = ValueOperationArgument("Is Baby", "is_baby", kRedColor);
+const ValueOperationArgument kIsLegendArg = ValueOperationArgument("Is Legendary", "is_legendary", kRedColor);
+const ValueOperationArgument kIsMythArg = ValueOperationArgument("Is Mythical", "is_mythical", kRedColor);
+const ValueOperationArgument kPrimTypeArg = ValueOperationArgument("Primary Type", "primary_type", kRedColor);
+const ValueOperationArgument kSecTypeArg = ValueOperationArgument("Secondary Type", "secondary_type", kRedColor);
+const ValueOperationArgument kAbilOneArg = ValueOperationArgument("First Normal Ability", "ability_1", kRedColor);
+const ValueOperationArgument kAbilTwoArg = ValueOperationArgument("Second Normal Ability", "ability_2", kRedColor);
+const ValueOperationArgument kAbilHiddenArg = ValueOperationArgument("Hidden Ability", "hidden_ability", kRedColor);
+
+
+const ValueOperationArgument kHealthArg =       ValueOperationArgument("Health", "hp", kRedColor);
+const ValueOperationArgument kAttackArg =       ValueOperationArgument("Attack", "attack", kGreenColor);
+const ValueOperationArgument kDefenseArg =      ValueOperationArgument("Defense", "defense", kBlueColor);
+const ValueOperationArgument kSpeAtkArg =       ValueOperationArgument("Special Attack", "special_attack", kOrangeColor);
+const ValueOperationArgument kSpeDefArg =       ValueOperationArgument("Special Defense", "special_defense", kPurpleColor);
+const ValueOperationArgument kSpeedArg =        ValueOperationArgument("Speed", "speed", kPinkColor);
+const ValueOperationArgument kStatTotalArg =    ValueOperationArgument("Stat Total", "stat_total", kGrayColor);
+const ValueOperationArgument kBaseExpArg =      ValueOperationArgument("Base Experience", "base_experience", kLinenColor);
+const ValueOperationArgument kBaseHappyArg =    ValueOperationArgument("Base Happiness", "base_happiness", kRaspberryColor);
+const ValueOperationArgument kCatchRateArg =    ValueOperationArgument("Catch Rate", "catch_rate", kBrassColor);
+const ValueOperationArgument kHatchCountArg =   ValueOperationArgument("Hatch Cycles", "hatch_counter", kCeladonColor);
+const ValueOperationArgument kHeightArg =       ValueOperationArgument("Height", "height", kSaffronColor);
+const ValueOperationArgument kWeightArg =       ValueOperationArgument("Weight", "weight", kFuschiaColor);
+
+// argument groups for use by ValueOperations
 extern const std::vector<ValueOperationArgument> kNumericalCalcArguments = {
-    ValueOperationArgument("Health",	        "hp",	            kRedColor),
-    ValueOperationArgument("Attack",	        "attack",	        kGreenColor),
-    ValueOperationArgument("Defense",	        "defense",	        kBlueColor),
-    ValueOperationArgument("Special Attack",	"special_attack",	kOrangeColor),
-    ValueOperationArgument("Special Defense",	"special_defense",	kPurpleColor),
-    ValueOperationArgument("Speed",	            "speed",	        kPinkColor),
-    ValueOperationArgument("Stat Total",	    "stat_total",	    kGrayColor),
-    ValueOperationArgument("Base Experience",	"base_experience",	kLinenColor),
-    ValueOperationArgument("Base Happiness",	"base_happiness",	kRaspberryColor),
-    ValueOperationArgument("Catch Rate",	    "catch_rate",	    kBrassColor),
-    ValueOperationArgument("Hatch Cycles",	    "hatch_counter",	kCeladonColor),
-    ValueOperationArgument("Height",	        "height",	        kSaffronColor),
-    ValueOperationArgument("Weight",	        "weight",	        kFuschiaColor)
+    kHealthArg,
+    kAttackArg,
+    kDefenseArg,
+    kSpeAtkArg,
+    kSpeDefArg,
+    kSpeedArg,
+    kStatTotalArg,
+    kBaseExpArg,
+    kBaseHappyArg,
+    kCatchRateArg,
+    kHatchCountArg,
+    kHeightArg,
+    kWeightArg
+};
+
+extern const std::vector<ValueOperationArgument> kCountableCalcArguments = {
+    kGenerationArg,
+    kFormSwitchArg,
+    kColorArg,
+    kShapeArg,
+    kGrowthRateArg,
+    kGenderRateArg,
+    kDimorphicArg,
+    kPrimEggGroupArg,
+    kSecEggGroupArg,
+    kIsBaseArg,
+    kIsBabyArg,
+    kIsLegendArg,
+    kIsMythArg,
+    kPrimTypeArg,
+    kSecTypeArg,
+    kAbilOneArg,
+    kAbilTwoArg,
+    kAbilHiddenArg,
+    kHealthArg,
+    kAttackArg,
+    kDefenseArg,
+    kSpeAtkArg,
+    kSpeDefArg,
+    kSpeedArg,
+    kStatTotalArg,
+    kBaseExpArg,
+    kBaseHappyArg,
+    kCatchRateArg,
+    kHatchCountArg,
+    kHeightArg,
+    kWeightArg
 };
 
 const std::string kAvgCalcDisplayName = "Subset Average";
@@ -95,7 +164,7 @@ extern const ValueOperation kModeCalcOperation = ValueOperation(
     kModeCalcOrderFormat,
     kModeCalcAliasFormat,
     kPurpleColor,
-    kNumericalCalcArguments
+    kCountableCalcArguments
 );
 
 } // namespace monster_calculator

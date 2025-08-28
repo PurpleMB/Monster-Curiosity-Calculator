@@ -458,8 +458,7 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		ImGui::EndPopup();
 	}
 
-
-	if (ImGui::Button("Calculate value")) {
+	if (ImGui::Button("Add Value Operation")) {
 		ValueOperation selected_operation = *value_operations[selected_operation_index].get();
 		ValueOperationArgument selected_argument = selected_operation.arguments[selected_arg_index];
 
@@ -470,7 +469,60 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		subset_value_query.value_alias = std::vformat(selected_operation.alias_format, std::make_format_args(selected_argument.database_name));
 
 		output_environment.value_queries.push_back(subset_value_query);
+	}
+
+	DrawValueOperationTable(output_environment);
+
+	if (ImGui::Button("Calculate values")) {
 		QuerySubtable(output_environment);
+	}
+}
+
+void DrawValueOperationTable(OutputEnvironment& output_environment) {
+	ImGui::Text("Current subset value operations:");
+
+	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
+	const int kColumnCount = 2;
+	const int kTableFlags =
+		ImGuiTableFlags_Borders |
+		ImGuiTableFlags_SizingFixedFit |
+		ImGuiTableFlags_ScrollY;
+	static int frozen_columns = 0;
+	static int frozen_rows = 1;
+	const float col_width = 50.0f;
+	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
+		// prepare table header
+		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("",
+			ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel |
+			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
+		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
+
+		ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
+		for (int column = 0; column < kColumnCount; column++) {
+			ImGui::TableSetColumnIndex(column);
+			const char* column_name = ImGui::TableGetColumnName(column);
+			ImGui::TableHeader(column_name);
+		}
+
+		// print operations
+		for (int operation_index = 0; operation_index < output_environment.value_queries.size(); operation_index++) {
+			ValueQuery& value_query = output_environment.value_queries[operation_index];
+			ImGui::TableNextRow();
+
+			ImGui::TableSetColumnIndex(0);
+			ImGui::Text(value_query.value_alias.c_str());
+
+			ImGui::TableSetColumnIndex(1);
+			std::string button_id = "##RemoveOperation" + std::to_string(operation_index);
+			ImGui::PushID(button_id.c_str());
+			std::string label = "X";
+			if (ImGui::SmallButton(label.c_str())) {
+				output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
+			}
+			ImGui::PopID();
+		}
+		ImGui::EndTable();
 	}
 }
 

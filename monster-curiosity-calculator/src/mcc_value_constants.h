@@ -7,6 +7,7 @@ namespace monster_calculator {
 
 // value calculation enum values
 extern const std::vector<ValueOperationArgument> kNumericalCalcArguments;
+extern const std::vector<ValueOperationArgument> kCountableCalcArguments;
 
 // value calculation types
 extern const ValueOperation kAvgCalcOperation;
