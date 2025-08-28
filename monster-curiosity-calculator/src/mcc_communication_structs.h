@@ -18,13 +18,13 @@ struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<SubsetEntry> subset_entries;
 	ParameterSet subset_parameters;
-	ValueQuery value_query;
+	std::vector<ValueQuery> value_queries;
 
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
 		subset_parameters = ParameterSet();
-		value_query = ValueQuery();
+		value_queries = {};
 	}
 
 	void ConvertSubsetEntries(ParameterTypeConverter converter) {

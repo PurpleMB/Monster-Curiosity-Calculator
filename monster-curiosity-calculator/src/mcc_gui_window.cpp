@@ -469,7 +469,7 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		subset_value_query.order_statement = std::vformat(selected_operation.order_format, std::make_format_args(selected_argument.database_name));
 		subset_value_query.value_alias = std::vformat(selected_operation.alias_format, std::make_format_args(selected_argument.database_name));
 
-		output_environment.value_query = subset_value_query;
+		output_environment.value_queries.push_back(subset_value_query);
 		QuerySubtable(output_environment);
 	}
 }

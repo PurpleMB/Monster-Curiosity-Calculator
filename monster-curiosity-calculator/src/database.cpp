@@ -385,11 +385,23 @@ int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName
 }
 
 int QuerySubtable(OutputEnvironment& output_environment) {
+	if (output_environment.value_queries.size() == 0) {
+		return 0;
+	}
+
 	const char* database_path = kDbPath.c_str();
 	sqlite3* db;
 	int exit = sqlite3_open(database_path, &db);
 
-	std::string query_statement = "SELECT " + output_environment.value_query.GenerateQueryStatement("submonsters") + " FROM submonsters LIMIT 1";
+	std::string query_statement = "SELECT ";
+	for (int i = 0; i < output_environment.value_queries.size(); i++) {
+		ValueQuery query = output_environment.value_queries[i];
+		query_statement += "\n" + query.GenerateQueryStatement("submonsters");
+		if (i < output_environment.value_queries.size() - 1) {
+			query_statement += ",";
+		}
+	}
+	query_statement += "\nFROM submonsters LIMIT 1";
 	std::cout << query_statement << std::endl;
 	sqlite3_stmt* stmt;
 	exit = sqlite3_prepare_v2(db, query_statement.c_str(), -1, &stmt, NULL);
