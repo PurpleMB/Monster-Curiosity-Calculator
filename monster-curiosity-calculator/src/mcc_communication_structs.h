@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "mcc_parameter_structs.h"
+#include "mcc_value_structs.h"
 #include "mcc_subset_structs.h"
 
 namespace monster_calculator {
@@ -17,14 +18,13 @@ struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<SubsetEntry> subset_entries;
 	ParameterSet subset_parameters;
-	QueryParameter value_parameter;
-	//std::vector<BetterQueryParameter> sorting_parameters;
+	ValueQuery value_query;
 
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
 		subset_parameters = ParameterSet();
-		value_parameter = QueryParameter();
+		value_query = ValueQuery();
 	}
 
 	void ConvertSubsetEntries(ParameterTypeConverter converter) {

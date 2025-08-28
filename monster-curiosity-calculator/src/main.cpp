@@ -12,6 +12,8 @@
 
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
+#include "mcc_value_structs.h"
+#include "mcc_value_constants.h"
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
 
@@ -263,18 +265,18 @@ private:
 		{"weight", weight_ptr}
 	});
 
-	std::shared_ptr<EnumeratedParameterType> avg_value_ptr = std::make_shared<EnumeratedParameterType>(kAvgCalcParam);
-	std::shared_ptr<EnumeratedParameterType> min_value_ptr = std::make_shared<EnumeratedParameterType>(kMinCalcParam);
-	std::shared_ptr<EnumeratedParameterType> max_value_ptr = std::make_shared<EnumeratedParameterType>(kMaxCalcParam);
-	std::shared_ptr<EnumeratedParameterType> sum_value_ptr = std::make_shared<EnumeratedParameterType>(kSumCalcParam);
+	std::shared_ptr<ValueOperation> avg_value_ptr = std::make_shared<ValueOperation>(kAvgCalcOperation);
+	std::shared_ptr<ValueOperation> min_value_ptr = std::make_shared<ValueOperation>(kMinCalcOperation);
+	std::shared_ptr<ValueOperation> max_value_ptr = std::make_shared<ValueOperation>(kMaxCalcOperation);
+	std::shared_ptr<ValueOperation> sum_value_ptr = std::make_shared<ValueOperation>(kSumCalcOperation);
 
-	std::vector<std::shared_ptr<EnumeratedParameterType>> value_calc_types = {
+	std::vector<std::shared_ptr<ValueOperation>> value_calc_types = {
 		avg_value_ptr,
 		min_value_ptr,
 		max_value_ptr,
 		sum_value_ptr
 	};
-
+	
 	std::vector<ColumnStatus> subset_column_statuses = {
 		ColumnStatus(kResNumColInfo, true),
 		ColumnStatus(kNameColInfo, true),
