@@ -13,5 +13,6 @@ extern const ValueOperation kAvgCalcOperation;
 extern const ValueOperation kMinCalcOperation;
 extern const ValueOperation kMaxCalcOperation;
 extern const ValueOperation kSumCalcOperation;
+extern const ValueOperation kModeCalcOperation;
 
 } // namespace monster_calculator

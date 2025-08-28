@@ -6,7 +6,7 @@
 
 namespace monster_calculator {
 
-// value calculation enum values
+// value calculation arguments
 extern const std::vector<ValueOperationArgument> kNumericalCalcArguments = {
     ValueOperationArgument("Health",	        "hp",	            kRedColor),
     ValueOperationArgument("Attack",	        "attack",	        kGreenColor),
@@ -80,6 +80,21 @@ extern const ValueOperation kSumCalcOperation = ValueOperation(
     kSumCalcOrderFormat,
     kSumCalcAliasFormat,
     kYellowColor,
+    kNumericalCalcArguments
+);
+
+const std::string kModeCalcDisplayName = "Subset Mode";
+const std::string kModeCalcSelectFormat = "{0}";
+const std::string kModeCalcGroupFormat = "{0}";
+const std::string kModeCalcOrderFormat = "COUNT({0}) DESC";
+const std::string kModeCalcAliasFormat = "mode_{0}";
+extern const ValueOperation kModeCalcOperation = ValueOperation(
+    kModeCalcDisplayName,
+    kModeCalcSelectFormat,
+    kModeCalcGroupFormat,
+    kModeCalcOrderFormat,
+    kModeCalcAliasFormat,
+    kPurpleColor,
     kNumericalCalcArguments
 );
 

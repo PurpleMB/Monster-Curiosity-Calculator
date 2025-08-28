@@ -269,12 +269,14 @@ private:
 	std::shared_ptr<ValueOperation> min_value_ptr = std::make_shared<ValueOperation>(kMinCalcOperation);
 	std::shared_ptr<ValueOperation> max_value_ptr = std::make_shared<ValueOperation>(kMaxCalcOperation);
 	std::shared_ptr<ValueOperation> sum_value_ptr = std::make_shared<ValueOperation>(kSumCalcOperation);
+	std::shared_ptr<ValueOperation> mode_value_ptr = std::make_shared<ValueOperation>(kModeCalcOperation);
 
 	std::vector<std::shared_ptr<ValueOperation>> value_calc_types = {
 		avg_value_ptr,
 		min_value_ptr,
 		max_value_ptr,
-		sum_value_ptr
+		sum_value_ptr,
+		mode_value_ptr
 	};
 	
 	std::vector<ColumnStatus> subset_column_statuses = {
