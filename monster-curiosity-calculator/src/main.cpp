@@ -16,6 +16,9 @@
 #include "mcc_value_constants.h"
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
+#include "mcc_database_constants.h"
+
+#include "mcc_database_querying.h"
 
 namespace monster_calculator {
 
@@ -54,6 +57,9 @@ public:
 		CreateSubtable(output_environment);
 		SortSubtableEntries(output_environment);
 		output_environment.ConvertSubsetEntries(param_type_converter);
+	
+		OpenDatabaseConnection(output_environment);
+		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaPruned);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here

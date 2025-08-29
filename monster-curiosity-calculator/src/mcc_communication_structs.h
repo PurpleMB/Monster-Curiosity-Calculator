@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <chrono>
+
+#include <sqlite3.h>
 
 #include "mcc_parameter_structs.h"
 #include "mcc_value_structs.h"
@@ -20,11 +23,16 @@ struct OutputEnvironment {
 	ParameterSet subset_parameters;
 	std::vector<ValueQuery> value_queries;
 
+	// EXPERIMENTAL
+	sqlite3* database_connection;
+
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
 		subset_parameters = ParameterSet();
 		value_queries = {};
+
+		database_connection = nullptr;
 	}
 
 	void ConvertSubsetEntries(ParameterTypeConverter converter) {
@@ -48,6 +56,22 @@ struct OutputEnvironment {
 				}
 			}
 		}
+	}
+
+	void LogError(const int event_code, const char* event_msg) {
+		namespace ch = std::chrono;
+		auto curr_time = ch::floor<ch::seconds>(ch::system_clock::now());
+
+		std::string timestamp_text = std::format("{:%T}", curr_time);
+		std::string error_code_text = std::to_string(event_code);
+		std::string error_message_text = event_msg;
+
+		LogEntry error_entry = {timestamp_text, error_code_text, error_message_text};
+		log_entries.push_back(error_entry);
+	}
+
+	void LogSuccess(const char* event_msg) {
+		LogError(0, event_msg);
 	}
 };
 
