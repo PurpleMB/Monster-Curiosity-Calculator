@@ -4,7 +4,8 @@
 #include <json/json.h>
 #include <json/value.h>
 
-#include "mcc_structs.h"
+#include "mcc_parameter_structs.h"
+#include "mcc_communication_structs.h"
 
 namespace monster_calculator {
 // basic database creation
@@ -16,11 +17,12 @@ int InsertDataFromJson(OutputEnvironment& output_environment);
 std::string GenerateJsonDataString(Json::Value mon_info);
 
 // querying primary table
-int CreateSubtable(QueryParameter& query_parameter, OutputEnvironment& output_environment);
+int CreateSubtable(OutputEnvironment& output_environment);
 int SortSubtableEntries(OutputEnvironment& output_environment);
 int SortSubtableCallback(void* not_used, int argc, char** argv, char** azColName);
-std::string GenerateQueryParameterString(QueryParameter& query_parameter);
-std::string GenerateSortingParameterString(QueryParameter& query_parameter);
+std::string GenerateQueryParameterString(ParameterSet& subset_parameters);
+
+int QuerySubtable(OutputEnvironment& output_environment);
 
 // logging/debugging
 int LogEvent(OutputEnvironment& output_environment, const int error_code, const char* error_msg);
