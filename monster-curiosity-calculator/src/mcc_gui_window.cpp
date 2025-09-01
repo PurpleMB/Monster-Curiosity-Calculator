@@ -30,6 +30,12 @@
 #include "mcc_subset_structs.h"
 #include "mcc_communication_structs.h"
 
+#include "mcc_database_constants.h"
+#include "mcc_database_querying.h"
+#include "mcc_json_constants.h"
+#include "mcc_json_processing.h"
+
+
 namespace monster_calculator {
 
 void BeginStyledWindow(WindowParameters& window_parameters) {
@@ -58,8 +64,13 @@ void DrawWelcomeWindow(OutputEnvironment& output_environment) {
 		CreateMainTable(output_environment);
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearMainTable(output_environment);
-		InsertDataFromJson(output_environment);
+		//ClearMainTable(output_environment);
+		//InsertDataFromJson(output_environment);
+		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
+		ClearTableContents(output_environment, "Monsters");
+		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
+		std::vector<std::string> column_names = kMainTableColumnNameList;
+		PopulateTableFromList(output_environment, "Monsters", kMainTableSchemaList, monster_data);
 	}
 }
 

@@ -59,7 +59,6 @@ public:
 		output_environment.ConvertSubsetEntries(param_type_converter);
 	
 		OpenDatabaseConnection(output_environment);
-		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaPruned);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
