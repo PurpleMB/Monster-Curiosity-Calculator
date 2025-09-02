@@ -142,6 +142,10 @@ extern const std::vector<std::string> kMainTableColumnNameList = {
 	"form_url"
 };
 
+extern const std::string kDatabaseFilePath = ".\\data\\mccdata.db";
+extern const std::string kMainTableName = "Monsters";
+extern const std::string kSubTableName = "Submonsters";
+
 extern const TableSchemaList kMainTableSchemaList = TableSchemaList({
 	TableColumnSchema("id", "INTEGER", "PRIMARY KEY"),
 	TableColumnSchema("name", "TEXT", "NOT NULL"),

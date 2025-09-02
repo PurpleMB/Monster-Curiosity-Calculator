@@ -8,34 +8,30 @@
 
 #include "mcc_communication_structs.h"
 #include "mcc_database_structs.h"
+#include "mcc_database_constants.h"
 
 #include "mcc_database_querying.h"
 
 namespace monster_calculator {
-
-static const std::string kDbPath = ".\\data\\mccdata.db";
-static const std::string kJsonPath = ".\\data\\mccdata.json";
-static const std::string kMainTableName = "Monsters";
-static const std::string kSubTableName = "Submonsters";
 
 void OpenDatabaseConnection(OutputEnvironment& output_environment) {
 	std::string log_msg;
 	if (output_environment.database_connection != nullptr) {
 		log_msg = std::vformat(
 			"Previous database connection still open. Aborting attempt to open new connection at {0}",
-			std::make_format_args(kDbPath)
+			std::make_format_args(kDatabaseFilePath)
 		);
 		output_environment.LogError(SQLITE_MISUSE, log_msg.c_str());
 		return;
 	}
 
-	const char* database_path = kDbPath.c_str();
+	const char* database_path = kDatabaseFilePath.c_str();
 	sqlite3* connection;
 	int connection_status = sqlite3_open(database_path, &connection);
 	if (connection_status != SQLITE_OK) {
 		log_msg = std::vformat(
 			"Error establishing connection with database at {0}", 
-			std::make_format_args(kDbPath)
+			std::make_format_args(kDatabaseFilePath)
 		);
 		output_environment.LogError(connection_status, log_msg.c_str());
 		return;
@@ -44,7 +40,7 @@ void OpenDatabaseConnection(OutputEnvironment& output_environment) {
 	output_environment.database_connection = connection;
 	log_msg = std::vformat(
 		"Successfully established connection with database at {0}",
-		std::make_format_args(kDbPath)
+		std::make_format_args(kDatabaseFilePath)
 	);
 	output_environment.LogSuccess(log_msg.c_str());
 }
@@ -53,7 +49,7 @@ void CloseDatabaseConnection(OutputEnvironment& output_environment) {
 	if (output_environment.database_connection == nullptr) {
 		log_msg = std::vformat(
 			"No active database connection is open. Aborting attempt to close database connection at {0}",
-			std::make_format_args(kDbPath)
+			std::make_format_args(kDatabaseFilePath)
 		);
 		output_environment.LogError(SQLITE_MISUSE, log_msg.c_str());
 		return;
@@ -64,7 +60,7 @@ void CloseDatabaseConnection(OutputEnvironment& output_environment) {
 	if (close_status != SQLITE_OK) {
 		log_msg = std::vformat(
 			"Error closing connection with database at {0}",
-			std::make_format_args(kDbPath)
+			std::make_format_args(kDatabaseFilePath)
 		);
 		output_environment.LogError(close_status, log_msg.c_str());
 		return;
@@ -73,7 +69,7 @@ void CloseDatabaseConnection(OutputEnvironment& output_environment) {
 	output_environment.database_connection = nullptr;
 	log_msg = std::vformat(
 		"Successfully closed connection with database at {0}",
-		std::make_format_args(kDbPath)
+		std::make_format_args(kDatabaseFilePath)
 	);
 	output_environment.LogSuccess(log_msg.c_str());
 }
