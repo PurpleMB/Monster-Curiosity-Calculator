@@ -18,7 +18,6 @@ std::vector<std::unordered_map<std::string, std::string>> CompileMonsterJsonData
 	Json::Value monster_values;
 	monster_json_stream >> monster_values;
 	int monster_count = monster_values.size();
-	std::cout << "JSON COUNT" << monster_count << std::endl;
 
 	std::vector<std::unordered_map<std::string, std::string>> json_entries_list = {};
 
@@ -27,7 +26,6 @@ std::vector<std::unordered_map<std::string, std::string>> CompileMonsterJsonData
 		json_entries_list.push_back(UnpackMonsterJsonEntry(monster_entry));
 	}
 
-	std::cout << "MAP SIZE" << json_entries_list.size() << std::endl;
 	return json_entries_list;
 }
 

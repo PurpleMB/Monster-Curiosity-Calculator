@@ -78,7 +78,6 @@ void CreateTableFromSchema(OutputEnvironment& output_environment, std::string ta
 	std::string table_str = "CREATE TABLE IF NOT EXISTS {0} ({1})";
 	std::string table_schema = schema_list.GetTableSchema();
 	table_str = std::vformat(table_str, std::make_format_args(table_name, table_schema));
-	std::cout << table_str;
 	sqlite3_stmt* prepared_stmt;
 	int prepare_status = sqlite3_prepare_v2(
 		output_environment.database_connection,
@@ -180,7 +179,6 @@ void PopulateTableFromList(OutputEnvironment& output_environment, std::string ta
 	}
 
 	int entries_count = table_entries.size();
-	std::cout << entries_count << std::endl;
 	for (int entry_index = 0; entry_index < entries_count; entry_index++) {
 		// bind column values to wildcard list
 		std::unordered_map<std::string, std::string>& entry_data = table_entries[entry_index];
