@@ -145,6 +145,7 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_nam
                     pretty_form_name = form_name["name"]
             pretty_name = f"{pretty_base_name} ({pretty_form_name})"
 
+    pretty_name = pretty_name.replace("%", "%%")
     pretty_name = pretty_name.replace(u"\u2018", "\'")
     pretty_name = pretty_name.replace(u"\u2019", "\'")
     pretty_name = pretty_name.replace(u"\u2640", " (F)")

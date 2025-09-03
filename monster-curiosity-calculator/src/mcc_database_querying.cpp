@@ -78,6 +78,7 @@ void CreateTableFromSchema(OutputEnvironment& output_environment, std::string ta
 	std::string table_str = "CREATE TABLE IF NOT EXISTS {0} ({1})";
 	std::string table_schema = schema_list.GetTableSchema();
 	table_str = std::vformat(table_str, std::make_format_args(table_name, table_schema));
+
 	sqlite3_stmt* prepared_stmt;
 	int prepare_status = sqlite3_prepare_v2(
 		output_environment.database_connection,
@@ -102,6 +103,7 @@ void CreateTableFromSchema(OutputEnvironment& output_environment, std::string ta
 			std::make_format_args(table_name)
 		);
 		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(prepared_stmt);
 		return;
 	}
 
@@ -141,6 +143,7 @@ void ClearTableContents(OutputEnvironment& output_environment, std::string table
 			std::make_format_args(table_name)
 		);
 		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(prepared_stmt);
 		return;
 	}
 
@@ -159,8 +162,8 @@ void PopulateTableFromList(OutputEnvironment& output_environment, std::string ta
 	std::vector<std::string> col_names = schema_list.GetTableColNames();
 	std::string column_name_list = GenerateColumnList(col_names);
 	std::string wildcard_list = GenerateValueWildcardList(col_names.size());
-
 	std::string statement_text = std::vformat(insert_str, std::make_format_args(table_name, column_name_list, wildcard_list));
+
 	sqlite3_stmt* insert_stmt;
 	int prepare_status = sqlite3_prepare_v2(
 		output_environment.database_connection,
@@ -199,7 +202,7 @@ void PopulateTableFromList(OutputEnvironment& output_environment, std::string ta
 					insert_stmt,
 					column_index + 1,
 					std::stod(column_value)
-				);
+                                                                                                                                                                     				);
 			}
 			else {
 				sqlite3_bind_text(
@@ -220,6 +223,7 @@ void PopulateTableFromList(OutputEnvironment& output_environment, std::string ta
 				std::make_format_args(table_name)
 			);
 			output_environment.LogError(step_status, step_msg.c_str());
+			sqlite3_finalize(insert_stmt);
 			return;
 		}
 		sqlite3_reset(insert_stmt);
@@ -265,6 +269,55 @@ void GenerateTableSubset(OutputEnvironment& output_environment) {
 	std::string conditions = "bbbbbbb";
 	subset_stmt = std::vformat(subset_stmt, std::make_format_args(kSubTableName, kMainTableName, conditions));
 	std::cout << subset_stmt << std::endl;
+}
+
+void RetrieveTableEntries(OutputEnvironment& output_environment, std::string table_name) {
+	std::string retrieve_str = "SELECT * FROM {0}";
+	std::string statement_text = std::vformat(retrieve_str, std::make_format_args(table_name));
+
+	sqlite3_stmt* retrieve_stmt;
+	int prepare_status = sqlite3_prepare_v2(
+		output_environment.database_connection,
+		statement_text.c_str(),
+		statement_text.length(),
+		&retrieve_stmt,
+		nullptr
+	);
+	if (prepare_status != SQLITE_OK) {
+		std::string prepare_msg = std::vformat(
+			"Failed to prepare statement for retrieving data from table '{0}'",
+			std::make_format_args(table_name)
+		);
+		output_environment.LogError(prepare_status, prepare_msg.c_str());
+		return;
+	}
+
+	int step_status = 0;
+	while ((step_status = sqlite3_step(retrieve_stmt)) == SQLITE_ROW) {
+		SubsetEntry subset_entry;
+		for (int i = 0; i < sqlite3_column_count(retrieve_stmt); i++) {
+			std::string col_name = sqlite3_column_name(retrieve_stmt, i);
+			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(retrieve_stmt, i)));
+			subset_entry.AddData(col_name, col_val);
+		}
+		output_environment.subset_entries.push_back(subset_entry);
+	}
+	if (step_status != SQLITE_DONE) {
+		std::string step_msg = std::vformat(
+			"Error retrieving data from table '{0}'",
+			std::make_format_args(table_name)
+		);
+		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(retrieve_stmt);
+		return;
+	}
+
+	sqlite3_finalize(retrieve_stmt);
+	std::string success_msg = std::vformat(
+		"Successfully retrieved data from table {0}",
+		std::make_format_args(table_name)
+	);
+	output_environment.LogSuccess(success_msg.c_str());
 }
 
 } // namespace monster_calculator

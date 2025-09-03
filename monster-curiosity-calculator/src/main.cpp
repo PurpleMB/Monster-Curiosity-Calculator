@@ -54,11 +54,12 @@ public:
 		);
 		output_environment.subset_parameters = param_set;
 
-		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
-		output_environment.ConvertSubsetEntries(param_type_converter);
-	
+		//CreateSubtable(output_environment);
+		//SortSubtableEntries(output_environment);
+		
 		OpenDatabaseConnection(output_environment);
+		RetrieveTableEntries(output_environment, kMainTableName);
+		output_environment.ConvertSubsetEntries(param_type_converter);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
