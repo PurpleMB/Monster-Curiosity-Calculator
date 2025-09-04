@@ -22,7 +22,6 @@
 #include <misc/cpp/imgui_stdlib.h>
 
 #include "app.h"
-#include "database.h"
 
 #include "mcc_display_structs.h"
 #include "mcc_parameter_structs.h"
@@ -59,9 +58,7 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 
 void DrawWelcomeWindow(OutputEnvironment& output_environment) {
 	if (ImGui::Button("Build Monster Database")) {
-		CreateDatabase(output_environment);
-		DeleteMainTable(output_environment);
-		CreateMainTable(output_environment);
+
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
 		//ClearMainTable(output_environment);
@@ -486,7 +483,7 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 	DrawValueOperationTable(output_environment);
 
 	if (ImGui::Button("Calculate values")) {
-		QuerySubtable(output_environment);
+		QueryValuesFromTable(output_environment, kSubTableName);
 	}
 }
 

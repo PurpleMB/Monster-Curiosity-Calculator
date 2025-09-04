@@ -82,7 +82,7 @@ public:
 
 		std::string query = "";
 		query += std::vformat("(SELECT {0}", std::make_format_args(select_statement));
-		query += std::vformat(" FROM '{0}'", std::make_format_args(table_name));
+		query += std::vformat(" FROM {0}", std::make_format_args(table_name));
 
 		if (group_statement.size() > 0) {
 			query += std::vformat(" GROUP BY {0}", std::make_format_args(group_statement));

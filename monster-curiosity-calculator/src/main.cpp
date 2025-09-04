@@ -6,7 +6,6 @@
 #include "imgui_impl_win32.h"
 
 #include "app.h"
-#include "database.h"
 
 #include "mcc_gui_windows.h"
 

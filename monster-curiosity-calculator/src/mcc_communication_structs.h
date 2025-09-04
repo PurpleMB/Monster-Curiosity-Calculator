@@ -77,6 +77,18 @@ struct OutputEnvironment {
 	void LogSuccess(const char* event_msg) {
 		LogError(0, event_msg);
 	}
+
+	std::string GenerateValueSetString(std::string table_name) {
+		std::string set_text = "";
+		for (int i = 0; i < value_queries.size(); i++) {
+			ValueQuery query = value_queries[i];
+			set_text += "\n" + query.GenerateQueryStatement(table_name);
+			if (i < value_queries.size() - 1) {
+				set_text += ",";
+			}
+		}
+		return set_text;
+	}
 };
 
 } // namespace monster_calculator

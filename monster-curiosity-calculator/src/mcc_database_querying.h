@@ -23,4 +23,5 @@ std::string GenerateValueWildcardList(int value_count);
 
 void GenerateTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table);
 void RetrieveTableEntries(OutputEnvironment& output_environment, std::string table_name);
+void QueryValuesFromTable(OutputEnvironment& output_environment, std::string table_name);
 } // namespace monster_calculator

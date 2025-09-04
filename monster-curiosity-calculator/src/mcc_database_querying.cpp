@@ -400,4 +400,55 @@ void RetrieveTableEntries(OutputEnvironment& output_environment, std::string tab
 	output_environment.LogSuccess(success_msg.c_str());
 }
 
+void QueryValuesFromTable(OutputEnvironment& output_environment, std::string table_name) {
+	std::string value_query_str = "SELECT {0} FROM {1} LIMIT 1";
+	std::string queries_text = output_environment.GenerateValueSetString(table_name);
+	value_query_str = std::vformat(value_query_str, std::make_format_args(queries_text, table_name));
+	std::cout << value_query_str << std::endl;
+
+	sqlite3_stmt* value_query_stmt;
+	int prepare_status = sqlite3_prepare_v2(
+		output_environment.database_connection,
+		value_query_str.c_str(),
+		value_query_str.length(),
+		&value_query_stmt,
+		nullptr
+	);
+	if (prepare_status != SQLITE_OK) {
+		std::string prepare_msg = std::vformat(
+			"Failed to prepare statement for querying values from table '{0}'",
+			std::make_format_args(table_name)
+		);
+		output_environment.LogError(prepare_status, prepare_msg.c_str());
+		return;
+	}
+
+	int step_status = 0;
+	while (step_status = sqlite3_step(value_query_stmt) == SQLITE_ROW) {
+		for (int i = 0; i < sqlite3_column_count(value_query_stmt); i++) {
+			std::string col_name = sqlite3_column_name(value_query_stmt, i);
+			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(value_query_stmt, i)));
+			std::string log_entry = std::vformat("{0}: {1}", std::make_format_args(col_name, col_val));
+			output_environment.LogSuccess(log_entry.c_str());
+		}
+	}
+	if (step_status != SQLITE_DONE && step_status != SQLITE_OK) {
+		std::string step_msg = std::vformat(
+			"Error querying values from table '{0}'",
+			std::make_format_args(table_name)
+		);
+		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(value_query_stmt);
+		return;
+	}
+
+	std::string success_msg = std::vformat(
+		"Successfully queried values from table '{0}'",
+		std::make_format_args(table_name)
+	);
+	output_environment.LogSuccess(success_msg.c_str());
+	sqlite3_finalize(value_query_stmt);
+	return;
+}
+
 } // namespace monster_calculator

@@ -148,7 +148,6 @@
     <ClCompile Include="lib\imgui\imgui_draw.cpp" />
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\database.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mcc_database_constants.cpp" />
     <ClCompile Include="src\mcc_database_querying.cpp" />
@@ -173,7 +172,6 @@
     <ClInclude Include="lib\imgui\imstb_rectpack.h" />
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\database.h" />
     <ClInclude Include="src\mcc_communication_structs.h" />
     <ClInclude Include="src\mcc_database_constants.h" />
     <ClInclude Include="src\mcc_database_querying.h" />
