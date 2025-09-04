@@ -507,6 +507,55 @@ struct ParameterSet {
 		DisplayColor group_display_color = group_colors[color_index];
 		return group_display_color.GetColorValues();
 	}
+
+	std::string GetGroupQueryString(int group_index) const {
+		if (group_index < 0 || group_index >= parameter_groups.size()) {
+			return "";
+		}
+		if (parameter_groups[group_index].size() == 0) {
+			return "";
+		}
+
+		std::vector<QueryParameter> parameter_group = parameter_groups[group_index];
+		std::string group_query = "(";
+
+		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
+			QueryParameter param = parameter_group[parameter_index];
+			std::string query_statement = param.GetQuery();
+			group_query += "(" + query_statement + ")";
+
+			if (parameter_index < parameter_group.size() - 1) {
+				group_query += " AND ";
+			}
+		}
+
+		group_query += ")";
+		return group_query;
+	}
+
+	std::string GetSetQueryString() const {
+		if (total_parameter_count == 0) {
+			return "( true )";
+		}
+
+		std::string set_query = "";
+		int active_groups = 0;
+
+		for (int group_index = 0; group_index < parameter_groups.size(); group_index++) {
+			if (parameter_groups[group_index].size() == 0) {
+				continue;
+			}
+
+			active_groups++;
+			if (active_groups > 1) {
+				set_query += " OR ";
+			}
+
+			set_query += GetGroupQueryString(group_index);
+		}
+
+		return set_query;
+	}
 };
 
 } // namespace monster_calculator

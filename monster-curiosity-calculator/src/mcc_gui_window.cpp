@@ -177,8 +177,12 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	}
 
 	if (ImGui::Button("Find Matching Monsters")) {
-		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
+		//CreateSubtable(output_environment);
+		//SortSubtableEntries(output_environment);
+		//output_environment.ConvertSubsetEntries(param_converter);
+
+		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
+		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_converter);
 	}
 }

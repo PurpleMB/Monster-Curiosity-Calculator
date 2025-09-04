@@ -58,7 +58,8 @@ public:
 		//SortSubtableEntries(output_environment);
 		
 		OpenDatabaseConnection(output_environment);
-		RetrieveTableEntries(output_environment, kMainTableName);
+		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
+		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_type_converter);
 	}
 

@@ -35,6 +35,10 @@ struct OutputEnvironment {
 		database_connection = nullptr;
 	}
 
+	void ClearSubsetEntries() {
+		subset_entries.clear();
+	}
+
 	void ConvertSubsetEntries(ParameterTypeConverter converter) {
 		for (SubsetEntry& entry : subset_entries) {
 			for (auto subset_map_iter = entry.raw_entry_data.begin(); subset_map_iter != entry.raw_entry_data.end(); subset_map_iter++) {
