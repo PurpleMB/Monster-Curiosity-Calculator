@@ -136,6 +136,17 @@ extern const ValueOperation kSumCalcOperation = ValueOperation(
     kNumericalCalcArguments
 );
 
+const std::string kMedianCalcDisplayName = "Median";
+const std::string kMedianCalcQueryFormat = "SELECT avg({0}) FROM (SELECT {0} FROM {1} ORDER BY {0} LIMIT 2 - (SELECT COUNT({0}) FROM {1}) % 2 OFFSET(SELECT(COUNT({0}) - 1) / 2 FROM {1}))";
+const std::string kMedianCalcAliasFormat = "median_{0}";
+extern const ValueOperation kMedianCalcOperation = ValueOperation(
+    kMedianCalcDisplayName,
+    kMedianCalcQueryFormat,
+    kMedianCalcAliasFormat,
+    kPinkColor,
+    kNumericalCalcArguments
+);
+
 const std::string kModeCalcDisplayName = "Mode";
 const std::string kModeCalcQueryFormat = "SELECT {0} FROM {1} GROUP BY {0} ORDER BY COUNT({0}) DESC";
 const std::string kModeCalcAliasFormat = "mode_{0}";
