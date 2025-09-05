@@ -485,6 +485,22 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 }
 
 void DrawValueOperationTable(OutputEnvironment& output_environment) {
+	static bool operation_color_enabled = false;
+	static bool argument_color_enabled = false;
+	static bool result_color_enabled = false;
+	static std::vector<bool*> column_color_toggles = {&operation_color_enabled, &argument_color_enabled,  &result_color_enabled};
+	static std::vector<std::string> column_toggle_names = {"Operation", "Argument", "Result"};
+	if (ImGui::Button("Column Coloring Toggles")) {
+		ImGui::OpenPopup("column_color_popup");
+	}
+
+	if (ImGui::BeginPopup("column_color_popup")) {
+		for (int i = 0; i < column_color_toggles.size(); i++) {
+			ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+		}
+		ImGui::EndPopup();
+	}
+
 	ImGui::Text("Current subset value operations:");
 
 	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
@@ -519,14 +535,29 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 			ImGui::TableNextRow();
 
 			ImGui::TableSetColumnIndex(0);
+			if (operation_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetOperationDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
 			TableCellDisplayInfo operation_info = value_query.GetOperationDisplayInfo();
 			ImGui::Text(operation_info.GetText().c_str());
 
 			ImGui::TableSetColumnIndex(1);
+			if (argument_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetArgumentDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
 			TableCellDisplayInfo argument_info = value_query.GetArgumentDisplayInfo();
 			ImGui::Text(argument_info.GetText().c_str());
 
 			ImGui::TableSetColumnIndex(2);
+			if (result_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetResultDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
 			TableCellDisplayInfo result_info = value_query.GetResultDisplayInfo();
 			ImGui::Text(result_info.GetText().c_str());
 
