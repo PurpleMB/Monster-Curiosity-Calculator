@@ -293,6 +293,18 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kEggGroupValuesList
 );
 
+const std::string kEitherEggDisplayName = "Either Egg Group";
+const std::string kEitherEggDatabaseFormat = "primary_egg_group {0} OR secondary_egg_group {0}";
+const std::string kEitherEggDisplayFormat = "Either Egg Group: {0}";
+extern const EnumeratedParameterType kEitherEggParam = EnumeratedParameterType(
+    kEitherEggDisplayName,
+    kEitherEggDisplayFormat,
+    kEitherEggDatabaseFormat,
+    kSeashellColor,
+    kTextEnumOperations,
+    kEggGroupValuesList
+);
+
 const std::string kGenerationDisplayName = "Generation";
 const std::string kGenerationDatabaseFormat = "generation {0}";
 const std::string kGenerationDisplayFormat = "Generation: {0}";

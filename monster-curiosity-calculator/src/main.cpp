@@ -172,6 +172,7 @@ private:
 	std::shared_ptr<EnumeratedParameterType> shape_ptr = std::make_shared<EnumeratedParameterType>(kShapeParam);
 	std::shared_ptr<EnumeratedParameterType> prim_egg_ptr = std::make_shared<EnumeratedParameterType>(kPrimaryEggParam);
 	std::shared_ptr<EnumeratedParameterType> sec_egg_ptr = std::make_shared<EnumeratedParameterType>(kSecondaryEggParam);
+	std::shared_ptr<EnumeratedParameterType> either_egg_ptr = std::make_shared<EnumeratedParameterType>(kEitherEggParam);
 	std::shared_ptr<EnumeratedParameterType> generation_ptr = std::make_shared<EnumeratedParameterType>(kGenerationParam);
 	std::shared_ptr<EnumeratedParameterType> growth_rate_ptr = std::make_shared<EnumeratedParameterType>(kGrowthRateParam);
 	std::shared_ptr<SliderEnumeratedParameterType> gender_rate_ptr = std::make_shared<SliderEnumeratedParameterType>(kGenderRateParam);
@@ -210,6 +211,7 @@ private:
 		shape_ptr,
 		prim_egg_ptr,
 		sec_egg_ptr,
+		either_egg_ptr,
 		generation_ptr,
 		growth_rate_ptr,
 		gender_rate_ptr,
