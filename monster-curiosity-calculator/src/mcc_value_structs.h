@@ -159,16 +159,22 @@ private:
 	std::string query_statement;
 	std::string value_alias;
 
+	std::string associated_column_name;
+	std::string raw_result_value;
+
 	TableCellDisplayInfo operation_info;
 	TableCellDisplayInfo argument_info;
+	TableCellDisplayInfo result_info;
 
 public:
 	ValueQuery(ValueOperation operation, ValueOperationArgument argument) {
 		operation_info = TableCellDisplayInfo(operation.GetDisplayName(), operation.GetDisplayColor());
 		argument_info = TableCellDisplayInfo(argument.display_name, argument.argument_color);
+		result_info = TableCellDisplayInfo("NOT CALCULATED", DisplayColor());
 
 		query_statement = operation.GenerateArgumentQuery(argument);
 		value_alias = operation.GenerateArgumentAlias(argument);
+		associated_column_name = argument.database_name;
 	}
 
 	std::string GenerateQueryStatement(std::string table_name) {
@@ -178,12 +184,33 @@ public:
 		return complete_query;
 	}
 
+	std::string GetAssociatedColumnName() const {
+		return associated_column_name;
+	}
+
+	std::string GetRawResultValue() const {
+		return raw_result_value;
+	}
+
 	TableCellDisplayInfo GetOperationDisplayInfo() {
 		return operation_info;
 	}
 
 	TableCellDisplayInfo GetArgumentDisplayInfo() {
 		return argument_info;
+	}
+
+	TableCellDisplayInfo GetResultDisplayInfo() {
+		return result_info;
+	}
+
+	void SetRawResultValue(std::string raw_result_text) {
+		raw_result_value = raw_result_text;
+	}
+
+	void UpdateResultDisplayInfo(std::string result_text, DisplayColor result_color) {
+		result_info.SetText(result_text);
+		result_info.SetColor(result_color);
 	}
 };
 

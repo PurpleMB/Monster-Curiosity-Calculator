@@ -71,6 +71,14 @@ public:
 	DisplayColor GetColor() const {
 		return column_color;
 	}
+
+	void SetText(std::string updated_text) {
+		column_text = updated_text;
+	}
+
+	void SetColor(DisplayColor updated_color) {
+		column_color = updated_color;
+	}
 };
 
 struct WindowParameters {

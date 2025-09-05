@@ -89,6 +89,35 @@ struct OutputEnvironment {
 		}
 		return set_text;
 	}
+
+	void StoreRawValueQueryResult(int value_query_index, std::string query_result) {
+		if (value_query_index < 0 || value_query_index >= value_queries.size()) {
+			return;
+		}
+
+		value_queries[value_query_index].SetRawResultValue(query_result);
+	}
+
+	void ConvertValueQueryResults(ParameterTypeConverter converter) {
+		for (ValueQuery& query : value_queries) {
+			std::string col_name = query.GetAssociatedColumnName();
+			std::string col_val = query.GetRawResultValue();
+			if (converter.ContainsNameType(col_name)) {
+				ParameterType* param_type_ptr = converter.GetParamTypeByName(col_name);
+				ParameterCategory param_cat = converter.GetParamCategoryByName(col_name);
+				if (param_cat == Enumerated || param_cat == EnumeratedSlider) {
+					EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(param_type_ptr);
+					ParameterValue param_value = param_type.RetrieveParamValFromRawName(col_val);
+					query.UpdateResultDisplayInfo(param_value.display_name, param_value.value_color);
+				}
+				else {
+					ParameterValue constructed_param_val = ParameterValue(col_val);
+					param_type_ptr->SetValueColorForType(constructed_param_val);
+					query.UpdateResultDisplayInfo(constructed_param_val.display_name, constructed_param_val.value_color);
+				}
+			}
+		}
+	}
 };
 
 } // namespace monster_calculator

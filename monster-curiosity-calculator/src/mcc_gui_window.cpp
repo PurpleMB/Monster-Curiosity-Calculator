@@ -429,7 +429,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	}
 }
 
-void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations) {
+void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter) {
 	static int selected_operation_index = 0;
 	std::string selected_operation_name = value_operations[selected_operation_index]->GetDisplayName();
 	static int selected_arg_index = 0;
@@ -480,6 +480,7 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 	if (ImGui::Button("Calculate values")) {
 		QueryValuesFromTable(output_environment, kSubTableName);
+		output_environment.ConvertValueQueryResults(param_converter);
 	}
 }
 
@@ -487,7 +488,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 	ImGui::Text("Current subset value operations:");
 
 	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
-	const int kColumnCount = 3;
+	const int kColumnCount = 4;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
@@ -499,6 +500,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 		// prepare table header
 		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("Argument", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Result", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("",
 			ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel |
 			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
@@ -525,6 +527,10 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 			ImGui::Text(argument_info.GetText().c_str());
 
 			ImGui::TableSetColumnIndex(2);
+			TableCellDisplayInfo result_info = value_query.GetResultDisplayInfo();
+			ImGui::Text(result_info.GetText().c_str());
+
+			ImGui::TableSetColumnIndex(3);
 			std::string button_id = "##RemoveOperation" + std::to_string(operation_index);
 			ImGui::PushID(button_id.c_str());
 			std::string label = "X";

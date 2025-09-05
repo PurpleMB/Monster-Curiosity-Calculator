@@ -429,6 +429,7 @@ void QueryValuesFromTable(OutputEnvironment& output_environment, std::string tab
 			std::string col_name = sqlite3_column_name(value_query_stmt, i);
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(value_query_stmt, i)));
 			std::string log_entry = std::vformat("{0}: {1}", std::make_format_args(col_name, col_val));
+			output_environment.StoreRawValueQueryResult(i, col_val);
 			output_environment.LogSuccess(log_entry.c_str());
 		}
 	}

@@ -113,7 +113,7 @@ public:
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types);
+			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types, param_type_converter);
 
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
