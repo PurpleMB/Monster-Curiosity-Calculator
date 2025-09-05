@@ -50235,12 +50235,12 @@
         "abilities": {
             "first": "mycelium-might",
             "second": "-",
-            "hidden": "mycelium-might"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Mycelium Might",
             "second": "None",
-            "hidden": "Mycelium Might"
+            "hidden": "None"
         }
     },
     {
@@ -50288,12 +50288,12 @@
         "abilities": {
             "first": "mycelium-might",
             "second": "-",
-            "hidden": "mycelium-might"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Mycelium Might",
             "second": "None",
-            "hidden": "Mycelium Might"
+            "hidden": "None"
         }
     },
     {
@@ -51030,12 +51030,12 @@
         "abilities": {
             "first": "water-veil",
             "second": "-",
-            "hidden": "water-veil"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Water Veil",
             "second": "None",
-            "hidden": "Water Veil"
+            "hidden": "None"
         }
     },
     {
@@ -51083,12 +51083,12 @@
         "abilities": {
             "first": "zero-to-hero",
             "second": "-",
-            "hidden": "zero-to-hero"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Zero to Hero",
             "second": "None",
-            "hidden": "Zero to Hero"
+            "hidden": "None"
         }
     },
     {
@@ -67884,12 +67884,12 @@
         "abilities": {
             "first": "zero-to-hero",
             "second": "-",
-            "hidden": "zero-to-hero"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Zero to Hero",
             "second": "None",
-            "hidden": "Zero to Hero"
+            "hidden": "None"
         }
     },
     {
@@ -68255,12 +68255,12 @@
         "abilities": {
             "first": "run-away",
             "second": "-",
-            "hidden": "run-away"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Run Away",
             "second": "None",
-            "hidden": "Run Away"
+            "hidden": "None"
         }
     },
     {
@@ -68308,12 +68308,12 @@
         "abilities": {
             "first": "orichalcum-pulse",
             "second": "-",
-            "hidden": "orichalcum-pulse"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Orichalcum Pulse",
             "second": "None",
-            "hidden": "Orichalcum Pulse"
+            "hidden": "None"
         }
     },
     {
@@ -68361,12 +68361,12 @@
         "abilities": {
             "first": "orichalcum-pulse",
             "second": "-",
-            "hidden": "orichalcum-pulse"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Orichalcum Pulse",
             "second": "None",
-            "hidden": "Orichalcum Pulse"
+            "hidden": "None"
         }
     },
     {
@@ -68414,12 +68414,12 @@
         "abilities": {
             "first": "orichalcum-pulse",
             "second": "-",
-            "hidden": "orichalcum-pulse"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Orichalcum Pulse",
             "second": "None",
-            "hidden": "Orichalcum Pulse"
+            "hidden": "None"
         }
     },
     {
@@ -68467,12 +68467,12 @@
         "abilities": {
             "first": "orichalcum-pulse",
             "second": "-",
-            "hidden": "orichalcum-pulse"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Orichalcum Pulse",
             "second": "None",
-            "hidden": "Orichalcum Pulse"
+            "hidden": "None"
         }
     },
     {
@@ -68520,12 +68520,12 @@
         "abilities": {
             "first": "hadron-engine",
             "second": "-",
-            "hidden": "hadron-engine"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Hadron Engine",
             "second": "None",
-            "hidden": "Hadron Engine"
+            "hidden": "None"
         }
     },
     {
@@ -68573,12 +68573,12 @@
         "abilities": {
             "first": "hadron-engine",
             "second": "-",
-            "hidden": "hadron-engine"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Hadron Engine",
             "second": "None",
-            "hidden": "Hadron Engine"
+            "hidden": "None"
         }
     },
     {
@@ -68626,12 +68626,12 @@
         "abilities": {
             "first": "hadron-engine",
             "second": "-",
-            "hidden": "hadron-engine"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Hadron Engine",
             "second": "None",
-            "hidden": "Hadron Engine"
+            "hidden": "None"
         }
     },
     {
@@ -68679,12 +68679,12 @@
         "abilities": {
             "first": "hadron-engine",
             "second": "-",
-            "hidden": "hadron-engine"
+            "hidden": "-"
         },
         "pretty_abilities": {
             "first": "Hadron Engine",
             "second": "None",
-            "hidden": "Hadron Engine"
+            "hidden": "None"
         }
     },
     {

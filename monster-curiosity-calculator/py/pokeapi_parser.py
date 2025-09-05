@@ -244,7 +244,10 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_nam
     pretty_abilities = ["None", "None", "None"]
 
     for ability in poke_info["abilities"]:
-        abilities[ability["slot"]-1] = ability["ability"]["name"]
+        ability_name = ability["ability"]["name"]
+        # API contains erroneous duplicate abilities?
+        if not ability_name in abilities:
+            abilities[ability["slot"]-1] = ability_name
 
     poke_abilities["first"] = abilities[0]
     poke_abilities["second"] = abilities[1]
