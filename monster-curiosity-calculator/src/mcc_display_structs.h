@@ -48,6 +48,39 @@ public:
 	}
 };
 
+struct TableCellDisplayInfo {
+private:
+	std::string column_text;
+	DisplayColor column_color;
+
+public:
+	TableCellDisplayInfo() {
+		column_text = "UNINITIALIZED COLUMN TEXT";
+		column_color = DisplayColor();
+	}
+
+	TableCellDisplayInfo(std::string text, DisplayColor color) {
+		column_text = text;
+		column_color = color;
+	}
+
+	std::string GetText() const {
+		return column_text;
+	}
+
+	DisplayColor GetColor() const {
+		return column_color;
+	}
+
+	void SetText(std::string updated_text) {
+		column_text = updated_text;
+	}
+
+	void SetColor(DisplayColor updated_color) {
+		column_color = updated_color;
+	}
+};
+
 struct WindowParameters {
 	std::string name;
 	ImVec2 window_size;

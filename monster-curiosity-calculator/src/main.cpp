@@ -6,7 +6,6 @@
 #include "imgui_impl_win32.h"
 
 #include "app.h"
-#include "database.h"
 
 #include "mcc_gui_windows.h"
 
@@ -16,6 +15,9 @@
 #include "mcc_value_constants.h"
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
+#include "mcc_database_constants.h"
+
+#include "mcc_database_querying.h"
 
 namespace monster_calculator {
 
@@ -51,8 +53,12 @@ public:
 		);
 		output_environment.subset_parameters = param_set;
 
-		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
+		//CreateSubtable(output_environment);
+		//SortSubtableEntries(output_environment);
+		
+		OpenDatabaseConnection(output_environment);
+		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
+		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_type_converter);
 	}
 
@@ -107,7 +113,7 @@ public:
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
 			monster_calculator::BeginStyledWindow(window_params);
 
-			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types);
+			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types, param_type_converter);
 
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
@@ -166,6 +172,7 @@ private:
 	std::shared_ptr<EnumeratedParameterType> shape_ptr = std::make_shared<EnumeratedParameterType>(kShapeParam);
 	std::shared_ptr<EnumeratedParameterType> prim_egg_ptr = std::make_shared<EnumeratedParameterType>(kPrimaryEggParam);
 	std::shared_ptr<EnumeratedParameterType> sec_egg_ptr = std::make_shared<EnumeratedParameterType>(kSecondaryEggParam);
+	std::shared_ptr<EnumeratedParameterType> either_egg_ptr = std::make_shared<EnumeratedParameterType>(kEitherEggParam);
 	std::shared_ptr<EnumeratedParameterType> generation_ptr = std::make_shared<EnumeratedParameterType>(kGenerationParam);
 	std::shared_ptr<EnumeratedParameterType> growth_rate_ptr = std::make_shared<EnumeratedParameterType>(kGrowthRateParam);
 	std::shared_ptr<SliderEnumeratedParameterType> gender_rate_ptr = std::make_shared<SliderEnumeratedParameterType>(kGenderRateParam);
@@ -204,6 +211,7 @@ private:
 		shape_ptr,
 		prim_egg_ptr,
 		sec_egg_ptr,
+		either_egg_ptr,
 		generation_ptr,
 		growth_rate_ptr,
 		gender_rate_ptr,
@@ -269,6 +277,7 @@ private:
 	std::shared_ptr<ValueOperation> min_value_ptr = std::make_shared<ValueOperation>(kMinCalcOperation);
 	std::shared_ptr<ValueOperation> max_value_ptr = std::make_shared<ValueOperation>(kMaxCalcOperation);
 	std::shared_ptr<ValueOperation> sum_value_ptr = std::make_shared<ValueOperation>(kSumCalcOperation);
+	std::shared_ptr<ValueOperation> median_value_ptr = std::make_shared<ValueOperation>(kMedianCalcOperation);
 	std::shared_ptr<ValueOperation> mode_value_ptr = std::make_shared<ValueOperation>(kModeCalcOperation);
 
 	std::vector<std::shared_ptr<ValueOperation>> value_calc_types = {
@@ -276,6 +285,7 @@ private:
 		min_value_ptr,
 		max_value_ptr,
 		sum_value_ptr,
+		median_value_ptr,
 		mode_value_ptr
 	};
 	

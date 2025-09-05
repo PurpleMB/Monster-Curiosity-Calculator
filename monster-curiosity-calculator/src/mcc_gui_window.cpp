@@ -22,13 +22,18 @@
 #include <misc/cpp/imgui_stdlib.h>
 
 #include "app.h"
-#include "database.h"
 
 #include "mcc_display_structs.h"
 #include "mcc_parameter_structs.h"
 #include "mcc_value_structs.h"
 #include "mcc_subset_structs.h"
 #include "mcc_communication_structs.h"
+
+#include "mcc_database_constants.h"
+#include "mcc_database_querying.h"
+#include "mcc_json_constants.h"
+#include "mcc_json_processing.h"
+
 
 namespace monster_calculator {
 
@@ -53,13 +58,16 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 
 void DrawWelcomeWindow(OutputEnvironment& output_environment) {
 	if (ImGui::Button("Build Monster Database")) {
-		CreateDatabase(output_environment);
-		DeleteMainTable(output_environment);
-		CreateMainTable(output_environment);
+
 	}
 	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		ClearMainTable(output_environment);
-		InsertDataFromJson(output_environment);
+		//ClearMainTable(output_environment);
+		//InsertDataFromJson(output_environment);
+		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
+		ClearTableContents(output_environment, "Monsters");
+		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
+		std::vector<std::string> column_names = kMainTableColumnNameList;
+		PopulateTableFromList(output_environment, "Monsters", kMainTableSchemaList, monster_data);
 	}
 }
 
@@ -91,7 +99,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		ImGui::EndPopup();
 	}
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
-	building_parameter.SetParameterInfo(ParamCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
+	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
@@ -107,7 +115,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		ImGui::EndPopup();
 	}
 	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
-	building_parameter.SetOperationInfo(ParamCellDisplayInfo(selected_operation.display_name, selected_operation.value_color));
+	building_parameter.SetOperationInfo(TableCellDisplayInfo(selected_operation.display_name, selected_operation.value_color));
 
 
 	EnumeratedParameterType enum_param;
@@ -166,8 +174,12 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	}
 
 	if (ImGui::Button("Find Matching Monsters")) {
-		CreateSubtable(output_environment);
-		SortSubtableEntries(output_environment);
+		//CreateSubtable(output_environment);
+		//SortSubtableEntries(output_environment);
+		//output_environment.ConvertSubsetEntries(param_converter);
+
+		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
+		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_converter);
 	}
 }
@@ -187,7 +199,7 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 		ImGui::EndPopup();
 	}
 	ParameterValue selected_value = param_type.values[selected_value_index];
-	building_parameter.SetValueInfo(ParamCellDisplayInfo(selected_value.display_name, selected_value.value_color));
+	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -203,7 +215,7 @@ void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, Para
 	ImGui::SliderInt("", &selected_value_index, 0, options_count - 1, selected_value_name.c_str());
 
 	ParameterValue selected_value = param_type.values[selected_value_index];
-	building_parameter.SetValueInfo(ParamCellDisplayInfo(selected_value.display_name, selected_value.value_color));
+	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -221,7 +233,7 @@ void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
 	ImGui::InputText(input_label.c_str(), &value_text, flags);
 
-	building_parameter.SetValueInfo(ParamCellDisplayInfo(value_text, DisplayColor()));
+	building_parameter.SetValueInfo(TableCellDisplayInfo(value_text, DisplayColor()));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(value_text));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -262,7 +274,7 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
 
-	building_parameter.SetValueInfo(ParamCellDisplayInfo(formatted_display, DisplayColor()));
+	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, DisplayColor()));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
@@ -302,7 +314,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 	}
 
-	building_parameter.SetValueInfo(ParamCellDisplayInfo(formatted_display, DisplayColor()));
+	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, DisplayColor()));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
@@ -377,7 +389,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(group_name.c_str());
 
 				ImGui::TableSetColumnIndex(1);
-				ParamCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
+				TableCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
 				if (parameter_color_enabled) {
 					ImVec4 param_cell_color = parameter_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
@@ -386,7 +398,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(parameter_column_info.GetText().c_str());
 
 				ImGui::TableSetColumnIndex(2);
-				ParamCellDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
+				TableCellDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
 				if (operation_color_enabled) {
 					ImVec4 param_cell_color = operation_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
@@ -395,7 +407,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::Text(operation_column_info.GetText().c_str());
 
 				ImGui::TableSetColumnIndex(3);
-				ParamCellDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
+				TableCellDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
 				if (value_color_enabled) {
 					ImVec4 param_cell_color = value_column_info.GetColor().GetColorValues();
 					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
@@ -417,11 +429,11 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	}
 }
 
-void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations) {
+void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter) {
 	static int selected_operation_index = 0;
-	std::string selected_operation_name = value_operations[selected_operation_index]->display_name;
+	std::string selected_operation_name = value_operations[selected_operation_index]->GetDisplayName();
 	static int selected_arg_index = 0;
-	std::string selected_arg_name = value_operations[selected_operation_index]->arguments[selected_arg_index].display_name;
+	std::string selected_arg_name = value_operations[selected_operation_index]->GetArgumentList()[selected_arg_index].display_name;
 
 	ImGui::Text("Select value to calculate:");
 
@@ -432,7 +444,7 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 	}
 	if (ImGui::BeginPopup("Select operation")) {
 		for (int i = 0; i < value_operations.size(); i++) {
-			if (ImGui::Selectable(value_operations[i]->display_name.c_str())) {
+			if (ImGui::Selectable(value_operations[i]->GetDisplayName().c_str())) {
 				selected_operation_index = i;
 				selected_arg_index = 0;
 			}
@@ -447,8 +459,8 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		ImGui::OpenPopup("Select value");
 	}
 	if (ImGui::BeginPopup("Select value")) {
-		for (int i = 0; i < value_operations[selected_operation_index]->arguments.size(); i++) {
-			if (ImGui::Selectable(value_operations[selected_operation_index]->arguments[i].display_name.c_str())) {
+		for (int i = 0; i < value_operations[selected_operation_index]->GetArgumentList().size(); i++) {
+			if (ImGui::Selectable(value_operations[selected_operation_index]->GetArgumentList()[i].display_name.c_str())) {
 				selected_arg_index = i;
 			}
 		}
@@ -457,13 +469,9 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 	if (ImGui::Button("Add Value Operation")) {
 		ValueOperation selected_operation = *value_operations[selected_operation_index].get();
-		ValueOperationArgument selected_argument = selected_operation.arguments[selected_arg_index];
+		ValueOperationArgument selected_argument = selected_operation.GetArgumentList()[selected_arg_index];
 
-		ValueQuery subset_value_query = ValueQuery();
-		subset_value_query.select_statement = std::vformat(selected_operation.select_format, std::make_format_args(selected_argument.database_name));
-		subset_value_query.group_statement = std::vformat(selected_operation.group_format, std::make_format_args(selected_argument.database_name));
-		subset_value_query.order_statement = std::vformat(selected_operation.order_format, std::make_format_args(selected_argument.database_name));
-		subset_value_query.value_alias = std::vformat(selected_operation.alias_format, std::make_format_args(selected_argument.database_name));
+		ValueQuery subset_value_query = ValueQuery(selected_operation, selected_argument);
 
 		output_environment.value_queries.push_back(subset_value_query);
 	}
@@ -471,15 +479,32 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 	DrawValueOperationTable(output_environment);
 
 	if (ImGui::Button("Calculate values")) {
-		QuerySubtable(output_environment);
+		QueryValuesFromTable(output_environment, kSubTableName);
+		output_environment.ConvertValueQueryResults(param_converter);
 	}
 }
 
 void DrawValueOperationTable(OutputEnvironment& output_environment) {
+	static bool operation_color_enabled = false;
+	static bool argument_color_enabled = false;
+	static bool result_color_enabled = false;
+	static std::vector<bool*> column_color_toggles = {&operation_color_enabled, &argument_color_enabled,  &result_color_enabled};
+	static std::vector<std::string> column_toggle_names = {"Operation", "Argument", "Result"};
+	if (ImGui::Button("Column Coloring Toggles")) {
+		ImGui::OpenPopup("column_color_popup");
+	}
+
+	if (ImGui::BeginPopup("column_color_popup")) {
+		for (int i = 0; i < column_color_toggles.size(); i++) {
+			ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+		}
+		ImGui::EndPopup();
+	}
+
 	ImGui::Text("Current subset value operations:");
 
 	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
-	const int kColumnCount = 2;
+	const int kColumnCount = 4;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
@@ -490,6 +515,8 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
 		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Argument", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Result", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("",
 			ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoHeaderLabel |
 			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
@@ -508,9 +535,33 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 			ImGui::TableNextRow();
 
 			ImGui::TableSetColumnIndex(0);
-			ImGui::Text(value_query.value_alias.c_str());
+			if (operation_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetOperationDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
+			TableCellDisplayInfo operation_info = value_query.GetOperationDisplayInfo();
+			ImGui::Text(operation_info.GetText().c_str());
 
 			ImGui::TableSetColumnIndex(1);
+			if (argument_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetArgumentDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
+			TableCellDisplayInfo argument_info = value_query.GetArgumentDisplayInfo();
+			ImGui::Text(argument_info.GetText().c_str());
+
+			ImGui::TableSetColumnIndex(2);
+			if (result_color_enabled) {
+				ImVec4 group_cell_color = value_query.GetResultDisplayInfo().GetColor().GetColorValues();
+				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+			}
+			TableCellDisplayInfo result_info = value_query.GetResultDisplayInfo();
+			ImGui::Text(result_info.GetText().c_str());
+
+			ImGui::TableSetColumnIndex(3);
 			std::string button_id = "##RemoveOperation" + std::to_string(operation_index);
 			ImGui::PushID(button_id.c_str());
 			std::string label = "X";

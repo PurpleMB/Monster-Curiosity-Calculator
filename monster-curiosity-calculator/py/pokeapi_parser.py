@@ -43,6 +43,38 @@ async def get_ability_info(session, ability_entry, ability_map):
 
     ability_map[raw_name] = pretty_name
 
+def get_generation_urls():
+    generation_url = f"{base_url}/generation?limit=20&offset=0"
+    api_response = requests.get(generation_url)
+
+    if api_response.status_code != 200:
+        print(f"API Request for generation info failed. Error code {api_response.status_code}")
+        return None
+
+    generation_data = api_response.json()
+    return generation_data
+
+async def gather_generation_data(session, generation_data):
+    tasks = []
+    generation_map = {}
+    for generation_entry in generation_data["results"]:
+        task = asyncio.create_task(get_version_group_info(session, generation_entry, generation_map))
+        tasks.append(task)
+
+    await asyncio.gather(*tasks)
+    return generation_map
+
+async def get_version_group_info(session, generation_entry, generation_map):
+    generation_url = generation_entry["url"]
+    async with session.get(generation_url) as generation_response:
+        if generation_response.status != 200:
+            print(f"API Request for {generation_entry["name"]} failed. Error code {generation_response.status_code}")
+            return None
+        generation_data = await generation_response.json()
+
+    for version_group in generation_data["version_groups"]:
+        generation_map[version_group["name"]] = generation_data["name"]
+
 # This function gathers the links for information on all pokemon.
 # It does not query those links, but merely gathers them all in an array.
 def gather_species_data():
@@ -61,10 +93,10 @@ def gather_species_data():
 # gathering all request results.
 # The return of this function is a fully pruned dictionary of information.
 
-async def gather_pokemon_data(session, species_data, ability_name_map):
+async def gather_pokemon_data(session, species_data, ability_name_map, generation_map):
     tasks = []
     for dex_entry in species_data["results"]:
-        task = asyncio.create_task(get_pokemon_info(session, dex_entry, ability_name_map))
+        task = asyncio.create_task(get_pokemon_info(session, dex_entry, ability_name_map, generation_map))
         tasks.append(task)
 
     pokedex_data = await asyncio.gather(*tasks)
@@ -74,7 +106,7 @@ async def gather_pokemon_data(session, species_data, ability_name_map):
 # It generates async requests for info about the pokemon, its overall species,
 # and its form before passing all of that data to a pruning function.
 # The return of this function is a dictionary of prepared info for one pokemon.
-async def get_pokemon_info(session, dex_entry, ability_name_map):
+async def get_pokemon_info(session, dex_entry, ability_name_map, generation_map):
     poke_url = dex_entry["url"]
     async with session.get(poke_url) as poke_response:
         if poke_response.status != 200:
@@ -102,20 +134,22 @@ async def get_pokemon_info(session, dex_entry, ability_name_map):
         "form": form_url
     }
 
-    pruned_species_data = prune_pokemon_info(species_data, poke_data, form_data, url_data, ability_name_map)
+    pruned_species_data = prune_pokemon_info(species_data, poke_data, form_data, url_data, ability_name_map, generation_map)
     return pruned_species_data
         
 # This helper function is responsible for taking in the raw data of a
 # pokemon, its form, and its species and then re-organizing and pruning that
 # data to be convenient for later parsing into an SQL database.
-def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_name_map):
+def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_name_map, generation_map):
     pruned_info = {}
 
 
     # basic identification info
     pruned_info["name"] = poke_info["name"]
     pruned_info["dex_number"] = species_info["id"]
-    pruned_info["generation"] = species_info["generation"]["name"]
+    #pruned_info["generation"] = species_info["generation"]["name"]
+    version_group = form_info["version_group"]["name"]
+    pruned_info["generation"] = generation_map[version_group]
     pruned_info["unique_id"] = poke_info["id"]
     pruned_info["form_switchable"] = 1 if species_info["forms_switchable"] else 0
     pruned_info["color"] = species_info["color"]["name"]
@@ -210,7 +244,10 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_nam
     pretty_abilities = ["None", "None", "None"]
 
     for ability in poke_info["abilities"]:
-        abilities[ability["slot"]-1] = ability["ability"]["name"]
+        ability_name = ability["ability"]["name"]
+        # API contains erroneous duplicate abilities?
+        if not ability_name in abilities:
+            abilities[ability["slot"]-1] = ability_name
 
     poke_abilities["first"] = abilities[0]
     poke_abilities["second"] = abilities[1]
@@ -234,15 +271,23 @@ async def main():
     async with aiohttp.ClientSession() as session:
         ability_name_map = await gather_ability_data(session, ability_data)
 
-    filename = "./abilities.json"
+    filename = "../data/abilities.json"
     with open(filename, "w") as file:
         json.dump(ability_name_map, file, indent = 4)
 
+    generation_data = get_generation_urls()
+    async with aiohttp.ClientSession() as session:
+        generation_map = await gather_generation_data(session, generation_data)
+
+    filename = "../data/generations.json"
+    with open(filename, "w") as file:
+        json.dump(generation_map, file, indent = 4)
+
     species_data = gather_species_data()
     async with aiohttp.ClientSession() as session:
-        pokemon_data = await gather_pokemon_data(session, species_data, ability_name_map)
+        pokemon_data = await gather_pokemon_data(session, species_data, ability_name_map, generation_map)
 
-    filename = "./mccdata.json"
+    filename = "../data/mccdata.json"
     with open(filename, "w") as file:
         json.dump(pokemon_data, file, indent = 4)
 

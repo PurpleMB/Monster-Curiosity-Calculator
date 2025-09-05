@@ -31,6 +31,7 @@ extern const EnumeratedParameterType kColorParam;
 extern const EnumeratedParameterType kShapeParam;
 extern const EnumeratedParameterType kPrimaryEggParam;
 extern const EnumeratedParameterType kSecondaryEggParam;
+extern const EnumeratedParameterType kEitherEggParam;
 extern const EnumeratedParameterType kGenerationParam;
 extern const EnumeratedParameterType kGrowthRateParam;
 
