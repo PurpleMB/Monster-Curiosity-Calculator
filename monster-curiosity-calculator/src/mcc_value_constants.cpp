@@ -93,75 +93,55 @@ extern const std::vector<ValueOperationArgument> kCountableCalcArguments = {
 };
 
 const std::string kAvgCalcDisplayName = "Average";
-const std::string kAvgCalcSelectFormat = "avg({0})";
-const std::string kAvgCalcGroupFormat = "";
-const std::string kAvgCalcOrderFormat = "";
+const std::string kAvgCalcQueryFormat = "SELECT avg({0}) FROM {1}";
 const std::string kAvgCalcAliasFormat = "avg_{0}";
 extern const ValueOperation kAvgCalcOperation = ValueOperation(
     kAvgCalcDisplayName,
-    kAvgCalcSelectFormat,
-    kAvgCalcGroupFormat,
-    kAvgCalcOrderFormat,
+    kAvgCalcQueryFormat,
     kAvgCalcAliasFormat,
     kRedColor,
     kNumericalCalcArguments
 );
 
 const std::string kMinCalcDisplayName = "Minimum";
-const std::string kMinCalcSelectFormat = "min({0})";
-const std::string kMinCalcGroupFormat = "";
-const std::string kMinCalcOrderFormat = "";
+const std::string kMinCalcQueryFormat = "SELECT min({0}) FROM {1}";
 const std::string kMinCalcAliasFormat = "min_{0}";
 extern const ValueOperation kMinCalcOperation = ValueOperation(
     kMinCalcDisplayName,
-    kMinCalcSelectFormat,
-    kMinCalcGroupFormat,
-    kMinCalcOrderFormat,
+    kMinCalcQueryFormat,
     kMinCalcAliasFormat,
     kGreenColor,
     kNumericalCalcArguments
 );
 
 const std::string kMaxCalcDisplayName = "Maximum";
-const std::string kMaxCalcSelectFormat = "max({0})";
-const std::string kMaxCalcGroupFormat = "";
-const std::string kMaxCalcOrderFormat = "";
+const std::string kMaxCalcQueryFormat = "SELECT max({0}) FROM {1}";
 const std::string kMaxCalcAliasFormat = "max_{0}";
 extern const ValueOperation kMaxCalcOperation = ValueOperation(
     kMaxCalcDisplayName,
-    kMaxCalcSelectFormat,
-    kMaxCalcGroupFormat,
-    kMaxCalcOrderFormat,
+    kMaxCalcQueryFormat,
     kMaxCalcAliasFormat,
     kBlueColor,
     kNumericalCalcArguments
 );
 
 const std::string kSumCalcDisplayName = "Sum";
-const std::string kSumCalcSelectFormat = "sum({0})";
-const std::string kSumCalcGroupFormat = "";
-const std::string kSumCalcOrderFormat = "";
+const std::string kSumCalcQueryFormat = "SELECT sum({0}) FROM {1}";
 const std::string kSumCalcAliasFormat = "sum_{0}";
 extern const ValueOperation kSumCalcOperation = ValueOperation(
     kSumCalcDisplayName,
-    kSumCalcSelectFormat,
-    kSumCalcGroupFormat,
-    kSumCalcOrderFormat,
+    kSumCalcQueryFormat,
     kSumCalcAliasFormat,
     kYellowColor,
     kNumericalCalcArguments
 );
 
 const std::string kModeCalcDisplayName = "Mode";
-const std::string kModeCalcSelectFormat = "{0}";
-const std::string kModeCalcGroupFormat = "{0}";
-const std::string kModeCalcOrderFormat = "COUNT({0}) DESC";
+const std::string kModeCalcQueryFormat = "SELECT {0} FROM {1} GROUP BY {0} ORDER BY COUNT({0}) DESC";
 const std::string kModeCalcAliasFormat = "mode_{0}";
 extern const ValueOperation kModeCalcOperation = ValueOperation(
     kModeCalcDisplayName,
-    kModeCalcSelectFormat,
-    kModeCalcGroupFormat,
-    kModeCalcOrderFormat,
+    kModeCalcQueryFormat,
     kModeCalcAliasFormat,
     kPurpleColor,
     kCountableCalcArguments

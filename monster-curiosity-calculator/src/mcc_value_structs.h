@@ -26,7 +26,7 @@ struct ValueOperationArgument {
 	}
 };
 
-struct ValueOperation {
+struct ValueOperation_Defunct {
 	std::string display_name;
 	std::string select_format;
 	std::string group_format;
@@ -35,7 +35,7 @@ struct ValueOperation {
 	DisplayColor operation_color;
 	std::vector<ValueOperationArgument> arguments;
 
-	ValueOperation() {
+	ValueOperation_Defunct() {
 		display_name = "";
 		select_format = "";
 		group_format = "";
@@ -45,7 +45,7 @@ struct ValueOperation {
 		arguments = { ValueOperationArgument() };
 	}
 
-	ValueOperation(std::string dis_name, std::string select_f, std::string group_f, std::string order_f,
+	ValueOperation_Defunct(std::string dis_name, std::string select_f, std::string group_f, std::string order_f,
 		std::string alias_f, DisplayColor color, std::vector<ValueOperationArgument> args) {
 		display_name = dis_name;
 		select_format = select_f;
@@ -57,7 +57,64 @@ struct ValueOperation {
 	}
 };
 
-struct ValueQuery {
+struct ValueOperation {
+private:
+	std::string display_name;
+	DisplayColor display_color;
+
+	// this string is expected to be ready for a vformat call with 2 args, the first representing a column name, and the second being the table name
+	// the GenerateArgumentQuery function fills in the column name slots, replacing the table name slots with {0} so that they may be filled later
+	std::string query_format;
+	std::string alias_format;
+
+	std::vector<ValueOperationArgument> arguments;
+
+public:
+
+	ValueOperation() {
+		display_name = "";
+		query_format = "";
+		display_color = kFuschiaColor;
+		arguments = {ValueOperationArgument()};
+	}
+
+	ValueOperation(std::string name, std::string query, std::string alias, DisplayColor color, std::vector<ValueOperationArgument> args) {
+		display_name = name;
+		query_format = query;
+		alias_format = alias;
+		display_color = color;
+		arguments = args;
+	}
+
+	std::string GetDisplayName() {
+		return display_name;
+	}
+
+	DisplayColor GetDisplayColor() {
+		return display_color;
+	}
+
+	std::vector<ValueOperationArgument> GetArgumentList() {
+		return arguments;
+	}
+
+	std::string GenerateArgumentQuery(ValueOperationArgument argument) {
+		std::string arg_query_format = query_format;
+		std::string arg_db_name = argument.database_name;
+		// we change all {1} to {0} so that the target table name can be formatted in later
+		arg_query_format = std::vformat(arg_query_format, std::make_format_args(arg_db_name, "{0}"));
+		return arg_query_format;
+	}
+
+	std::string GenerateArgumentAlias(ValueOperationArgument argument) {
+		std::string alias = alias_format;
+		std::string arg_db_name = argument.database_name;
+		alias = std::vformat(alias, std::make_format_args(arg_db_name));
+		return alias;
+	}
+};
+
+struct ValueQuery_Defunct {
 private:
 	//const std::string subquery_format = "(SELECT {0} FROM {1} GROUP BY {2} ORDER BY {3}) as {4}";
 	
@@ -68,7 +125,7 @@ public:
 	std::string value_alias;
 
 
-	ValueQuery() {
+	ValueQuery_Defunct() {
 		select_statement = "";
 		group_statement = "";
 		order_statement = "";
@@ -94,6 +151,39 @@ public:
 		query += std::vformat(") AS {0}", std::make_format_args(value_alias));
 
 		return query;
+	}
+};
+
+struct ValueQuery {
+private:
+	std::string query_statement;
+	std::string value_alias;
+
+	TableCellDisplayInfo operation_info;
+	TableCellDisplayInfo argument_info;
+
+public:
+	ValueQuery(ValueOperation operation, ValueOperationArgument argument) {
+		operation_info = TableCellDisplayInfo(operation.GetDisplayName(), operation.GetDisplayColor());
+		argument_info = TableCellDisplayInfo(argument.display_name, argument.argument_color);
+
+		query_statement = operation.GenerateArgumentQuery(argument);
+		value_alias = operation.GenerateArgumentAlias(argument);
+	}
+
+	std::string GenerateQueryStatement(std::string table_name) {
+		std::string complete_query = "(" + query_statement;
+		complete_query = std::vformat(complete_query, std::make_format_args(table_name));
+		complete_query += ") AS " + value_alias;
+		return complete_query;
+	}
+
+	TableCellDisplayInfo GetOperationDisplayInfo() {
+		return operation_info;
+	}
+
+	TableCellDisplayInfo GetArgumentDisplayInfo() {
+		return argument_info;
 	}
 };
 
