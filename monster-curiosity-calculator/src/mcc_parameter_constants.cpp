@@ -90,15 +90,15 @@ extern const std::vector<ParameterValue> kEggGroupValuesList = {
 };
 
 extern const std::vector<ParameterValue> kGenerationValuesList = {
-    ParameterValue("I",      "generation-i",        kRedColor,           0),
-    ParameterValue("II",     "generation-ii",       kSeashellColor,      1),
-    ParameterValue("III",    "generation-iii",      kRubyRedColor,       2),
-    ParameterValue("IV",     "generation-iv",       kPinkColor,          3),
-    ParameterValue("V",      "generation-v",        kGrayColor,          4),
-    ParameterValue("VI",     "generation-vi",       kVermillionColor,    5),
-    ParameterValue("VII",    "generation-vii",      kPurpleColor,        6),
-    ParameterValue("VIII",   "generation-viii",     kBrassColor,         7),
-    ParameterValue("IX",     "generation-ix",       kIndigoColor,        8)
+    ParameterValue("Gen. I",      "generation-i",        kRedColor,           0),
+    ParameterValue("Gen. II",     "generation-ii",       kSeashellColor,      1),
+    ParameterValue("Gen. III",    "generation-iii",      kRubyRedColor,       2),
+    ParameterValue("Gen. IV",     "generation-iv",       kPinkColor,          3),
+    ParameterValue("Gen. V",      "generation-v",        kGrayColor,          4),
+    ParameterValue("Gen. VI",     "generation-vi",       kVermillionColor,    5),
+    ParameterValue("Gen. VII",    "generation-vii",      kPurpleColor,        6),
+    ParameterValue("Gen. VIII",   "generation-viii",     kBrassColor,         7),
+    ParameterValue("Gen. IX",     "generation-ix",       kIndigoColor,        8)
 };
 
 extern const std::vector<ParameterValue> kGrowthRateValuesList = {
@@ -319,16 +319,16 @@ extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
 
 // enumerated slider parameter values and operations
 extern const std::vector<ParameterValue> kGenderRateValuesList = {
-    ParameterValue("Gender Unknown",	"-1",	kPearlColor,        0),
-    ParameterValue("100% Male",	        "0",	kPeriwinkleColor,   1),
-    ParameterValue("87.5% Male",	    "1",	kPeriwinkleColor,   2),
-    ParameterValue("75% Male ",	        "2",	kPeriwinkleColor,   3),
-    ParameterValue("62.5% Male Male",	"3",	kPeriwinkleColor,   4),
-    ParameterValue("50/50",	            "4",	kOrchidColor,       5),
-    ParameterValue("62.5% Female",	    "5",	kPinkColor,         6),
-    ParameterValue("75% Female",	    "6",	kPinkColor,         7),
-    ParameterValue("87.5% Female",	    "7",	kPinkColor,         8),
-    ParameterValue("100% Female",	    "8",	kPinkColor,         9)
+    ParameterValue("Gender Unknown",	    "-1",	kPearlColor,        0),
+    ParameterValue("100%% Male",	        "0",	kPeriwinkleColor,   1),
+    ParameterValue("87.5%% Male",	        "1",	kPeriwinkleColor,   2),
+    ParameterValue("75%% Male ",	        "2",	kPeriwinkleColor,   3),
+    ParameterValue("62.5%% Male Male",	    "3",	kPeriwinkleColor,   4),
+    ParameterValue("50%% Male & Female",	"4",	kOrchidColor,       5),
+    ParameterValue("62.5%% Female",	        "5",	kPinkColor,         6),
+    ParameterValue("75%% Female",	        "6",	kPinkColor,         7),
+    ParameterValue("87.5%% Female",	        "7",	kPinkColor,         8),
+    ParameterValue("100%% Female",	        "8",	kPinkColor,         9)
 };
 
 extern const std::vector<ParameterOperation> kSliderEnumOperations = {
