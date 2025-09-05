@@ -56023,7 +56023,7 @@
     {
         "name": "venusaur-mega",
         "dex_number": 3,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10033,
         "form_switchable": 1,
         "color": "green",
@@ -56076,7 +56076,7 @@
     {
         "name": "charizard-mega-x",
         "dex_number": 6,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10034,
         "form_switchable": 1,
         "color": "red",
@@ -56129,7 +56129,7 @@
     {
         "name": "charizard-mega-y",
         "dex_number": 6,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10035,
         "form_switchable": 1,
         "color": "red",
@@ -56182,7 +56182,7 @@
     {
         "name": "blastoise-mega",
         "dex_number": 9,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10036,
         "form_switchable": 1,
         "color": "blue",
@@ -56235,7 +56235,7 @@
     {
         "name": "alakazam-mega",
         "dex_number": 65,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10037,
         "form_switchable": 1,
         "color": "brown",
@@ -56288,7 +56288,7 @@
     {
         "name": "gengar-mega",
         "dex_number": 94,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10038,
         "form_switchable": 1,
         "color": "purple",
@@ -56341,7 +56341,7 @@
     {
         "name": "kangaskhan-mega",
         "dex_number": 115,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10039,
         "form_switchable": 1,
         "color": "brown",
@@ -56394,7 +56394,7 @@
     {
         "name": "pinsir-mega",
         "dex_number": 127,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10040,
         "form_switchable": 1,
         "color": "brown",
@@ -56447,7 +56447,7 @@
     {
         "name": "gyarados-mega",
         "dex_number": 130,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10041,
         "form_switchable": 1,
         "color": "blue",
@@ -56500,7 +56500,7 @@
     {
         "name": "aerodactyl-mega",
         "dex_number": 142,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10042,
         "form_switchable": 1,
         "color": "purple",
@@ -56553,7 +56553,7 @@
     {
         "name": "mewtwo-mega-x",
         "dex_number": 150,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10043,
         "form_switchable": 1,
         "color": "purple",
@@ -56606,7 +56606,7 @@
     {
         "name": "mewtwo-mega-y",
         "dex_number": 150,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10044,
         "form_switchable": 1,
         "color": "purple",
@@ -56659,7 +56659,7 @@
     {
         "name": "ampharos-mega",
         "dex_number": 181,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10045,
         "form_switchable": 1,
         "color": "yellow",
@@ -56712,7 +56712,7 @@
     {
         "name": "scizor-mega",
         "dex_number": 212,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10046,
         "form_switchable": 1,
         "color": "red",
@@ -56765,7 +56765,7 @@
     {
         "name": "heracross-mega",
         "dex_number": 214,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10047,
         "form_switchable": 1,
         "color": "blue",
@@ -56818,7 +56818,7 @@
     {
         "name": "houndoom-mega",
         "dex_number": 229,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10048,
         "form_switchable": 1,
         "color": "black",
@@ -56871,7 +56871,7 @@
     {
         "name": "tyranitar-mega",
         "dex_number": 248,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10049,
         "form_switchable": 1,
         "color": "green",
@@ -56924,7 +56924,7 @@
     {
         "name": "blaziken-mega",
         "dex_number": 257,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10050,
         "form_switchable": 1,
         "color": "red",
@@ -56977,7 +56977,7 @@
     {
         "name": "gardevoir-mega",
         "dex_number": 282,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10051,
         "form_switchable": 1,
         "color": "white",
@@ -57030,7 +57030,7 @@
     {
         "name": "mawile-mega",
         "dex_number": 303,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10052,
         "form_switchable": 1,
         "color": "black",
@@ -57083,7 +57083,7 @@
     {
         "name": "aggron-mega",
         "dex_number": 306,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10053,
         "form_switchable": 1,
         "color": "gray",
@@ -57136,7 +57136,7 @@
     {
         "name": "medicham-mega",
         "dex_number": 308,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10054,
         "form_switchable": 1,
         "color": "red",
@@ -57189,7 +57189,7 @@
     {
         "name": "manectric-mega",
         "dex_number": 310,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10055,
         "form_switchable": 1,
         "color": "yellow",
@@ -57242,7 +57242,7 @@
     {
         "name": "banette-mega",
         "dex_number": 354,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10056,
         "form_switchable": 1,
         "color": "black",
@@ -57295,7 +57295,7 @@
     {
         "name": "absol-mega",
         "dex_number": 359,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10057,
         "form_switchable": 1,
         "color": "white",
@@ -57348,7 +57348,7 @@
     {
         "name": "garchomp-mega",
         "dex_number": 445,
-        "generation": "generation-iv",
+        "generation": "generation-vi",
         "unique_id": 10058,
         "form_switchable": 1,
         "color": "blue",
@@ -57401,7 +57401,7 @@
     {
         "name": "lucario-mega",
         "dex_number": 448,
-        "generation": "generation-iv",
+        "generation": "generation-vi",
         "unique_id": 10059,
         "form_switchable": 1,
         "color": "blue",
@@ -57454,7 +57454,7 @@
     {
         "name": "abomasnow-mega",
         "dex_number": 460,
-        "generation": "generation-iv",
+        "generation": "generation-vi",
         "unique_id": 10060,
         "form_switchable": 1,
         "color": "white",
@@ -57560,7 +57560,7 @@
     {
         "name": "latias-mega",
         "dex_number": 380,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10062,
         "form_switchable": 1,
         "color": "red",
@@ -57613,7 +57613,7 @@
     {
         "name": "latios-mega",
         "dex_number": 381,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10063,
         "form_switchable": 1,
         "color": "blue",
@@ -57666,7 +57666,7 @@
     {
         "name": "swampert-mega",
         "dex_number": 260,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10064,
         "form_switchable": 1,
         "color": "blue",
@@ -57719,7 +57719,7 @@
     {
         "name": "sceptile-mega",
         "dex_number": 254,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10065,
         "form_switchable": 1,
         "color": "green",
@@ -57772,7 +57772,7 @@
     {
         "name": "sableye-mega",
         "dex_number": 302,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10066,
         "form_switchable": 1,
         "color": "purple",
@@ -57825,7 +57825,7 @@
     {
         "name": "altaria-mega",
         "dex_number": 334,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10067,
         "form_switchable": 1,
         "color": "blue",
@@ -57878,7 +57878,7 @@
     {
         "name": "gallade-mega",
         "dex_number": 475,
-        "generation": "generation-iv",
+        "generation": "generation-vi",
         "unique_id": 10068,
         "form_switchable": 1,
         "color": "white",
@@ -57931,7 +57931,7 @@
     {
         "name": "audino-mega",
         "dex_number": 531,
-        "generation": "generation-v",
+        "generation": "generation-vi",
         "unique_id": 10069,
         "form_switchable": 1,
         "color": "pink",
@@ -57984,7 +57984,7 @@
     {
         "name": "sharpedo-mega",
         "dex_number": 319,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10070,
         "form_switchable": 1,
         "color": "blue",
@@ -58037,7 +58037,7 @@
     {
         "name": "slowbro-mega",
         "dex_number": 80,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10071,
         "form_switchable": 1,
         "color": "pink",
@@ -58090,7 +58090,7 @@
     {
         "name": "steelix-mega",
         "dex_number": 208,
-        "generation": "generation-ii",
+        "generation": "generation-vi",
         "unique_id": 10072,
         "form_switchable": 1,
         "color": "gray",
@@ -58143,7 +58143,7 @@
     {
         "name": "pidgeot-mega",
         "dex_number": 18,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10073,
         "form_switchable": 1,
         "color": "brown",
@@ -58196,7 +58196,7 @@
     {
         "name": "glalie-mega",
         "dex_number": 362,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10074,
         "form_switchable": 1,
         "color": "gray",
@@ -58302,7 +58302,7 @@
     {
         "name": "metagross-mega",
         "dex_number": 376,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10076,
         "form_switchable": 1,
         "color": "blue",
@@ -58355,7 +58355,7 @@
     {
         "name": "kyogre-primal",
         "dex_number": 382,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10077,
         "form_switchable": 1,
         "color": "blue",
@@ -58408,7 +58408,7 @@
     {
         "name": "groudon-primal",
         "dex_number": 383,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10078,
         "form_switchable": 1,
         "color": "red",
@@ -58461,7 +58461,7 @@
     {
         "name": "rayquaza-mega",
         "dex_number": 384,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10079,
         "form_switchable": 1,
         "color": "green",
@@ -58514,7 +58514,7 @@
     {
         "name": "pikachu-rock-star",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10080,
         "form_switchable": 0,
         "color": "yellow",
@@ -58567,7 +58567,7 @@
     {
         "name": "pikachu-belle",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10081,
         "form_switchable": 0,
         "color": "yellow",
@@ -58620,7 +58620,7 @@
     {
         "name": "pikachu-pop-star",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10082,
         "form_switchable": 0,
         "color": "yellow",
@@ -58673,7 +58673,7 @@
     {
         "name": "pikachu-phd",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10083,
         "form_switchable": 0,
         "color": "yellow",
@@ -58726,7 +58726,7 @@
     {
         "name": "pikachu-libre",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10084,
         "form_switchable": 0,
         "color": "yellow",
@@ -58779,7 +58779,7 @@
     {
         "name": "pikachu-cosplay",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10085,
         "form_switchable": 0,
         "color": "yellow",
@@ -58885,7 +58885,7 @@
     {
         "name": "camerupt-mega",
         "dex_number": 323,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10087,
         "form_switchable": 1,
         "color": "red",
@@ -58938,7 +58938,7 @@
     {
         "name": "lopunny-mega",
         "dex_number": 428,
-        "generation": "generation-iv",
+        "generation": "generation-vi",
         "unique_id": 10088,
         "form_switchable": 1,
         "color": "brown",
@@ -58991,7 +58991,7 @@
     {
         "name": "salamence-mega",
         "dex_number": 373,
-        "generation": "generation-iii",
+        "generation": "generation-vi",
         "unique_id": 10089,
         "form_switchable": 1,
         "color": "blue",
@@ -59044,7 +59044,7 @@
     {
         "name": "beedrill-mega",
         "dex_number": 15,
-        "generation": "generation-i",
+        "generation": "generation-vi",
         "unique_id": 10090,
         "form_switchable": 1,
         "color": "yellow",
@@ -59097,7 +59097,7 @@
     {
         "name": "rattata-alola",
         "dex_number": 19,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10091,
         "form_switchable": 0,
         "color": "purple",
@@ -59150,7 +59150,7 @@
     {
         "name": "raticate-alola",
         "dex_number": 20,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10092,
         "form_switchable": 0,
         "color": "brown",
@@ -59203,7 +59203,7 @@
     {
         "name": "raticate-totem-alola",
         "dex_number": 20,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10093,
         "form_switchable": 0,
         "color": "brown",
@@ -59256,7 +59256,7 @@
     {
         "name": "pikachu-original-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10094,
         "form_switchable": 0,
         "color": "yellow",
@@ -59309,7 +59309,7 @@
     {
         "name": "pikachu-hoenn-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10095,
         "form_switchable": 0,
         "color": "yellow",
@@ -59362,7 +59362,7 @@
     {
         "name": "pikachu-sinnoh-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10096,
         "form_switchable": 0,
         "color": "yellow",
@@ -59415,7 +59415,7 @@
     {
         "name": "pikachu-unova-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10097,
         "form_switchable": 0,
         "color": "yellow",
@@ -59468,7 +59468,7 @@
     {
         "name": "pikachu-kalos-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10098,
         "form_switchable": 0,
         "color": "yellow",
@@ -59521,7 +59521,7 @@
     {
         "name": "pikachu-alola-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10099,
         "form_switchable": 0,
         "color": "yellow",
@@ -59574,7 +59574,7 @@
     {
         "name": "raichu-alola",
         "dex_number": 26,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10100,
         "form_switchable": 0,
         "color": "yellow",
@@ -59627,7 +59627,7 @@
     {
         "name": "sandshrew-alola",
         "dex_number": 27,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10101,
         "form_switchable": 0,
         "color": "yellow",
@@ -59680,7 +59680,7 @@
     {
         "name": "sandslash-alola",
         "dex_number": 28,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10102,
         "form_switchable": 0,
         "color": "yellow",
@@ -59733,7 +59733,7 @@
     {
         "name": "vulpix-alola",
         "dex_number": 37,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10103,
         "form_switchable": 0,
         "color": "brown",
@@ -59786,7 +59786,7 @@
     {
         "name": "ninetales-alola",
         "dex_number": 38,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10104,
         "form_switchable": 0,
         "color": "yellow",
@@ -59839,7 +59839,7 @@
     {
         "name": "diglett-alola",
         "dex_number": 50,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10105,
         "form_switchable": 0,
         "color": "brown",
@@ -59892,7 +59892,7 @@
     {
         "name": "dugtrio-alola",
         "dex_number": 51,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10106,
         "form_switchable": 0,
         "color": "brown",
@@ -59945,7 +59945,7 @@
     {
         "name": "meowth-alola",
         "dex_number": 52,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10107,
         "form_switchable": 0,
         "color": "yellow",
@@ -59998,7 +59998,7 @@
     {
         "name": "persian-alola",
         "dex_number": 53,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10108,
         "form_switchable": 0,
         "color": "yellow",
@@ -60051,7 +60051,7 @@
     {
         "name": "geodude-alola",
         "dex_number": 74,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10109,
         "form_switchable": 0,
         "color": "brown",
@@ -60104,7 +60104,7 @@
     {
         "name": "graveler-alola",
         "dex_number": 75,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10110,
         "form_switchable": 0,
         "color": "brown",
@@ -60157,7 +60157,7 @@
     {
         "name": "golem-alola",
         "dex_number": 76,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10111,
         "form_switchable": 0,
         "color": "brown",
@@ -60210,7 +60210,7 @@
     {
         "name": "grimer-alola",
         "dex_number": 88,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10112,
         "form_switchable": 0,
         "color": "purple",
@@ -60263,7 +60263,7 @@
     {
         "name": "muk-alola",
         "dex_number": 89,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10113,
         "form_switchable": 0,
         "color": "purple",
@@ -60316,7 +60316,7 @@
     {
         "name": "exeggutor-alola",
         "dex_number": 103,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10114,
         "form_switchable": 0,
         "color": "yellow",
@@ -60369,7 +60369,7 @@
     {
         "name": "marowak-alola",
         "dex_number": 105,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10115,
         "form_switchable": 0,
         "color": "brown",
@@ -60422,7 +60422,7 @@
     {
         "name": "greninja-battle-bond",
         "dex_number": 658,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10116,
         "form_switchable": 0,
         "color": "blue",
@@ -60475,7 +60475,7 @@
     {
         "name": "greninja-ash",
         "dex_number": 658,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10117,
         "form_switchable": 0,
         "color": "blue",
@@ -60528,7 +60528,7 @@
     {
         "name": "zygarde-10-power-construct",
         "dex_number": 718,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10118,
         "form_switchable": 0,
         "color": "green",
@@ -60581,7 +60581,7 @@
     {
         "name": "zygarde-50-power-construct",
         "dex_number": 718,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10119,
         "form_switchable": 0,
         "color": "green",
@@ -60634,7 +60634,7 @@
     {
         "name": "zygarde-complete",
         "dex_number": 718,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10120,
         "form_switchable": 0,
         "color": "green",
@@ -62118,7 +62118,7 @@
     {
         "name": "pikachu-partner-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10148,
         "form_switchable": 0,
         "color": "yellow",
@@ -62171,7 +62171,7 @@
     {
         "name": "marowak-totem",
         "dex_number": 105,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10149,
         "form_switchable": 0,
         "color": "brown",
@@ -62648,7 +62648,7 @@
     {
         "name": "pikachu-starter",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10158,
         "form_switchable": 0,
         "color": "yellow",
@@ -62701,7 +62701,7 @@
     {
         "name": "eevee-starter",
         "dex_number": 133,
-        "generation": "generation-i",
+        "generation": "generation-vii",
         "unique_id": 10159,
         "form_switchable": 0,
         "color": "brown",
@@ -62754,7 +62754,7 @@
     {
         "name": "pikachu-world-cap",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10160,
         "form_switchable": 0,
         "color": "yellow",
@@ -62807,7 +62807,7 @@
     {
         "name": "meowth-galar",
         "dex_number": 52,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10161,
         "form_switchable": 0,
         "color": "yellow",
@@ -62860,7 +62860,7 @@
     {
         "name": "ponyta-galar",
         "dex_number": 77,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10162,
         "form_switchable": 0,
         "color": "yellow",
@@ -62913,7 +62913,7 @@
     {
         "name": "rapidash-galar",
         "dex_number": 78,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10163,
         "form_switchable": 0,
         "color": "yellow",
@@ -62966,7 +62966,7 @@
     {
         "name": "slowpoke-galar",
         "dex_number": 79,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10164,
         "form_switchable": 0,
         "color": "pink",
@@ -63019,7 +63019,7 @@
     {
         "name": "slowbro-galar",
         "dex_number": 80,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10165,
         "form_switchable": 1,
         "color": "pink",
@@ -63072,7 +63072,7 @@
     {
         "name": "farfetchd-galar",
         "dex_number": 83,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10166,
         "form_switchable": 0,
         "color": "brown",
@@ -63125,7 +63125,7 @@
     {
         "name": "weezing-galar",
         "dex_number": 110,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10167,
         "form_switchable": 0,
         "color": "purple",
@@ -63178,7 +63178,7 @@
     {
         "name": "mr-mime-galar",
         "dex_number": 122,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10168,
         "form_switchable": 0,
         "color": "pink",
@@ -63231,7 +63231,7 @@
     {
         "name": "articuno-galar",
         "dex_number": 144,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10169,
         "form_switchable": 0,
         "color": "blue",
@@ -63284,7 +63284,7 @@
     {
         "name": "zapdos-galar",
         "dex_number": 145,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10170,
         "form_switchable": 0,
         "color": "yellow",
@@ -63337,7 +63337,7 @@
     {
         "name": "moltres-galar",
         "dex_number": 146,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10171,
         "form_switchable": 0,
         "color": "yellow",
@@ -63390,7 +63390,7 @@
     {
         "name": "slowking-galar",
         "dex_number": 199,
-        "generation": "generation-ii",
+        "generation": "generation-viii",
         "unique_id": 10172,
         "form_switchable": 0,
         "color": "pink",
@@ -63443,7 +63443,7 @@
     {
         "name": "corsola-galar",
         "dex_number": 222,
-        "generation": "generation-ii",
+        "generation": "generation-viii",
         "unique_id": 10173,
         "form_switchable": 0,
         "color": "pink",
@@ -63496,7 +63496,7 @@
     {
         "name": "zigzagoon-galar",
         "dex_number": 263,
-        "generation": "generation-iii",
+        "generation": "generation-viii",
         "unique_id": 10174,
         "form_switchable": 0,
         "color": "brown",
@@ -63549,7 +63549,7 @@
     {
         "name": "linoone-galar",
         "dex_number": 264,
-        "generation": "generation-iii",
+        "generation": "generation-viii",
         "unique_id": 10175,
         "form_switchable": 0,
         "color": "white",
@@ -63602,7 +63602,7 @@
     {
         "name": "darumaka-galar",
         "dex_number": 554,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10176,
         "form_switchable": 0,
         "color": "red",
@@ -63655,7 +63655,7 @@
     {
         "name": "darmanitan-galar-standard",
         "dex_number": 555,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10177,
         "form_switchable": 1,
         "color": "red",
@@ -63708,7 +63708,7 @@
     {
         "name": "darmanitan-galar-zen",
         "dex_number": 555,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10178,
         "form_switchable": 1,
         "color": "red",
@@ -63761,7 +63761,7 @@
     {
         "name": "yamask-galar",
         "dex_number": 562,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10179,
         "form_switchable": 0,
         "color": "black",
@@ -63814,7 +63814,7 @@
     {
         "name": "stunfisk-galar",
         "dex_number": 618,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10180,
         "form_switchable": 0,
         "color": "brown",
@@ -63867,7 +63867,7 @@
     {
         "name": "zygarde-10",
         "dex_number": 718,
-        "generation": "generation-vi",
+        "generation": "generation-vii",
         "unique_id": 10181,
         "form_switchable": 0,
         "color": "green",
@@ -64609,7 +64609,7 @@
     {
         "name": "venusaur-gmax",
         "dex_number": 3,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10195,
         "form_switchable": 1,
         "color": "green",
@@ -64662,7 +64662,7 @@
     {
         "name": "charizard-gmax",
         "dex_number": 6,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10196,
         "form_switchable": 1,
         "color": "red",
@@ -64715,7 +64715,7 @@
     {
         "name": "blastoise-gmax",
         "dex_number": 9,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10197,
         "form_switchable": 1,
         "color": "blue",
@@ -64768,7 +64768,7 @@
     {
         "name": "butterfree-gmax",
         "dex_number": 12,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10198,
         "form_switchable": 0,
         "color": "white",
@@ -64821,7 +64821,7 @@
     {
         "name": "pikachu-gmax",
         "dex_number": 25,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10199,
         "form_switchable": 0,
         "color": "yellow",
@@ -64874,7 +64874,7 @@
     {
         "name": "meowth-gmax",
         "dex_number": 52,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10200,
         "form_switchable": 0,
         "color": "yellow",
@@ -64927,7 +64927,7 @@
     {
         "name": "machamp-gmax",
         "dex_number": 68,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10201,
         "form_switchable": 0,
         "color": "gray",
@@ -64980,7 +64980,7 @@
     {
         "name": "gengar-gmax",
         "dex_number": 94,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10202,
         "form_switchable": 1,
         "color": "purple",
@@ -65033,7 +65033,7 @@
     {
         "name": "kingler-gmax",
         "dex_number": 99,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10203,
         "form_switchable": 0,
         "color": "red",
@@ -65086,7 +65086,7 @@
     {
         "name": "lapras-gmax",
         "dex_number": 131,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10204,
         "form_switchable": 0,
         "color": "blue",
@@ -65139,7 +65139,7 @@
     {
         "name": "eevee-gmax",
         "dex_number": 133,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10205,
         "form_switchable": 0,
         "color": "brown",
@@ -65192,7 +65192,7 @@
     {
         "name": "snorlax-gmax",
         "dex_number": 143,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10206,
         "form_switchable": 0,
         "color": "black",
@@ -65245,7 +65245,7 @@
     {
         "name": "garbodor-gmax",
         "dex_number": 569,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10207,
         "form_switchable": 0,
         "color": "green",
@@ -65298,7 +65298,7 @@
     {
         "name": "melmetal-gmax",
         "dex_number": 809,
-        "generation": "generation-vii",
+        "generation": "generation-viii",
         "unique_id": 10208,
         "form_switchable": 0,
         "color": "gray",
@@ -66411,7 +66411,7 @@
     {
         "name": "growlithe-hisui",
         "dex_number": 58,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10229,
         "form_switchable": 0,
         "color": "brown",
@@ -66464,7 +66464,7 @@
     {
         "name": "arcanine-hisui",
         "dex_number": 59,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10230,
         "form_switchable": 0,
         "color": "brown",
@@ -66517,7 +66517,7 @@
     {
         "name": "voltorb-hisui",
         "dex_number": 100,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10231,
         "form_switchable": 0,
         "color": "red",
@@ -66570,7 +66570,7 @@
     {
         "name": "electrode-hisui",
         "dex_number": 101,
-        "generation": "generation-i",
+        "generation": "generation-viii",
         "unique_id": 10232,
         "form_switchable": 0,
         "color": "red",
@@ -66623,7 +66623,7 @@
     {
         "name": "typhlosion-hisui",
         "dex_number": 157,
-        "generation": "generation-ii",
+        "generation": "generation-viii",
         "unique_id": 10233,
         "form_switchable": 0,
         "color": "yellow",
@@ -66676,7 +66676,7 @@
     {
         "name": "qwilfish-hisui",
         "dex_number": 211,
-        "generation": "generation-ii",
+        "generation": "generation-viii",
         "unique_id": 10234,
         "form_switchable": 0,
         "color": "gray",
@@ -66729,7 +66729,7 @@
     {
         "name": "sneasel-hisui",
         "dex_number": 215,
-        "generation": "generation-ii",
+        "generation": "generation-viii",
         "unique_id": 10235,
         "form_switchable": 0,
         "color": "black",
@@ -66782,7 +66782,7 @@
     {
         "name": "samurott-hisui",
         "dex_number": 503,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10236,
         "form_switchable": 0,
         "color": "blue",
@@ -66835,7 +66835,7 @@
     {
         "name": "lilligant-hisui",
         "dex_number": 549,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10237,
         "form_switchable": 0,
         "color": "green",
@@ -66888,7 +66888,7 @@
     {
         "name": "zorua-hisui",
         "dex_number": 570,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10238,
         "form_switchable": 0,
         "color": "gray",
@@ -66941,7 +66941,7 @@
     {
         "name": "zoroark-hisui",
         "dex_number": 571,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10239,
         "form_switchable": 0,
         "color": "gray",
@@ -66994,7 +66994,7 @@
     {
         "name": "braviary-hisui",
         "dex_number": 628,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10240,
         "form_switchable": 0,
         "color": "red",
@@ -67047,7 +67047,7 @@
     {
         "name": "sliggoo-hisui",
         "dex_number": 705,
-        "generation": "generation-vi",
+        "generation": "generation-viii",
         "unique_id": 10241,
         "form_switchable": 0,
         "color": "purple",
@@ -67100,7 +67100,7 @@
     {
         "name": "goodra-hisui",
         "dex_number": 706,
-        "generation": "generation-vi",
+        "generation": "generation-viii",
         "unique_id": 10242,
         "form_switchable": 0,
         "color": "purple",
@@ -67153,7 +67153,7 @@
     {
         "name": "avalugg-hisui",
         "dex_number": 713,
-        "generation": "generation-vi",
+        "generation": "generation-viii",
         "unique_id": 10243,
         "form_switchable": 0,
         "color": "blue",
@@ -67206,7 +67206,7 @@
     {
         "name": "decidueye-hisui",
         "dex_number": 724,
-        "generation": "generation-vii",
+        "generation": "generation-viii",
         "unique_id": 10244,
         "form_switchable": 0,
         "color": "brown",
@@ -67259,7 +67259,7 @@
     {
         "name": "dialga-origin",
         "dex_number": 483,
-        "generation": "generation-iv",
+        "generation": "generation-viii",
         "unique_id": 10245,
         "form_switchable": 0,
         "color": "white",
@@ -67312,7 +67312,7 @@
     {
         "name": "palkia-origin",
         "dex_number": 484,
-        "generation": "generation-iv",
+        "generation": "generation-viii",
         "unique_id": 10246,
         "form_switchable": 0,
         "color": "purple",
@@ -67365,7 +67365,7 @@
     {
         "name": "basculin-white-striped",
         "dex_number": 550,
-        "generation": "generation-v",
+        "generation": "generation-viii",
         "unique_id": 10247,
         "form_switchable": 0,
         "color": "green",
@@ -67524,7 +67524,7 @@
     {
         "name": "tauros-paldea-combat-breed",
         "dex_number": 128,
-        "generation": "generation-i",
+        "generation": "generation-ix",
         "unique_id": 10250,
         "form_switchable": 0,
         "color": "brown",
@@ -67577,7 +67577,7 @@
     {
         "name": "tauros-paldea-blaze-breed",
         "dex_number": 128,
-        "generation": "generation-i",
+        "generation": "generation-ix",
         "unique_id": 10251,
         "form_switchable": 0,
         "color": "brown",
@@ -67630,7 +67630,7 @@
     {
         "name": "tauros-paldea-aqua-breed",
         "dex_number": 128,
-        "generation": "generation-i",
+        "generation": "generation-ix",
         "unique_id": 10252,
         "form_switchable": 0,
         "color": "brown",
@@ -67683,7 +67683,7 @@
     {
         "name": "wooper-paldea",
         "dex_number": 194,
-        "generation": "generation-ii",
+        "generation": "generation-ix",
         "unique_id": 10253,
         "form_switchable": 0,
         "color": "blue",
@@ -68690,7 +68690,7 @@
     {
         "name": "ursaluna-bloodmoon",
         "dex_number": 901,
-        "generation": "generation-viii",
+        "generation": "generation-ix",
         "unique_id": 10272,
         "form_switchable": 0,
         "color": "brown",
