@@ -279,6 +279,7 @@ private:
 	std::shared_ptr<ValueOperation> sum_value_ptr = std::make_shared<ValueOperation>(kSumCalcOperation);
 	std::shared_ptr<ValueOperation> median_value_ptr = std::make_shared<ValueOperation>(kMedianCalcOperation);
 	std::shared_ptr<ValueOperation> mode_value_ptr = std::make_shared<ValueOperation>(kModeCalcOperation);
+	std::shared_ptr<ValueOperation> random_value_ptr = std::make_shared<ValueOperation>(kRandomEntryCalcOperation);
 
 	std::vector<std::shared_ptr<ValueOperation>> value_calc_types = {
 		avg_value_ptr,
@@ -286,7 +287,8 @@ private:
 		max_value_ptr,
 		sum_value_ptr,
 		median_value_ptr,
-		mode_value_ptr
+		mode_value_ptr,
+		random_value_ptr
 	};
 	
 	std::vector<ColumnStatus> subset_column_statuses = {

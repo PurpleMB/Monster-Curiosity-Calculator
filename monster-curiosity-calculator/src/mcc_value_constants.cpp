@@ -41,6 +41,8 @@ const ValueOperationArgument kHatchCountArg =   ValueOperationArgument("Hatch Cy
 const ValueOperationArgument kHeightArg =       ValueOperationArgument("Height", "height", kSaffronColor);
 const ValueOperationArgument kWeightArg =       ValueOperationArgument("Weight", "weight", kFuschiaColor);
 
+const ValueOperationArgument kNameArg = ValueOperationArgument("Name", "pretty_name", kWhiteColor);
+
 // argument groups for use by ValueOperations
 extern const std::vector<ValueOperationArgument> kNumericalCalcArguments = {
     kHealthArg,
@@ -90,6 +92,41 @@ extern const std::vector<ValueOperationArgument> kCountableCalcArguments = {
     kHatchCountArg,
     kHeightArg,
     kWeightArg
+};
+
+extern const std::vector<ValueOperationArgument> kSelectableCalcArguments = {
+    kGenerationArg,
+    kFormSwitchArg,
+    kColorArg,
+    kShapeArg,
+    kGrowthRateArg,
+    kGenderRateArg,
+    kDimorphicArg,
+    kPrimEggGroupArg,
+    kSecEggGroupArg,
+    kIsBaseArg,
+    kIsBabyArg,
+    kIsLegendArg,
+    kIsMythArg,
+    kPrimTypeArg,
+    kSecTypeArg,
+    kAbilOneArg,
+    kAbilTwoArg,
+    kAbilHiddenArg,
+    kHealthArg,
+    kAttackArg,
+    kDefenseArg,
+    kSpeAtkArg,
+    kSpeDefArg,
+    kSpeedArg,
+    kStatTotalArg,
+    kBaseExpArg,
+    kBaseHappyArg,
+    kCatchRateArg,
+    kHatchCountArg,
+    kHeightArg,
+    kWeightArg,
+    kNameArg
 };
 
 const std::string kAvgCalcDisplayName = "Average";
@@ -156,6 +193,17 @@ extern const ValueOperation kModeCalcOperation = ValueOperation(
     kModeCalcAliasFormat,
     kPurpleColor,
     kCountableCalcArguments
+);
+
+const std::string kRandomEntryCalcDisplayName = "Random Entry";
+const std::string kRandomEntryCalcQueryFormat = "SELECT {0} FROM {1} ORDER BY random() LIMIT 1";
+const std::string kRandomEntryCalcAliasFormat = "random_{0}";
+extern const ValueOperation kRandomEntryCalcOperation = ValueOperation(
+    kRandomEntryCalcDisplayName,
+    kRandomEntryCalcQueryFormat,
+    kRandomEntryCalcAliasFormat,
+    kWhiteColor,
+    kSelectableCalcArguments
 );
 
 } // namespace monster_calculator
