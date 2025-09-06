@@ -296,7 +296,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
 		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
-		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &f64_one : NULL, NULL, NULL, flags);
+		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &f64_one : NULL, NULL, "%.1f", flags);
 	}
 
 	std::string operation_format = operation.database_name;
