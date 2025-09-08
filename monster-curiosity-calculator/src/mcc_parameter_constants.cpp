@@ -157,6 +157,9 @@ extern const std::vector<ParameterOperation> kValueEnumOperations = {
     )
 };
 
+const ImVec2 kStandardButtonSize = ImVec2(150, 0);
+const int kStandardButtonsPerRow = 3;
+
 // enumerated parameters
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
@@ -168,7 +171,9 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kRedColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kSecondaryDisplayName = "Secondary Type";
@@ -181,7 +186,9 @@ extern const EnumeratedParameterType kSecondaryTypeParam = EnumeratedParameterTy
     kBlueColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kEitherTypeDisplayName = "Either Type";
@@ -194,7 +201,9 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kPurpleColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kDimorphicDisplayName = "Is Dimorphic";
@@ -285,7 +294,9 @@ extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kCeladonColor,
     kTextEnumOperations,
     kColorValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kShapeDisplayName = "Shape";
@@ -298,7 +309,9 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kYellowColor,
     kTextEnumOperations,
     kShapeValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kPrimaryEggDisplayName = "Primary Egg Group";
@@ -311,7 +324,9 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPeriwinkleColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kSecondaryEggDisplayName = "Secondary Egg Group";
@@ -324,7 +339,9 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kLinenColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kEitherEggDisplayName = "Either Egg Group";
@@ -337,7 +354,9 @@ extern const EnumeratedParameterType kEitherEggParam = EnumeratedParameterType(
     kSeashellColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid
+    ButtonGrid,
+    kStandardButtonSize,
+    kStandardButtonsPerRow
 );
 
 const std::string kGenerationDisplayName = "Generation";

@@ -229,10 +229,16 @@ void DrawButtonGridParameterSelector(EnumeratedParameterType& param_type, Parame
 	std::string current_value_indicator = std::vformat("Currently selected value: {0}", std::make_format_args(selected_value_name));
 	ImGui::Text(current_value_indicator.c_str());
 
+	ImVec2 button_size = param_type.GetButtonSize();
+	int buttons_per_row = param_type.GetButtonsPerRow();
 	for (int i = 0; i < param_type.values.size(); i++) {
-		if (ImGui::Button(param_type.values[i].display_name.c_str())) {
+		if (i % buttons_per_row != 0) {
+			ImGui::SameLine();
+		}
+		if (ImGui::Button(param_type.values[i].display_name.c_str(), button_size)) {
 			selected_value_index = i;
 		}
+		
 	}
 
 	ParameterValue selected_value = param_type.values[selected_value_index];

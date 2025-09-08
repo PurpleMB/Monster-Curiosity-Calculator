@@ -133,10 +133,16 @@ struct EnumeratedParameterType : ParameterType {
 	std::unordered_map<std::string, ParameterValue> db_name_val_map;
 	PreferredEnumDisplay display_method;
 
+	// only for use by ButtonGrid
+	ImVec2 button_size;
+	int buttons_per_row;
+
 	EnumeratedParameterType() : ParameterType() {
 		values = {};
 		db_name_val_map = {};
 		display_method = Dropdown;
+		button_size = ImVec2(0.0f, 0.0f);
+		buttons_per_row = 1;
 	}
 
 	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals, PreferredEnumDisplay display) :
@@ -147,6 +153,21 @@ struct EnumeratedParameterType : ParameterType {
 			db_name_val_map[param_val.database_name] = param_val;
 		}
 		display_method = display;
+		button_size = ImVec2(0.0f, 0.0f);
+		buttons_per_row = 1;
+	}
+
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals, PreferredEnumDisplay display,
+		ImVec2 btn_size, int btn_per_row) :
+		ParameterType(dis_name, dis_format, db_format, color, ops) {
+		values = vals;
+		db_name_val_map = {};
+		for (ParameterValue param_val : vals) {
+			db_name_val_map[param_val.database_name] = param_val;
+		}
+		display_method = display;
+		button_size = btn_size;
+		buttons_per_row = btn_per_row;
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
@@ -155,6 +176,14 @@ struct EnumeratedParameterType : ParameterType {
 
 	PreferredEnumDisplay GetPreferredDisplay() const {
 		return display_method;
+	}
+
+	ImVec2 GetButtonSize() const {
+		return button_size;
+	}
+
+	int GetButtonsPerRow() const {
+		return buttons_per_row;
 	}
 
 	ParameterValue RetrieveParamValFromRawName(std::string raw_name) {
