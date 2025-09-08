@@ -110,6 +110,27 @@ extern const std::vector<ParameterValue> kGrowthRateValuesList = {
     ParameterValue("Erratic",       "slow-then-very-fast",      kPinkColor,       5)
 };
 
+extern const std::vector<ParameterValue> kGenderRateValuesList = {
+    ParameterValue("Gender Unknown",	    "-1",	kPearlColor,        0),
+    ParameterValue("100%% Male",	        "0",	kPeriwinkleColor,   1),
+    ParameterValue("87.5%% Male",	        "1",	kPeriwinkleColor,   2),
+    ParameterValue("75%% Male ",	        "2",	kPeriwinkleColor,   3),
+    ParameterValue("62.5%% Male Male",	    "3",	kPeriwinkleColor,   4),
+    ParameterValue("50%% Male & Female",	"4",	kOrchidColor,       5),
+    ParameterValue("62.5%% Female",	        "5",	kPinkColor,         6),
+    ParameterValue("75%% Female",	        "6",	kPinkColor,         7),
+    ParameterValue("87.5%% Female",	        "7",	kPinkColor,         8),
+    ParameterValue("100%% Female",	        "8",	kPinkColor,         9)
+};
+
+extern const std::vector<ParameterOperation> kSliderEnumOperations = {
+    ParameterOperation("Equals",        "= {0}",        kGreenColor,
+        {
+            "Target value"
+        }
+    )
+};
+
 extern const std::vector<ParameterOperation> kTextEnumOperations = {
     ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
         {
@@ -146,7 +167,8 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kPrimaryDatabaseFormat,
     kRedColor,
     kTextEnumOperations,
-    kTypeValuesList
+    kTypeValuesList,
+    ButtonGrid
 );
 
 const std::string kSecondaryDisplayName = "Secondary Type";
@@ -158,7 +180,8 @@ extern const EnumeratedParameterType kSecondaryTypeParam = EnumeratedParameterTy
     kSecondaryDatabaseFormat,
     kBlueColor,
     kTextEnumOperations,
-    kTypeValuesList
+    kTypeValuesList,
+    ButtonGrid
 );
 
 const std::string kEitherTypeDisplayName = "Either Type";
@@ -170,7 +193,8 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kEitherTypeDatabaseFormat,
     kPurpleColor,
     kTextEnumOperations,
-    kTypeValuesList
+    kTypeValuesList,
+    ButtonGrid
 );
 
 const std::string kDimorphicDisplayName = "Is Dimorphic";
@@ -182,7 +206,8 @@ extern const EnumeratedParameterType kDimorphicParam = EnumeratedParameterType(
     kDimorphicDatabaseFormat,
     kMahoganyColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kIsDefaultDisplayName = "Is Base Form";
@@ -194,7 +219,8 @@ extern const EnumeratedParameterType kIsDefaultParam = EnumeratedParameterType(
     kIsDefaultDatabaseFormat,
     kOrangeColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kCanSwitchDisplayName = "Form Switchable";
@@ -206,7 +232,8 @@ extern const EnumeratedParameterType kCanSwitchParam = EnumeratedParameterType(
     kCanSwitchDatabaseFormat,
     kVermillionColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kBabyDisplayName = "Is A Baby";
@@ -218,7 +245,8 @@ extern const EnumeratedParameterType kIsBabyParam = EnumeratedParameterType(
     kBabyDatabaseFormat,
     kPinkColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kLegendDisplayName = "Is Legendary";
@@ -230,7 +258,8 @@ extern const EnumeratedParameterType kIsLegendParam = EnumeratedParameterType(
     kLegendDatabaseFormat,
     kIndigoColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kMythicDisplayName = "Is Mythical";
@@ -242,7 +271,8 @@ extern const EnumeratedParameterType kIsMythicParam = EnumeratedParameterType(
     kMythicDatabaseFormat,
     kOrchidColor,
     kValueEnumOperations,
-    kBinaryValuesList
+    kBinaryValuesList,
+    Dropdown
 );
 
 const std::string kColorDisplayName = "Color";
@@ -254,7 +284,8 @@ extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kColorDatabaseFormat,
     kCeladonColor,
     kTextEnumOperations,
-    kColorValuesList
+    kColorValuesList,
+    ButtonGrid
 );
 
 const std::string kShapeDisplayName = "Shape";
@@ -266,7 +297,8 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kShapeDatabaseFormat,
     kYellowColor,
     kTextEnumOperations,
-    kShapeValuesList
+    kShapeValuesList,
+    ButtonGrid
 );
 
 const std::string kPrimaryEggDisplayName = "Primary Egg Group";
@@ -278,7 +310,8 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPrimaryEggDatabaseFormat,
     kPeriwinkleColor,
     kTextEnumOperations,
-    kEggGroupValuesList
+    kEggGroupValuesList,
+    ButtonGrid
 );
 
 const std::string kSecondaryEggDisplayName = "Secondary Egg Group";
@@ -290,7 +323,8 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kSecondaryEggDatabaseFormat,
     kLinenColor,
     kTextEnumOperations,
-    kEggGroupValuesList
+    kEggGroupValuesList,
+    ButtonGrid
 );
 
 const std::string kEitherEggDisplayName = "Either Egg Group";
@@ -302,7 +336,8 @@ extern const EnumeratedParameterType kEitherEggParam = EnumeratedParameterType(
     kEitherEggDatabaseFormat,
     kSeashellColor,
     kTextEnumOperations,
-    kEggGroupValuesList
+    kEggGroupValuesList,
+    ButtonGrid
 );
 
 const std::string kGenerationDisplayName = "Generation";
@@ -314,7 +349,8 @@ extern const EnumeratedParameterType kGenerationParam = EnumeratedParameterType(
     kGenerationDatabaseFormat,
     kSeashellColor,
     kTextEnumOperations,
-    kGenerationValuesList
+    kGenerationValuesList,
+    Slider
 );
 
 const std::string kGrowthRateDisplayName = "Growth Rate";
@@ -326,42 +362,21 @@ extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
     kGrowthRateDatabaseFormat,
     kBrownColor,
     kTextEnumOperations,
-    kGrowthRateValuesList
+    kGrowthRateValuesList,
+    Slider
 );
 
-// enumerated slider parameter values and operations
-extern const std::vector<ParameterValue> kGenderRateValuesList = {
-    ParameterValue("Gender Unknown",	    "-1",	kPearlColor,        0),
-    ParameterValue("100%% Male",	        "0",	kPeriwinkleColor,   1),
-    ParameterValue("87.5%% Male",	        "1",	kPeriwinkleColor,   2),
-    ParameterValue("75%% Male ",	        "2",	kPeriwinkleColor,   3),
-    ParameterValue("62.5%% Male Male",	    "3",	kPeriwinkleColor,   4),
-    ParameterValue("50%% Male & Female",	"4",	kOrchidColor,       5),
-    ParameterValue("62.5%% Female",	        "5",	kPinkColor,         6),
-    ParameterValue("75%% Female",	        "6",	kPinkColor,         7),
-    ParameterValue("87.5%% Female",	        "7",	kPinkColor,         8),
-    ParameterValue("100%% Female",	        "8",	kPinkColor,         9)
-};
-
-extern const std::vector<ParameterOperation> kSliderEnumOperations = {
-    ParameterOperation("Equals",        "= {0}",        kGreenColor,
-        {
-            "Target value"
-        }
-    )
-};
-
-// enumerated slider parameters
 const std::string kGenderRateDisplayName = "Gender Rate";
 const std::string kGenderRateDatabaseFormat = "gender_rate {0}";
 const std::string kGenderRateDisplayFormat = "Gender Rate: {0}";
-extern const SliderEnumeratedParameterType kGenderRateParam = SliderEnumeratedParameterType(
+extern const EnumeratedParameterType kGenderRateParam = EnumeratedParameterType(
     kGenderRateDisplayName,
     kGenderRateDisplayFormat,
     kGenderRateDatabaseFormat,
     kSaffronColor,
     kSliderEnumOperations,
-    kGenderRateValuesList
+    kGenderRateValuesList,
+    Slider
 );
 
 // open parameter values & operations

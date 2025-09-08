@@ -119,18 +119,26 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 
 
 	EnumeratedParameterType enum_param;
-	SliderEnumeratedParameterType slider_param;
+	PreferredEnumDisplay display_method;
+
 	OpenParameterType open_param;
 	IntegerParameterType int_param;
 	DecimalParameterType dec_param;
 	switch (parameter_types[selected_parameter_index]->GetParameterCategory()) {
 		case Enumerated:
 			enum_param = *dynamic_cast<EnumeratedParameterType*>(selected_param);
-			DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
-			break;
-		case EnumeratedSlider:
-			slider_param = * dynamic_cast<SliderEnumeratedParameterType*>(selected_param);
-			DrawSliderParameterSelector(slider_param, selected_operation, selected_value_index, building_parameter);
+			display_method = enum_param.GetPreferredDisplay();
+			switch (display_method) {
+				case Slider:
+					DrawSliderParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					break;
+				case ButtonGrid:
+					DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					break;
+				case Dropdown:
+					DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					break;
+			}
 			break;
 		case Open:
 			open_param = *dynamic_cast<OpenParameterType*>(selected_param);
@@ -200,7 +208,7 @@ void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, Parame
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawSliderParameterSelector(SliderEnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+void DrawSliderParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
 	std::string user_prompt = std::vformat("Set {0}", std::make_format_args(operation.operands[0]));
 	ImGui::Text(user_prompt.c_str());
 	

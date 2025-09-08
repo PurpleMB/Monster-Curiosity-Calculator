@@ -13,7 +13,9 @@ extern const std::vector<ParameterValue> kShapeValuesList;
 extern const std::vector<ParameterValue> kEggGroupValuesList;
 extern const std::vector<ParameterValue> kGenerationValuesList;
 extern const std::vector<ParameterValue> kGrowthRateValuesList;
+extern const std::vector<ParameterValue> kGenderRateValuesList;
 
+extern const std::vector<ParameterOperation> kSliderEnumOperations;
 extern const std::vector<ParameterOperation> kTextEnumOperations;
 extern const std::vector<ParameterOperation> kValueEnumOperations;
 
@@ -34,14 +36,7 @@ extern const EnumeratedParameterType kSecondaryEggParam;
 extern const EnumeratedParameterType kEitherEggParam;
 extern const EnumeratedParameterType kGenerationParam;
 extern const EnumeratedParameterType kGrowthRateParam;
-
-// enumerated slider parameter values and operations
-extern const std::vector<ParameterValue> kGenderRateValuesList;
-
-extern const std::vector<ParameterOperation> kSliderEnumOperations;
-
-// enumerated slider parameters
-extern const SliderEnumeratedParameterType kGenderRateParam;
+extern const EnumeratedParameterType kGenderRateParam;
 
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;

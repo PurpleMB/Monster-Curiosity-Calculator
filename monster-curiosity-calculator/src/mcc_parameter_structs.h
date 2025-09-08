@@ -120,26 +120,41 @@ struct ParameterType {
 	}
 };
 
+// This enum is used to determine which method of displaying options works
+// best for an EnumeratedParameterType.
+enum PreferredEnumDisplay {
+	Slider,
+	ButtonGrid,
+	Dropdown
+};
+
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
 	std::unordered_map<std::string, ParameterValue> db_name_val_map;
+	PreferredEnumDisplay display_method;
 
 	EnumeratedParameterType() : ParameterType() {
 		values = {};
 		db_name_val_map = {};
+		display_method = Dropdown;
 	}
 
-	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals, PreferredEnumDisplay display) :
 		ParameterType(dis_name, dis_format, db_format, color, ops) {
 		values = vals;
 		db_name_val_map = {};
 		for (ParameterValue param_val : vals) {
 			db_name_val_map[param_val.database_name] = param_val;
 		}
+		display_method = display;
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Enumerated;
+	}
+
+	PreferredEnumDisplay GetPreferredDisplay() const {
+		return display_method;
 	}
 
 	ParameterValue RetrieveParamValFromRawName(std::string raw_name) {
@@ -147,21 +162,6 @@ struct EnumeratedParameterType : ParameterType {
 			return db_name_val_map[raw_name];
 		}
 		return ParameterValue();
-	}
-};
-
-struct SliderEnumeratedParameterType : EnumeratedParameterType {
-	SliderEnumeratedParameterType() : EnumeratedParameterType() {
-
-	}
-
-	SliderEnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
-		EnumeratedParameterType(dis_name, dis_format, db_format, color, ops, vals) {
-
-	}
-
-	virtual ParameterCategory GetParameterCategory() const {
-		return EnumeratedSlider;
 	}
 };
 
