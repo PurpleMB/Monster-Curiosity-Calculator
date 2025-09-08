@@ -150,17 +150,11 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 			break;
 	}
 
-	const ImU8 u8_one = 1;
-	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
-	static ImU8 parameter_group = 1;
-
-	ImGui::Text("Set Parameter Group: ");
-	ImGui::SameLine();
-	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	parameter_group = std::clamp((int)parameter_group, 1, output_environment.subset_parameters.GetGroupCount());
-
-
+	static int parameter_group = 1;
+	int parameter_group_count = output_environment.subset_parameters.GetGroupCount();
+	if (parameter_group_count > 1) {
+		DrawParameterGroupSelector(parameter_group, parameter_group_count);
+	}
 	if (ImGui::Button("Apply Parameter")) {
 		output_environment.subset_parameters.AddParameter(building_parameter, (parameter_group - 1));
 	}
@@ -318,6 +312,17 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
+}
+
+void DrawParameterGroupSelector(int& parameter_group_index, int parameter_group_count) {
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
+
+	ImGui::Text("Set Parameter Group: ");
+	ImGui::SameLine();
+	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group_index, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	parameter_group_index = std::clamp(parameter_group_index, 1, parameter_group_count);
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
