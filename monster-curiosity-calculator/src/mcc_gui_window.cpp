@@ -150,13 +150,13 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 			break;
 	}
 
-	static int parameter_group = 1;
+	static int parameter_group = 0;
 	int parameter_group_count = output_environment.subset_parameters.GetGroupCount();
 	if (parameter_group_count > 1) {
-		DrawParameterGroupSelector(parameter_group, parameter_group_count);
+		DrawParameterGroupSelector(parameter_group, output_environment.subset_parameters.GetGroupNameList());
 	}
 	if (ImGui::Button("Apply Parameter")) {
-		output_environment.subset_parameters.AddParameter(building_parameter, (parameter_group - 1));
+		output_environment.subset_parameters.AddParameter(building_parameter, parameter_group);
 	}
 
 
@@ -314,15 +314,24 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawParameterGroupSelector(int& parameter_group_index, int parameter_group_count) {
-	const ImU8 u8_one = 1;
-	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
-
+void DrawParameterGroupSelector(int& parameter_group_index, std::vector<std::string> parameter_group_names_list) {
 	ImGui::Text("Set Parameter Group: ");
+
 	ImGui::SameLine();
-	ImGui::InputScalar("##parameter_group", ImGuiDataType_U8, &parameter_group_index, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	parameter_group_index = std::clamp(parameter_group_index, 1, parameter_group_count);
+	std::string selected_group_name = parameter_group_names_list[parameter_group_index];
+	if (ImGui::Button(selected_group_name.c_str())) {
+			ImGui::OpenPopup("Select parameter group");
+	}
+
+	if (ImGui::BeginPopup("Select parameter group")) {
+		for (int button_index = 0; button_index < parameter_group_names_list.size(); button_index++) {
+			std::string group_name = parameter_group_names_list[button_index];
+			if (ImGui::Selectable(group_name.c_str())) {
+				parameter_group_index = button_index;
+			}
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {

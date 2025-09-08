@@ -476,6 +476,10 @@ struct ParameterSet {
 		return group_name;
 	}
 
+	std::vector<std::string> GetGroupNameList() const {
+		return group_names;
+	}
+
 	ImVec4 GetGroupColor(int group_index) const {
 		int color_index = group_index % group_colors.size();
 		DisplayColor group_display_color = group_colors[color_index];
