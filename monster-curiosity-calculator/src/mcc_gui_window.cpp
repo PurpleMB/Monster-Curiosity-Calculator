@@ -133,10 +133,10 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 					DrawSliderParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
 				case ButtonGrid:
-					DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					DrawButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
 				case Dropdown:
-					DrawEnumeratorParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					DrawDropdownParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
 			}
 			break;
@@ -186,7 +186,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	}
 }
 
-void DrawEnumeratorParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+void DrawDropdownParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
 	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	if (ImGui::Button(selected_value_name.c_str())) {
 		ImGui::OpenPopup("Select parameter value");
@@ -215,6 +215,25 @@ void DrawSliderParameterSelector(EnumeratedParameterType& param_type, ParameterO
 	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	int options_count = param_type.values.size();
 	ImGui::SliderInt("", &selected_value_index, 0, options_count - 1, selected_value_name.c_str());
+
+	ParameterValue selected_value = param_type.values[selected_value_index];
+	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
+
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
+}
+
+void DrawButtonGridParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+	std::string current_value_indicator = std::vformat("Currently selected value: {0}", std::make_format_args(selected_value_name));
+	ImGui::Text(current_value_indicator.c_str());
+
+	for (int i = 0; i < param_type.values.size(); i++) {
+		if (ImGui::Button(param_type.values[i].display_name.c_str())) {
+			selected_value_index = i;
+		}
+	}
 
 	ParameterValue selected_value = param_type.values[selected_value_index];
 	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
