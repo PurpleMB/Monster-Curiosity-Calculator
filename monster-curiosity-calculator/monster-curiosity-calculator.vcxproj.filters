@@ -167,10 +167,27 @@
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\stb\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="data\mccdata.json" />
     <None Include="data\test.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\images\cpp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="x64\Release\data\images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

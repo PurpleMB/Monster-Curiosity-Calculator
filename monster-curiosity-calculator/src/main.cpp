@@ -29,6 +29,13 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
+		// load images into textures
+		int test_image_width = 0;
+		int test_image_height = 0;
+		bool ret = LoadTextureFromFile("./data/images/test.png", &test_texture, &test_image_width, &test_image_height);
+		IM_ASSERT(ret);
+
+		// create parameter groups
 		std::vector<std::string> param_group_names = {
 			"Cheri",
 			"Chesto",
@@ -52,9 +59,6 @@ public:
 			param_group_colors
 		);
 		output_environment.subset_parameters = param_set;
-
-		//CreateSubtable(output_environment);
-		//SortSubtableEntries(output_environment);
 		
 		OpenDatabaseConnection(output_environment);
 		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
@@ -73,6 +77,21 @@ public:
 
 		ImVec2 window_size = {550, 0};
 		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
+
+		// texture text window
+		{
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Texture Test";
+			window_params.window_size = window_size;
+			window_params.window_position = window_pos;
+			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
+			monster_calculator::BeginStyledWindow(window_params);
+
+			ImGui::Image((ImTextureID)(intptr_t)test_texture, ImVec2(100.0f,100.0f));
+
+			monster_calculator::EndStyledWindow(window_params);
+			window_pos.y += kWindowMargin + window_params.window_size.y;
+		}
 
 		// welcome window
 		{
@@ -151,6 +170,8 @@ public:
 	}
 
 private:
+	ID3D11ShaderResourceView* test_texture = NULL;
+
 	bool show_demo_window_ = true;
 	bool show_another_window_ = false;
 
