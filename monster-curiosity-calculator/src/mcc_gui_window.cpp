@@ -102,9 +102,12 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	std::vector<ParameterOperation> operations = selected_param->operations;
-	if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
-		ImGui::OpenPopup("##Select parameter operation");
+	if (operations.size() > 1) {
+		if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
+			ImGui::OpenPopup("##Select parameter operation");
+		}
 	}
+
 
 	if (ImGui::BeginPopup("##Select parameter operation")) {
 		for (int i = 0; i < operations.size(); i++) {
