@@ -260,7 +260,9 @@ void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
 	ImGui::InputText(input_label.c_str(), &value_text, flags);
 
-	building_parameter.SetValueInfo(TableCellDisplayInfo(value_text, DisplayColor()));
+	ParameterValue temp_val = ParameterValue(value_text);
+	param_type.SetValueColorForType(temp_val);
+	building_parameter.SetValueInfo(TableCellDisplayInfo(value_text, temp_val.value_color));
 
 	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(value_text));
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
@@ -289,19 +291,24 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 	std::string operation_format = operation.database_name;
 	std::string formatted_operation;
 	std::string formatted_display;
+	ParameterValue temp_val;
 	if (operand_count == 1) {
 		operand_values[0] = std::clamp(operand_values[0], min_val, max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
 		formatted_display = std::vformat("{0}", std::make_format_args(operand_values[0]));
+		temp_val = ParameterValue(std::to_string(operand_values[0]));
 	}
 	else if (operand_count == 2) {
 		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
 		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
+		temp_val = ParameterValue(std::to_string((operand_values[0] + operand_values[1]) / 2));
 	}
 
-	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, DisplayColor()));
+	
+	param_type.SetValueColorForType(temp_val);
+	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, temp_val.value_color));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
@@ -329,19 +336,23 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	std::string operation_format = operation.database_name;
 	std::string formatted_operation;
 	std::string formatted_display;
+	ParameterValue temp_val;
 	if (operand_count == 1) {
 		operand_values[0] = std::clamp(operand_values[0], min_val, max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0]));
 		formatted_display = std::vformat("{0}", std::make_format_args(operand_values[0]));
+		temp_val = ParameterValue(std::to_string(operand_values[0]));
 	}
 	else if (operand_count == 2) {
 		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
 		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
+		temp_val = ParameterValue(std::to_string((operand_values[0] + operand_values[1]) / 2.0f));
 	}
 
-	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, DisplayColor()));
+	param_type.SetValueColorForType(temp_val);
+	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, temp_val.value_color));
 
 	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
 	building_parameter.SetQuery(formatted_query);
