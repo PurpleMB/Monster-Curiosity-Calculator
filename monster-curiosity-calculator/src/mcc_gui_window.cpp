@@ -21,8 +21,6 @@
 #include "imgui_impl_win32.h"
 #include <misc/cpp/imgui_stdlib.h>
 
-#include "app.h"
-
 #include "mcc_display_structs.h"
 #include "mcc_parameter_structs.h"
 #include "mcc_value_structs.h"

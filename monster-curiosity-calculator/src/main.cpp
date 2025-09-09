@@ -2,10 +2,10 @@
 #include <string>
 
 #include "imgui.h"
-#include "imgui_impl_dx9.h"
+#include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "app.h"
+#include "mcc_app_dx11.h"
 
 #include "mcc_gui_windows.h"
 
