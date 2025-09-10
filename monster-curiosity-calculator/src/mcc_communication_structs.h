@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <unordered_map>
+
+#include <d3d11.h>
 
 #include <sqlite3.h>
 
@@ -25,6 +28,8 @@ struct OutputEnvironment {
 
 	// EXPERIMENTAL
 	sqlite3* database_connection;
+	std::unordered_map <std::string, ID3D11ShaderResourceView*> texture_map;
+
 
 	OutputEnvironment() {
 		log_entries = {};
@@ -33,6 +38,7 @@ struct OutputEnvironment {
 		value_queries = {};
 
 		database_connection = nullptr;
+		texture_map = {};
 	}
 
 	void ClearSubsetEntries() {
@@ -117,6 +123,18 @@ struct OutputEnvironment {
 				}
 			}
 		}
+	}
+
+	void AddTextureToMap(std::string key, ID3D11ShaderResourceView* texture) {
+		texture_map[key] = texture;
+	}
+
+	ImTextureID GetTextureFromMap(std::string texture_key) {
+		if (texture_map.contains(texture_key)) {
+			ID3D11ShaderResourceView* texture = texture_map[texture_key];
+			return (ImTextureID)(intptr_t)texture;
+		}
+		return (ImTextureID)(intptr_t)nullptr;
 	}
 };
 

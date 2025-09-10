@@ -55,6 +55,7 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 }
 
 void DrawWelcomeWindow(OutputEnvironment& output_environment) {
+	ImGui::Image(output_environment.GetTextureFromMap("test"), ImVec2(50, 50));
 	if (ImGui::Button("Build Monster Database")) {
 
 	}

@@ -30,10 +30,127 @@ public:
 
 	virtual void StartUp() final {
 		// load images into textures
-		int test_image_width = 0;
-		int test_image_height = 0;
-		bool ret = LoadTextureFromFile("./data/images/test.png", &test_texture, &test_image_width, &test_image_height);
-		IM_ASSERT(ret);
+		{
+			// load test texture
+			ID3D11ShaderResourceView* test_texture = nullptr;
+			int test_image_width = 0;
+			int test_image_height = 0;
+			bool test_ret = LoadTextureFromFile("./data/images/test.png", &test_texture, &test_image_width, &test_image_height);
+			IM_ASSERT(test_ret);
+			output_environment.AddTextureToMap("test", test_texture);
+
+			// load body 01
+			ID3D11ShaderResourceView* body_01_texture = nullptr;
+			int body_01_width = 0;
+			int body_01_height = 0;
+			bool body_01_ret = LoadTextureFromFile("./data/images/bodies/01_Ball.png", &body_01_texture, &body_01_width, &body_01_height);
+			IM_ASSERT(body_01_ret);
+			output_environment.AddTextureToMap("ball", body_01_texture);
+
+			// load body 02
+			ID3D11ShaderResourceView* body_02_texture = nullptr;
+			int body_02_width = 0;
+			int body_02_height = 0;
+			bool body_02_ret = LoadTextureFromFile("./data/images/bodies/02_Squiggle.png", &body_02_texture, &body_02_width, &body_02_height);
+			IM_ASSERT(body_02_ret);
+			output_environment.AddTextureToMap("squiggle", body_02_texture);
+
+			// load body 03
+			ID3D11ShaderResourceView* body_03_texture = nullptr;
+			int body_03_width = 0;
+			int body_03_height = 0;
+			bool body_03_ret = LoadTextureFromFile("./data/images/bodies/03_Fish.png", &body_03_texture, &body_03_width, &body_03_height);
+			IM_ASSERT(body_03_ret);
+			output_environment.AddTextureToMap("fish", body_03_texture);
+
+			// load body 04
+			ID3D11ShaderResourceView* body_04_texture = nullptr;
+			int body_04_width = 0;
+			int body_04_height = 0;
+			bool body_04_ret = LoadTextureFromFile("./data/images/bodies/04_Arms.png", &body_04_texture, &body_04_width, &body_04_height);
+			IM_ASSERT(body_04_ret);
+			output_environment.AddTextureToMap("arms", body_04_texture);
+
+			// load body 05
+			ID3D11ShaderResourceView* body_05_texture = nullptr;
+			int body_05_width = 0;
+			int body_05_height = 0;
+			bool body_05_ret = LoadTextureFromFile("./data/images/bodies/05_Blob.png", &body_05_texture, &body_05_width, &body_05_height);
+			IM_ASSERT(body_05_ret);
+			output_environment.AddTextureToMap("blob", body_05_texture);
+
+			// load body 06
+			ID3D11ShaderResourceView* body_06_texture = nullptr;
+			int body_06_width = 0;
+			int body_06_height = 0;
+			bool body_06_ret = LoadTextureFromFile("./data/images/bodies/06_Upright.png", &body_06_texture, &body_06_width, &body_06_height);
+			IM_ASSERT(body_06_ret);
+			output_environment.AddTextureToMap("upright", body_06_texture);
+
+			// load body 07
+			ID3D11ShaderResourceView* body_07_texture = nullptr;
+			int body_07_width = 0;
+			int body_07_height = 0;
+			bool body_07_ret = LoadTextureFromFile("./data/images/bodies/07_Legs.png", &body_07_texture, &body_07_width, &body_07_height);
+			IM_ASSERT(body_07_ret);
+			output_environment.AddTextureToMap("legs", body_07_texture);
+
+			// load body 08
+			ID3D11ShaderResourceView* body_08_texture = nullptr;
+			int body_08_width = 0;
+			int body_08_height = 0;
+			bool body_08_ret = LoadTextureFromFile("./data/images/bodies/08_Quadruped.png", &body_08_texture, &body_08_width, &body_08_height);
+			IM_ASSERT(body_08_ret);
+			output_environment.AddTextureToMap("quadruped", body_08_texture);
+
+			// load body 09
+			ID3D11ShaderResourceView* body_09_texture = nullptr;
+			int body_09_width = 0;
+			int body_09_height = 0;
+			bool body_09_ret = LoadTextureFromFile("./data/images/bodies/09_Wings.png", &body_09_texture, &body_09_width, &body_09_height);
+			IM_ASSERT(body_09_ret);
+			output_environment.AddTextureToMap("wings", body_09_texture);
+
+			// load body 10
+			ID3D11ShaderResourceView* body_10_texture = nullptr;
+			int body_10_width = 0;
+			int body_10_height = 0;
+			bool body_10_ret = LoadTextureFromFile("./data/images/bodies/10_Tentacles.png", &body_10_texture, &body_10_width, &body_10_height);
+			IM_ASSERT(body_10_ret);
+			output_environment.AddTextureToMap("tentacles", body_10_texture);
+
+			// load body 11
+			ID3D11ShaderResourceView* body_11_texture = nullptr;
+			int body_11_width = 0;
+			int body_11_height = 0;
+			bool body_11_ret = LoadTextureFromFile("./data/images/bodies/11_Heads.png", &body_11_texture, &body_11_width, &body_11_height);
+			IM_ASSERT(body_11_ret);
+			output_environment.AddTextureToMap("heads", body_11_texture);
+
+			// load body 12
+			ID3D11ShaderResourceView* body_12_texture = nullptr;
+			int body_12_width = 0;
+			int body_12_height = 0;
+			bool body_12_ret = LoadTextureFromFile("./data/images/bodies/12_Humanoid.png", &body_12_texture, &body_12_width, &body_12_height);
+			IM_ASSERT(body_12_ret);
+			output_environment.AddTextureToMap("humanoid", body_12_texture);
+
+			// load body 13
+			ID3D11ShaderResourceView* body_13_texture = nullptr;
+			int body_13_width = 0;
+			int body_13_height = 0;
+			bool body_13_ret = LoadTextureFromFile("./data/images/bodies/13_Insect.png", &body_13_texture, &body_13_width, &body_13_height);
+			IM_ASSERT(body_13_ret);
+			output_environment.AddTextureToMap("insect", body_13_texture);
+
+			// load body 14
+			ID3D11ShaderResourceView* body_14_texture = nullptr;
+			int body_14_width = 0;
+			int body_14_height = 0;
+			bool body_14_ret = LoadTextureFromFile("./data/images/bodies/14_Armor.png", &body_14_texture, &body_14_width, &body_14_height);
+			IM_ASSERT(body_14_ret);
+			output_environment.AddTextureToMap("armor", body_14_texture);
+		}
 
 		// create parameter groups
 		std::vector<std::string> param_group_names = {
@@ -78,23 +195,8 @@ public:
 		ImVec2 window_size = {550, 0};
 		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
 
-		// texture text window
-		if(false) {
-			monster_calculator::WindowParameters window_params;
-			window_params.name = "Texture Test";
-			window_params.window_size = window_size;
-			window_params.window_position = window_pos;
-			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginStyledWindow(window_params);
-
-			ImGui::Image((ImTextureID)(intptr_t)test_texture, ImVec2(100.0f,100.0f));
-
-			monster_calculator::EndStyledWindow(window_params);
-			window_pos.y += kWindowMargin + window_params.window_size.y;
-		}
-
 		// welcome window
-		if(false) {
+		{
 			monster_calculator::WindowParameters window_params;
 			window_params.name = "Welcome";
 			window_params.window_size = window_size;
@@ -170,8 +272,6 @@ public:
 	}
 
 private:
-	ID3D11ShaderResourceView* test_texture = NULL;
-
 	bool show_demo_window_ = true;
 	bool show_another_window_ = false;
 
