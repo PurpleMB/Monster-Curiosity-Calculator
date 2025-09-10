@@ -76,7 +76,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	ImGui::Text("Define parameters to refine data set:");
 	ImGui::NewLine();
 
-	static const ImVec2 combo_size = ImVec2(200, 0);
+	static const ImVec2 combo_size = ImVec2(175, 0);
 
 	static ImGuiComboFlags param_combo_flags = 0;
 	ImGui::SetNextItemWidth(combo_size.x);
@@ -524,39 +524,54 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter) {
 	static int selected_operation_index = 0;
 	std::string selected_operation_name = value_operations[selected_operation_index]->GetDisplayName();
-	static int selected_arg_index = 0;
-	std::string selected_arg_name = value_operations[selected_operation_index]->GetArgumentList()[selected_arg_index].display_name;
 
 	ImGui::Text("Select value to calculate:");
 
 	ImGui::Text("Subset ");
+	
+
+
 	ImGui::SameLine();
-	if (ImGui::SmallButton(selected_operation_name.c_str())) {
-		ImGui::OpenPopup("Select operation");
-	}
-	if (ImGui::BeginPopup("Select operation")) {
+	static ImGuiComboFlags oper_combo_flags = 0;
+	static const ImVec2 oper_combo_size = ImVec2(125, 0);
+	ImGui::SetNextItemWidth(oper_combo_size.x);
+	if (ImGui::BeginCombo("##select_operation", selected_operation_name.c_str(), oper_combo_flags)) {
 		for (int i = 0; i < value_operations.size(); i++) {
-			if (ImGui::Selectable(value_operations[i]->GetDisplayName().c_str())) {
+			const bool is_selected = (selected_operation_index == i);
+			if (ImGui::Selectable(value_operations[i]->GetDisplayName().c_str(), is_selected)) {
 				selected_operation_index = i;
-				selected_arg_index = 0;
 			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::EndPopup();
+		ImGui::EndCombo();
 	}
 
 	ImGui::SameLine();
 	ImGui::Text(" of ");
+
+	std::vector<ValueOperationArgument> arguments = value_operations[selected_operation_index]->GetArgumentList();
+	static int selected_arg_index = 0;
+	std::string selected_arg_name = arguments[selected_arg_index].display_name;
+
 	ImGui::SameLine();
-	if (ImGui::SmallButton(selected_arg_name.c_str())) {
-		ImGui::OpenPopup("Select value");
-	}
-	if (ImGui::BeginPopup("Select value")) {
-		for (int i = 0; i < value_operations[selected_operation_index]->GetArgumentList().size(); i++) {
-			if (ImGui::Selectable(value_operations[selected_operation_index]->GetArgumentList()[i].display_name.c_str())) {
+	static ImGuiComboFlags arg_combo_flags = 0;
+	static const ImVec2 arg_combo_size = ImVec2(175, 0);
+	ImGui::SetNextItemWidth(arg_combo_size.x);
+	if (ImGui::BeginCombo("##select_argument", selected_arg_name.c_str(), arg_combo_flags)) {
+		for (int i = 0; i < arguments.size(); i++) {
+			const bool is_selected = (selected_arg_index == i);
+			if (ImGui::Selectable(arguments[i].display_name.c_str(), is_selected)) {
 				selected_arg_index = i;
 			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::EndPopup();
+		ImGui::EndCombo();
 	}
 
 	if (ImGui::Button("Add Value Operation")) {
@@ -567,6 +582,8 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 		output_environment.value_queries.push_back(subset_value_query);
 	}
+
+	ImGui::Separator();
 
 	DrawValueOperationTable(output_environment);
 
