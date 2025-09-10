@@ -171,22 +171,20 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		output_environment.subset_parameters.AddParameter(building_parameter, parameter_group);
 	}
 
+	ImGui::Separator();
+
 
 	DrawSubsetParameterTable(output_environment);
 
-
-	if (ImGui::Button("Clear All Parameters")) {
-		output_environment.subset_parameters.ClearAllParameters();
-	}
-
 	if (ImGui::Button("Find Matching Monsters")) {
-		//CreateSubtable(output_environment);
-		//SortSubtableEntries(output_environment);
-		//output_environment.ConvertSubsetEntries(param_converter);
-
 		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
 		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_converter);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Clear All Parameters")) {
+		output_environment.subset_parameters.ClearAllParameters();
 	}
 }
 
@@ -395,22 +393,22 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 }
 
 void DrawParameterGroupSelector(int& parameter_group_index, std::vector<std::string> parameter_group_names_list) {
-	ImGui::Text("Set Parameter Group: ");
-
-	ImGui::SameLine();
 	std::string selected_group_name = parameter_group_names_list[parameter_group_index];
-	if (ImGui::Button(selected_group_name.c_str())) {
-			ImGui::OpenPopup("Select parameter group");
-	}
-
-	if (ImGui::BeginPopup("Select parameter group")) {
-		for (int button_index = 0; button_index < parameter_group_names_list.size(); button_index++) {
-			std::string group_name = parameter_group_names_list[button_index];
-			if (ImGui::Selectable(group_name.c_str())) {
-				parameter_group_index = button_index;
+	static const ImVec2 combo_size = ImVec2(200, 0);
+	static ImGuiComboFlags group_combo_flags = 0;
+	ImGui::SetNextItemWidth(combo_size.x);
+	if (ImGui::BeginCombo("Subset Parameter Group", selected_group_name.c_str(), group_combo_flags)) {
+		for (int i = 0; i < parameter_group_names_list.size(); i++) {
+			const bool is_selected = (parameter_group_index == i);
+			if (ImGui::Selectable(parameter_group_names_list[i].c_str(), is_selected)) {
+				parameter_group_index = i;
 			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::EndPopup();
+		ImGui::EndCombo();
 	}
 }
 
