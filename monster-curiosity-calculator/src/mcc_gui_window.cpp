@@ -55,13 +55,7 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 }
 
 void DrawWelcomeWindow(OutputEnvironment& output_environment) {
-	ImGui::Image(output_environment.GetTextureFromMap("test"), ImVec2(50, 50));
-	if (ImGui::Button("Build Monster Database")) {
-
-	}
-	if (ImGui::Button("Parse Monster Json Info Into Database")) {
-		//ClearMainTable(output_environment);
-		//InsertDataFromJson(output_environment);
+	if (ImGui::Button("Rebuild database from JSON file")) {
 		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
 		ClearTableContents(output_environment, "Monsters");
 		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
@@ -71,8 +65,7 @@ void DrawWelcomeWindow(OutputEnvironment& output_environment) {
 }
 
 void DrawSetParameterWindow(OutputEnvironment& output_environment,
-	std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter)
-{
+	std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter) {
 	static QueryParameter building_parameter;
 
 	static int selected_parameter_index = 0;
@@ -80,49 +73,55 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	static int selected_value_index = 0;
 
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
-	ImGui::Text("Select parameter to filter by:");
-	if (ImGui::Button(selected_parameter_name.c_str())) {
-		ImGui::OpenPopup("Select parameter");
-	}
+	ImGui::Text("Define parameters to refine data set:");
+	ImGui::NewLine();
 
-	if (ImGui::BeginPopup("Select parameter")) {
+	static const ImVec2 combo_size = ImVec2(200, 0);
+
+	static ImGuiComboFlags param_combo_flags = 0;
+	ImGui::SetNextItemWidth(combo_size.x);
+	if (ImGui::BeginCombo("Subset Parameter Type", selected_parameter_name.c_str(), param_combo_flags)) {
 		for (int i = 0; i < parameter_types.size(); i++) {
-			if (ImGui::Selectable(parameter_types[i]->display_name.c_str())) {
-				if (i != selected_parameter_index) {
-					selected_operation_index = 0;
-					selected_value_index = 0;
-				}
+			const bool is_selected = (selected_parameter_index == i);
+			if (ImGui::Selectable(parameter_types[i]->display_name.c_str(), is_selected)) {
 				selected_parameter_index = i;
 			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::EndPopup();
+		ImGui::EndCombo();
 	}
+
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
 	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (operations.size() > 1) {
-		if (ImGui::Button(operations[selected_operation_index].display_name.c_str())) {
-			ImGui::OpenPopup("##Select parameter operation");
-		}
-	}
+		static  ImGuiComboFlags oper_combo_flags = 0;
+		ImGui::SetNextItemWidth(combo_size.x);
+		if (ImGui::BeginCombo("Subset Parameter Operation", operations[selected_operation_index].display_name.c_str(), oper_combo_flags)) {
+			for (int i = 0; i < operations.size(); i++) {
+				const bool is_selected = (selected_operation_index == i);
+				if (ImGui::Selectable(operations[i].display_name.c_str(), is_selected)) {
+					selected_operation_index = i;
+				}
 
-
-	if (ImGui::BeginPopup("##Select parameter operation")) {
-		for (int i = 0; i < operations.size(); i++) {
-			if (ImGui::Selectable(operations[i].display_name.c_str())) {
-				selected_operation_index = i;
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
 			}
+			ImGui::EndCombo();
 		}
-		ImGui::EndPopup();
 	}
+
 	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
 	building_parameter.SetOperationInfo(TableCellDisplayInfo(selected_operation.display_name, selected_operation.value_color));
 
 
 	EnumeratedParameterType enum_param;
 	PreferredEnumDisplay display_method;
-
 	OpenParameterType open_param;
 	IntegerParameterType int_param;
 	DecimalParameterType dec_param;
@@ -193,18 +192,24 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 
 void DrawDropdownParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
 	std::string selected_value_name = param_type.values[selected_value_index].display_name;
-	if (ImGui::Button(selected_value_name.c_str())) {
-		ImGui::OpenPopup("Select parameter value");
-	}
 
-	if (ImGui::BeginPopup("Select parameter value")) {
+	static const ImVec2 combo_size = ImVec2(200, 0);
+	static ImGuiComboFlags value_combo_flags = 0;
+	ImGui::SetNextItemWidth(combo_size.x);
+	if (ImGui::BeginCombo("Subset Parameter Value", selected_value_name.c_str(), value_combo_flags)) {
 		for (int i = 0; i < param_type.values.size(); i++) {
-			if (ImGui::Selectable(param_type.values[i].display_name.c_str())) {
+			const bool is_selected = (selected_value_index == i);
+			if (ImGui::Selectable(param_type.values[i].display_name.c_str(), is_selected)) {
 				selected_value_index = i;
 			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
 		}
-		ImGui::EndPopup();
+		ImGui::EndCombo();
 	}
+
 	ParameterValue selected_value = param_type.values[selected_value_index];
 	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
 
