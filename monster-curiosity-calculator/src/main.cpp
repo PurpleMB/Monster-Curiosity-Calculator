@@ -141,7 +141,7 @@ public:
 			int body_13_height = 0;
 			bool body_13_ret = LoadTextureFromFile("./data/images/bodies/13_Insect.png", &body_13_texture, &body_13_width, &body_13_height);
 			IM_ASSERT(body_13_ret);
-			output_environment.AddTextureToMap("insect", body_13_texture);
+			output_environment.AddTextureToMap("bug-wings", body_13_texture);
 
 			// load body 14
 			ID3D11ShaderResourceView* body_14_texture = nullptr;

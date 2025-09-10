@@ -160,6 +160,9 @@ extern const std::vector<ParameterOperation> kValueEnumOperations = {
 const ImVec2 kStandardButtonSize = ImVec2(150, 0);
 const int kStandardButtonsPerRow = 3;
 
+const ImVec2 kStandardImageButtonSize = ImVec2(32, 32);
+const int kStandardImageButtonsPerRow = 7;
+
 // enumerated parameters
 const std::string kPrimaryDisplayName = "Primary Type";
 const std::string kPrimaryDatabaseFormat = "primary_type {0}";
@@ -309,9 +312,9 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kYellowColor,
     kTextEnumOperations,
     kShapeValuesList,
-    ButtonGrid,
-    kStandardButtonSize,
-    kStandardButtonsPerRow
+    ImageButtonGrid,
+    kStandardImageButtonSize,
+    kStandardImageButtonsPerRow
 );
 
 const std::string kPrimaryEggDisplayName = "Primary Egg Group";

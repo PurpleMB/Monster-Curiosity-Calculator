@@ -137,6 +137,9 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 				case ButtonGrid:
 					DrawButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
+				case ImageButtonGrid:
+					DrawImageButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, output_environment);
+					break;
 				case Dropdown:
 					DrawDropdownParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
@@ -241,6 +244,32 @@ void DrawButtonGridParameterSelector(EnumeratedParameterType& param_type, Parame
 			selected_value_index = i;
 		}
 		
+	}
+
+	ParameterValue selected_value = param_type.values[selected_value_index];
+	building_parameter.SetValueInfo(TableCellDisplayInfo(selected_value.display_name, selected_value.value_color));
+
+	std::string formatted_operation = std::vformat(operation.database_name, std::make_format_args(selected_value.database_name));
+	std::string formatted_query = std::vformat(param_type.database_format, std::make_format_args(formatted_operation));
+	building_parameter.SetQuery(formatted_query);
+}
+
+void DrawImageButtonGridParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, OutputEnvironment& output_environment) {
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+	std::string current_value_indicator = std::vformat("Currently selected value: {0}", std::make_format_args(selected_value_name));
+	ImGui::Text(current_value_indicator.c_str());
+
+	ImVec2 button_size = param_type.GetButtonSize();
+	int buttons_per_row = param_type.GetButtonsPerRow();
+	for (int i = 0; i < param_type.values.size(); i++) {
+		std::string button_label = param_type.values[i].display_name;
+		ImTextureID button_tex = output_environment.GetTextureFromMap(param_type.values[i].database_name);
+		if (i % buttons_per_row != 0) {
+			ImGui::SameLine();
+		}
+		if (ImGui::ImageButton(button_label.c_str(), button_tex, param_type.GetButtonSize())) {
+			selected_value_index = i;
+		}
 	}
 
 	ParameterValue selected_value = param_type.values[selected_value_index];
