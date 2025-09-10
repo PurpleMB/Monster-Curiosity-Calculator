@@ -421,13 +421,17 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	static bool value_color_enabled = false;
 	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &operation_color_enabled, &value_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter", "Operation", "Value"};
-	if (ImGui::Button("Column Coloring Toggles")) {
-		ImGui::OpenPopup("column_color_popup");
-	}
 
-	if (ImGui::BeginPopup("column_color_popup")) {
-		for (int i = 0; i < column_color_toggles.size(); i++) {
-			ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+
+	if (ImGui::Button("Table Options")) {
+		ImGui::OpenPopup("table_options_popup");
+	}
+	if (ImGui::BeginPopup("table_options_popup")) {
+		if (ImGui::BeginMenu("Coloring Options")) {
+			for (int i = 0; i < column_color_toggles.size(); i++) {
+				ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+			}
+			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
 	}
@@ -599,13 +603,16 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 	static bool result_color_enabled = false;
 	static std::vector<bool*> column_color_toggles = {&operation_color_enabled, &argument_color_enabled,  &result_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Operation", "Argument", "Result"};
-	if (ImGui::Button("Column Coloring Toggles")) {
-		ImGui::OpenPopup("column_color_popup");
-	}
 
-	if (ImGui::BeginPopup("column_color_popup")) {
-		for (int i = 0; i < column_color_toggles.size(); i++) {
-			ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+	if (ImGui::Button("Table Options")) {
+		ImGui::OpenPopup("table_options_popup");
+	}
+	if (ImGui::BeginPopup("table_options_popup")) {
+		if (ImGui::BeginMenu("Coloring Options")) {
+			for (int i = 0; i < column_color_toggles.size(); i++) {
+				ImGui::Checkbox(column_toggle_names[i].c_str(), column_color_toggles[i]);
+			}
+			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
 	}
@@ -687,29 +694,26 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	// text line showing # of entries in subset
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
-	
-	if (ImGui::Button("Column Toggles")) {
-		ImGui::OpenPopup("column_toggle_popup");
-	}
 
-	if (ImGui::BeginPopup("column_toggle_popup")) {
-		for (ColumnStatus& col : column_statuses) {
-			if (col.GetColumnInfo().togglable) {
-				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.display_enabled);
+	if (ImGui::Button("Table Options")) {
+		ImGui::OpenPopup("table_options_popup");
+	}
+	if (ImGui::BeginPopup("table_options_popup")) {
+		if (ImGui::BeginMenu("Column Toggling")) {
+			for (ColumnStatus& col : column_statuses) {
+				if (col.GetColumnInfo().togglable) {
+					ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.display_enabled);
+				}
 			}
+			ImGui::EndMenu();
 		}
-		ImGui::EndPopup();
-	}
-
-	if (ImGui::Button("Column Coloring Toggles")) {
-		ImGui::OpenPopup("column_coloring_popup");
-	}
-
-	if (ImGui::BeginPopup("column_coloring_popup")) {
-		for (ColumnStatus& col : column_statuses) {
-			if (col.GetColumnInfo().colorable) {
-				ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.coloring_enabled);
+		if (ImGui::BeginMenu("Column Coloring")) {
+			for (ColumnStatus& col : column_statuses) {
+				if (col.GetColumnInfo().colorable) {
+					ImGui::Checkbox(col.GetColumnInfo().display_name.c_str(), &col.coloring_enabled);
+				}
 			}
+			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
 	}
