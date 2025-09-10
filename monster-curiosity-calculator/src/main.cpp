@@ -79,7 +79,7 @@ public:
 		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
 
 		// texture text window
-		{
+		if(false) {
 			monster_calculator::WindowParameters window_params;
 			window_params.name = "Texture Test";
 			window_params.window_size = window_size;
@@ -94,7 +94,7 @@ public:
 		}
 
 		// welcome window
-		{
+		if(false) {
 			monster_calculator::WindowParameters window_params;
 			window_params.name = "Welcome";
 			window_params.window_size = window_size;
