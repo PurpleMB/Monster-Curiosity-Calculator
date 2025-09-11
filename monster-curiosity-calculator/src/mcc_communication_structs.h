@@ -29,7 +29,11 @@ struct OutputEnvironment {
 	// EXPERIMENTAL
 	sqlite3* database_connection;
 	std::unordered_map <std::string, ID3D11ShaderResourceView*> texture_map;
-
+	bool show_settings;
+	bool show_database_rebuild;
+	bool show_program_log;
+	bool show_user_guide;
+	bool show_program_info;
 
 	OutputEnvironment() {
 		log_entries = {};
@@ -39,6 +43,12 @@ struct OutputEnvironment {
 
 		database_connection = nullptr;
 		texture_map = {};
+
+		show_settings = false;
+		show_database_rebuild = false;
+		show_program_log = false;
+		show_user_guide = false;
+		show_program_info = false;
 	}
 
 	void ClearSubsetEntries() {

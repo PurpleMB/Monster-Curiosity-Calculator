@@ -8,10 +8,6 @@
 #include "mcc_communication_structs.h"
 
 namespace monster_calculator {
-
-	void BeginStyledWindow(WindowParameters& window_parameters);
-	void EndStyledWindow(WindowParameters& window_parameters);
-
 	void DrawMenuBarWindow(OutputEnvironment& output_environment);
 
 	void DrawWelcomeWindow(OutputEnvironment& output_environment);

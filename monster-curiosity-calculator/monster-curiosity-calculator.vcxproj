@@ -161,6 +161,7 @@
     <ClCompile Include="src\mcc_gui_window.cpp" />
     <ClCompile Include="src\mcc_subset_constants.cpp" />
     <ClCompile Include="src\mcc_value_constants.cpp" />
+    <ClCompile Include="src\mcc_window_management.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Downloads\stb_image.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="src\mcc_gui_windows.h" />
     <ClInclude Include="src\mcc_value_constants.h" />
     <ClInclude Include="src\mcc_value_structs.h" />
+    <ClInclude Include="src\mcc_window_management.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\mccdata.json" />

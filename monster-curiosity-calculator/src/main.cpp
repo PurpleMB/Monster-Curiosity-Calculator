@@ -7,7 +7,9 @@
 
 #include "mcc_app_dx11.h"
 
+#include "mcc_window_management.h"
 #include "mcc_gui_windows.h"
+#include "mcc_menu_elements.h"
 
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
@@ -205,6 +207,35 @@ public:
 			monster_calculator::DrawMenuBarWindow(output_environment);
 
 			monster_calculator::EndStyledWindow(window_params);
+		}
+
+		// possible menu sub-windows
+		{
+			ImVec2 subwindow_size = {300, 300};
+			if (output_environment.show_settings) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Settings";
+				window_params.window_size = subwindow_size;
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_settings);
+
+				monster_calculator::DrawSettingsWindow(output_environment);
+
+				monster_calculator::EndDynamicWindow(window_params);
+			}
+			if (output_environment.show_database_rebuild) {
+
+			}
+			if (output_environment.show_program_log) {
+
+			}
+			if (output_environment.show_user_guide) {
+
+			}
+			if (output_environment.show_program_info) {
+
+			}
 		}
 
 
