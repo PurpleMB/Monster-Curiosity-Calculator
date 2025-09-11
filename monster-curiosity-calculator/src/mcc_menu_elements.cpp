@@ -16,7 +16,7 @@ void DrawMenuBarTools(OutputEnvironment& output_environment) {
 		ImGui::EndMenu();
 	}
 	static bool log_bool = false;
-	ImGui::Checkbox("Display Program Log", &log_bool);
+	ImGui::MenuItem("Open Program Log", NULL, &log_bool);
 }
 
 void DrawMenuBarHelp(OutputEnvironment& output_environment) {
