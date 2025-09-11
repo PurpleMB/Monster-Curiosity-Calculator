@@ -54,6 +54,20 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
+void DrawMenuBarWindow(OutputEnvironment& output_environment) {
+	if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenu("Menu")) {
+			// add code to draw menu here
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Tools")) {
+			// add code to draw menu here
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+}
+
 void DrawWelcomeWindow(OutputEnvironment& output_environment) {
 	if (ImGui::Button("Rebuild database from JSON file")) {
 		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);

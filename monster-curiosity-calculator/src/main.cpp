@@ -191,9 +191,25 @@ public:
 			ImGui::ShowDemoWindow(&show_demo_window_);
 		}
 
+		// menu window
+		{
+			monster_calculator::WindowParameters window_params;
+			window_params.name = "Menu";
+			float menu_width = ImGui::GetMainViewport()->WorkSize.x;
+			window_params.window_size = ImVec2(menu_width, 0);
+			window_params.window_position = ImVec2(0, 0);
+			window_params.imgui_window_settings = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
+				| ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration;
+			monster_calculator::BeginStyledWindow(window_params);
+
+			monster_calculator::DrawMenuBarWindow(output_environment);
+
+			monster_calculator::EndStyledWindow(window_params);
+		}
+
 
 		ImVec2 window_size = {550, 0};
-		ImVec2 window_pos = {kWindowMargin, kWindowMargin};
+		ImVec2 window_pos = {kWindowMargin, kWindowMargin + 50};
 
 		// welcome window
 		{
@@ -238,7 +254,7 @@ public:
 
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
-			window_pos.y = kWindowMargin;
+			window_pos.y = kWindowMargin + 50;
 		}
 
 		// set display window
