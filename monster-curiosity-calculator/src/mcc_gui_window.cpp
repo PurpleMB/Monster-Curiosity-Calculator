@@ -2,8 +2,6 @@
 
 #define NOMINMAX
 
-#include "mcc_gui_windows.h"
-
 #include <cstdlib>
 
 #include <d3d9.h>
@@ -31,6 +29,9 @@
 #include "mcc_database_querying.h"
 #include "mcc_json_constants.h"
 #include "mcc_json_processing.h"
+#include "mcc_menu_elements.h"
+
+#include "mcc_gui_windows.h"
 
 
 namespace monster_calculator {
@@ -57,11 +58,15 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 void DrawMenuBarWindow(OutputEnvironment& output_environment) {
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Menu")) {
-			// add code to draw menu here
+			DrawMenuBarMenu(output_environment);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Tools")) {
-			// add code to draw menu here
+			DrawMenuBarTools(output_environment);
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Help")) {
+			DrawMenuBarHelp(output_environment);
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
