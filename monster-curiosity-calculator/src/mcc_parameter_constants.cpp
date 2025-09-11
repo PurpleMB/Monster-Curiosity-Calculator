@@ -403,7 +403,7 @@ extern const EnumeratedParameterType kGenderRateParam = EnumeratedParameterType(
 
 // open parameter values & operations
 extern const std::vector<ParameterOperation> kNameOperations = {
-    ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
+    ParameterOperation("Equals",		"LIKE '{0}'",		kGreenColor,
         {
             "Name"
         }
@@ -427,7 +427,7 @@ extern const std::vector<ParameterOperation> kNameOperations = {
 
 // open parameter values & operations
 extern const std::vector<ParameterOperation> kAbilityOperations = {
-    ParameterOperation("Equals",		"= '{0}'",		    kGreenColor,
+    ParameterOperation("Equals",		"LIKE '{0}'",		kGreenColor,
         {
             "Ability"
         }

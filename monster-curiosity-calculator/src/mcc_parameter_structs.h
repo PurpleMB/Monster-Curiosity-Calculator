@@ -218,7 +218,7 @@ struct OpenParameterType : ParameterType {
 		// generate int sum of characters to index into colors list
 		int flat_value = 0;
 		for (char c : value.display_name) {
-			flat_value += (int)c;
+			flat_value += (int)std::tolower(c);
 		}
 		value.value_color = possible_value_colors[flat_value % possible_value_colors.size()];
 	}
