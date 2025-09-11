@@ -174,7 +174,7 @@ extern const EnumeratedParameterType kPrimaryTypeParam = EnumeratedParameterType
     kRedColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -189,7 +189,7 @@ extern const EnumeratedParameterType kSecondaryTypeParam = EnumeratedParameterTy
     kBlueColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -204,7 +204,7 @@ extern const EnumeratedParameterType kEitherTypeParam = EnumeratedParameterType(
     kPurpleColor,
     kTextEnumOperations,
     kTypeValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -297,7 +297,7 @@ extern const EnumeratedParameterType kColorParam = EnumeratedParameterType(
     kCeladonColor,
     kTextEnumOperations,
     kColorValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -327,7 +327,7 @@ extern const EnumeratedParameterType kPrimaryEggParam = EnumeratedParameterType(
     kPeriwinkleColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -342,7 +342,7 @@ extern const EnumeratedParameterType kSecondaryEggParam = EnumeratedParameterTyp
     kLinenColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
@@ -357,7 +357,7 @@ extern const EnumeratedParameterType kEitherEggParam = EnumeratedParameterType(
     kSeashellColor,
     kTextEnumOperations,
     kEggGroupValuesList,
-    ButtonGrid,
+    Dropdown,
     kStandardButtonSize,
     kStandardButtonsPerRow
 );
