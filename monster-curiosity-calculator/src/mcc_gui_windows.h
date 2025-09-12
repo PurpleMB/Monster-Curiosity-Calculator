@@ -33,6 +33,4 @@ namespace monster_calculator {
 
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
 
-	void DrawOutputLogWindow(OutputEnvironment& output_environment);
-
 } // namespace monster_calculator
