@@ -370,7 +370,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		int slider_width = 250;
 		ImGui::SetNextItemWidth(slider_width);
 		std::string slider_label = std::vformat("##slider_{0}", std::make_format_args(operand_index));
-		ImGui::SliderScalar(slider_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], &min_val, &max_val, "");
+		ImGui::SliderScalar(slider_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], &min_val, &max_val, "##%.1f");
 	}
 
 	std::string operation_format = operation.database_name;
