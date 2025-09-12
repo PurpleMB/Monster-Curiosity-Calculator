@@ -780,7 +780,7 @@ extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
 
 // decimal parameters
 const double kWeightMin = 0.0;
-const double kWeightMax = 2000.0;
+const double kWeightMax = 1000.0;
 const std::string kWeightDisplayName = "Weight (kg)";
 const std::string kWeightDatabaseFormat = "weight {0}";
 const std::string kWeightDisplayFormat = "Weight: {0}";
@@ -797,7 +797,7 @@ extern const DecimalParameterType kWeightParam = DecimalParameterType(
 );
 
 const double kHeightMin = 0.0;
-const double kHeightMax = 2000.0;
+const double kHeightMax = 100.0;
 const std::string kHeightDisplayName = "Height(m)";
 const std::string kHeightDatabaseFormat = "height {0}";
 const std::string kHeightDisplayFormat = "Height: {0}";

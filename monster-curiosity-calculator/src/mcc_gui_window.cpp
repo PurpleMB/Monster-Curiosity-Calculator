@@ -307,8 +307,16 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
+		int input_field_width = 100;
+		ImGui::SetNextItemWidth(input_field_width);
 		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
 		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_U32, &operand_values[operand_index], inputs_step ? &u32_one : NULL, NULL, "%u", flags);
+
+		ImGui::SameLine();
+		int slider_width = 250;
+		ImGui::SetNextItemWidth(slider_width);
+		std::string slider_label = std::vformat("##slider_{0}", std::make_format_args(operand_index));
+		ImGui::SliderInt(slider_label.c_str(), &operand_values[operand_index], min_val, max_val, "");
 	}
 
 	std::string operation_format = operation.database_name;
@@ -353,8 +361,16 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
+		int input_field_width = 100;
+		ImGui::SetNextItemWidth(input_field_width);
 		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
 		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], inputs_step ? &f64_one : NULL, NULL, "%.1f", flags);
+
+		ImGui::SameLine();
+		int slider_width = 250;
+		ImGui::SetNextItemWidth(slider_width);
+		std::string slider_label = std::vformat("##slider_{0}", std::make_format_args(operand_index));
+		ImGui::SliderScalar(slider_label.c_str(), ImGuiDataType_Double, &operand_values[operand_index], &min_val, &max_val, "");
 	}
 
 	std::string operation_format = operation.database_name;
