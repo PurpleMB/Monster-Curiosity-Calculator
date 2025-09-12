@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
 
+#include "mcc_database_constants.h"
+#include "mcc_database_querying.h"
+#include "mcc_json_constants.h"
+#include "mcc_json_processing.h"
+
 #include "mcc_window_management.h"
 
 #include "mcc_communication_structs.h"
@@ -43,7 +48,19 @@ void DrawSettingsWindow(OutputEnvironment& output_environment) {
 
 // tools windows
 void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
+	std::string explanation = "In the event that any database files have been lost or corrupted, you may use this to rebuild the files";
+	ImGui::Text(explanation.c_str());
 
+	std::string warning = "This operation may take several minutes. If you are certain you want to rebuild the database, click the \"Rebuild Database\" button";
+	ImGui::Text(warning.c_str());
+
+	if (ImGui::Button("Rebuild Database")) {
+		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
+		ClearTableContents(output_environment, "Monsters");
+		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
+		std::vector<std::string> column_names = kMainTableColumnNameList;
+		PopulateTableFromList(output_environment, "Monsters", kMainTableSchemaList, monster_data);
+	}
 }
 
 void DrawProgramLogWindow(OutputEnvironment& output_environment) {

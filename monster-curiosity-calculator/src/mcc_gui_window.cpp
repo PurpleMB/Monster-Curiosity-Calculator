@@ -27,8 +27,6 @@
 
 #include "mcc_database_constants.h"
 #include "mcc_database_querying.h"
-#include "mcc_json_constants.h"
-#include "mcc_json_processing.h"
 #include "mcc_menu_elements.h"
 
 #include "mcc_gui_windows.h"
@@ -51,16 +49,6 @@ void DrawMenuBarWindow(OutputEnvironment& output_environment) {
 			ImGui::EndMenu();
 		}
 		ImGui::EndMenuBar();
-	}
-}
-
-void DrawWelcomeWindow(OutputEnvironment& output_environment) {
-	if (ImGui::Button("Rebuild database from JSON file")) {
-		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
-		ClearTableContents(output_environment, "Monsters");
-		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
-		std::vector<std::string> column_names = kMainTableColumnNameList;
-		PopulateTableFromList(output_environment, "Monsters", kMainTableSchemaList, monster_data);
 	}
 }
 

@@ -10,8 +10,6 @@
 namespace monster_calculator {
 	void DrawMenuBarWindow(OutputEnvironment& output_environment);
 
-	void DrawWelcomeWindow(OutputEnvironment& output_environment);
-
 	void DrawSetParameterWindow(OutputEnvironment& output_environment, 
 		std::vector<std::shared_ptr<ParameterType>> parameter_types, ParameterTypeConverter param_converter);
 
