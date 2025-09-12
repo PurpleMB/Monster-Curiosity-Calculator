@@ -14,10 +14,58 @@
 
 namespace monster_calculator {
 
+enum EntryType {
+	Neutral,
+	Success,
+	Warning,
+	Error
+};
+
 struct LogEntry {
+private:
+	EntryType entry_type;
 	std::string timestamp;
 	std::string message_code;
 	std::string log_message;
+
+	std::string GenerateTimestamp() {
+		namespace ch = std::chrono;
+		auto curr_time = ch::floor<ch::seconds>(ch::system_clock::now());
+
+		std::string timestamp_text = std::format("{:%T}", curr_time);
+		return timestamp_text;
+	}
+
+public:
+	LogEntry() {
+		entry_type = Neutral;
+		timestamp = GenerateTimestamp();
+		message_code = "-1";
+		log_message = "UNINITIALIZED LOG ENTRY";
+	}
+
+	LogEntry(EntryType type, std::string code, std::string messsage) {
+		entry_type = type;
+		timestamp = GenerateTimestamp();
+		message_code = code;
+		log_message = messsage;
+	}
+
+	EntryType GetEntryType() {
+		return entry_type;
+	}
+
+	std::string GetEntryTimestamp() {
+		return timestamp;
+	}
+
+	std::string GetEntryCode() {
+		return message_code;
+	}
+
+	std::string GetEntryMessage() {
+		return log_message;
+	}
 };
 
 struct OutputEnvironment {
@@ -82,19 +130,18 @@ struct OutputEnvironment {
 	}
 
 	void LogError(const int event_code, const char* event_msg) {
-		namespace ch = std::chrono;
-		auto curr_time = ch::floor<ch::seconds>(ch::system_clock::now());
-
-		std::string timestamp_text = std::format("{:%T}", curr_time);
 		std::string error_code_text = std::to_string(event_code);
 		std::string error_message_text = event_msg;
 
-		LogEntry error_entry = {timestamp_text, error_code_text, error_message_text};
+		LogEntry error_entry = LogEntry(Error, error_code_text, error_message_text);
 		log_entries.push_back(error_entry);
 	}
 
 	void LogSuccess(const char* event_msg) {
-		LogError(0, event_msg);
+		std::string success_message_text = event_msg;
+
+		LogEntry success_entry = LogEntry(Success,"0", success_message_text);
+		log_entries.push_back(success_entry);
 	}
 
 	std::string GenerateValueSetString(std::string table_name) {

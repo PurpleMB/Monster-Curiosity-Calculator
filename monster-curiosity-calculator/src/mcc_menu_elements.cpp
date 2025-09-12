@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "mcc_display_constants.h"
+
 #include "mcc_database_constants.h"
 #include "mcc_database_querying.h"
 #include "mcc_json_constants.h"
@@ -65,7 +67,7 @@ void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
 
 void DrawProgramLogWindow(OutputEnvironment& output_environment) {
 	ImVec2 outer_size = ImGui::GetContentRegionAvail();
-	const int kColumnCount = 4;
+	const int kColumnCount = 5;
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
 		ImGuiTableFlags_ScrollY;
@@ -75,6 +77,7 @@ void DrawProgramLogWindow(OutputEnvironment& output_environment) {
 		// prepare table header
 		ImGui::TableSetupColumn("Entry #", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("Timestamp", ImGuiTableColumnFlags_WidthFixed);
+		ImGui::TableSetupColumn("Entry Type", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("Event Code", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("Message", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
@@ -98,13 +101,30 @@ void DrawProgramLogWindow(OutputEnvironment& output_environment) {
 			ImGui::Text(std::to_string(displayed_index).c_str());
 
 			ImGui::TableSetColumnIndex(1);
-			ImGui::Text(entry.timestamp.c_str());
+			ImGui::Text(entry.GetEntryTimestamp().c_str());
 
 			ImGui::TableSetColumnIndex(2);
-			ImGui::Text(entry.message_code.c_str());
+			EntryType entry_type = entry.GetEntryType();
+			switch (entry_type) {
+				case Neutral:
+					ImGui::Text("Neutral");
+					break;
+				case Success:
+					ImGui::TextColored(kGreenColor.GetColorValues(), "Success");
+					break;
+				case Warning:
+					ImGui::TextColored(kYellowColor.GetColorValues(), "Warning");
+					break;
+				case Error:
+					ImGui::TextColored(kRedColor.GetColorValues(), "Error");
+					break;
+			}
 
 			ImGui::TableSetColumnIndex(3);
-			ImGui::TextWrapped(entry.log_message.c_str());
+			ImGui::Text(entry.GetEntryCode().c_str());
+
+			ImGui::TableSetColumnIndex(4);
+			ImGui::TextWrapped(entry.GetEntryMessage().c_str());
 		}
 		ImGui::EndTable();
 	}
