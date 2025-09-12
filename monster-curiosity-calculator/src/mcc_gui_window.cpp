@@ -297,8 +297,9 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 
 	const int u32_one = 1;
 	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
-	static std::vector<int> operand_values = {0, 0};
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll
+		| ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_ParseEmptyRefVal;
+	static std::vector<int> operand_values = {min_val, max_val};
 
 	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
@@ -342,8 +343,9 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 
 	const double f64_one = 1.0;
 	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll;
-	static std::vector<double> operand_values = {0, 0};
+	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll
+		| ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_ParseEmptyRefVal;
+	static std::vector<double> operand_values = {min_val, max_val};
 
 	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
@@ -468,15 +470,14 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
-				//int displayed_group_index = group_index + 1;
-				//ImGui::Text(std::to_string(displayed_group_index).c_str());
+
 				std::string group_name = output_environment.subset_parameters.GetGroupName(group_index);
 				ImGui::Text(group_name.c_str());
 
 				ImGui::TableSetColumnIndex(1);
 				TableCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
 				if (parameter_color_enabled) {
-					DisplayColor param_color = parameter_column_info.GetColor();
+					DisplayColor param_color = parameter_column_info.GetDisplayColor();
 					ImVec4 cell_color = param_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -486,7 +487,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(2);
 				TableCellDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
 				if (operation_color_enabled) {
-					DisplayColor oper_color = operation_column_info.GetColor();
+					DisplayColor oper_color = operation_column_info.GetDisplayColor();
 					ImVec4 cell_color = oper_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -496,7 +497,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(3);
 				TableCellDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
 				if (value_color_enabled) {
-					DisplayColor value_color = value_column_info.GetColor();
+					DisplayColor value_color = value_column_info.GetDisplayColor();
 					ImVec4 cell_color = value_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -644,7 +645,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(0);
 			if (operation_color_enabled) {
-				DisplayColor operation_color = value_query.GetOperationDisplayInfo().GetColor();
+				DisplayColor operation_color = value_query.GetOperationDisplayInfo().GetDisplayColor();
 				ImVec4 cell_color = operation_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -654,7 +655,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(1);
 			if (argument_color_enabled) {
-				DisplayColor argument_color = value_query.GetArgumentDisplayInfo().GetColor();
+				DisplayColor argument_color = value_query.GetArgumentDisplayInfo().GetDisplayColor();
 				ImVec4 cell_color = argument_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
@@ -664,7 +665,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(2);
 			if (result_color_enabled) {
-				DisplayColor result_color = value_query.GetResultDisplayInfo().GetColor();
+				DisplayColor result_color = value_query.GetResultDisplayInfo().GetDisplayColor();
 				ImVec4 cell_color = result_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);

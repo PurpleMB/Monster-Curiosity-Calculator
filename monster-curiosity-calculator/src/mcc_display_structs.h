@@ -73,7 +73,7 @@ public:
 		return column_text;
 	}
 
-	DisplayColor GetColor() const {
+	DisplayColor GetDisplayColor() const {
 		return column_color;
 	}
 

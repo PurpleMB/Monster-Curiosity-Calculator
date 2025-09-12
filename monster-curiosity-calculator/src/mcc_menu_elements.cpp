@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "mcc_database_constants.h"
 #include "mcc_database_querying.h"
@@ -115,6 +116,39 @@ void DrawUserGuideWindow(OutputEnvironment& output_environment) {
 }
 
 void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
+	const std::string version_text = "Version 0.1";
+	ImGui::Text(version_text.c_str());
+
+	ImTextureID program_logo = output_environment.GetTextureFromMap("placeholder");
+	float image_width = ImGui::GetWindowSize().x * .95f;
+	ImVec2 image_size = {image_width, image_width};
+	ImGui::Image(program_logo, image_size);
+
+	ImGui::Text("Repository:");
+	ImGui::SameLine();
+	ImGui::SmallButton("TODO: OPEN REPOSITORY");
+
+	ImGui::Separator();
+
+	ImGui::TextWrapped("Monster Curiosity Calculator uses the following libraries and tools:");
+
+	std::vector<std::string> source_texts = {
+		"PokeAPI v2 - https://pokeapi.co/",
+		"Bulbagarden Archives - https://archives.bulbagarden.net/",
+		"DearImGui - https://github.com/ocornut/imgui",
+		"JsonCpp - https://github.com/open-source-parsers/jsoncpp",
+		"STB Image Library - https://github.com/nothings/stb",
+		"SQLite - https://www.sqlite.org/"
+	};
+
+	ImVec2 list_box_size = {ImGui::GetWindowSize().x * .95f, ImGui::GetTextLineHeightWithSpacing() * 6};
+	if (ImGui::BeginListBox("##sources", list_box_size)) {
+		for (int n = 0; n < source_texts.size(); n++) {
+			std::string source = source_texts[n];
+			ImGui::Text(source.c_str());
+		}
+		ImGui::EndListBox();
+	}
 
 }
 

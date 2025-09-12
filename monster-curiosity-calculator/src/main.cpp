@@ -33,13 +33,13 @@ public:
 	virtual void StartUp() final {
 		// load images into textures
 		{
-			// load test texture
+			// load palceholder texture
 			ID3D11ShaderResourceView* test_texture = nullptr;
-			int test_image_width = 0;
-			int test_image_height = 0;
-			bool test_ret = LoadTextureFromFile("./data/images/test.png", &test_texture, &test_image_width, &test_image_height);
-			IM_ASSERT(test_ret);
-			output_environment.AddTextureToMap("test", test_texture);
+			int ph_image_width = 0;
+			int ph_image_height = 0;
+			bool ph_ret = LoadTextureFromFile("./data/images/placeholder.png", &test_texture, &ph_image_width, &ph_image_height);
+			IM_ASSERT(ph_ret);
+			output_environment.AddTextureToMap("placeholder", test_texture);
 
 			// load body 01
 			ID3D11ShaderResourceView* body_01_texture = nullptr;
@@ -252,7 +252,16 @@ public:
 
 			}
 			if (output_environment.show_program_info) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Program Info";
+				window_params.window_size = {450, 0};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize;
+				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_program_info);
 
+				monster_calculator::DrawProgramInfoWindow(output_environment);
+
+				monster_calculator::EndDynamicWindow(window_params);
 			}
 		}
 
