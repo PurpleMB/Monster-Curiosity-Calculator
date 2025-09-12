@@ -30,6 +30,11 @@ public:
 		return color_value;
 	}
 
+	ImVec4 EvaluateColorWithIntensity(float color_intensity) {
+		ImVec4 evaluated_color = ImVec4(color_value.x, color_value.y, color_value.z, color_intensity);
+		return evaluated_color;
+	}
+
 	static DisplayColor InterpolateColors(DisplayColor color_a, DisplayColor color_b, float t) {
 		std::string blend_name = color_a.GetColorName() + "-" + color_b.GetColorName() + " Blend";
 		ImVec4 color_a_vals = color_a.GetColorValues();

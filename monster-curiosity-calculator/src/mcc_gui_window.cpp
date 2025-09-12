@@ -463,8 +463,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 				ImGui::TableSetColumnIndex(0);
 				if (group_color_enabled) {
-					ImVec4 group_cell_color = output_environment.subset_parameters.GetGroupColor(group_index);
-					ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+					DisplayColor group_color = output_environment.subset_parameters.GetGroupDisplayColor(group_index);
+					ImVec4 cell_color = group_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				//int displayed_group_index = group_index + 1;
@@ -475,8 +476,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(1);
 				TableCellDisplayInfo parameter_column_info = subset_parameter.GetParameterDisplayInfo();
 				if (parameter_color_enabled) {
-					ImVec4 param_cell_color = parameter_column_info.GetColor().GetColorValues();
-					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
+					DisplayColor param_color = parameter_column_info.GetColor();
+					ImVec4 cell_color = param_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				ImGui::Text(parameter_column_info.GetText().c_str());
@@ -484,8 +486,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(2);
 				TableCellDisplayInfo operation_column_info = subset_parameter.GetOperationDisplayInfo();
 				if (operation_color_enabled) {
-					ImVec4 param_cell_color = operation_column_info.GetColor().GetColorValues();
-					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
+					DisplayColor oper_color = operation_column_info.GetColor();
+					ImVec4 cell_color = oper_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				ImGui::Text(operation_column_info.GetText().c_str());
@@ -493,8 +496,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(3);
 				TableCellDisplayInfo value_column_info = subset_parameter.GetValueDisplayInfo();
 				if (value_color_enabled) {
-					ImVec4 param_cell_color = value_column_info.GetColor().GetColorValues();
-					ImU32 cell_bg_color = ImGui::GetColorU32(param_cell_color);
+					DisplayColor value_color = value_column_info.GetColor();
+					ImVec4 cell_color = value_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
 				ImGui::Text(value_column_info.GetText().c_str());
@@ -640,8 +644,9 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(0);
 			if (operation_color_enabled) {
-				ImVec4 group_cell_color = value_query.GetOperationDisplayInfo().GetColor().GetColorValues();
-				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				DisplayColor operation_color = value_query.GetOperationDisplayInfo().GetColor();
+				ImVec4 cell_color = operation_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 			}
 			TableCellDisplayInfo operation_info = value_query.GetOperationDisplayInfo();
@@ -649,8 +654,9 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(1);
 			if (argument_color_enabled) {
-				ImVec4 group_cell_color = value_query.GetArgumentDisplayInfo().GetColor().GetColorValues();
-				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				DisplayColor argument_color = value_query.GetArgumentDisplayInfo().GetColor();
+				ImVec4 cell_color = argument_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 			}
 			TableCellDisplayInfo argument_info = value_query.GetArgumentDisplayInfo();
@@ -658,8 +664,9 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 
 			ImGui::TableSetColumnIndex(2);
 			if (result_color_enabled) {
-				ImVec4 group_cell_color = value_query.GetResultDisplayInfo().GetColor().GetColorValues();
-				ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+				DisplayColor result_color = value_query.GetResultDisplayInfo().GetColor();
+				ImVec4 cell_color = result_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+				ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 				ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 			}
 			TableCellDisplayInfo result_info = value_query.GetResultDisplayInfo();
@@ -812,8 +819,9 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 				if (subset_entry.HasConvertedData(active_col_info.query_name)) {
 					ParameterValue param_val = subset_entry.GetParameterValue(active_col_info.query_name);
 					if (active_column.IsColored()) {
-						ImVec4 group_cell_color = param_val.GetParameterColor();
-						ImU32 cell_bg_color = ImGui::GetColorU32(group_cell_color);
+						DisplayColor value_color = param_val.GetValueDisplayColor();
+						ImVec4 cell_color = value_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+						ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 						ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 					}
 					ImGui::Text(subset_entry.GetConvertedDataName(active_col_info.query_name).c_str());

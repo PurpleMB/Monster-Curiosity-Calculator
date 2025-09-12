@@ -48,8 +48,8 @@ struct ParameterValue {
 		sorting_value = sort_val;
 	}
 
-	ImVec4 GetParameterColor() const {
-		return value_color.GetColorValues();
+	DisplayColor GetValueDisplayColor() const {
+		return value_color;
 	}
 
 	int GetSortValue() const {
@@ -115,8 +115,8 @@ struct ParameterType {
 		value.value_color = kFuschiaColor;
 	}
 
-	ImVec4 GetParameterColor() const {
-		return parameter_color.GetColorValues();
+	DisplayColor GetParamDisplayColor() const {
+		return parameter_color;
 	}
 };
 
@@ -510,10 +510,10 @@ struct ParameterSet {
 		return group_names;
 	}
 
-	ImVec4 GetGroupColor(int group_index) const {
+	DisplayColor GetGroupDisplayColor(int group_index) const {
 		int color_index = group_index % group_colors.size();
 		DisplayColor group_display_color = group_colors[color_index];
-		return group_display_color.GetColorValues();
+		return group_display_color;
 	}
 
 	std::string GetGroupQueryString(int group_index) const {

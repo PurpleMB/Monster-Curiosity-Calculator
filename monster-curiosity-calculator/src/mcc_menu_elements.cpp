@@ -36,11 +36,10 @@ void DrawMenuBarHelp(OutputEnvironment& output_environment) {
 // menu windows
 void DrawSettingsWindow(OutputEnvironment& output_environment) {
 	ImGui::Text("Table Color Intensity");
-	static float temp = .5f;
 	const float f32_zero = 0.f;
 	const float f32_one = 1.f;
-	ImGui::SliderScalar("##color_intensity_slider", ImGuiDataType_Float, &temp, &f32_zero, &f32_one, "");
-	int percentage = temp * 100;
+	ImGui::SliderScalar("##color_intensity_slider", ImGuiDataType_Float, &output_environment.table_color_intensity, &f32_zero, &f32_one, "");
+	int percentage = output_environment.table_color_intensity * 100;
 	std::string percentage_text = std::to_string(percentage) + "%%";
 	ImGui::SameLine();
 	ImGui::Text(percentage_text.c_str());

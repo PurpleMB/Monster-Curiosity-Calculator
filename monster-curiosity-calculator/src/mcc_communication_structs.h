@@ -34,6 +34,7 @@ struct OutputEnvironment {
 	bool show_program_log;
 	bool show_user_guide;
 	bool show_program_info;
+	float table_color_intensity;
 
 	OutputEnvironment() {
 		log_entries = {};
@@ -49,6 +50,8 @@ struct OutputEnvironment {
 		show_program_log = false;
 		show_user_guide = false;
 		show_program_info = false;
+
+		table_color_intensity = .5f;
 	}
 
 	void ClearSubsetEntries() {
