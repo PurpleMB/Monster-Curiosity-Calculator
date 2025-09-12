@@ -26,7 +26,7 @@ void DrawMenuBarTools(OutputEnvironment& output_environment) {
 		ImGui::EndMenu();
 	}
 	static bool log_bool = false;
-	ImGui::MenuItem("Open Program Log", NULL, &output_environment.show_program_log);
+	ImGui::MenuItem("Program Log", NULL, &output_environment.show_program_log);
 }
 
 void DrawMenuBarHelp(OutputEnvironment& output_environment) {
@@ -64,7 +64,7 @@ void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
 }
 
 void DrawProgramLogWindow(OutputEnvironment& output_environment) {
-	ImVec2 outer_size = ImVec2(0.0f, 300.0f);
+	ImVec2 outer_size = ImGui::GetContentRegionAvail();
 	const int kColumnCount = 4;
 	const int kTableFlags = ImGuiTableFlags_Borders |
 		ImGuiTableFlags_SizingFixedFit |
