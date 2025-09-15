@@ -166,6 +166,8 @@ private:
 	TableCellDisplayInfo argument_info;
 	TableCellDisplayInfo result_info;
 
+	bool value_locked;
+
 public:
 	ValueQuery(ValueOperation operation, ValueOperationArgument argument) {
 		operation_info = TableCellDisplayInfo(operation.GetDisplayName(), operation.GetDisplayColor());
@@ -175,6 +177,8 @@ public:
 		query_statement = operation.GenerateArgumentQuery(argument);
 		value_alias = operation.GenerateArgumentAlias(argument);
 		associated_column_name = argument.database_name;
+
+		value_locked = false;
 	}
 
 	std::string GenerateQueryStatement(std::string table_name) {
@@ -211,6 +215,14 @@ public:
 	void UpdateResultDisplayInfo(std::string result_text, DisplayColor result_color) {
 		result_info.SetText(result_text);
 		result_info.SetColor(result_color);
+	}
+
+	bool IsLocked() const {
+		return value_locked;
+	}
+
+	void SetLocked(bool updated_lock_state) {
+		value_locked = updated_lock_state;
 	}
 };
 

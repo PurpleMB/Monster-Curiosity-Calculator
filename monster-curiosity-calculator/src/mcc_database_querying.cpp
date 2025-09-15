@@ -401,10 +401,20 @@ void RetrieveTableEntries(OutputEnvironment& output_environment, std::string tab
 }
 
 void QueryValuesFromTable(OutputEnvironment& output_environment, std::string table_name) {
-	std::string value_query_str = "SELECT {0} FROM {1} LIMIT 1";
-	std::string queries_text = output_environment.GenerateValueSetString(table_name);
+	std::string value_query_str = "SELECT {0} \nFROM {1} LIMIT 1";
+	std::vector<int> query_indices_out = {};
+	std::string queries_text = output_environment.GenerateValueSetString(table_name, query_indices_out);
 	value_query_str = std::vformat(value_query_str, std::make_format_args(queries_text, table_name));
 	std::cout << value_query_str << std::endl;
+
+	if (query_indices_out.size() == 0) {
+		std::string noop_msg = std::vformat(
+			"No values to calculate; aborting attempt to query from table '{0}'",
+			std::make_format_args(table_name)
+		);
+		output_environment.LogNeutral(noop_msg.c_str());
+		return;
+	}
 
 	sqlite3_stmt* value_query_stmt;
 	int prepare_status = sqlite3_prepare_v2(
@@ -429,7 +439,8 @@ void QueryValuesFromTable(OutputEnvironment& output_environment, std::string tab
 			std::string col_name = sqlite3_column_name(value_query_stmt, i);
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(value_query_stmt, i)));
 			std::string log_entry = std::vformat("{0}: {1}", std::make_format_args(col_name, col_val));
-			output_environment.StoreRawValueQueryResult(i, col_val);
+			int query_list_index = query_indices_out[i];
+			output_environment.StoreRawValueQueryResult(query_list_index, col_val);
 			output_environment.LogSuccess(log_entry.c_str());
 		}
 	}

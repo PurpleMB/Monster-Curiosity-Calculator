@@ -690,8 +690,24 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 			ImGui::Text(result_info.GetText().c_str());
 
 			ImGui::TableSetColumnIndex(3);
-			std::string button_id = "##RemoveOperation" + std::to_string(operation_index);
-			ImGui::PushID(button_id.c_str());
+			ValueQuery& curr_query = output_environment.value_queries[operation_index];
+			// value locking buttons
+			std::string lock_id = "##LockOperation" + std::to_string(operation_index);
+			ImGui::PushID(lock_id.c_str());
+			if (curr_query.IsLocked()) {
+				if (ImGui::SmallButton("Unlock Value")) {
+					curr_query.SetLocked(false);
+				}
+			}
+			else {
+				if (ImGui::SmallButton("Lock Value")) {
+					curr_query.SetLocked(true);
+				}
+			}
+			ImGui::PopID();
+			// remove button
+			std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
+			ImGui::PushID(remove_id.c_str());
 			std::string label = "X";
 			if (ImGui::SmallButton(label.c_str())) {
 				output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);

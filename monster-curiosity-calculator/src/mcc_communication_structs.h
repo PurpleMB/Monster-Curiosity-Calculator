@@ -4,6 +4,8 @@
 #include <chrono>
 #include <unordered_map>
 
+#include <stdio.h>
+
 #include <d3d11.h>
 
 #include <sqlite3.h>
@@ -137,6 +139,20 @@ struct OutputEnvironment {
 		log_entries.push_back(error_entry);
 	}
 
+	void LogWraning(const char* event_msg) {
+		std::string warning_message_text = event_msg;
+
+		LogEntry warning_entry = LogEntry(Warning, "0", warning_message_text);
+		log_entries.push_back(warning_entry);
+	}
+
+	void LogNeutral(const char* event_msg) {
+		std::string neutral_message_text = event_msg;
+
+		LogEntry neutral_entry = LogEntry(Neutral, "0", neutral_message_text);
+		log_entries.push_back(neutral_entry);
+	}
+
 	void LogSuccess(const char* event_msg) {
 		std::string success_message_text = event_msg;
 
@@ -144,14 +160,19 @@ struct OutputEnvironment {
 		log_entries.push_back(success_entry);
 	}
 
-	std::string GenerateValueSetString(std::string table_name) {
+	std::string GenerateValueSetString(std::string table_name, std::vector<int>& query_indices_out) {
 		std::string set_text = "";
 		for (int i = 0; i < value_queries.size(); i++) {
 			ValueQuery query = value_queries[i];
-			set_text += "\n" + query.GenerateQueryStatement(table_name);
-			if (i < value_queries.size() - 1) {
+			if (query.IsLocked()) {
+				continue;
+			}
+
+			if (set_text.length() > 0) {
 				set_text += ",";
 			}
+			set_text += "\n" + query.GenerateQueryStatement(table_name);
+			query_indices_out.push_back(i);
 		}
 		return set_text;
 	}
