@@ -158,7 +158,8 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 		"DearImGui - https://github.com/ocornut/imgui",
 		"JsonCpp - https://github.com/open-source-parsers/jsoncpp",
 		"STB Image Library - https://github.com/nothings/stb",
-		"SQLite - https://www.sqlite.org/"
+		"SQLite - https://www.sqlite.org/",
+		"Icon8 - https://icons8.com"
 	};
 
 	ImVec2 list_box_size = {ImGui::GetWindowSize().x * .95f, ImGui::GetTextLineHeightWithSpacing() * 6};

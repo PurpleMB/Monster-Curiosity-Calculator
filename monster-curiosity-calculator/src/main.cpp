@@ -41,6 +41,49 @@ public:
 			IM_ASSERT(ph_ret);
 			output_environment.AddTextureToMap("placeholder", test_texture);
 
+			// load button icons
+			// remove icon
+			ID3D11ShaderResourceView* remove_texture = nullptr;
+			int remove_image_width = 0;
+			int remove_image_height = 0;
+			bool remove_ret = LoadTextureFromFile("./data/images/x-icon.png", &remove_texture, &remove_image_width, &remove_image_height);
+			IM_ASSERT(remove_ret);
+			output_environment.AddTextureToMap("remove", remove_texture);
+
+			// edit icon
+			ID3D11ShaderResourceView* edit_texture = nullptr;
+			int edit_image_width = 0;
+			int edit_image_height = 0;
+			bool edit_ret = LoadTextureFromFile("./data/images/cog-icon.png", &edit_texture, &edit_image_width, &edit_image_height);
+			IM_ASSERT(edit_ret);
+			output_environment.AddTextureToMap("edit", edit_texture);
+
+			// redo icon
+			ID3D11ShaderResourceView* redo_texture = nullptr;
+			int redo_image_width = 0;
+			int redo_image_height = 0;
+			bool redo_ret = LoadTextureFromFile("./data/images/redo-icon.png", &redo_texture, &redo_image_width, &redo_image_height);
+			IM_ASSERT(redo_ret);
+			output_environment.AddTextureToMap("redo", redo_texture);
+
+			// lock icon
+			ID3D11ShaderResourceView* lock_texture = nullptr;
+			int lock_image_width = 0;
+			int lock_image_height = 0;
+			bool lock_ret = LoadTextureFromFile("./data/images/locked-icon.png", &lock_texture, &lock_image_width, &lock_image_height);
+			IM_ASSERT(lock_ret);
+			output_environment.AddTextureToMap("lock", lock_texture);
+
+			// unlock icon
+			ID3D11ShaderResourceView* unlock_texture = nullptr;
+			int unlock_image_width = 0;
+			int unlock_image_height = 0;
+			bool unlock_ret = LoadTextureFromFile("./data/images/unlocked-icon.png", &unlock_texture, &unlock_image_width, &unlock_image_height);
+			IM_ASSERT(unlock_ret);
+			output_environment.AddTextureToMap("unlock", unlock_texture);
+
+
+			// load all the body shape icons
 			// load body 01
 			ID3D11ShaderResourceView* body_01_texture = nullptr;
 			int body_01_width = 0;
