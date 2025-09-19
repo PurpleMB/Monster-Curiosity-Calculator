@@ -434,7 +434,12 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter", "Operation", "Value"};
 
 
-	if (ImGui::Button("Table Options")) {
+	// edit icon button
+	ImGui::SameLine();
+	std::string button_label = "Parameter Table Options";
+	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
+	float line_height = ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
 	if (ImGui::BeginPopup("table_options_popup")) {
@@ -621,7 +626,12 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 	static std::vector<bool*> column_color_toggles = {&operation_color_enabled, &argument_color_enabled,  &result_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Operation", "Argument", "Result"};
 
-	if (ImGui::Button("Table Options")) {
+	// edit icon button
+	ImGui::SameLine();
+	std::string button_label = "Value Table Options";
+	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
+	float line_height = ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
 	if (ImGui::BeginPopup("table_options_popup")) {
@@ -731,7 +741,13 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
 	ImGui::Text(subset_size_text.c_str());
 
-	if (ImGui::Button("Table Options")) {
+
+	// edit icon button
+	ImGui::SameLine();
+	std::string button_label = "Subset Table Options";
+	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
+	float line_height = ImGui::GetTextLineHeight();
+	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
 	if (ImGui::BeginPopup("table_options_popup")) {
