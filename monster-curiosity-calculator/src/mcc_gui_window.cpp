@@ -533,10 +533,13 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				ImGui::TableSetColumnIndex(4);
 				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);
 				ImGui::PushID(button_id.c_str());
-				std::string label = "X";
-				if (ImGui::SmallButton(label.c_str())) {
+				ImTextureID button_tex = output_environment.GetTextureFromMap("remove");
+				float line_height = ImGui::GetTextLineHeight();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+				if (ImGui::ImageButton(button_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
 					output_environment.subset_parameters.RemoveParameter(group_index, parameter_index);
 				}
+				ImGui::PopStyleVar();
 				ImGui::PopID();
 			}
 		}
@@ -726,10 +729,13 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 			// remove button
 			std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
 			ImGui::PushID(remove_id.c_str());
-			std::string label = "X";
-			if (ImGui::SmallButton(label.c_str())) {
+			ImTextureID button_tex = output_environment.GetTextureFromMap("remove");
+			float line_height = ImGui::GetTextLineHeight();
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+			if (ImGui::ImageButton(remove_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
 				output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
 			}
+			ImGui::PopStyleVar();
 			ImGui::PopID();
 		}
 		ImGui::EndTable();

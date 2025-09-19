@@ -30,7 +30,7 @@ public:
 		return color_value;
 	}
 
-	ImVec4 EvaluateColorWithIntensity(float color_intensity) {
+	ImVec4 EvaluateColorWithIntensity(float color_intensity) const {
 		ImVec4 evaluated_color = ImVec4(color_value.x, color_value.y, color_value.z, color_intensity);
 		return evaluated_color;
 	}
