@@ -72,6 +72,11 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		for (int i = 0; i < parameter_types.size(); i++) {
 			const bool is_selected = (selected_parameter_index == i);
 			if (ImGui::Selectable(parameter_types[i]->display_name.c_str(), is_selected)) {
+				std::vector<ParameterOperation> curr_ops = parameter_types[selected_parameter_index]->operations;
+				std::vector<ParameterOperation> incoming_ops = parameter_types[i]->operations;
+				if (incoming_ops != curr_ops) {
+					selected_operation_index = 0;
+				}
 				selected_parameter_index = i;
 			}
 
@@ -537,13 +542,12 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter) {
 	static int selected_operation_index = 0;
 	std::string selected_operation_name = value_operations[selected_operation_index]->GetDisplayName();
+	static int selected_arg_index = 0;
 
 	ImGui::Text("Select value to calculate:");
 
 	ImGui::Text("Subset ");
 	
-
-
 	ImGui::SameLine();
 	static ImGuiComboFlags oper_combo_flags = 0;
 	static const ImVec2 oper_combo_size = ImVec2(125, 0);
@@ -552,6 +556,11 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		for (int i = 0; i < value_operations.size(); i++) {
 			const bool is_selected = (selected_operation_index == i);
 			if (ImGui::Selectable(value_operations[i]->GetDisplayName().c_str(), is_selected)) {
+				std::vector<ValueOperationArgument> curr_args = value_operations[selected_operation_index]->GetArgumentList();
+				std::vector<ValueOperationArgument> incoming_args = value_operations[i]->GetArgumentList();
+				if (incoming_args != curr_args) {
+					selected_arg_index = 0;
+				}
 				selected_operation_index = i;
 			}
 
@@ -566,7 +575,6 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 	ImGui::Text(" of ");
 
 	std::vector<ValueOperationArgument> arguments = value_operations[selected_operation_index]->GetArgumentList();
-	static int selected_arg_index = 0;
 	std::string selected_arg_name = arguments[selected_arg_index].display_name;
 
 	ImGui::SameLine();

@@ -64,6 +64,12 @@ struct ParameterOperation : ParameterValue {
 		ParameterValue(dis_name, db_name, color) {
 		operands = ops;
 	}
+
+	bool operator==(const ParameterOperation& other) const {
+		bool display_equal = display_name == other.display_name;
+		bool db_equal = database_name == other.database_name;
+		return display_equal && db_equal;
+	}
 };
 
 // This enum defines the possible types of parameters the user may set.

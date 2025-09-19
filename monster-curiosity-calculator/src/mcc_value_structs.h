@@ -24,6 +24,12 @@ struct ValueOperationArgument {
 		database_name = db_name;
 		argument_color = color;
 	}
+
+	bool operator==(const ValueOperationArgument& other) const {
+		bool display_equal = display_name == other.display_name;
+		bool db_equal = database_name == other.database_name;
+		return display_equal && db_equal;
+	}
 };
 
 struct ValueOperation_Defunct {
