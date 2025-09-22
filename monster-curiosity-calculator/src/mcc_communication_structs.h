@@ -160,19 +160,31 @@ struct OutputEnvironment {
 		log_entries.push_back(success_entry);
 	}
 
-	std::string GenerateValueSetString(std::string table_name, std::vector<int>& query_indices_out) {
-		std::string set_text = "";
+	std::vector<int> GetUnlockedValueQueryIndices() {
+		std::vector<int> active_query_indices = {};
+
 		for (int i = 0; i < value_queries.size(); i++) {
 			ValueQuery query = value_queries[i];
 			if (query.IsLocked()) {
 				continue;
 			}
+			active_query_indices.push_back(i);
+		}
 
-			if (set_text.length() > 0) {
+		return active_query_indices;
+	}
+
+	std::string GenerateValueQuerySetText(std::vector<int> unlocked_query_indices, std::string table_name) {
+		std::string set_text = "";
+		int added_queries = 0;
+		for (int unlocked_index : unlocked_query_indices) {
+			if (added_queries > 0) {
 				set_text += ",";
 			}
+
+			ValueQuery query = value_queries[unlocked_index];
 			set_text += "\n" + query.GenerateQueryStatement(table_name);
-			query_indices_out.push_back(i);
+			added_queries += 1;
 		}
 		return set_text;
 	}

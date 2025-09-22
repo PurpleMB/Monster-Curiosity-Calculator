@@ -616,8 +616,11 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 	DrawValueOperationTable(output_environment);
 
-	if (ImGui::Button("Calculate values")) {
-		QueryValuesFromTable(output_environment, kSubTableName);
+	if (ImGui::Button("Calculate Unlocked Values")) {
+		std::vector<int> active_query_indices = output_environment.GetUnlockedValueQueryIndices();
+		std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
+
+		QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
 		output_environment.ConvertValueQueryResults(param_converter);
 	}
 }
