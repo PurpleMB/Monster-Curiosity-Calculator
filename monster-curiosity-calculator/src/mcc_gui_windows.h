@@ -27,7 +27,7 @@ namespace monster_calculator {
 	void DrawSubsetParameterTable(OutputEnvironment& output_environment);
 
 	void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter);
-	void DrawValueOperationTable(OutputEnvironment& output_environment);
+	void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTypeConverter param_converter);
 
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
 

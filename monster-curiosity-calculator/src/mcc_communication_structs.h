@@ -85,6 +85,8 @@ struct OutputEnvironment {
 	bool show_user_guide;
 	bool show_program_info;
 	float table_color_intensity;
+	ParameterTypeConverter converter;
+
 
 	OutputEnvironment() {
 		log_entries = {};
@@ -102,6 +104,12 @@ struct OutputEnvironment {
 		show_program_info = false;
 
 		table_color_intensity = .5f;
+
+		converter = ParameterTypeConverter();
+	}
+
+	void SetTypeConverter(ParameterTypeConverter& passed_converter) {
+		converter = passed_converter;
 	}
 
 	void ClearSubsetEntries() {
@@ -189,12 +197,29 @@ struct OutputEnvironment {
 		return set_text;
 	}
 
-	void StoreRawValueQueryResult(int value_query_index, std::string query_result) {
+	void StoreValueQueryResult(int value_query_index, std::string query_result) {
 		if (value_query_index < 0 || value_query_index >= value_queries.size()) {
 			return;
 		}
 
-		value_queries[value_query_index].SetRawResultValue(query_result);
+		ValueQuery& query = value_queries[value_query_index];
+		query.SetRawResultValue(query_result);
+
+		std::string query_column = query.GetAssociatedColumnName();
+		if (converter.ContainsNameType(query_column)) {
+			ParameterType* param_type_ptr = converter.GetParamTypeByName(query_column);
+			ParameterCategory param_cat = converter.GetParamCategoryByName(query_column);
+			if (param_cat == Enumerated || param_cat == EnumeratedSlider) {
+				EnumeratedParameterType param_type = *dynamic_cast<EnumeratedParameterType*>(param_type_ptr);
+				ParameterValue param_value = param_type.RetrieveParamValFromRawName(query_result);
+				query.UpdateResultDisplayInfo(param_value.display_name, param_value.value_color);
+			}
+			else {
+				ParameterValue constructed_param_val = ParameterValue(query_result);
+				param_type_ptr->SetValueColorForType(constructed_param_val);
+				query.UpdateResultDisplayInfo(constructed_param_val.display_name, constructed_param_val.value_color);
+			}
+		}
 	}
 
 	void ConvertValueQueryResults(ParameterTypeConverter converter) {

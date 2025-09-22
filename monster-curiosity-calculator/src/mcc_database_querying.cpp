@@ -438,7 +438,7 @@ void QueryValuesFromTable(OutputEnvironment& output_environment, std::string tab
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(value_query_stmt, i)));
 			std::string log_entry = std::vformat("{0}: {1}", std::make_format_args(col_name, col_val));
 			int query_list_index = query_indices[i];
-			output_environment.StoreRawValueQueryResult(query_list_index, col_val);
+			output_environment.StoreValueQueryResult(query_list_index, col_val);
 			output_environment.LogSuccess(log_entry.c_str());
 		}
 	}

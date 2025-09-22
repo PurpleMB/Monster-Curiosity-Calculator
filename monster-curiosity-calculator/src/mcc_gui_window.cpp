@@ -614,18 +614,17 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 	ImGui::Separator();
 
-	DrawValueOperationTable(output_environment);
+	DrawValueOperationTable(output_environment, param_converter );
 
 	if (ImGui::Button("Calculate Unlocked Values")) {
 		std::vector<int> active_query_indices = output_environment.GetUnlockedValueQueryIndices();
 		std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
 
 		QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
-		output_environment.ConvertValueQueryResults(param_converter);
 	}
 }
 
-void DrawValueOperationTable(OutputEnvironment& output_environment) {
+void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTypeConverter param_converter) {
 	static bool operation_color_enabled = false;
 	static bool argument_color_enabled = false;
 	static bool result_color_enabled = false;
@@ -729,6 +728,17 @@ void DrawValueOperationTable(OutputEnvironment& output_environment) {
 				}
 			}
 			ImGui::PopID();
+			// value rerolling button
+			std::string recalc_id = "##RecalculateOperation" + std::to_string(operation_index);
+			ImGui::PushID(recalc_id.c_str());
+			if (ImGui::SmallButton("Reroll Value")) {
+				std::vector<int> active_query_indices = {operation_index};
+				std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
+
+				QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
+			}
+			ImGui::PopID();
+
 			// remove button
 			std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
 			ImGui::PushID(remove_id.c_str());

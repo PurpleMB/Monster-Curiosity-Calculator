@@ -221,6 +221,8 @@ public:
 			param_group_colors
 		);
 		output_environment.subset_parameters = param_set;
+
+		output_environment.SetTypeConverter(param_type_converter);
 		
 		OpenDatabaseConnection(output_environment);
 		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
@@ -536,7 +538,7 @@ private:
 		ColumnStatus(kStatTotalColInfo, false)
 	};
 
-	OutputEnvironment output_environment;
+	OutputEnvironment output_environment = OutputEnvironment();
 };
 
 } // namespace monster_calculator

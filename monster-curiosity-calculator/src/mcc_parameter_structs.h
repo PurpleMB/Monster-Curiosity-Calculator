@@ -345,6 +345,10 @@ private:
 	std::unordered_map<int, std::string> column_id_name_map;
 
 public:
+	ParameterTypeConverter() {
+		column_type_map = {};
+	}
+
 	ParameterTypeConverter(std::unordered_map<std::string, std::shared_ptr<ParameterType>> column_type_mappings) {
 		column_type_map = column_type_mappings;
 	}
