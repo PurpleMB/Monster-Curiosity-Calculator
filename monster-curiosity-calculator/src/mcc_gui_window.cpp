@@ -715,19 +715,26 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 			ImGui::TableSetColumnIndex(3);
 			ValueQuery& curr_query = output_environment.value_queries[operation_index];
 			// value locking buttons
-			std::string lock_id = "##LockOperation" + std::to_string(operation_index);
-			ImGui::PushID(lock_id.c_str());
-			if (curr_query.IsLocked()) {
-				if (ImGui::SmallButton("Unlock Value")) {
-					curr_query.SetLocked(false);
+			{
+				std::string lock_id = "##LockOperation" + std::to_string(operation_index);
+				ImGui::PushID(lock_id.c_str());
+				float line_height = ImGui::GetTextLineHeight();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+				if (curr_query.IsLocked()) {
+					ImTextureID locked_tex = output_environment.GetTextureFromMap("lock");
+					if (ImGui::ImageButton(lock_id.c_str(), locked_tex, ImVec2(line_height, line_height))) {
+						curr_query.SetLocked(false);
+					}
 				}
-			}
-			else {
-				if (ImGui::SmallButton("Lock Value")) {
-					curr_query.SetLocked(true);
+				else {
+					ImTextureID unlocked_tex = output_environment.GetTextureFromMap("unlock");
+					if (ImGui::ImageButton(lock_id.c_str(), unlocked_tex, ImVec2(line_height, line_height))) {
+						curr_query.SetLocked(true);
+					}
 				}
+				ImGui::PopStyleVar();
+				ImGui::PopID();
 			}
-			ImGui::PopID();
 			// value rerolling button
 			{
 				std::string recalc_id = "##RecalculateOperation" + std::to_string(operation_index);
@@ -752,7 +759,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 				ImTextureID remove_tex = output_environment.GetTextureFromMap("remove");
 				float line_height = ImGui::GetTextLineHeight();
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-				if (ImGui::ImageButton(remove_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
+				if (ImGui::ImageButton(remove_id.c_str(), remove_tex, ImVec2(line_height, line_height))) {
 					output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
 				}
 				ImGui::PopStyleVar();
