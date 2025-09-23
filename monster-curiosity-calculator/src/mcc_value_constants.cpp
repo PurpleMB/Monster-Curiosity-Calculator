@@ -130,7 +130,7 @@ extern const std::vector<ValueOperationArgument> kSelectableCalcArguments = {
 };
 
 const std::string kAvgCalcDisplayName = "Average";
-const std::string kAvgCalcQueryFormat = "SELECT avg({0}) FROM {1}";
+const std::string kAvgCalcQueryFormat = "SELECT round(avg({0}), 2) FROM {1}";
 const std::string kAvgCalcAliasFormat = "avg_{0}";
 extern const ValueOperation kAvgCalcOperation = ValueOperation(
     kAvgCalcDisplayName,
@@ -174,7 +174,7 @@ extern const ValueOperation kSumCalcOperation = ValueOperation(
 );
 
 const std::string kMedianCalcDisplayName = "Median";
-const std::string kMedianCalcQueryFormat = "SELECT avg({0}) FROM (SELECT {0} FROM {1} ORDER BY {0} LIMIT 2 - (SELECT COUNT({0}) FROM {1}) % 2 OFFSET(SELECT(COUNT({0}) - 1) / 2 FROM {1}))";
+const std::string kMedianCalcQueryFormat = "SELECT round(avg({0}), 2) FROM (SELECT {0} FROM {1} ORDER BY {0} LIMIT 2 - (SELECT COUNT({0}) FROM {1}) % 2 OFFSET(SELECT(COUNT({0}) - 1) / 2 FROM {1}))";
 const std::string kMedianCalcAliasFormat = "median_{0}";
 extern const ValueOperation kMedianCalcOperation = ValueOperation(
     kMedianCalcDisplayName,
