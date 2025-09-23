@@ -729,27 +729,35 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 			}
 			ImGui::PopID();
 			// value rerolling button
-			std::string recalc_id = "##RecalculateOperation" + std::to_string(operation_index);
-			ImGui::PushID(recalc_id.c_str());
-			if (ImGui::SmallButton("Reroll Value")) {
-				std::vector<int> active_query_indices = {operation_index};
-				std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
+			{
+				std::string recalc_id = "##RecalculateOperation" + std::to_string(operation_index);
+				ImGui::PushID(recalc_id.c_str());
+				ImTextureID redo_tex = output_environment.GetTextureFromMap("redo");
+				float line_height = ImGui::GetTextLineHeight();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+				if (ImGui::ImageButton(recalc_id.c_str(), redo_tex, ImVec2(line_height, line_height))) {
+					std::vector<int> active_query_indices = {operation_index};
+					std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
 
-				QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
+					QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
+				}
+				ImGui::PopStyleVar();
+				ImGui::PopID();
 			}
-			ImGui::PopID();
 
 			// remove button
-			std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
-			ImGui::PushID(remove_id.c_str());
-			ImTextureID button_tex = output_environment.GetTextureFromMap("remove");
-			float line_height = ImGui::GetTextLineHeight();
-			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-			if (ImGui::ImageButton(remove_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
-				output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
+			{
+				std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
+				ImGui::PushID(remove_id.c_str());
+				ImTextureID remove_tex = output_environment.GetTextureFromMap("remove");
+				float line_height = ImGui::GetTextLineHeight();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+				if (ImGui::ImageButton(remove_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
+					output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
+				}
+				ImGui::PopStyleVar();
+				ImGui::PopID();
 			}
-			ImGui::PopStyleVar();
-			ImGui::PopID();
 		}
 		ImGui::EndTable();
 	}
