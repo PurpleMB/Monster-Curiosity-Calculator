@@ -596,10 +596,12 @@ public:
 		}
 	}
 
-	std::string CombineGroupSets() {
+	std::string CombineGroupSets(std::string col_name) {
+		bool empty_parameter_set = true;
 		std::unordered_set<std::string> combined_set = {};
 	
 		for (ParameterGroup group : parameter_groups) {
+			empty_parameter_set &= group.GetParameterCount() == 0;
 			std::unordered_set<std::string> group_set = group.GetAcceptedEntries();
 			std::cout << group_set.size() << std::endl;
 			for (std::string entry : group_set) {
@@ -607,6 +609,11 @@ public:
 			}
 		}
 		std::cout << combined_set.size() << std::endl;
+
+		// I've elected to treat a totally empty parameter set as one that accepts all main table entries
+		if (empty_parameter_set) {
+			return col_name;
+		}
 
 		std::string set_list = "";
 		int added_entries = 0;
