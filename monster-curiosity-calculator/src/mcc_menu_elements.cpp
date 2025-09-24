@@ -57,11 +57,10 @@ void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
 	ImGui::Text(warning.c_str());
 
 	if (ImGui::Button("Rebuild Database")) {
-		CreateTableFromSchema(output_environment, "Monsters", kMainTableSchemaList);
-		ClearTableContents(output_environment, "Monsters");
+		CreateTableFromSchema(output_environment, kMainTableName, kMainTableSchemaList);
+		ClearTableContents(output_environment, kMainTableName);
 		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
-		std::vector<std::string> column_names = kMainTableColumnNameList;
-		PopulateTableFromList(output_environment, "Monsters", kMainTableSchemaList, monster_data);
+		PopulateTableFromList(output_environment, kMainTableName, kMainTableSchemaList, monster_data);
 	}
 }
 
