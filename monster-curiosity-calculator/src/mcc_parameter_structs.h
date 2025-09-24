@@ -566,6 +566,10 @@ public:
 		return parameter_groups[group_index];
 	}
 
+	const std::vector<ParameterGroup> GetGroupList() {
+		return parameter_groups;
+	}
+
 	void AddParameter(const QueryParameter parameter, int parameter_group = 0) {
 		if (parameter_group >= parameter_groups.size()) {
 			if (!resizable) {

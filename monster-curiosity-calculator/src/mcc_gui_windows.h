@@ -30,5 +30,6 @@ namespace monster_calculator {
 	void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTypeConverter param_converter);
 
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
+	void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set);
 
 } // namespace monster_calculator

@@ -935,6 +935,86 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	int shown_page_count = page_count + 1;
 	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
 	ImGui::Text(curr_page_text.c_str());
+
+	DrawSubsetSizeTable(output_environment, output_environment.parameter_set);
+}
+
+void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set) {
+	ImVec2 outer_size = ImVec2(0.0f, 0.0f);
+	const int kColumnCount = 1;
+	const int kTableFlags =
+		ImGuiTableFlags_Borders |
+		ImGuiTableFlags_SizingFixedFit |
+		ImGuiTableFlags_ScrollY;
+	static int frozen_columns = 1;
+	static int frozen_rows = 2;
+	const float col_width = 0.0f;
+	if (ImGui::BeginTable("subset_size_display", kColumnCount, kTableFlags, outer_size)) {
+		// prepare table header
+		ImGui::TableSetupColumn("",
+			ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_NoHeaderLabel |
+			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
+		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
+
+		ImGui::TableNextRow();
+		ImGui::TableSetColumnIndex(0);
+		float col_width = ImGui::GetColumnWidth();
+
+		DisplayColor subset_color = kSeashellColor;
+		ImVec4 cell_color = subset_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+		ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
+		ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+
+		std::string subset_label = "Subset";
+		float text_width = ImGui::CalcTextSize(subset_label.c_str()).x;
+		ImGui::SetCursorPosX((col_width - text_width) * 0.5f);
+		ImGui::Text(subset_label.c_str());
+
+		std::string size_text = std::to_string(output_environment.subset_entries.size());
+		text_width = ImGui::CalcTextSize(size_text.c_str()).x;
+		ImGui::SetCursorPosX((col_width - text_width) * 0.5f);
+		ImGui::Text(size_text.c_str());
+
+		ImGui::TableNextRow();
+		ImGui::TableSetColumnIndex(0);
+		{
+			int group_count = param_set.GetGroupCount();
+			int sub_flags = ImGuiTableFlags_BordersInner;
+			float row_height = ImGui::GetTextLineHeightWithSpacing() * 2;
+			if (ImGui::BeginTable("group_subtable", group_count, sub_flags)) {
+				ImGui::TableNextRow(ImGuiTableRowFlags_None, row_height);
+				for (int group_index = 0; group_index < group_count; group_index++) {
+					ParameterGroup group = param_set.GetParameterGroup(group_index);
+					ImGui::TableSetColumnIndex(group_index);
+
+					DisplayColor group_color = group.GetGroupDisplayColor();
+					ImVec4 cell_color = group_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
+					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+
+					col_width = ImGui::GetColumnWidth();
+					std::string group_name = group.GetGroupName();
+					text_width = ImGui::CalcTextSize(group_name.c_str()).x;
+					float indentation = (col_width - text_width) * 0.5f;
+					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
+					ImGui::Text(group_name.c_str());
+
+					std::string displayed_count = "-";
+					if (group.GetParameterCount() > 0) {
+						displayed_count = std::to_string(group.GetAcceptedEntries().size());
+					}
+					text_width = ImGui::CalcTextSize(displayed_count.c_str()).x;
+					indentation = (col_width - text_width) * 0.5f;
+					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
+					ImGui::Text(displayed_count.c_str());
+				}
+
+				ImGui::EndTable();
+			}
+		}
+			
+		ImGui::EndTable();
+	}
 }
 
 } // namespace monster_calculator
