@@ -305,20 +305,25 @@ std::string GenerateValueWildcardList(int value_count) {
 }
 
 void CopyTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table) {
-	std::string subtable_str = "INSERT INTO {0} SELECT * FROM {1} WHERE {2}";
-	sqlite3_stmt* prepared_stmt;
+	std::string copy_str = "INSERT INTO {0} SELECT * FROM {1} WHERE {2}";
+	sqlite3_stmt* prepared_stmt = nullptr;
 
-	int group_count = output_environment.subset_parameters.GetGroupCount();
-	//for (int group_index = 0; group_index < group_count; group_index++) {
-		std::string conditions = output_environment.subset_parameters.GetSetQueryString();
-		subtable_str = std::vformat(subtable_str, std::make_format_args(target_table, source_table, conditions));
+	int group_count = output_environment.parameter_set.GetGroupCount();
+	for (int group_index = 0; group_index < group_count; group_index++) {
+		ParameterGroup group = output_environment.parameter_set.GetParameterGroup(group_index);
+		if (group.GetParameterCount() == 0) {
+			continue;
+		}
 
-		std::cout << subtable_str << std::endl;
+		std::string conditions = group.GenerateGroupQuery();
+		std::string group_query_str = std::vformat(copy_str, std::make_format_args(target_table, source_table, conditions));
+
+		std::cout << group_query_str << std::endl;
 
 		int prepare_status = sqlite3_prepare_v2(
 			output_environment.database_connection,
-			subtable_str.c_str(),
-			subtable_str.length(),
+			group_query_str.c_str(),
+			group_query_str.length(),
 			&prepared_stmt,
 			nullptr
 		);
@@ -341,7 +346,7 @@ void CopyTableSubset(OutputEnvironment& output_environment, std::string source_t
 			sqlite3_finalize(prepared_stmt);
 			return;
 		}
-	//}
+	}
 
 	sqlite3_finalize(prepared_stmt);
 	std::string success_msg = std::vformat(

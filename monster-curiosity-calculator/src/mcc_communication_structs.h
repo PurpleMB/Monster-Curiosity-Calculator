@@ -73,7 +73,7 @@ public:
 struct OutputEnvironment {
 	std::vector<LogEntry> log_entries;
 	std::vector<SubsetEntry> subset_entries;
-	ParameterSet subset_parameters;
+	ParameterSet parameter_set;
 	std::vector<ValueQuery> value_queries;
 
 	// EXPERIMENTAL
@@ -91,7 +91,7 @@ struct OutputEnvironment {
 	OutputEnvironment() {
 		log_entries = {};
 		subset_entries = {};
-		subset_parameters = ParameterSet();
+		parameter_set = ParameterSet();
 		value_queries = {};
 
 		database_connection = nullptr;

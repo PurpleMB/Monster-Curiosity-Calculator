@@ -156,12 +156,12 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	}
 
 	static int parameter_group = 0;
-	int parameter_group_count = output_environment.subset_parameters.GetGroupCount();
+	int parameter_group_count = output_environment.parameter_set.GetGroupCount();
 	if (parameter_group_count > 1) {
-		DrawParameterGroupSelector(parameter_group, output_environment.subset_parameters.GetGroupNameList());
+		DrawParameterGroupSelector(parameter_group, output_environment.parameter_set);
 	}
 	if (ImGui::Button("Apply Parameter")) {
-		output_environment.subset_parameters.AddParameter(building_parameter, parameter_group);
+		output_environment.parameter_set.AddParameter(building_parameter, parameter_group);
 	}
 
 	ImGui::Separator();
@@ -179,7 +179,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 
 	ImGui::SameLine();
 	if (ImGui::Button("Clear All Parameters")) {
-		output_environment.subset_parameters.ClearAllParameters();
+		output_environment.parameter_set.ClearAllParameters();
 	}
 }
 
@@ -405,16 +405,17 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawParameterGroupSelector(int& parameter_group_index, std::vector<std::string> parameter_group_names_list) {
-	std::string selected_group_name = parameter_group_names_list[parameter_group_index];
+void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set) {
+	std::string selected_group_name = parameter_set.GetParameterGroup(group_index).GetGroupName();
 	static const ImVec2 combo_size = ImVec2(200, 0);
 	static ImGuiComboFlags group_combo_flags = 0;
 	ImGui::SetNextItemWidth(combo_size.x);
 	if (ImGui::BeginCombo("Subset Parameter Group", selected_group_name.c_str(), group_combo_flags)) {
-		for (int i = 0; i < parameter_group_names_list.size(); i++) {
-			const bool is_selected = (parameter_group_index == i);
-			if (ImGui::Selectable(parameter_group_names_list[i].c_str(), is_selected)) {
-				parameter_group_index = i;
+		for (int i = 0; i < parameter_set.GetGroupCount(); i++) {
+			const bool is_selected = (group_index == i);
+			std::string name = parameter_set.GetParameterGroup(i).GetGroupName();
+			if (ImGui::Selectable(name.c_str(), is_selected)) {
+				group_index = i;
 			}
 
 			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -485,21 +486,20 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 
 		// print parameters
 		int parameter_count = 0;
-		for (int group_index = 0; group_index < output_environment.subset_parameters.GetGroupCount(); group_index++) {
-			std::vector<QueryParameter>& parameter_group = output_environment.subset_parameters.parameter_groups[group_index];
-			for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-				QueryParameter& subset_parameter = parameter_group[parameter_index];
+		for (int group_index = 0; group_index < output_environment.parameter_set.GetGroupCount(); group_index++) {
+			ParameterGroup& group = output_environment.parameter_set.GetParameterGroup(group_index);
+			for (int parameter_index = 0; parameter_index < group.GetParameterCount(); parameter_index++) {
+				QueryParameter subset_parameter = group.GetParameter(parameter_index);
 				ImGui::TableNextRow();
 
 				ImGui::TableSetColumnIndex(0);
 				if (group_color_enabled) {
-					DisplayColor group_color = output_environment.subset_parameters.GetGroupDisplayColor(group_index);
+					DisplayColor group_color = group.GetGroupDisplayColor();
 					ImVec4 cell_color = group_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
 					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 				}
-
-				std::string group_name = output_environment.subset_parameters.GetGroupName(group_index);
+				std::string group_name = group.GetGroupName();
 				ImGui::Text(group_name.c_str());
 
 				ImGui::TableSetColumnIndex(1);
@@ -539,7 +539,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				float line_height = ImGui::GetTextLineHeight();
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 				if (ImGui::ImageButton(button_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
-					output_environment.subset_parameters.RemoveParameter(group_index, parameter_index);
+					group.RemoveParameter(parameter_index);
 				}
 				ImGui::PopStyleVar();
 				ImGui::PopID();

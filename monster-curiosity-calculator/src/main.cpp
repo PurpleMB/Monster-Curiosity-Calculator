@@ -198,29 +198,18 @@ public:
 		}
 
 		// create parameter groups
-		std::vector<std::string> param_group_names = {
-			"Cheri",
-			"Chesto",
-			"Pecha",
-			"Rawst",
-			"Aspear",
-			"Lum"
-		};
-		std::vector<DisplayColor> param_group_colors = {
-			kCheriColor,
-			kChestoColor,
-			kPechaColor,
-			kRawstColor,
-			kAspearColor,
-			kLumColor
-		};
 		ParameterSet param_set = ParameterSet(
-			6,
-			false,
-			param_group_names,
-			param_group_colors
+			{
+				ParameterGroup("Cheri", kCheriColor),
+				ParameterGroup("Chesto", kChestoColor),
+				ParameterGroup("Pecha", kPechaColor),
+				ParameterGroup("Rawst", kRawstColor),
+				ParameterGroup("Aspear", kAspearColor),
+				ParameterGroup("Lum", kLumColor)
+			},
+			false
 		);
-		output_environment.subset_parameters = param_set;
+		output_environment.parameter_set = param_set;
 
 		output_environment.SetTypeConverter(param_type_converter);
 		

@@ -425,124 +425,73 @@ public:
 	}
 };
 
-// This struct is meant to contain multiple sets of QueryParameters.
-// Each set may contain an arbitrary number of QueryParameters, with each set
-// being evaluated to its own logical statement.
-// This allows the user to define sets looking for drastically different types
-// of monsters.
-struct ParameterSet {
-	int group_count;
-	std::vector<std::vector<QueryParameter>> parameter_groups;
-	std::vector<std::string> group_names;
-	std::vector<DisplayColor> group_colors;
-	int total_parameter_count;
-	bool resizable;
+// This struct is meant to contain a set of parameters to be
+// evaluated as a single logical clause where each parameter is connected
+// by  logical AND.
+struct ParameterGroup {
+private:
+	std::string group_name;
+	DisplayColor group_color;
+	std::vector<QueryParameter> parameters;
 
-	ParameterSet() {
-		group_count = 1;
-		parameter_groups = {{}};
-		group_names = {"A"};
-		group_colors = {kWhiteColor};
-		total_parameter_count = 0;
-		resizable = false;
+public:
+	ParameterGroup() {
+		group_name = "Unnamed";
+		group_color = kFuschiaColor;
+		parameters = {};
 	}
 
-	ParameterSet(int groups, bool allow_resize) {
-		group_count = groups;
-		parameter_groups = {};
-		group_names = {};
-		for (int i = 0; i < group_count; i++) {
-			parameter_groups.push_back({});
-			group_names.push_back(std::to_string('A' + i));
-		}
-		group_colors = {kWhiteColor};
-		total_parameter_count = 0;
-		resizable = allow_resize;
+	ParameterGroup(std::string name, DisplayColor color) {
+		group_name = name;
+		group_color = color;
+		parameters = {};
 	}
 
-	ParameterSet(int groups, bool allow_resize, std::vector<std::string> names, std::vector<DisplayColor>& colors) {
-		group_count = groups;
-		parameter_groups = {};
-		for (int i = 0; i < group_count; i++) {
-			parameter_groups.push_back({});
-		}
-		group_names = names;
-		group_colors = colors;
-		total_parameter_count = 0;
-		resizable = allow_resize;
+	void AddParameter(const QueryParameter parameter) {
+		parameters.push_back(parameter);
 	}
 
-	int GetGroupCount() {
-		return group_count;
-	}
-
-	void AddParameter(const QueryParameter parameter, int parameter_group = 0) {
-		if (parameter_group >= parameter_groups.size()) {
-			if (!resizable) {
-				return;
-			}
-			parameter_groups.push_back({});
-			group_count = parameter_groups.size();
-			parameter_group = parameter_groups.size() - 1;
-		}
-
-		parameter_groups[parameter_group].push_back(parameter);
-		total_parameter_count++;
-	}
-
-	void RemoveParameter(const int target_group, const int group_index) {
-		if (target_group >= parameter_groups.size()) {
-			return;
-		}
-		if (group_index >= parameter_groups[target_group].size()) {
+	void RemoveParameter(const int param_index) {
+		if (param_index >= parameters.size()) {
 			return;
 		}
 
-		std::vector<QueryParameter>& param_group = parameter_groups[target_group];
-		param_group.erase(param_group.begin() + group_index);
-		total_parameter_count--;
+		parameters.erase(parameters.begin() + param_index);
 	}
 
-	void ClearAllParameters() {
-		for (std::vector<QueryParameter>& param_group : parameter_groups) {
-			param_group.clear();
+	QueryParameter GetParameter(const int param_index) {
+		if (param_index >= parameters.size()) {
+			return QueryParameter();
 		}
-		total_parameter_count = 0;
+
+		return parameters[param_index];
+	}
+	
+	void ClearParameters() {
+		parameters.clear();
 	}
 
-	std::string GetGroupName(int group_index) const {
-		int name_index = group_index % group_names.size();
-		std::string group_name = group_names[name_index];
+	int GetParameterCount() const {
+		return parameters.size();
+	}
+
+	std::string GetGroupName() const {
 		return group_name;
 	}
 
-	std::vector<std::string> GetGroupNameList() const {
-		return group_names;
+	DisplayColor GetGroupDisplayColor() const {
+		return group_color;
 	}
 
-	DisplayColor GetGroupDisplayColor(int group_index) const {
-		int color_index = group_index % group_colors.size();
-		DisplayColor group_display_color = group_colors[color_index];
-		return group_display_color;
-	}
-
-	std::string GetGroupQueryString(int group_index) const {
-		if (group_index < 0 || group_index >= parameter_groups.size()) {
-			return "";
-		}
-		if (parameter_groups[group_index].size() == 0) {
-			return "";
-		}
-
-		std::vector<QueryParameter> parameter_group = parameter_groups[group_index];
+	std::string GenerateGroupQuery() const {
 		std::string group_query = "(";
 
-		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-			QueryParameter param = parameter_group[parameter_index];
+		for (int parameter_index = 0; parameter_index < parameters.size(); parameter_index++) {
+			QueryParameter param = parameters[parameter_index];
 			std::string query_statement = param.GetQuery();
 			group_query += "(" + query_statement + ")";
 
-			if (parameter_index < parameter_group.size() - 1) {
+			if (parameter_index < parameters.size() - 1) {
 				group_query += " AND ";
 			}
 		}
@@ -550,29 +499,85 @@ struct ParameterSet {
 		group_query += ")";
 		return group_query;
 	}
+};
 
-	std::string GetSetQueryString() const {
-		if (total_parameter_count == 0) {
-			return "( true )";
+// This struct is meant to contain multiple ParameterGroups.
+// Each group is independently evaluated and internally connected with ANDS, while
+// groups in the set are connected by a logical OR.
+// This allows the user to define sets looking for drastically different types
+// of monsters.
+struct ParameterSet {
+private:
+	std::vector<ParameterGroup> parameter_groups;
+	bool resizable;
+
+public:
+	ParameterSet() {
+		parameter_groups = {
+			ParameterGroup("A", kRedColor)
+		};
+		resizable = false;
+	}
+
+	ParameterSet(int num_groups, bool allow_resize) {
+		parameter_groups = {};
+		for (int i = 0; i < num_groups; i++) {
+			std::string name = std::to_string('A' + i);
+			DisplayColor color = kWhiteColor;
+			ParameterGroup group = ParameterGroup(name, color);
+			parameter_groups.push_back(group);
+		}
+		resizable = allow_resize;
+	}
+
+	ParameterSet(std::vector<ParameterGroup> groups, bool allow_resize) {
+		parameter_groups = {};
+		for (int i = 0; i < groups.size(); i++) {
+			parameter_groups.push_back(groups[i]);
+		}
+		resizable = allow_resize;
+	}
+
+	int GetGroupCount() {
+		return parameter_groups.size();
+	}
+
+	ParameterGroup& GetParameterGroup(int group_index) {
+		if (group_index >= parameter_groups.size()) {
+			group_index = parameter_groups.size() - 1;
 		}
 
-		std::string set_query = "";
-		int active_groups = 0;
+		return parameter_groups[group_index];
+	}
 
-		for (int group_index = 0; group_index < parameter_groups.size(); group_index++) {
-			if (parameter_groups[group_index].size() == 0) {
-				continue;
+	void AddParameter(const QueryParameter parameter, int parameter_group = 0) {
+		if (parameter_group >= parameter_groups.size()) {
+			if (!resizable) {
+				return;
 			}
 
-			active_groups++;
-			if (active_groups > 1) {
-				set_query += " OR ";
-			}
-
-			set_query += GetGroupQueryString(group_index);
+			parameter_group = parameter_groups.size();
+			std::string name = std::to_string('A' + parameter_group);
+			DisplayColor color = kWhiteColor;
+			ParameterGroup group = ParameterGroup(name, color);
+			parameter_groups.push_back(group);
 		}
 
-		return set_query;
+		parameter_groups[parameter_group].AddParameter(parameter);
+	}
+
+	void RemoveParameter(const int target_group, const int param_index) {
+		if (target_group >= parameter_groups.size()) {
+			return;
+		}
+
+		parameter_groups[target_group].RemoveParameter(param_index);
+	}
+
+	void ClearAllParameters() {
+		for (ParameterGroup group : parameter_groups) {
+			group.ClearParameters();
+		}
 	}
 };
 
