@@ -267,7 +267,7 @@ public:
 			}
 			if (output_environment.show_database_rebuild) {
 				monster_calculator::WindowParameters window_params;
-				window_params.name = "Program Log";
+				window_params.name = "Rebuild Database";
 				window_params.window_size = subwindow_size;
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
