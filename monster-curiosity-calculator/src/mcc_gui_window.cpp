@@ -943,9 +943,7 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 	ImVec2 outer_size = ImVec2(0.0f, 0.0f);
 	const int kColumnCount = 1;
 	const int kTableFlags =
-		ImGuiTableFlags_Borders |
-		ImGuiTableFlags_SizingFixedFit |
-		ImGuiTableFlags_ScrollY;
+		ImGuiTableFlags_SizingFixedFit;
 	static int frozen_columns = 1;
 	static int frozen_rows = 2;
 	const float col_width = 0.0f;
@@ -979,7 +977,7 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 		ImGui::TableSetColumnIndex(0);
 		{
 			int group_count = param_set.GetGroupCount();
-			int sub_flags = ImGuiTableFlags_BordersInner;
+			int sub_flags = ImGuiTableFlags_None;
 			float row_height = ImGui::GetTextLineHeightWithSpacing() * 2;
 			if (ImGui::BeginTable("group_subtable", group_count, sub_flags)) {
 				ImGui::TableNextRow(ImGuiTableRowFlags_None, row_height);
