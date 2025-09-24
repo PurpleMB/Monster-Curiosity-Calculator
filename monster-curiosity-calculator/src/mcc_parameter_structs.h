@@ -2,6 +2,7 @@
 #include <string>	// for string
 #include <vector>	// for vector
 #include <unordered_map> // used by converters
+#include <unordered_set> // used by parameter groups
 #include <memory>	//	shared_ptr in converters
 
 #include <iostream>
@@ -433,18 +434,21 @@ private:
 	std::string group_name;
 	DisplayColor group_color;
 	std::vector<QueryParameter> parameters;
+	std::unordered_set<std::string> accepted_entries;
 
 public:
 	ParameterGroup() {
 		group_name = "Unnamed";
 		group_color = kFuschiaColor;
 		parameters = {};
+		accepted_entries = {};
 	}
 
 	ParameterGroup(std::string name, DisplayColor color) {
 		group_name = name;
 		group_color = color;
 		parameters = {};
+		accepted_entries = {};
 	}
 
 	void AddParameter(const QueryParameter parameter) {
@@ -481,6 +485,18 @@ public:
 
 	DisplayColor GetGroupDisplayColor() const {
 		return group_color;
+	}
+
+	std::unordered_set<std::string> GetAcceptedEntries() {
+		return accepted_entries;
+	}
+
+	void ClearAcceptedEntries() {
+		accepted_entries.clear();
+	}
+	
+	void AddAcceptedEntry(std::string entry) {
+		accepted_entries.insert(entry);
 	}
 
 	std::string GenerateGroupQuery() const {
@@ -578,6 +594,31 @@ public:
 		for (ParameterGroup group : parameter_groups) {
 			group.ClearParameters();
 		}
+	}
+
+	std::string CombineGroupSets() {
+		std::unordered_set<std::string> combined_set = {};
+	
+		for (ParameterGroup group : parameter_groups) {
+			std::unordered_set<std::string> group_set = group.GetAcceptedEntries();
+			std::cout << group_set.size() << std::endl;
+			for (std::string entry : group_set) {
+				combined_set.insert(entry);
+			}
+		}
+		std::cout << combined_set.size() << std::endl;
+
+		std::string set_list = "";
+		int added_entries = 0;
+		for (std::string entry : combined_set) {
+			if (added_entries > 0) {
+				set_list += ", ";
+			}
+
+			set_list += entry;
+			added_entries++;
+		}
+		return set_list;
 	}
 };
 

@@ -304,54 +304,106 @@ std::string GenerateValueWildcardList(int value_count) {
 	return wildcard_list;
 }
 
-void CopyTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table) {
-	std::string copy_str = "INSERT INTO {0} SELECT * FROM {1} WHERE {2}";
+void GetColumnsFulfillingEachGroup(OutputEnvironment& output_environment, std::string col_name, std::string table_name) {
+	for (int group_index = 0; group_index < output_environment.parameter_set.GetGroupCount(); group_index++) {
+		ParameterGroup& group = output_environment.parameter_set.GetParameterGroup(group_index);
+		GetColumnFulfillingSingleGroup(output_environment, col_name, table_name, group);
+	}
+}
+
+void GetColumnFulfillingSingleGroup(OutputEnvironment& output_environment, std::string col_name, std::string table_name, ParameterGroup& param_group) {
+	std::string select_format = "SELECT {0} FROM {1} WHERE {2}";
+
+	param_group.ClearAcceptedEntries();
+	if (param_group.GetParameterCount() == 0) {
+		return;
+	}
+
+	std::string group_name = param_group.GetGroupName();
+	std::string group_conditions = param_group.GenerateGroupQuery();
+	std::string query_text = std::vformat(select_format, std::make_format_args(col_name, table_name, group_conditions));
+	std::cout << query_text << std::endl;
+
 	sqlite3_stmt* prepared_stmt = nullptr;
-
-	int group_count = output_environment.parameter_set.GetGroupCount();
-	for (int group_index = 0; group_index < group_count; group_index++) {
-		ParameterGroup group = output_environment.parameter_set.GetParameterGroup(group_index);
-		if (group.GetParameterCount() == 0) {
-			continue;
-		}
-
-		std::string conditions = group.GenerateGroupQuery();
-		std::string group_query_str = std::vformat(copy_str, std::make_format_args(target_table, source_table, conditions));
-
-		std::cout << group_query_str << std::endl;
-
-		int prepare_status = sqlite3_prepare_v2(
-			output_environment.database_connection,
-			group_query_str.c_str(),
-			group_query_str.length(),
-			&prepared_stmt,
-			nullptr
+	int prepare_status = sqlite3_prepare_v2(
+		output_environment.database_connection,
+		query_text.c_str(),
+		query_text.length(),
+		&prepared_stmt,
+		nullptr
+	);
+	if (prepare_status != SQLITE_OK) {
+		std::string prepare_msg = std::vformat(
+			"Failed to prepare statement for retrieving column {0} from {1} using parameters from group {2}",
+			std::make_format_args(col_name, table_name, group_name)
 		);
-		if (prepare_status != SQLITE_OK) {
-			std::string prepare_msg = std::vformat(
-				"Failed to prepare statement for creating subtable '{0}' from '{1}'",
-				std::make_format_args(target_table, source_table)
-			);
-			output_environment.LogError(prepare_status, prepare_msg.c_str());
-			return;
-		}
+		output_environment.LogError(prepare_status, prepare_msg.c_str());
+		return;
+	}
 
-		int step_status = sqlite3_step(prepared_stmt);
-		if (step_status != SQLITE_DONE) {
-			std::string step_msg = std::vformat(
-				"Error processing step during creation of subtable '{0}' from '{1}'",
-				std::make_format_args(target_table, source_table)
-			);
-			output_environment.LogError(step_status, step_msg.c_str());
-			sqlite3_finalize(prepared_stmt);
-			return;
-		}
+	int step_status = 0;
+	while ((step_status = sqlite3_step(prepared_stmt)) == SQLITE_ROW) {
+		std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(prepared_stmt, 0)));
+		param_group.AddAcceptedEntry(col_val);
+	}
+	if (step_status != SQLITE_DONE) {
+		std::string step_msg = std::vformat(
+			"Error retrieving column {0} from {1} using parameters from group {2}",
+			std::make_format_args(col_name, table_name, group_name)
+		);
+		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(prepared_stmt);
+		return;
 	}
 
 	sqlite3_finalize(prepared_stmt);
 	std::string success_msg = std::vformat(
-		"Successfully created subtable '{0}' from '{1}'",
-		std::make_format_args(target_table, source_table)
+		"Successfully retrieved column {0} from {1} using parameters from group {2}",
+		std::make_format_args(col_name, table_name, group_name)
+	);
+	output_environment.LogSuccess(success_msg.c_str());
+
+	std::cout << param_group.GetAcceptedEntries().size() << std::endl;
+}
+
+void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string col_name, std::string col_list, std::string source_table, std::string target_table) {
+	std::string insert_format = "INSERT INTO {0} SELECT * FROM {1} WHERE {2} IN ({3})";
+	std::string query_text = std::vformat(insert_format, std::make_format_args(target_table, source_table, col_name, col_list));
+
+	std::cout << query_text << std::endl;
+
+	sqlite3_stmt* prepared_stmt;
+	int prepare_status = sqlite3_prepare_v2(
+		output_environment.database_connection,
+		query_text.c_str(),
+		query_text.length(),
+		&prepared_stmt,
+		nullptr
+	);
+	if (prepare_status != SQLITE_OK) {
+		std::string prepare_msg = std::vformat(
+			"Failed to prepare statement for copying from '{0}' to '{1}' using column {2}",
+			std::make_format_args(target_table, source_table, col_name)
+		);
+		output_environment.LogError(prepare_status, prepare_msg.c_str());
+		return;
+	}
+
+	int step_status = sqlite3_step(prepared_stmt);
+	if (step_status != SQLITE_DONE) {
+		std::string step_msg = std::vformat(
+			"Error processing step during copying from '{0}' to '{1}' using column {2}",
+			std::make_format_args(target_table, source_table, col_name)
+		);
+		output_environment.LogError(step_status, step_msg.c_str());
+		sqlite3_finalize(prepared_stmt);
+		return;
+	}
+
+	sqlite3_finalize(prepared_stmt);
+	std::string success_msg = std::vformat(
+		"Successfully copied from '{0}' to '{1}' using column {2}",
+		std::make_format_args(target_table, source_table, col_name)
 	);
 	output_environment.LogSuccess(success_msg.c_str());
 }

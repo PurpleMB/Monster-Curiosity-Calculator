@@ -21,7 +21,10 @@ void PopulateTableFromList(OutputEnvironment& output_environment, std::string ta
 std::string GenerateColumnList(std::vector<std::string>& column_names);
 std::string GenerateValueWildcardList(int value_count);
 
-void CopyTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table);
+void GetColumnsFulfillingEachGroup(OutputEnvironment& output_environment, std::string col_name, std::string table_name);
+void GetColumnFulfillingSingleGroup(OutputEnvironment& output_environment, std::string col_name, std::string table_name, ParameterGroup& param_group);
+void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string col_name, std::string col_list, std::string source_table, std::string target_table);
+
 void RetrieveTableEntries(OutputEnvironment& output_environment, std::string table_name);
 void QueryValuesFromTable(OutputEnvironment& output_environment, std::string table_name, std::vector<int> query_indices, std::string query_text);
 } // namespace monster_calculator

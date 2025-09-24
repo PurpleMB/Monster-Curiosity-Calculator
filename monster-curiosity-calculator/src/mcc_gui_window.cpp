@@ -171,7 +171,9 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 
 	if (ImGui::Button("Find Matching Monsters")) {
 		ClearTableContents(output_environment, kSubTableName);
-		CopyTableSubset(output_environment, kMainTableName, kSubTableName);
+		GetColumnsFulfillingEachGroup(output_environment, "id", kMainTableName);
+		std::string id_list = output_environment.parameter_set.CombineGroupSets();
+		CopyTableSubsetByColumn(output_environment, "id", id_list, kMainTableName, kSubTableName);
 		
 		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_converter);

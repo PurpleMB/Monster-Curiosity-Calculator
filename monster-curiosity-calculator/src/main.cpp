@@ -219,7 +219,7 @@ public:
 		// ensure subtable exists and is populated
 		CreateTableFromSchema(output_environment, kSubTableName, kMainTableSchemaList);
 		ClearTableContents(output_environment, kSubTableName);
-		CopyTableSubset(output_environment, kMainTableName, kSubTableName);
+		//CopyTableSubset(output_environment, kMainTableName, kSubTableName);
 		
 		// display subtable 
 		RetrieveTableEntries(output_environment, kSubTableName);
