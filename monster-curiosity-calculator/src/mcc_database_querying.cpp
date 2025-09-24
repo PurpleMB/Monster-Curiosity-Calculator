@@ -304,42 +304,44 @@ std::string GenerateValueWildcardList(int value_count) {
 	return wildcard_list;
 }
 
-void GenerateTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table) {
-	DropTableIfExists(output_environment, target_table);
-
-	std::string subtable_str = "CREATE TABLE {0} AS SELECT * FROM {1} WHERE {2}";
-	std::string conditions = output_environment.subset_parameters.GetSetQueryString();
-	subtable_str = std::vformat(subtable_str, std::make_format_args(target_table, source_table, conditions));
-
-	std::cout << subtable_str << std::endl;
-
+void CopyTableSubset(OutputEnvironment& output_environment, std::string source_table, std::string target_table) {
+	std::string subtable_str = "INSERT INTO {0} SELECT * FROM {1} WHERE {2}";
 	sqlite3_stmt* prepared_stmt;
-	int prepare_status = sqlite3_prepare_v2(
-		output_environment.database_connection,
-		subtable_str.c_str(),
-		subtable_str.length(),
-		&prepared_stmt,
-		nullptr
-	);
-	if (prepare_status != SQLITE_OK) {
-		std::string prepare_msg = std::vformat(
-			"Failed to prepare statement for creating subtable '{0}' from '{1}'",
-			std::make_format_args(target_table, source_table)
-		);
-		output_environment.LogError(prepare_status, prepare_msg.c_str());
-		return;
-	}
 
-	int step_status = sqlite3_step(prepared_stmt);
-	if (step_status != SQLITE_DONE) {
-		std::string step_msg = std::vformat(
-			"Error processing step during creation of subtable '{0}' from '{1}'",
-			std::make_format_args(target_table, source_table)
+	int group_count = output_environment.subset_parameters.GetGroupCount();
+	//for (int group_index = 0; group_index < group_count; group_index++) {
+		std::string conditions = output_environment.subset_parameters.GetSetQueryString();
+		subtable_str = std::vformat(subtable_str, std::make_format_args(target_table, source_table, conditions));
+
+		std::cout << subtable_str << std::endl;
+
+		int prepare_status = sqlite3_prepare_v2(
+			output_environment.database_connection,
+			subtable_str.c_str(),
+			subtable_str.length(),
+			&prepared_stmt,
+			nullptr
 		);
-		output_environment.LogError(step_status, step_msg.c_str());
-		sqlite3_finalize(prepared_stmt);
-		return;
-	}
+		if (prepare_status != SQLITE_OK) {
+			std::string prepare_msg = std::vformat(
+				"Failed to prepare statement for creating subtable '{0}' from '{1}'",
+				std::make_format_args(target_table, source_table)
+			);
+			output_environment.LogError(prepare_status, prepare_msg.c_str());
+			return;
+		}
+
+		int step_status = sqlite3_step(prepared_stmt);
+		if (step_status != SQLITE_DONE) {
+			std::string step_msg = std::vformat(
+				"Error processing step during creation of subtable '{0}' from '{1}'",
+				std::make_format_args(target_table, source_table)
+			);
+			output_environment.LogError(step_status, step_msg.c_str());
+			sqlite3_finalize(prepared_stmt);
+			return;
+		}
+	//}
 
 	sqlite3_finalize(prepared_stmt);
 	std::string success_msg = std::vformat(

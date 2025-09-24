@@ -224,8 +224,15 @@ public:
 
 		output_environment.SetTypeConverter(param_type_converter);
 		
+		// open database connection
 		OpenDatabaseConnection(output_environment);
-		GenerateTableSubset(output_environment, kMainTableName, kSubTableName);
+
+		// ensure subtable exists and is populated
+		CreateTableFromSchema(output_environment, kSubTableName, kMainTableSchemaList);
+		ClearTableContents(output_environment, kSubTableName);
+		CopyTableSubset(output_environment, kMainTableName, kSubTableName);
+		
+		// display subtable 
 		RetrieveTableEntries(output_environment, kSubTableName);
 		output_environment.ConvertSubsetEntries(param_type_converter);
 	}
