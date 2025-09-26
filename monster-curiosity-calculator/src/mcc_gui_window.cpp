@@ -940,23 +940,18 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 }
 
 void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set) {
-	ImVec2 outer_size = ImVec2(0.0f, 0.0f);
-	const int kColumnCount = 1;
-	const int kTableFlags =
+	const ImVec2 kSubsetTableSize = ImVec2(0.0f, 0.0f);
+	const int kTotalSubsetTableFlags =
 		ImGuiTableFlags_SizingFixedFit;
-	static int frozen_columns = 1;
-	static int frozen_rows = 2;
-	const float col_width = 0.0f;
-	if (ImGui::BeginTable("subset_size_display", kColumnCount, kTableFlags, outer_size)) {
+	const float kSubsetColumnWidth = 0.0f;
+	if (ImGui::BeginTable("subset_size_display", 1, kTotalSubsetTableFlags, kSubsetTableSize)) {
 		// prepare table header
 		ImGui::TableSetupColumn("",
 			ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_NoHeaderLabel |
-			ImGuiTableColumnFlags_NoHeaderWidth, col_width);
-		ImGui::TableSetupScrollFreeze(frozen_columns, frozen_rows);
+			ImGuiTableColumnFlags_NoHeaderWidth, kSubsetColumnWidth);
 
 		ImGui::TableNextRow();
 		ImGui::TableSetColumnIndex(0);
-		float col_width = ImGui::GetColumnWidth();
 
 		DisplayColor subset_color = kSeashellColor;
 		ImVec4 cell_color = subset_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
@@ -965,6 +960,7 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 
 		std::string subset_label = "Subset";
 		float text_width = ImGui::CalcTextSize(subset_label.c_str()).x;
+		float col_width = ImGui::GetColumnWidth();
 		ImGui::SetCursorPosX((col_width - text_width) * 0.5f);
 		ImGui::Text(subset_label.c_str());
 
@@ -973,44 +969,46 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 		ImGui::SetCursorPosX((col_width - text_width) * 0.5f);
 		ImGui::Text(size_text.c_str());
 
+		ImGui::EndTable();
+	}
+
+	const ImVec2 kGroupsTableSize = ImVec2(0.0f, 0.0f);
+	const int kGroupCount = param_set.GetGroupCount();
+	const int kGroupsSubsetTableFlags =
+		ImGuiTableFlags_SizingStretchSame;
+	const float kGroupColumnWidth = 0.0f;
+	if (ImGui::BeginTable("groups_size_display", kGroupCount, kGroupsSubsetTableFlags, kGroupsTableSize)) {
 		ImGui::TableNextRow();
-		ImGui::TableSetColumnIndex(0);
-		{
-			int group_count = param_set.GetGroupCount();
-			int sub_flags = ImGuiTableFlags_None;
-			float row_height = ImGui::GetTextLineHeightWithSpacing() * 2;
-			if (ImGui::BeginTable("group_subtable", group_count, sub_flags)) {
-				ImGui::TableNextRow(ImGuiTableRowFlags_None, row_height);
-				for (int group_index = 0; group_index < group_count; group_index++) {
-					ParameterGroup group = param_set.GetParameterGroup(group_index);
-					ImGui::TableSetColumnIndex(group_index);
 
-					DisplayColor group_color = group.GetGroupDisplayColor();
-					ImVec4 cell_color = group_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
-					ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
-					ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
+		for (int group_index = 0; group_index < kGroupCount; group_index++) {
+			ParameterGroup group = param_set.GetParameterGroup(group_index);
+			ImGui::TableSetColumnIndex(group_index);
+			ImGui::TableSetupColumn("",
+				ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_NoHeaderLabel |
+				ImGuiTableColumnFlags_NoHeaderWidth, kGroupColumnWidth);
 
-					col_width = ImGui::GetColumnWidth();
-					std::string group_name = group.GetGroupName();
-					text_width = ImGui::CalcTextSize(group_name.c_str()).x;
-					float indentation = (col_width - text_width) * 0.5f;
-					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
-					ImGui::Text(group_name.c_str());
+			DisplayColor group_color = group.GetGroupDisplayColor();
+			ImVec4 cell_color = group_color.EvaluateColorWithIntensity(output_environment.table_color_intensity);
+			ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
+			ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 
-					std::string displayed_count = "-";
-					if (group.GetParameterCount() > 0) {
-						displayed_count = std::to_string(group.GetAcceptedEntries().size());
-					}
-					text_width = ImGui::CalcTextSize(displayed_count.c_str()).x;
-					indentation = (col_width - text_width) * 0.5f;
-					ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
-					ImGui::Text(displayed_count.c_str());
-				}
+			std::string group_name = group.GetGroupName();
+			float text_width = ImGui::CalcTextSize(group_name.c_str()).x;
+			float col_width = ImGui::GetColumnWidth();
+			float indentation = (col_width - text_width) * 0.5f;
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
+			ImGui::Text(group_name.c_str());
 
-				ImGui::EndTable();
+			std::string displayed_count = "-";
+			if (group.GetParameterCount() > 0) {
+				displayed_count = std::to_string(group.GetAcceptedEntries().size());
 			}
+			text_width = ImGui::CalcTextSize(displayed_count.c_str()).x;
+			indentation = (col_width - text_width) * 0.5f;
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indentation);
+			ImGui::Text(displayed_count.c_str());
 		}
-			
+
 		ImGui::EndTable();
 	}
 }
