@@ -940,6 +940,10 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 }
 
 void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set) {
+	// remove spacing under first table so tables appear as one entity
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(ImGui::GetStyle().ItemSpacing.x, 0.0f));
+
+	// table displaying size of entire data subset
 	const ImVec2 kSubsetTableSize = ImVec2(0.0f, 0.0f);
 	const int kTotalSubsetTableFlags =
 		ImGuiTableFlags_SizingFixedFit;
@@ -972,6 +976,10 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 		ImGui::EndTable();
 	}
 
+	// pop style change removing item spacing
+	ImGui::PopStyleVar();
+
+	// table displaying the # of subset fulfilling each parameter group (if the group has any parameters)
 	const ImVec2 kGroupsTableSize = ImVec2(0.0f, 0.0f);
 	const int kGroupCount = param_set.GetGroupCount();
 	const int kGroupsSubsetTableFlags =
