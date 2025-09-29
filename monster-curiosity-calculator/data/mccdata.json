@@ -64368,7 +64368,7 @@
         "is_baby": 0,
         "is_legendary": 1,
         "is_mythical": 0,
-        "weight(kg)": 0.0,
+        "weight(kg)": 9999.9,
         "height(m)": 100.0,
         "stats": {
             "hp": 255,

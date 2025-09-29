@@ -216,7 +216,12 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_nam
     pruned_info["is_mythical"] = 1 if species_info["is_mythical"] else 0
     
     # size info
-    pruned_info["weight(kg)"] = poke_info["weight"] / 10
+    # This condition is for E-max Eternatuss, which has an unknown weight of "0", I am choosing to treat its weight as very large instead for more logical sorting compared to other known weights
+    raw_weight = poke_info["weight"]
+    if  raw_weight != 0:
+        pruned_info["weight(kg)"] = raw_weight / 10
+    else:
+        pruned_info["weight(kg)"] = 9999.9
     pruned_info["height(m)"] = poke_info["height"] / 10
     
     # base stat info
