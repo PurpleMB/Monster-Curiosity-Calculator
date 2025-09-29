@@ -154,6 +154,7 @@
     <ClCompile Include="src\mcc_database_constants.cpp" />
     <ClCompile Include="src\mcc_database_querying.cpp" />
     <ClCompile Include="src\mcc_display_constants.cpp" />
+    <ClCompile Include="src\mcc_gui_widgets.cpp" />
     <ClCompile Include="src\mcc_json_constants.cpp" />
     <ClCompile Include="src\mcc_json_processing.cpp" />
     <ClCompile Include="src\mcc_menu_elements.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="src\mcc_database_structs.h" />
     <ClInclude Include="src\mcc_display_constants.h" />
     <ClInclude Include="src\mcc_display_structs.h" />
+    <ClInclude Include="src\mcc_gui_widgets.h" />
     <ClInclude Include="src\mcc_json_constants.h" />
     <ClInclude Include="src\mcc_json_processing.h" />
     <ClInclude Include="src\mcc_menu_elements.h" />

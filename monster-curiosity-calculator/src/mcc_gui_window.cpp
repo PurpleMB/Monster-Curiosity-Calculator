@@ -28,6 +28,7 @@
 #include "mcc_database_constants.h"
 #include "mcc_database_querying.h"
 #include "mcc_menu_elements.h"
+#include "mcc_gui_widgets.h"
 
 #include "mcc_gui_windows.h"
 
@@ -86,6 +87,9 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		}
 		ImGui::EndCombo();
 	}
+
+	ImGui::SameLine();
+	DrawHelpIcon("This is a parameter type.", output_environment);
 
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
 	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
@@ -170,6 +174,8 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	DrawSubsetParameterTable(output_environment);
 
 	if (ImGui::Button("Find Matching Monsters")) {
+		ImGui::SetItemTooltip("This is a tooltip test");
+
 		ClearTableContents(output_environment, kSubTableName);
 		GetColumnsFulfillingEachGroup(output_environment, "id", kMainTableName);
 		std::string id_list = output_environment.parameter_set.CombineGroupSets("id");

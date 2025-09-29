@@ -17,6 +17,7 @@
 #include "mcc_value_constants.h"
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
+#include "mcc_communication_structs.h"
 #include "mcc_database_constants.h"
 
 #include "mcc_database_querying.h"
@@ -81,6 +82,14 @@ public:
 			bool unlock_ret = LoadTextureFromFile("./data/images/unlocked-icon.png", &unlock_texture, &unlock_image_width, &unlock_image_height);
 			IM_ASSERT(unlock_ret);
 			output_environment.AddTextureToMap("unlock", unlock_texture);
+
+			// help icon
+			ID3D11ShaderResourceView* help_texture = nullptr;
+			int help_image_width = 0;
+			int help_image_height = 0;
+			bool help_ret = LoadTextureFromFile("./data/images/help-icon.png", &help_texture, &help_image_width, &help_image_height);
+			IM_ASSERT(help_ret);
+			output_environment.AddTextureToMap("help", help_texture);
 
 
 			// load all the body shape icons
