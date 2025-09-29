@@ -402,8 +402,8 @@ extern const EnumeratedParameterType kGenderRateParam = EnumeratedParameterType(
 );
 
 extern const std::vector<ParameterValue> kCriteriaValuesList = {
-    ParameterValue("Meets Criteria",		"pass",			kGreenColor,     0),
-    ParameterValue("Fails Criteria",		"fail",			kRedColor,      1),
+    ParameterValue("Passes",		"pass",			kGreenColor,     0),
+    ParameterValue("Fails",		"fail",			kRedColor,      1),
     ParameterValue("-", "-", kGrayColor, 2)
 };
 
