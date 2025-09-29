@@ -321,6 +321,54 @@ struct SubsetComparator {
 			case StatTotalColumnId:
 				delta = std::stoi(lhs.GetRawData("stat_total")) - std::stoi(rhs.GetRawData("stat_total"));
 				break;
+			case CheriGroupColumnId:
+				if (lhs.HasConvertedData("Cheri") && rhs.HasConvertedData("Cheri")) {
+					delta = lhs.GetParameterValue("Cheri").GetSortValue() - rhs.GetParameterValue("Cheri").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Cheri").compare(rhs.GetRawData("Cheri"));
+				}
+				break;
+			case ChestoGroupColumnId:
+				if (lhs.HasConvertedData("Chesto") && rhs.HasConvertedData("Chesto")) {
+					delta = lhs.GetParameterValue("Chesto").GetSortValue() - rhs.GetParameterValue("Chesto").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Chesto").compare(rhs.GetRawData("Chesto"));
+				}
+				break;
+			case PechaGroupColumnId:
+				if (lhs.HasConvertedData("Pecha") && rhs.HasConvertedData("Pecha")) {
+					delta = lhs.GetParameterValue("Pecha").GetSortValue() - rhs.GetParameterValue("Pecha").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Pecha").compare(rhs.GetRawData("Pecha"));
+				}
+				break;
+			case RawstGroupColumnId:
+				if (lhs.HasConvertedData("Rawst") && rhs.HasConvertedData("Rawst")) {
+					delta = lhs.GetParameterValue("Rawst").GetSortValue() - rhs.GetParameterValue("Rawst").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Rawst").compare(rhs.GetRawData("Rawst"));
+				}
+				break;
+			case AspearGroupColumnId:
+				if (lhs.HasConvertedData("Aspear") && rhs.HasConvertedData("Aspear")) {
+					delta = lhs.GetParameterValue("Aspear").GetSortValue() - rhs.GetParameterValue("Aspear").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Aspear").compare(rhs.GetRawData("Aspear"));
+				}
+				break;
+			case LumGroupColumnId:
+				if (lhs.HasConvertedData("Lum") && rhs.HasConvertedData("Lum")) {
+					delta = lhs.GetParameterValue("Lum").GetSortValue() - rhs.GetParameterValue("Lum").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Lum").compare(rhs.GetRawData("Lum"));
+				}
+				break;
 			default:
 				break;
 			}
