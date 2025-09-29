@@ -401,6 +401,90 @@ extern const EnumeratedParameterType kGenderRateParam = EnumeratedParameterType(
     Slider
 );
 
+extern const std::vector<ParameterValue> kCriteriaValuesList = {
+    ParameterValue("Meets Criteria",		"pass",			kGreenColor,     0),
+    ParameterValue("Fails Criteria",		"fail",			kRedColor,      1),
+    ParameterValue("-", "-", kGrayColor, 2)
+};
+
+const std::string kCheriDisplayName = "Cheri";
+const std::string kCheriDatabaseFormat = "Cheri {0}";
+const std::string kCheriDisplayFormat = "Cheri: {0}";
+extern const EnumeratedParameterType kCheriGroupParam = EnumeratedParameterType(
+    kCheriDisplayName,
+    kCheriDisplayFormat,
+    kCheriDatabaseFormat,
+    kCheriColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
+const std::string kChestoDisplayName = "Chesto";
+const std::string kChestoDatabaseFormat = "Chesto {0}";
+const std::string kChestoDisplayFormat = "Chesto: {0}";
+extern const EnumeratedParameterType kChestoGroupParam = EnumeratedParameterType(
+    kChestoDisplayName,
+    kChestoDisplayFormat,
+    kChestoDatabaseFormat,
+    kChestoColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
+const std::string kPechaDisplayName = "Pecha";
+const std::string kPechaDatabaseFormat = "Pecha {0}";
+const std::string kPechaDisplayFormat = "Pecha: {0}";
+extern const EnumeratedParameterType kPechaGroupParam = EnumeratedParameterType(
+    kPechaDisplayName,
+    kPechaDisplayFormat,
+    kPechaDatabaseFormat,
+    kPechaColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
+const std::string kRawstDisplayName = "Rawst";
+const std::string kRawstDatabaseFormat = "Rawst {0}";
+const std::string kRawstDisplayFormat = "Rawst: {0}";
+extern const EnumeratedParameterType kRawstGroupParam = EnumeratedParameterType(
+    kRawstDisplayName,
+    kRawstDisplayFormat,
+    kRawstDatabaseFormat,
+    kRawstColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
+const std::string kAspearDisplayName = "Aspear";
+const std::string kAspearDatabaseFormat = "Aspear {0}";
+const std::string kAspearDisplayFormat = "Aspear: {0}";
+extern const EnumeratedParameterType kAspearGroupParam = EnumeratedParameterType(
+    kAspearDisplayName,
+    kAspearDisplayFormat,
+    kAspearDatabaseFormat,
+    kAspearColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
+const std::string kLumDisplayName = "Lum";
+const std::string kLumDatabaseFormat = "Lum {0}";
+const std::string kLumDisplayFormat = "Lum: {0}";
+extern const EnumeratedParameterType kLumGroupParam = EnumeratedParameterType(
+    kLumDisplayName,
+    kLumDisplayFormat,
+    kLumDatabaseFormat,
+    kLumColor,
+    kSliderEnumOperations,
+    kCriteriaValuesList,
+    PreferredEnumDisplay::Dropdown
+);
+
 // open parameter values & operations
 extern const std::vector<ParameterOperation> kNameOperations = {
     ParameterOperation("Equals",		"LIKE '{0}'",		kGreenColor,

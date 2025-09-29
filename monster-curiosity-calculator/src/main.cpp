@@ -414,6 +414,13 @@ private:
 	std::shared_ptr<DecimalParameterType> height_ptr = std::make_shared<DecimalParameterType>(kHeightParam);
 	std::shared_ptr<DecimalParameterType> weight_ptr = std::make_shared<DecimalParameterType>(kWeightParam);
 
+	std::shared_ptr<EnumeratedParameterType> cheri_ptr = std::make_shared<EnumeratedParameterType>(kCheriGroupParam);
+	std::shared_ptr<EnumeratedParameterType> chesto_ptr = std::make_shared<EnumeratedParameterType>(kChestoGroupParam);
+	std::shared_ptr<EnumeratedParameterType> pecha_ptr = std::make_shared<EnumeratedParameterType>(kPechaGroupParam);
+	std::shared_ptr<EnumeratedParameterType> rawst_ptr = std::make_shared<EnumeratedParameterType>(kRawstGroupParam);
+	std::shared_ptr<EnumeratedParameterType> aspear_ptr = std::make_shared<EnumeratedParameterType>(kAspearGroupParam);
+	std::shared_ptr<EnumeratedParameterType> lum_ptr = std::make_shared<EnumeratedParameterType>(kLumGroupParam);
+
 	std::vector<std::shared_ptr<ParameterType>> parameter_types = {
 		prim_type_ptr,
 		sec_type_ptr,
@@ -451,7 +458,13 @@ private:
 		speed_ptr,
 		stat_total_ptr,
 		height_ptr,
-		weight_ptr
+		weight_ptr,
+		cheri_ptr,
+		chesto_ptr,
+		pecha_ptr,
+		rawst_ptr,
+		aspear_ptr,
+		lum_ptr
 	};
 
 	ParameterTypeConverter param_type_converter = ParameterTypeConverter({
@@ -487,7 +500,13 @@ private:
 		{"speed", speed_ptr},
 		{"stat_total", stat_total_ptr},
 		{"height", height_ptr},
-		{"weight", weight_ptr}
+		{"weight", weight_ptr},
+		{"Cheri", cheri_ptr},
+		{"Chesto", chesto_ptr},
+		{"Pecha", pecha_ptr},
+		{"Rawst", rawst_ptr},
+		{"Aspear", aspear_ptr},
+		{"Lum", lum_ptr}
 	});
 
 	std::shared_ptr<ValueOperation> avg_value_ptr = std::make_shared<ValueOperation>(kAvgCalcOperation);
@@ -541,7 +560,13 @@ private:
 		ColumnStatus(kSpeAtkColInfo, false),
 		ColumnStatus(kSpeDefColInfo, false),
 		ColumnStatus(kSpeedColInfo, false),
-		ColumnStatus(kStatTotalColInfo, false)
+		ColumnStatus(kStatTotalColInfo, false),
+		ColumnStatus(kCheriGroupColInfo, false),
+		ColumnStatus(kChestoGroupColInfo, false),
+		ColumnStatus(kPechaGroupColInfo, false),
+		ColumnStatus(kRawstGroupColInfo, false),
+		ColumnStatus(kAspearGroupColInfo, false),
+		ColumnStatus(kLumGroupColInfo, false)
 	};
 
 	OutputEnvironment output_environment = OutputEnvironment();

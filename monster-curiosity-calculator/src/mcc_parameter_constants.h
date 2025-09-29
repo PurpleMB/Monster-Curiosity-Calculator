@@ -38,6 +38,16 @@ extern const EnumeratedParameterType kGenerationParam;
 extern const EnumeratedParameterType kGrowthRateParam;
 extern const EnumeratedParameterType kGenderRateParam;
 
+extern const std::vector<ParameterValue> kCriteriaValuesList;
+
+extern const EnumeratedParameterType kCheriGroupParam;
+extern const EnumeratedParameterType kChestoGroupParam;
+extern const EnumeratedParameterType kPechaGroupParam;
+extern const EnumeratedParameterType kRawstGroupParam;
+extern const EnumeratedParameterType kAspearGroupParam;
+extern const EnumeratedParameterType kLumGroupParam;
+
+
 // open parameter values
 extern const std::vector<ParameterOperation> kNameOperations;
 extern const std::vector<ParameterOperation> kAbilityOperations;

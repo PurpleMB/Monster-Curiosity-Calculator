@@ -439,6 +439,24 @@ void RetrieveTableEntries(OutputEnvironment& output_environment, std::string tab
 			std::string col_val = std::string(reinterpret_cast<const char*>(sqlite3_column_text(retrieve_stmt, i)));
 			subset_entry.AddData(col_name, col_val);
 		}
+		// determine if entry fulfills each parameter group
+		for (ParameterGroup group : output_environment.parameter_set.GetGroupList()) {
+			std::string group_col_name = group.GetGroupName();
+			// empty groups simply don't assign pass/fail to entries
+			if (group.GetParameterCount() == 0) {
+				subset_entry.AddData(group_col_name,"-");
+				continue;
+			}
+
+			std::string entry_id = subset_entry.GetRawData("id");
+			if (group.AcceptsEntry(entry_id)) {
+				subset_entry.AddData(group_col_name, "pass");
+			}
+			else {
+				subset_entry.AddData(group_col_name, "fail");
+			}
+		}
+
 		output_environment.subset_entries.push_back(subset_entry);
 	}
 	if (step_status != SQLITE_DONE) {

@@ -40,7 +40,13 @@ enum SubsetColumnsIds {
 	SpeAtkColumnId,
 	SpeDefColumnId,
 	SpeedColumnId,
-	StatTotalColumnId
+	StatTotalColumnId,
+	CheriGroupColumnId,
+	ChestoGroupColumnId,
+	PechaGroupColumnId,
+	RawstGroupColumnId,
+	AspearGroupColumnId,
+	LumGroupColumnId
 };
 
 struct ColumnInfo {

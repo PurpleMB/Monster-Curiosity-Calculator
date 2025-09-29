@@ -491,6 +491,10 @@ public:
 		return accepted_entries;
 	}
 
+	bool AcceptsEntry(std::string entry_id) {
+		return accepted_entries.contains(entry_id);
+	}
+
 	void ClearAcceptedEntries() {
 		accepted_entries.clear();
 	}
