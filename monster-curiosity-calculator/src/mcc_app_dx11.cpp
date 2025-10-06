@@ -84,7 +84,7 @@ App::App() {
 	//IM_ASSERT(font != nullptr);
 
 	// Our state
-	clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	clear_color = ImVec4(191.0f / 255.0f, 237.0f / 255.0f, 193.0f / 255.0f, 1.0f);
 }
 
 App::~App() {
