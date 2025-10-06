@@ -952,7 +952,8 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 	// table displaying size of entire data subset
 	const ImVec2 kSubsetTableSize = ImVec2(0.0f, 0.0f);
 	const int kTotalSubsetTableFlags =
-		ImGuiTableFlags_SizingFixedFit;
+		ImGuiTableFlags_SizingFixedFit |
+		ImGuiTableFlags_Borders;
 	const float kSubsetColumnWidth = 0.0f;
 	if (ImGui::BeginTable("subset_size_display", 1, kTotalSubsetTableFlags, kSubsetTableSize)) {
 		// prepare table header
@@ -989,7 +990,8 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 	const ImVec2 kGroupsTableSize = ImVec2(0.0f, 0.0f);
 	const int kGroupCount = param_set.GetGroupCount();
 	const int kGroupsSubsetTableFlags =
-		ImGuiTableFlags_SizingStretchSame;
+		ImGuiTableFlags_SizingStretchSame |
+		ImGuiTableFlags_Borders;
 	const float kGroupColumnWidth = 0.0f;
 	if (ImGui::BeginTable("groups_size_display", kGroupCount, kGroupsSubsetTableFlags, kGroupsTableSize)) {
 		ImGui::TableNextRow();
