@@ -32,6 +32,13 @@ public:
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
+		// load font atlas
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			float size_in_pixels = 13.0f;
+			font_sono = io.Fonts->AddFontFromFileTTF("./data/Sono-Regular.ttf", size_in_pixels);
+		}
+
 		// load images into textures
 		{
 			// load palceholder texture
@@ -244,6 +251,7 @@ public:
 			ImGui::ShowDemoWindow(&show_demo_window_);
 		}
 
+		//ImGui::PushFont(font_sono);
 		// menu window
 		{
 			monster_calculator::WindowParameters window_params;
@@ -364,6 +372,7 @@ public:
 			monster_calculator::EndStyledWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
+		//ImGui::PopFont();
 	}
 
 private:
@@ -569,6 +578,8 @@ private:
 	};
 
 	OutputEnvironment output_environment = OutputEnvironment();
+
+	ImFont* font_sono;
 };
 
 } // namespace monster_calculator
