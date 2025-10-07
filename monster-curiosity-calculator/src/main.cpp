@@ -430,11 +430,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginStyledWindow(window_params);
+			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.05f, 0.05f), ImVec2(0.45f, 0.55f));
 
 			monster_calculator::DrawSetParameterWindow(output_environment, parameter_types, param_type_converter);
 
-			monster_calculator::EndStyledWindow(window_params);
+			monster_calculator::EndScalingWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 
@@ -445,11 +445,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginStyledWindow(window_params);
+			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.05f, 0.6f), ImVec2(0.45f, 0.95f));
 
 			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types, param_type_converter);
 
-			monster_calculator::EndStyledWindow(window_params);
+			monster_calculator::EndScalingWindow(window_params);
 			window_pos.x += kWindowMargin + window_params.window_size.x;
 			window_pos.y = kWindowMargin + 50;
 		}
@@ -461,11 +461,11 @@ public:
 			window_params.window_size = window_size;
 			window_params.window_position = window_pos;
 			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginStyledWindow(window_params);
+			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.5f, 0.05f), ImVec2(0.95f, 0.95f));
 
 			monster_calculator::DrawSetDisplayWindow(output_environment, subset_column_statuses);
 
-			monster_calculator::EndStyledWindow(window_params);
+			monster_calculator::EndScalingWindow(window_params);
 			window_pos.y += kWindowMargin + window_params.window_size.y;
 		}
 		//ImGui::PopFont();
