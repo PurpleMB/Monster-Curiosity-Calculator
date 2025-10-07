@@ -169,41 +169,65 @@ void DrawUserGuideWindow(OutputEnvironment& output_environment) {
 }
 
 void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
-	const std::string version_text = "Version 0.1";
-	ImGui::Text(version_text.c_str());
+	ImVec2 logo_size = ImVec2(250.0f, 250.0f);
+	// TODO: create a helper function class to make helpful things like this reusable
+	ImGuiStyle& style = ImGui::GetStyle();
+	float content_size = ImGui::GetContentRegionAvail().x;
+	float offset = (content_size - logo_size.x) * 0.5f;
+	if (offset > 0.0f) {
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offset);
+	}
 
 	ImTextureID program_logo = output_environment.GetTextureFromMap("placeholder");
-	float image_width = ImGui::GetWindowSize().x * .95f;
-	ImVec2 image_size = {image_width, image_width};
-	ImGui::Image(program_logo, image_size);
+	ImGui::Image(program_logo, logo_size);
 
-	ImGui::Text("Repository:");
+	ImGui::Separator();
+
+	const std::string version_text = "Program Version: 0.1 WIP";
+	ImGui::Text(version_text.c_str());
+
+	ImGui::Text("Code Repository:");
 	ImGui::SameLine();
-	ImGui::SmallButton("TODO: OPEN REPOSITORY");
+	ImGui::TextLinkOpenURL("Click to open", "https://github.com/PurpleMB/MCC");
 
 	ImGui::Separator();
 
 	ImGui::TextWrapped("Monster Curiosity Calculator uses the following libraries and tools:");
 
-	std::vector<std::string> source_texts = {
-		"PokeAPI v2 - https://pokeapi.co/",
-		"Bulbagarden Archives - https://archives.bulbagarden.net/",
-		"DearImGui - https://github.com/ocornut/imgui",
-		"JsonCpp - https://github.com/open-source-parsers/jsoncpp",
-		"STB Image Library - https://github.com/nothings/stb",
-		"SQLite - https://www.sqlite.org/",
-		"Icon8 - https://icons8.com"
+	std::vector<std::pair<std::string, std::string>> source_pairs = {
+		{"PokeAPI v2", "https://pokeapi.co/"},
+		{"Bulbagarden Archives", "https://archives.bulbagarden.net/"},
+		{"DearImGui", "https://github.com/ocornut/imgui"},
+		{"JsonCpp",  "https://github.com/open-source-parsers/jsoncpp"},
+		{"STB Image Library", "https://github.com/nothings/stb"},
+		{"SQLite", "https://www.sqlite.org/"},
+		{"Icon8", "https://icons8.com"}
 	};
+	static int selected_source_index = 0;
 
-	ImVec2 list_box_size = {ImGui::GetWindowSize().x * .95f, ImGui::GetTextLineHeightWithSpacing() * 6};
-	if (ImGui::BeginListBox("##sources", list_box_size)) {
-		for (int n = 0; n < source_texts.size(); n++) {
-			std::string source = source_texts[n];
-			ImGui::Text(source.c_str());
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+	if (ImGui::BeginListBox("##sources")) {
+		for (int n = 0; n < source_pairs.size(); n++) {
+			std::string source = source_pairs[n].first;
+			std::string link = source_pairs[n].second;
+			std::string citation = source + " - " + link;
+
+			const bool is_selected = (selected_source_index == n);
+			if (ImGui::Selectable(citation.c_str(), is_selected)) {
+				selected_source_index = n;
+			}
+
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+			}
 		}
 		ImGui::EndListBox();
 	}
 
+	if (ImGui::Button("Copy selected link to clipboard")) {
+		ImGui::LogToClipboard();
+		ImGui::LogText(source_pairs[selected_source_index].second.c_str());
+	}
 }
 
 } // namespace monster_calculator

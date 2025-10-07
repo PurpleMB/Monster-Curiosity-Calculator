@@ -408,7 +408,7 @@ public:
 			if (output_environment.show_program_info) {
 				monster_calculator::WindowParameters window_params;
 				window_params.name = "Program Info";
-				window_params.window_size = {0.0f, 0.0f};
+				window_params.window_size = {400.0f, 0.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize;
 				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_program_info);
