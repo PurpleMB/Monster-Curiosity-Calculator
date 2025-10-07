@@ -849,14 +849,15 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		ImGui::EndPopup();
 	}
 
+	// TODO: redo this math to be less brittle, some values are 0-indexed while others are 1-indexed. prone to bugs.
 	ImGui::Text("Set displayed page: ");
 	ImGui::SameLine();
-	ImU8 page_count = output_environment.subset_entries.size() / page_size;
+	ImU8 page_count = std::ceil(output_environment.subset_entries.size() / (float)page_size);
 	float page_text_width = 75.0f;
 	ImGui::SetNextItemWidth(page_text_width);
 	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	if (subset_page > page_count) {
-		subset_page = page_count;
+	if (subset_page >= page_count) {
+		subset_page = page_count - 1;
 	}
 
 	// subset display table
@@ -938,7 +939,7 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 
 	// display current page info
 	int shown_page_index = subset_page + 1;
-	int shown_page_count = page_count + 1;
+	int shown_page_count = page_count;
 	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
 	ImGui::Text(curr_page_text.c_str());
 
