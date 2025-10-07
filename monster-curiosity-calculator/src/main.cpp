@@ -381,7 +381,7 @@ public:
 			if (output_environment.show_database_rebuild) {
 				monster_calculator::WindowParameters window_params;
 				window_params.name = "Rebuild Database";
-				window_params.window_size = {0.0f, 0.0f};
+				window_params.window_size = {500.0f, 0.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
 				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_database_rebuild);

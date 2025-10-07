@@ -71,12 +71,25 @@ void DrawSettingsWindow(OutputEnvironment& output_environment) {
 
 // tools windows
 void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
-	std::string explanation = "In the event that any database files have been lost or corrupted, you may use this to rebuild the files";
-	ImGui::Text(explanation.c_str());
+	std::string explanation = "In the event that the database files have been lost or corrupted, this will attempt to reparse the program data to reform the database.";
+	ImGui::TextWrapped(explanation.c_str());
 
-	std::string warning = "This operation may take several minutes. If you are certain you want to rebuild the database, click the \"Rebuild Database\" button";
-	ImGui::Text(warning.c_str());
+	ImGui::NewLine();
 
+	std::string warning = "This operation may take several moments to complete, during which time this program may appear to freeze. If you are certain you want to rebuild the database, click the \"Rebuild Database\" button.";
+	ImGui::TextWrapped(warning.c_str());
+
+	ImGui::Separator();
+
+	// TODO: create a helper function class to make helpful things like this reusable
+	std::string button_label = "Rebuild Database";
+	ImGuiStyle& style = ImGui::GetStyle();
+	float button_size = ImGui::CalcTextSize(button_label.c_str()).x + (style.FramePadding.x * 2.0f);
+	float content_size = ImGui::GetContentRegionAvail().x;
+	float offset = (content_size - button_size) * 0.5f;
+	if (offset > 0.0f) {
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offset);
+	}
 	if (ImGui::Button("Rebuild Database")) {
 		CreateTableFromSchema(output_environment, kMainTableName, kMainTableSchemaList);
 		ClearTableContents(output_environment, kMainTableName);
