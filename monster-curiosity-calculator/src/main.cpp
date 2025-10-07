@@ -565,12 +565,6 @@ private:
 		stat_total_ptr,
 		height_ptr,
 		weight_ptr,
-		cheri_ptr,
-		chesto_ptr,
-		pecha_ptr,
-		rawst_ptr,
-		aspear_ptr,
-		lum_ptr
 	};
 
 	ParameterTypeConverter param_type_converter = ParameterTypeConverter({
