@@ -393,7 +393,7 @@ public:
 			if (output_environment.show_program_log) {
 				monster_calculator::WindowParameters window_params;
 				window_params.name = "Program Log";
-				window_params.window_size = {0.0f, 0.0f};
+				window_params.window_size = {750.0f, 300.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_None;
 				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_program_log);

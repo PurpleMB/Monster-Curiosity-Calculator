@@ -16,6 +16,8 @@ void BeginStyledWindow(WindowParameters& window_parameters) {
 	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position);
 
+	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
+
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 }
 
@@ -31,8 +33,10 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 }
 
 void BeginDynamicWindow(WindowParameters& window_parameters, bool* p_open) {
-	ImGui::SetNextWindowSize(window_parameters.window_size);
+	ImGui::SetNextWindowSize(window_parameters.window_size, ImGuiCond_Appearing);
 	ImGui::SetNextWindowPos(window_parameters.window_position, ImGuiCond_Appearing);
+	
+	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
 
 	ImGui::Begin(window_parameters.name.c_str(), p_open, window_parameters.imgui_window_settings);
 }
@@ -59,6 +63,8 @@ void BeginScalingWindow(WindowParameters& window_parameters, ImVec2 starting_pos
 
 	ImGui::SetNextWindowPos(window_start);
 	ImGui::SetNextWindowSize(window_size);
+
+	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
 
 	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
 }
