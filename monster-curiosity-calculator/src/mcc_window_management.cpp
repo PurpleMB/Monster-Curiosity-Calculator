@@ -31,7 +31,7 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 }
 
 void BeginDynamicWindow(WindowParameters& window_parameters, bool* p_open) {
-	ImGui::SetNextWindowSize(window_parameters.window_size, ImGuiCond_Appearing);
+	ImGui::SetNextWindowSize(window_parameters.window_size);
 	ImGui::SetNextWindowPos(window_parameters.window_position, ImGuiCond_Appearing);
 
 	ImGui::Begin(window_parameters.name.c_str(), p_open, window_parameters.imgui_window_settings);
@@ -49,6 +49,7 @@ void EndDynamicWindow(WindowParameters& window_parameters) {
 }
 
 void BeginScalingWindow(WindowParameters& window_parameters, ImVec2 starting_pos, ImVec2 ending_pos) {
+	// TODO: do some more math here to balance the margins for the ratio of the viewport
 	ImVec2 screen_size = ImGui::GetMainViewport()->WorkSize;
 
 	ImVec2 window_start = ImVec2(starting_pos.x * screen_size.x, starting_pos.y * screen_size.y);

@@ -39,21 +39,31 @@ void DrawMenuBarHelp(OutputEnvironment& output_environment) {
 // menu windows
 void DrawSettingsWindow(OutputEnvironment& output_environment) {
 	float window_width = ImGui::GetWindowWidth();
-	float label_area_percent = 0.3f;
 
+	float label_area_percent = 0.3f;
+	float label_width = window_width * label_area_percent;
+
+	float input_area_start = label_area_percent + 0.15f;;
+	float input_start_x = window_width * input_area_start;
+	float input_area_percent = 0.4f;
+	float input_width = window_width * input_area_percent;
+
+	float input_label_start = (input_area_start + input_area_percent) + 0.025f;
+	float input_label_start_x = window_width * input_label_start;
+
+	ImGui::SetNextItemWidth(label_width);
 	std::string color_label = "Table Color Intensity";
-	ImGui::SetNextItemWidth(window_width * label_area_percent);
 	ImGui::TextWrapped(color_label.c_str());
 
 	ImGui::SameLine();
-	float percent_width = ImGui::CalcTextSize("999%").x;
-	float intensity_bar_width = (window_width * (1 - label_area_percent)) - percent_width;
-	ImGui::SetNextItemWidth(intensity_bar_width);
+	ImGui::SetCursorPosX(input_start_x);
+	ImGui::SetNextItemWidth(input_width);
 	const float f32_zero = 0.f;
 	const float f32_one = 1.f;
 	ImGui::SliderScalar("##color_intensity_slider", ImGuiDataType_Float, &output_environment.table_color_intensity, &f32_zero, &f32_one, "");
 
 	ImGui::SameLine();
+	ImGui::SetCursorPosX(input_label_start_x);
 	int percentage = output_environment.table_color_intensity * 100;
 	std::string percentage_text = std::to_string(percentage) + "%%";
 	ImGui::Text(percentage_text.c_str());
