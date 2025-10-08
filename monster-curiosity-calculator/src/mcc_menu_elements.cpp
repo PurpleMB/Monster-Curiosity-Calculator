@@ -91,10 +91,35 @@ void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offset);
 	}
 	if (ImGui::Button("Rebuild Database")) {
+		// Always center this window when appearing
+		ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+		ImGui::OpenPopup("Rebuilding Database");
+
 		CreateTableFromSchema(output_environment, kMainTableName, kMainTableSchemaList);
 		ClearTableContents(output_environment, kMainTableName);
 		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
 		PopulateTableFromList(output_environment, kMainTableName, kMainTableSchemaList, monster_data);
+
+		ImGui::CloseCurrentPopup();
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+		ImGui::OpenPopup("Database Rebuilt");
+	}
+
+	// TODO: currently, this database never shows up because the rebuild halts the program until it is finished
+	if (ImGui::BeginPopupModal("Rebuilding Database", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("Please wait while the database is rebuilt.");
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopupModal("Database Rebuilt", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text("The program database has been successfully rebuilt.");
+
+		if (ImGui::Button("Close")) {
+			ImGui::CloseCurrentPopup();
+		}
+
+		ImGui::EndPopup();
 	}
 }
 
