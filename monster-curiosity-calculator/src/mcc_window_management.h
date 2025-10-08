@@ -15,4 +15,8 @@ void EndSubMenuWindow(WindowParameters& window_parameters);
 void BeginScalingWindow(WindowParameters& window_parameters, ImVec2 starting_pos, ImVec2 ending_pos);
 void EndScalingWindow(WindowParameters& window_parameters);
 
+// these functions are meant to improve over the above scaling window functions by allowing for constant margins and scaling relative to a defined pivot point
+void BeginPivotScaledWindow(WindowParameters& window_parameters, ImVec2 pivot, ImVec2 pivot_offset, ImVec2 window_size_percent);
+void EndPivotScaledWindow(WindowParameters& window_parameters);
+
 } // namespace monster_calculator

@@ -417,53 +417,71 @@ public:
 		}
 
 
-		ImVec2 window_size = {550, 0};
-		ImVec2 window_pos = {kWindowMargin, kWindowMargin + 50};
+		ImVec2 raw_screen_size = ImGui::GetMainViewport()->WorkSize;
+		ImVec2 effective_screen_start = {0.0f, ImGui::GetTextLineHeightWithSpacing()};
+		ImVec2 effective_screen_size = {raw_screen_size.x - effective_screen_start.x, raw_screen_size.y - effective_screen_start.y};
 
+
+		ImVec2 window_margins = {25.0f, 25.0f};
+		float half_screen_width_margined = (effective_screen_size.x * 0.5f) - (window_margins.x * 1.5f);
+		float full_screen_height_margined = (effective_screen_size.y) - (window_margins.y * 2.0f);
+		float half_screen_height_margined = (effective_screen_size.y * 0.5) - (window_margins.y * 1.5f);
+		
+		ImVec2 parameter_window_pos = {effective_screen_start.x + window_margins.x, effective_screen_start.y + window_margins.y};
+		float parameter_window_width = half_screen_width_margined;
+		float parameter_window_height = half_screen_height_margined;
+		ImVec2 parameter_window_size = {parameter_window_width, parameter_window_height};
 		// set restriction window
 		{
-			monster_calculator::WindowParameters window_params;
-			window_params.name = "Dataset Refinement";
-			window_params.window_size = window_size;
-			window_params.window_position = window_pos;
-			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.05f, 0.05f), ImVec2(0.45f, 0.55f));
+			std::string window_name = "Dataset Refinement";
+			int window_flags = kDefaultImGuiWindowSettings;
+
+			ImGui::SetNextWindowPos(parameter_window_pos);
+			ImGui::SetNextWindowSize(parameter_window_size);
+
+			ImGui::Begin(window_name.c_str(), nullptr, window_flags);
 
 			monster_calculator::DrawSetParameterWindow(output_environment, parameter_types, param_type_converter);
-
-			monster_calculator::EndScalingWindow(window_params);
-			window_pos.y += kWindowMargin + window_params.window_size.y;
+		
+			ImGui::End();
 		}
 
+		ImVec2 value_window_pos = {effective_screen_start.x + window_margins.x, effective_screen_start.y + window_margins.y + parameter_window_size.y + window_margins.y};
+		float value_window_width = half_screen_width_margined;
+		float value_window_height = half_screen_height_margined;
+		ImVec2 value_window_size = {value_window_width, value_window_height};
 		// value definition window
 		{
-			monster_calculator::WindowParameters window_params;
-			window_params.name = "Output Value Selection";
-			window_params.window_size = window_size;
-			window_params.window_position = window_pos;
-			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.05f, 0.6f), ImVec2(0.45f, 0.95f));
+			std::string window_name = "Subset Value Calculation";
+			int window_flags = kDefaultImGuiWindowSettings;
+
+			ImGui::SetNextWindowPos(value_window_pos);
+			ImGui::SetNextWindowSize(value_window_size);
+
+			ImGui::Begin(window_name.c_str(), nullptr, window_flags);
 
 			monster_calculator::DrawValueParameterWindow(output_environment, value_calc_types, param_type_converter);
 
-			monster_calculator::EndScalingWindow(window_params);
-			window_pos.x += kWindowMargin + window_params.window_size.x;
-			window_pos.y = kWindowMargin + 50;
+			ImGui::End();
 		}
 
+		ImVec2 subset_window_pos = {effective_screen_start.x + window_margins.x + parameter_window_size.x + window_margins.x, effective_screen_start.y + window_margins.y};
+		float subset_window_width = half_screen_width_margined;
+		float subset_window_height = full_screen_height_margined;
+		ImVec2 subset_window_size = {subset_window_width, subset_window_height};
 		// set display window
 		{
-			monster_calculator::WindowParameters window_params;
-			window_params.name = "Subset Display";
-			window_params.window_size = window_size;
-			window_params.window_position = window_pos;
-			window_params.imgui_window_settings = kDefaultImGuiWindowSettings;
-			monster_calculator::BeginScalingWindow(window_params, ImVec2(0.5f, 0.05f), ImVec2(0.95f, 0.95f));
+			std::string window_name = "Subset Display";
+			int window_flags = kDefaultImGuiWindowSettings;
+
+			ImGui::SetNextWindowPos(subset_window_pos);
+			ImGui::SetNextWindowSize(subset_window_size);
+
+			ImGui::Begin(window_name.c_str(), nullptr, window_flags);
 
 			monster_calculator::DrawSetDisplayWindow(output_environment, subset_column_statuses);
 
-			monster_calculator::EndScalingWindow(window_params);
-			window_pos.y += kWindowMargin + window_params.window_size.y;
+			ImGui::End();
 		}
 		//ImGui::PopFont();
 	}
@@ -474,7 +492,8 @@ private:
 
 	const int kDefaultImGuiWindowSettings = ImGuiWindowFlags_NoResize | 
 											ImGuiWindowFlags_NoCollapse | 
-											ImGuiWindowFlags_NoMove;
+											ImGuiWindowFlags_NoMove |
+											ImGuiWindowFlags_HorizontalScrollbar;
 	const float kWindowMargin = 25;
 
 	std::shared_ptr<EnumeratedParameterType> prim_type_ptr = std::make_shared<EnumeratedParameterType>(kPrimaryTypeParam);

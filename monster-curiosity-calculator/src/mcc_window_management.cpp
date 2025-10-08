@@ -76,5 +76,28 @@ void EndScalingWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
+// these functions are meant to improve over the above scaling window functions by allowing for constant margins and scaling relative to a defined pivot point
+void BeginPivotScaledWindow(WindowParameters& window_parameters, ImVec2 pivot, ImVec2 pivot_offset, ImVec2 window_size_percent) {
+	ImVec2 screen_size = ImGui::GetMainViewport()->WorkSize;
+
+	ImVec2 pivot_point_pixels = ImVec2(screen_size.x * pivot.x, screen_size.y * pivot.y);
+	ImVec2 window_start = ImVec2(pivot_point_pixels.x + pivot_offset.x, pivot_point_pixels.y + pivot_offset.y);
+	ImVec2 window_size_pixels = ImVec2(screen_size.x * window_size_percent.x, screen_size.y * window_size_percent.y);
+
+	ImGui::SetNextWindowPos(window_start);
+	ImGui::SetNextWindowSize(window_size_pixels);
+
+	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
+
+	ImGui::Begin(window_parameters.name.c_str(), nullptr, window_parameters.imgui_window_settings);
+}
+
+void EndPivotScaledWindow(WindowParameters& window_parameters) {
+	window_parameters.window_size.x = ImGui::GetWindowWidth();
+	window_parameters.window_size.y = ImGui::GetWindowHeight();
+
+	ImGui::End();
+}
+
 
 } // namespace monster_calculator
