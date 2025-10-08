@@ -313,11 +313,6 @@ public:
 			colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
 
-
-
-
-
-
 			// element border settings
 			style.FrameBorderSize = 0;
 			style.PopupBorderSize = 0;
@@ -329,7 +324,7 @@ public:
 
 			// element rounding settings
 			style.WindowRounding = 8;
-			style.ChildRounding = 8;
+			style.ChildRounding = 0;
 			style.FrameRounding = 5;
 			style.PopupRounding = 8;
 			style.ScrollbarRounding = 8;

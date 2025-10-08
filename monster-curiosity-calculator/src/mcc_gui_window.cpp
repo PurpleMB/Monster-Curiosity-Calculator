@@ -861,7 +861,7 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	}
 
 	// subset display table
-	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 16);
+	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 17);
 	const int kTableFlags = 
 		ImGuiTableFlags_Sortable |
 		ImGuiTableFlags_Reorderable |
