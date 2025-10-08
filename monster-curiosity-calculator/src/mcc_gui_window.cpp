@@ -314,6 +314,8 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll
 		| ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_ParseEmptyRefVal;
+
+	static std::vector<int> prev_operand_values = {min_val, max_val};
 	static std::vector<int> operand_values = {min_val, max_val};
 
 	int operand_count = operation.operands.size();
@@ -345,13 +347,13 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 		temp_val = ParameterValue(std::to_string(operand_values[0]));
 	}
 	else if (operand_count == 2) {
-		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
-		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
+		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, prev_operand_values[1]));
+		operand_values[1] = std::clamp(operand_values[1], std::max(prev_operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 		temp_val = ParameterValue(std::to_string((operand_values[0] + operand_values[1]) / 2));
 	}
-
+	prev_operand_values = operand_values;
 	
 	param_type.SetValueColorForType(temp_val);
 	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, temp_val.value_color));
@@ -368,6 +370,7 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	static bool inputs_step = true;
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EscapeClearsAll
 		| ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_ParseEmptyRefVal;
+	static std::vector<double> prev_operand_values = {min_val, max_val};
 	static std::vector<double> operand_values = {min_val, max_val};
 
 	int operand_count = operation.operands.size();
@@ -399,12 +402,13 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 		temp_val = ParameterValue(std::to_string(operand_values[0]));
 	}
 	else if (operand_count == 2) {
-		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, operand_values[1]));
-		operand_values[1] = std::clamp(operand_values[1], std::max(operand_values[0], min_val), max_val);
+		operand_values[0] = std::clamp(operand_values[0], min_val, std::min(max_val, prev_operand_values[1]));
+		operand_values[1] = std::clamp(operand_values[1], std::max(prev_operand_values[0], min_val), max_val);
 		formatted_operation = std::vformat(operation_format, std::make_format_args(operand_values[0], operand_values[1]));
 		formatted_display = std::vformat("[{0}, {1}]", std::make_format_args(operand_values[0], operand_values[1]));
 		temp_val = ParameterValue(std::to_string((operand_values[0] + operand_values[1]) / 2.0f));
 	}
+	prev_operand_values = operand_values;
 
 	param_type.SetValueColorForType(temp_val);
 	building_parameter.SetValueInfo(TableCellDisplayInfo(formatted_display, temp_val.value_color));
