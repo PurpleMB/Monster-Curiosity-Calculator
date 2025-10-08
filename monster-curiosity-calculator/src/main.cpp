@@ -316,7 +316,7 @@ public:
 			// element border settings
 			style.FrameBorderSize = 0;
 			style.PopupBorderSize = 0;
-			style.WindowBorderSize = 0;
+			style.WindowBorderSize = 1;
 
 			// element sizing settings
 			style.ScrollbarSize = 16;

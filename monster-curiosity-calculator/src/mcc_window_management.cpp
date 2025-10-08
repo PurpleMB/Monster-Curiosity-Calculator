@@ -38,11 +38,7 @@ void BeginSubMenuWindow(WindowParameters& window_parameters, bool* p_open) {
 	
 	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
-
 	ImGui::Begin(window_parameters.name.c_str(), p_open, window_parameters.imgui_window_settings);
-
-	ImGui::PopStyleVar();
 }
 
 void EndSubMenuWindow(WindowParameters& window_parameters) {
