@@ -467,7 +467,10 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 		ImGui::EndPopup();
 	}
 
-	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
+	float post_table_elements_height = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+	int post_table_element_count = 1;
+	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
+	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
 	const int kColumnCount = 5;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |
@@ -665,7 +668,10 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 
 	ImGui::Text("Current subset value operations:");
 
-	ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 10);
+	float post_table_elements_height = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+	int post_table_element_count = 1;
+	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
+	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
 	const int kColumnCount = 4;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |
@@ -862,7 +868,10 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	current_page_index = std::clamp(current_page_index, 0, max_page_index);
 
 	// subset display table
-	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 17);
+	float post_table_elements_height = ImGui::GetTextLineHeightWithSpacing() * 4.0f + ImGui::GetTextLineHeight() * 1.0f;
+	int post_table_element_count = 2;
+	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
+	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
 	const int kTableFlags = 
 		ImGuiTableFlags_Sortable |
 		ImGuiTableFlags_Reorderable |
