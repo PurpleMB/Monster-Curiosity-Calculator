@@ -340,7 +340,6 @@ public:
 			ImGui::ShowDemoWindow(&show_demo_window_);
 		}
 
-		//ImGui::PushFont(font_sono);
 		// menu window
 		{
 			monster_calculator::WindowParameters window_params;
@@ -400,7 +399,16 @@ public:
 				monster_calculator::EndSubMenuWindow(window_params);
 			}
 			if (output_environment.show_user_guide) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "User Guide";
+				window_params.window_size = {600.0f, 500.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_None;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_user_guide);
 
+				monster_calculator::DrawUserGuideWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
 			}
 			if (output_environment.show_program_info) {
 				monster_calculator::WindowParameters window_params;
@@ -483,7 +491,6 @@ public:
 
 			ImGui::End();
 		}
-		//ImGui::PopFont();
 	}
 
 private:

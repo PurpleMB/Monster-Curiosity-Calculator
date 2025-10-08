@@ -190,7 +190,50 @@ void DrawProgramLogWindow(OutputEnvironment& output_environment) {
 
 // help windows
 void DrawUserGuideWindow(OutputEnvironment& output_environment) {
+	if (ImGui::CollapsingHeader("Overview", ImGuiTreeNodeFlags_None)) {
 
+	}
+	if (ImGui::CollapsingHeader("Dataset Refinement", ImGuiTreeNodeFlags_None)) {
+		if (ImGui::TreeNode("Creating a subset parameter")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Using parameter groups")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Creating a data subset")) {
+			ImGui::TreePop();
+		}
+	}
+	if (ImGui::CollapsingHeader("Subset Value Calculation", ImGuiTreeNodeFlags_None)) {
+		if (ImGui::TreeNode("Calculating subset values")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Locking & re-rolling subset values")) {
+			ImGui::TreePop();
+		}
+	}
+	if (ImGui::CollapsingHeader("Subset Display", ImGuiTreeNodeFlags_None)) {
+		if (ImGui::TreeNode("Viewing subset entries")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Understanding the group size display")) {
+			ImGui::TreePop();
+		}
+	}
+	if (ImGui::CollapsingHeader("Troubleshooting", ImGuiTreeNodeFlags_None)) {
+		if (ImGui::TreeNode("Accessing the program log")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("JSON file recovery")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Database file recovery")) {
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Reporting a bug")) {
+			ImGui::TreePop();
+		}
+	}
 }
 
 void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
