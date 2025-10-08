@@ -785,11 +785,6 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 }
 
 void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
-	// text line showing # of entries in subset
-	std::string subset_size_text = "Subset Size: " + std::to_string(output_environment.subset_entries.size());
-	ImGui::Text(subset_size_text.c_str());
-
-
 	// edit icon button
 	ImGui::SameLine();
 	std::string button_label = "Subset Table Options";
@@ -818,6 +813,7 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		ImGui::EndPopup();
 	}
 
+	// determine active columns
 	std::vector<ColumnStatus> active_columns = {};
 	for (ColumnStatus col : column_statuses) {
 		if (col.IsEnabled()) {
@@ -827,16 +823,11 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	int active_column_count = active_columns.size();
 	ImGui::Text("Active Columns: %d", active_column_count);
 
-	// pagination of table for performance reasons
-	const ImU8 u8_one = 1;
-	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
-	static ImU8 subset_page = 0;
-
+	// selecting table page size
 	std::vector<std::string> page_size_labels = {"15", "30", "50", "100", "None"};
 	std::vector<int> page_sizes = {15, 30, 50, 100, 10000};
 	static int selected_page_size_index = 0;
-	static int page_size = page_sizes[0];
+	static int page_size = page_sizes[selected_page_size_index];
 
 	ImGui::Text("Page size limit: ");
 	ImGui::SameLine();
@@ -853,16 +844,22 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		ImGui::EndPopup();
 	}
 
-	// TODO: redo this math to be less brittle, some values are 0-indexed while others are 1-indexed. prone to bugs.
+	// selecting currently displayed page
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
+
+	static int current_page_index = 0;
+	int current_entry_count = output_environment.subset_entries.size();
+	int max_page_index = (current_entry_count - 1) / page_size; 
+
 	ImGui::Text("Set displayed page: ");
+
 	ImGui::SameLine();
-	ImU8 page_count = std::ceil(output_environment.subset_entries.size() / (float)page_size);
 	float page_text_width = 75.0f;
 	ImGui::SetNextItemWidth(page_text_width);
-	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &subset_page, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	if (subset_page >= page_count) {
-		subset_page = page_count - 1;
-	}
+	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &current_page_index, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
+	current_page_index = std::clamp(current_page_index, 0, max_page_index);
 
 	// subset display table
 	ImVec2 outer_size = ImVec2(0.0f,ImGui::GetTextLineHeightWithSpacing() * 17);
@@ -909,7 +906,7 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		}
 
 		// printing entry rows
-		int starting_index = page_size * subset_page;
+		int starting_index = page_size * current_page_index;
 		int ending_index = std::min((int)output_environment.subset_entries.size(), starting_index + page_size);
 		for (int subset_index = starting_index; subset_index < ending_index; subset_index++) {
 			auto subset_entry = output_environment.subset_entries[subset_index];
@@ -942,11 +939,12 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 	}
 
 	// display current page info
-	int shown_page_index = subset_page + 1;
-	int shown_page_count = page_count;
+	int shown_page_index = current_page_index + 1;
+	int shown_page_count = max_page_index + 1;
 	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
 	ImGui::Text(curr_page_text.c_str());
 
+	// draw subset sizes indicator
 	DrawSubsetSizeTable(output_environment, output_environment.parameter_set);
 }
 
