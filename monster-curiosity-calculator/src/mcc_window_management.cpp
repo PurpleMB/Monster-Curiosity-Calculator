@@ -32,16 +32,20 @@ void EndStyledWindow(WindowParameters& window_parameters) {
 	ImGui::End();
 }
 
-void BeginDynamicWindow(WindowParameters& window_parameters, bool* p_open) {
+void BeginSubMenuWindow(WindowParameters& window_parameters, bool* p_open) {
 	ImGui::SetNextWindowSize(window_parameters.window_size, ImGuiCond_Appearing);
 	ImGui::SetNextWindowPos(window_parameters.window_position, ImGuiCond_Appearing);
 	
 	ImGui::SetNextWindowCollapsed(false, ImGuiCond_Appearing);
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
+
 	ImGui::Begin(window_parameters.name.c_str(), p_open, window_parameters.imgui_window_settings);
+
+	ImGui::PopStyleVar();
 }
 
-void EndDynamicWindow(WindowParameters& window_parameters) {
+void EndSubMenuWindow(WindowParameters& window_parameters) {
 	if (window_parameters.window_size.x == 0) {
 		window_parameters.window_size.x = ImGui::GetWindowWidth();
 	}

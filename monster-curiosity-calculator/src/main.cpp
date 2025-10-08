@@ -258,7 +258,7 @@ public:
 			colors[ImGuiCol_WindowBg] = ImVec4(0.59f, 0.52f, 0.63f, 1.00f);
 			colors[ImGuiCol_ChildBg] = ImVec4(0.54f, 0.45f, 0.59f, 1.00f);
 			colors[ImGuiCol_PopupBg] = ImVec4(0.42f, 0.31f, 0.49f, 1.00f);
-			colors[ImGuiCol_Border] = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
+			colors[ImGuiCol_Border] = ImVec4(0.37f, 0.10f, 0.46f, 0.70f);
 			colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 			colors[ImGuiCol_FrameBg] = ImVec4(0.66f, 0.73f, 0.94f, 0.54f);
 			colors[ImGuiCol_FrameBgHovered] = ImVec4(0.66f, 0.73f, 0.94f, 0.82f);
@@ -374,11 +374,11 @@ public:
 				window_params.window_size = {500.0f, 0.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
-				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_settings);
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_settings);
 
 				monster_calculator::DrawSettingsWindow(output_environment);
 
-				monster_calculator::EndDynamicWindow(window_params);
+				monster_calculator::EndSubMenuWindow(window_params);
 			}
 			if (output_environment.show_database_rebuild) {
 				monster_calculator::WindowParameters window_params;
@@ -386,11 +386,11 @@ public:
 				window_params.window_size = {500.0f, 0.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
-				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_database_rebuild);
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_database_rebuild);
 
 				monster_calculator::DrawDatabaseRebuildWindow(output_environment);
 
-				monster_calculator::EndDynamicWindow(window_params);
+				monster_calculator::EndSubMenuWindow(window_params);
 			}
 			if (output_environment.show_program_log) {
 				monster_calculator::WindowParameters window_params;
@@ -398,11 +398,11 @@ public:
 				window_params.window_size = {750.0f, 300.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_None;
-				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_program_log);
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_log);
 
 				monster_calculator::DrawProgramLogWindow(output_environment);
 
-				monster_calculator::EndDynamicWindow(window_params);
+				monster_calculator::EndSubMenuWindow(window_params);
 			}
 			if (output_environment.show_user_guide) {
 
@@ -413,11 +413,11 @@ public:
 				window_params.window_size = {400.0f, 0.0f};
 				window_params.window_position = ImGui::GetCursorPos();
 				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize;
-				monster_calculator::BeginDynamicWindow(window_params, &output_environment.show_program_info);
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_info);
 
 				monster_calculator::DrawProgramInfoWindow(output_environment);
 
-				monster_calculator::EndDynamicWindow(window_params);
+				monster_calculator::EndSubMenuWindow(window_params);
 			}
 		}
 
