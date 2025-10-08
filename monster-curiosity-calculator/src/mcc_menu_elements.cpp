@@ -228,6 +228,23 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 	if (ImGui::Button("Copy selected link to clipboard")) {
 		ImGui::LogToClipboard();
 		ImGui::LogText(source_pairs[selected_source_index].second.c_str());
+		ImGui::LogFinish();
+		ImGui::OpenPopup("Copied to clipboard");
+	}
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("Copied to clipboard", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+		std::string success_msg = "Successfully copied source link for "
+			+ source_pairs[selected_source_index].first + " to clipboard";
+		ImGui::Text(success_msg.c_str());
+
+		if (ImGui::Button("Close")) {
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
 	}
 }
 
