@@ -205,8 +205,9 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 	};
 	static int selected_source_index = 0;
 
+	float child_height = ImGui::GetTextLineHeightWithSpacing() * 8.5f;
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-	if (ImGui::BeginListBox("##sources")) {
+	if (ImGui::BeginChild("##sources", ImVec2(0.0f, child_height), ImGuiChildFlags_FrameStyle, ImGuiWindowFlags_HorizontalScrollbar)) {
 		for (int n = 0; n < source_pairs.size(); n++) {
 			std::string source = source_pairs[n].first;
 			std::string link = source_pairs[n].second;
@@ -221,7 +222,7 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 				ImGui::SetItemDefaultFocus();
 			}
 		}
-		ImGui::EndListBox();
+		ImGui::EndChild();
 	}
 
 	if (ImGui::Button("Copy selected link to clipboard")) {
