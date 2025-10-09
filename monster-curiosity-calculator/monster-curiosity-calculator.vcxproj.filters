@@ -90,6 +90,9 @@
     <ClCompile Include="src\mcc_gui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcc_imgui_helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\imgui\imconfig.h">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\mcc_gui_widgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcc_imgui_helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -462,7 +462,7 @@ public:
 		ImVec2 value_window_size = {value_window_width, value_window_height};
 		// value definition window
 		{
-			std::string window_name = "Subset Value Calculation";
+			std::string window_name = "Subset Values";
 			int window_flags = kDefaultImGuiWindowSettings;
 
 			ImGui::SetNextWindowPos(value_window_pos);

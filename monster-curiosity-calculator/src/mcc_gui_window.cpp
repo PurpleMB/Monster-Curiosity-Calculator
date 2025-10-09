@@ -29,6 +29,7 @@
 #include "mcc_database_querying.h"
 #include "mcc_menu_elements.h"
 #include "mcc_gui_widgets.h"
+#include "mcc_imgui_helpers.h"
 
 #include "mcc_gui_windows.h"
 
@@ -62,11 +63,13 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	static int selected_value_index = 0;
 
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
-	ImGui::Text("Define parameters to refine data set:");
-	ImGui::NewLine();
 
+	std::string explanation = "Use this window to define groups of parameters that will refine the dataset to your desired data subsets."
+		"Each parameter group is evaluated independently.";
+	ImGui::TextWrapped(explanation.c_str());
+
+	// select type of parameter to be defined
 	static const ImVec2 combo_size = ImVec2(175, 0);
-
 	static ImGuiComboFlags param_combo_flags = 0;
 	ImGui::SetNextItemWidth(combo_size.x);
 	if (ImGui::BeginCombo("Subset Parameter Type", selected_parameter_name.c_str(), param_combo_flags)) {
@@ -87,13 +90,10 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		}
 		ImGui::EndCombo();
 	}
-
-	ImGui::SameLine();
-	DrawHelpIcon("This is a parameter type.", output_environment);
-
 	ParameterType* selected_param = parameter_types[selected_parameter_index].get();
 	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
+	// select operation for parameter
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (operations.size() > 1) {
 		static  ImGuiComboFlags oper_combo_flags = 0;
@@ -116,7 +116,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	ParameterOperation selected_operation = selected_param->operations[selected_operation_index];
 	building_parameter.SetOperationInfo(TableCellDisplayInfo(selected_operation.display_name, selected_operation.value_color));
 
-
+	// determine what ParameterType has been chosen to appropriately display it
 	EnumeratedParameterType enum_param;
 	PreferredEnumDisplay display_method;
 	OpenParameterType open_param;
@@ -159,6 +159,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 			break;
 	}
 
+	// define parameter group
 	static int parameter_group = 0;
 	int parameter_group_count = output_environment.parameter_set.GetGroupCount();
 	if (parameter_group_count > 1) {
@@ -168,11 +169,11 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		output_environment.parameter_set.AddParameter(building_parameter, parameter_group);
 	}
 
+	// draw the table of all defined parameters
 	ImGui::Separator();
-
-
 	DrawSubsetParameterTable(output_environment);
 
+	// buttons to use/discard parameters
 	if (ImGui::Button("Find Matching Monsters")) {
 		ImGui::SetItemTooltip("This is a tooltip test");
 
@@ -439,14 +440,17 @@ void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set) {
 }
 
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
-	ImGui::Text("Current subset parameters:");
+	std::string table_name = "Current Subset Parameters";
+	float label_width = ImGui::CalcTextSize(table_name.c_str()).x;
+	CenterNextElemByWidth(label_width);
+	ImGui::Text(table_name.c_str());
 
 	static bool group_color_enabled = false;
 	static bool parameter_color_enabled = false;
 	static bool operation_color_enabled = false;
 	static bool value_color_enabled = false;
 	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &operation_color_enabled, &value_color_enabled};
-	static std::vector<std::string> column_toggle_names = {"Parameter Group", "Parameter", "Operation", "Value"};
+	static std::vector<std::string> column_toggle_names = {"Group", "Type", "Operation", "Value"};
 
 
 	// edit icon button
@@ -482,7 +486,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
 		ImGui::TableSetupColumn("Group", ImGuiTableColumnFlags_WidthFixed, col_width);
-		ImGui::TableSetupColumn("Parameter", ImGuiTableColumnFlags_WidthStretch);
+		ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthFixed);
 		ImGui::TableSetupColumn("", 
