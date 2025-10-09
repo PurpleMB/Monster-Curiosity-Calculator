@@ -431,17 +431,19 @@ public:
 
 
 		ImVec2 window_margins = {25.0f, 25.0f};
-		float half_screen_width_margined = (effective_screen_size.x * 0.5f) - (window_margins.x * 1.5f);
+		float forty_screen_width_margined = (effective_screen_size.x * 0.4f) - (window_margins.x * 1.5f);
+		float sixty_screen_width_margined = (effective_screen_size.x * 0.6f) - (window_margins.x * 1.5f);
+		float forty_screen_height_margined = (effective_screen_size.y * 0.4f) - (window_margins.y * 1.5f);
+		float sixty_screen_height_margined = (effective_screen_size.y * 0.6f) - (window_margins.y * 1.5f);
 		float full_screen_height_margined = (effective_screen_size.y) - (window_margins.y * 2.0f);
-		float half_screen_height_margined = (effective_screen_size.y * 0.5) - (window_margins.y * 1.5f);
-		
+
 		ImVec2 parameter_window_pos = {effective_screen_start.x + window_margins.x, effective_screen_start.y + window_margins.y};
-		float parameter_window_width = half_screen_width_margined;
-		float parameter_window_height = half_screen_height_margined;
+		float parameter_window_width = forty_screen_width_margined;
+		float parameter_window_height = sixty_screen_height_margined;
 		ImVec2 parameter_window_size = {parameter_window_width, parameter_window_height};
 		// set restriction window
 		{
-			std::string window_name = "Dataset Refinement";
+			std::string window_name = "Subset Parameters";
 			int window_flags = kDefaultImGuiWindowSettings;
 
 			ImGui::SetNextWindowPos(parameter_window_pos);
@@ -455,8 +457,8 @@ public:
 		}
 
 		ImVec2 value_window_pos = {effective_screen_start.x + window_margins.x, effective_screen_start.y + window_margins.y + parameter_window_size.y + window_margins.y};
-		float value_window_width = half_screen_width_margined;
-		float value_window_height = half_screen_height_margined;
+		float value_window_width = forty_screen_width_margined;
+		float value_window_height = forty_screen_height_margined;
 		ImVec2 value_window_size = {value_window_width, value_window_height};
 		// value definition window
 		{
@@ -474,7 +476,7 @@ public:
 		}
 
 		ImVec2 subset_window_pos = {effective_screen_start.x + window_margins.x + parameter_window_size.x + window_margins.x, effective_screen_start.y + window_margins.y};
-		float subset_window_width = half_screen_width_margined;
+		float subset_window_width = sixty_screen_width_margined;
 		float subset_window_height = full_screen_height_margined;
 		ImVec2 subset_window_size = {subset_window_width, subset_window_height};
 		// set display window
