@@ -68,11 +68,25 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 		"Each parameter group is evaluated independently.";
 	ImGui::TextWrapped(explanation.c_str());
 
+	ImVec2 added_spacing = ImVec2(0.0f, ImGui::GetStyle().ItemSpacing.y);
+	ImGui::Dummy(added_spacing);
+	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
+
+	static const float fields_label_width = 200.0f;
+	static const float fields_combo_width = 175.0f;
+
 	// select type of parameter to be defined
-	static const ImVec2 combo_size = ImVec2(175, 0);
+	ImGui::SetNextItemWidth(fields_label_width);
+	std::string type_label = "Parameter Type";
+	ImGui::Text(type_label.c_str());
+
+	ImGui::SameLine();
+	
+	ImGui::SetCursorPosX(fields_label_width);
+	ImGui::SetNextItemWidth(fields_combo_width);
 	static ImGuiComboFlags param_combo_flags = 0;
-	ImGui::SetNextItemWidth(combo_size.x);
-	if (ImGui::BeginCombo("Subset Parameter Type", selected_parameter_name.c_str(), param_combo_flags)) {
+	if (ImGui::BeginCombo("##parameter_type", selected_parameter_name.c_str(), param_combo_flags)) {
 		for (int i = 0; i < parameter_types.size(); i++) {
 			const bool is_selected = (selected_parameter_index == i);
 			if (ImGui::Selectable(parameter_types[i]->display_name.c_str(), is_selected)) {
@@ -81,6 +95,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 				if (incoming_ops != curr_ops) {
 					selected_operation_index = 0;
 				}
+				selected_value_index = 0;
 				selected_parameter_index = i;
 			}
 
@@ -94,11 +109,19 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	building_parameter.SetParameterInfo(TableCellDisplayInfo(selected_param->display_name, selected_param->parameter_color));
 
 	// select operation for parameter
+	ImGui::SetNextItemWidth(fields_label_width);
+	std::string operation_label = "Parameter Operation";
+	ImGui::Text(operation_label.c_str());
+
+	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(fields_label_width);
+	ImGui::SetNextItemWidth(fields_combo_width);
 	std::vector<ParameterOperation> operations = selected_param->operations;
 	if (operations.size() > 1) {
 		static  ImGuiComboFlags oper_combo_flags = 0;
-		ImGui::SetNextItemWidth(combo_size.x);
-		if (ImGui::BeginCombo("Subset Parameter Operation", operations[selected_operation_index].display_name.c_str(), oper_combo_flags)) {
+		ImGui::SetNextItemWidth(fields_combo_width);
+		if (ImGui::BeginCombo("##parameter_operation", operations[selected_operation_index].display_name.c_str(), oper_combo_flags)) {
 			for (int i = 0; i < operations.size(); i++) {
 				const bool is_selected = (selected_operation_index == i);
 				if (ImGui::Selectable(operations[i].display_name.c_str(), is_selected)) {
@@ -163,14 +186,17 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	static int parameter_group = 0;
 	int parameter_group_count = output_environment.parameter_set.GetGroupCount();
 	if (parameter_group_count > 1) {
-		DrawParameterGroupSelector(parameter_group, output_environment.parameter_set);
+		DrawParameterGroupSelector(parameter_group, output_environment.parameter_set, fields_label_width, fields_combo_width);
 	}
-	if (ImGui::Button("Apply Parameter")) {
+	if (ImGui::Button("Add Parameter")) {
 		output_environment.parameter_set.AddParameter(building_parameter, parameter_group);
 	}
 
 	// draw the table of all defined parameters
+	ImGui::Dummy(added_spacing);
 	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
+
 	DrawSubsetParameterTable(output_environment);
 
 	// buttons to use/discard parameters
@@ -418,12 +444,18 @@ void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOpe
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set) {
+void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set, float label_width, float combo_width) {
+	ImGui::SetNextItemWidth(label_width);
+	std::string group_label = "Parameter Group";
+	ImGui::Text(group_label.c_str());
+
+	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(label_width);
+	ImGui::SetNextItemWidth(combo_width);
 	std::string selected_group_name = parameter_set.GetParameterGroup(group_index).GetGroupName();
-	static const ImVec2 combo_size = ImVec2(200, 0);
 	static ImGuiComboFlags group_combo_flags = 0;
-	ImGui::SetNextItemWidth(combo_size.x);
-	if (ImGui::BeginCombo("Subset Parameter Group", selected_group_name.c_str(), group_combo_flags)) {
+	if (ImGui::BeginCombo("##parameter_group", selected_group_name.c_str(), group_combo_flags)) {
 		for (int i = 0; i < parameter_set.GetGroupCount(); i++) {
 			const bool is_selected = (group_index == i);
 			std::string name = parameter_set.GetParameterGroup(i).GetGroupName();
@@ -442,9 +474,10 @@ void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set) {
 void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	std::string table_name = "Current Subset Parameters";
 	float label_width = ImGui::CalcTextSize(table_name.c_str()).x;
-	CenterNextElemByWidth(label_width);
+	CenterNextElem(label_width);
 	ImGui::Text(table_name.c_str());
 
+	// table options & button
 	static bool group_color_enabled = false;
 	static bool parameter_color_enabled = false;
 	static bool operation_color_enabled = false;
@@ -452,15 +485,17 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	static std::vector<bool*> column_color_toggles = {&group_color_enabled, &parameter_color_enabled, &operation_color_enabled, &value_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Group", "Type", "Operation", "Value"};
 
-
-	// edit icon button
 	ImGui::SameLine();
-	std::string button_label = "Parameter Table Options";
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - (ImGui::GetStyle().ItemSpacing.y * 0.5f));	// buttons are a little taller than normal text
+
 	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
-	float line_height = ImGui::GetTextLineHeight();
-	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
+	float img_size = ImGui::GetTextLineHeight();
+	float button_width = img_size + ImGui::GetStyle().FramePadding.x * 2;
+	RightJustifyNextElem(button_width);
+	if (ImGui::ImageButton("Table Options", button_tex, ImVec2(img_size, img_size))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
+
 	if (ImGui::BeginPopup("table_options_popup")) {
 		if (ImGui::BeginMenu("Coloring Options")) {
 			for (int i = 0; i < column_color_toggles.size(); i++) {
@@ -471,10 +506,20 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 		ImGui::EndPopup();
 	}
 
+	// parameter table prep
+	// calculate table size
+	float dynamic_table_width = ImGui::GetContentRegionAvail().x;
+	float min_table_width = 400.0f;
+	float table_width = std::max(min_table_width, dynamic_table_width);
+
 	float post_table_elements_height = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
 	int post_table_element_count = 1;
 	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
-	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
+	float dynamic_table_height = ImGui::GetContentRegionAvail().y - post_table_content_height;
+	float min_table_height = 150.0f;
+	float table_height = std::max(min_table_height, dynamic_table_height);
+	
+	ImVec2 outer_size = {table_width, table_height};
 	const int kColumnCount = 5;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |

@@ -9,6 +9,9 @@
 
 namespace monster_calculator {
 
-float CenterNextElemByWidth(float element_width);
+// Helper functions meant to place elements at certain positions on the current line
+float CenterNextElem(float element_width);
+float RightJustifyNextElem(float element_width);
+
 
 } // namespace monster_calculator
