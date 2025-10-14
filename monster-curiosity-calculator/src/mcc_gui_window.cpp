@@ -65,7 +65,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	std::string selected_parameter_name = parameter_types[selected_parameter_index]->display_name;
 
 	std::string explanation = "Use this window to define groups of parameters that will refine the dataset to your desired data subsets."
-		"Each parameter group is evaluated independently.";
+		"Each parameter group is evaluated independently; an entry only has to pass one parameter group to be included in the subset.";
 	ImGui::TextWrapped(explanation.c_str());
 
 	ImVec2 added_spacing = ImVec2(0.0f, ImGui::GetStyle().ItemSpacing.y);
@@ -547,6 +547,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	if (ImGui::ImageButton("Table Options", button_tex, ImVec2(img_size, img_size))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
+	ImGui::SetItemTooltip("Table Display Settings");
 
 	if (ImGui::BeginPopup("table_options_popup")) {
 		if (ImGui::BeginMenu("Coloring Options")) {
@@ -658,6 +659,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				if (ImGui::ImageButton(button_id.c_str(), button_tex, ImVec2(image_height, image_height))) {
 					group.RemoveParameter(parameter_index);
 				}
+				ImGui::SetItemTooltip("Remove Parameter");
 				ImGui::PopStyleVar();
 				ImGui::PopID();
 			}
@@ -788,6 +790,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 	if (ImGui::ImageButton("Table Options", button_tex, ImVec2(img_size, img_size))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
+	ImGui::SetItemTooltip("Table Display Settings");
 
 	if (ImGui::BeginPopup("table_options_popup")) {
 		if (ImGui::BeginMenu("Coloring Options")) {
@@ -887,12 +890,14 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 					if (ImGui::ImageButton(lock_id.c_str(), locked_tex, ImVec2(image_height, image_height))) {
 						curr_query.SetLocked(false);
 					}
+					ImGui::SetItemTooltip("Unlock Value");
 				}
 				else {
 					ImTextureID unlocked_tex = output_environment.GetTextureFromMap("unlock");
 					if (ImGui::ImageButton(lock_id.c_str(), unlocked_tex, ImVec2(image_height, image_height))) {
 						curr_query.SetLocked(true);
 					}
+					ImGui::SetItemTooltip("Lock Value");
 				}
 				ImGui::PopStyleVar();
 				ImGui::PopID();
@@ -911,6 +916,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 
 					QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
 				}
+				ImGui::SetItemTooltip("Recalculate Value");
 				ImGui::PopStyleVar();
 				ImGui::PopID();
 			}
@@ -925,6 +931,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 				if (ImGui::ImageButton(remove_id.c_str(), remove_tex, ImVec2(image_height, image_height))) {
 					output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
 				}
+				ImGui::SetItemTooltip("Remove Query");
 				ImGui::PopStyleVar();
 				ImGui::PopID();
 			}
@@ -934,14 +941,49 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 }
 
 void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses) {
-	// edit icon button
+	// declaring variables for paging and page sizing early for use in table displaying
+	std::vector<std::string> page_size_labels = {"15", "30", "50", "100", "None"};
+	std::vector<int> page_sizes = {15, 30, 50, 100, 10000};
+	static int selected_page_size_index = 0;
+	static int page_size = page_sizes[selected_page_size_index];
+
+	static int current_page_index = 0;
+
+	// blurb for window
+	std::string explanation = "This window is used to view members of your current data subset. The 'Current Subset Group Sizes' display indicates the number of subset entries fulfilling the criteria of each parameter group. "
+		"The 'Current Subset Entries' display presents all members of your data subset, sortable by any data column. Columns may be toggled for display or coloring using the table options button";
+	ImGui::TextWrapped(explanation.c_str());
+
+	ImVec2 added_spacing = ImVec2(0.0f, ImGui::GetStyle().ItemSpacing.y);
+	ImGui::Dummy(added_spacing);
+	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
+
+	// draw subset sizes indicator
+	DrawSubsetSizeTable(output_environment, output_environment.parameter_set);
+
+	ImGui::Dummy(added_spacing);
+	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
+
+	// table title
+	std::string table_name = "Current Subset Entries";
+	float label_width = ImGui::CalcTextSize(table_name.c_str()).x;
+	CenterNextElem(label_width);
+	ImGui::Text(table_name.c_str());
+
+	// table options button
 	ImGui::SameLine();
-	std::string button_label = "Subset Table Options";
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - (ImGui::GetStyle().ItemSpacing.y * 0.5f));	// buttons are a little taller than normal text
 	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
-	float line_height = ImGui::GetTextLineHeight();
-	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
+	float img_size = ImGui::GetTextLineHeight();
+	float button_width = img_size + ImGui::GetStyle().FramePadding.x * 2;
+	RightJustifyNextElem(button_width);
+	if (ImGui::ImageButton("Table Options", button_tex, ImVec2(img_size, img_size))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
+	ImGui::SetItemTooltip("Table Display Settings");
+
 	if (ImGui::BeginPopup("table_options_popup")) {
 		if (ImGui::BeginMenu("Column Toggling")) {
 			for (ColumnStatus& col : column_statuses) {
@@ -970,51 +1012,25 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		}
 	}
 	int active_column_count = active_columns.size();
-	ImGui::Text("Active Columns: %d", active_column_count);
-
-	// selecting table page size
-	std::vector<std::string> page_size_labels = {"15", "30", "50", "100", "None"};
-	std::vector<int> page_sizes = {15, 30, 50, 100, 10000};
-	static int selected_page_size_index = 0;
-	static int page_size = page_sizes[selected_page_size_index];
-
-	ImGui::Text("Page size limit: ");
-	ImGui::SameLine();
-	if (ImGui::SmallButton(page_size_labels[selected_page_size_index].c_str())) {
-		ImGui::OpenPopup("##Select page size limit:");
-	}
-	if (ImGui::BeginPopup("##Select page size limit:")) {
-		for (int i = 0; i < page_size_labels.size(); i++) {
-			if (ImGui::Selectable(page_size_labels[i].c_str())) {
-				selected_page_size_index = i;
-				page_size = page_sizes[i];
-			}
-		}
-		ImGui::EndPopup();
-	}
-
-	// selecting currently displayed page
-	const ImU8 u8_one = 1;
-	static bool inputs_step = true;
-	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
-
-	static int current_page_index = 0;
-	int current_entry_count = output_environment.subset_entries.size();
-	int max_page_index = (current_entry_count - 1) / page_size; 
-
-	ImGui::Text("Set displayed page: ");
-
-	ImGui::SameLine();
-	float page_text_width = 75.0f;
-	ImGui::SetNextItemWidth(page_text_width);
-	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &current_page_index, inputs_step ? &u8_one : NULL, NULL, "%u", flags);
-	current_page_index = std::clamp(current_page_index, 0, max_page_index);
+	std::string columns_label = "Active Columns: %2d";
+	float columns_label_width = ImGui::CalcTextSize(columns_label.c_str()).x;
+	RightJustifyNextElem(columns_label_width);
+	ImGui::Text(columns_label.c_str(), active_column_count);
 
 	// subset display table
-	float post_table_elements_height = ImGui::GetTextLineHeightWithSpacing() * 4.0f + ImGui::GetTextLineHeight() * 1.0f;
+	float dynamic_table_width = ImGui::GetContentRegionAvail().x;
+	float min_table_width =600.0f;
+	float table_width = std::max(min_table_width, dynamic_table_width);
+
+	float post_table_elements_height = (ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f) * 2.0f;
 	int post_table_element_count = 2;
 	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
-	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
+	float dynamic_table_height = ImGui::GetContentRegionAvail().y - post_table_content_height;
+
+	float min_table_height = 250.0f;
+	float table_height = std::max(min_table_height, dynamic_table_height);
+
+	ImVec2 outer_size = {table_width, table_height};
 	const int kTableFlags = 
 		ImGuiTableFlags_Sortable |
 		ImGuiTableFlags_Reorderable |
@@ -1090,17 +1106,51 @@ void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<Col
 		ImGui::EndTable();
 	}
 
-	// display current page info
+	// selecting currently displayed page
+	const ImU8 u8_one = 1;
+	static bool inputs_step = true;
+	static ImGuiInputTextFlags flags = ImGuiInputFlags_None;
+
+	int current_entry_count = output_environment.subset_entries.size();
+	int max_page_index = (current_entry_count - 1) / page_size;
 	int shown_page_index = current_page_index + 1;
 	int shown_page_count = max_page_index + 1;
-	std::string curr_page_text = std::vformat("Page {0} of {1}", std::make_format_args(shown_page_index, shown_page_count));
-	ImGui::Text(curr_page_text.c_str());
 
-	// draw subset sizes indicator
-	DrawSubsetSizeTable(output_environment, output_environment.parameter_set);
+	ImGui::Text("Page");
+
+	ImGui::SameLine();
+	float page_text_width = 75.0f;
+	ImGui::SetNextItemWidth(page_text_width);
+	ImGui::InputScalar("##subset_table_page", ImGuiDataType_U8, &shown_page_index, inputs_step ? &u8_one : NULL, NULL, "%2d", flags);
+	shown_page_index = std::clamp(shown_page_index, 1, shown_page_count);
+	current_page_index = (shown_page_index - 1);
+
+	ImGui::SameLine();
+	ImGui::Text("of %2d", shown_page_count);
+
+	// selecting table page size
+	ImGui::Text("Page size limit: ");
+	ImGui::SameLine();
+	if (ImGui::Button(page_size_labels[selected_page_size_index].c_str())) {
+		ImGui::OpenPopup("##Select page size limit:");
+	}
+	if (ImGui::BeginPopup("##Select page size limit:")) {
+		for (int i = 0; i < page_size_labels.size(); i++) {
+			if (ImGui::Selectable(page_size_labels[i].c_str())) {
+				selected_page_size_index = i;
+				page_size = page_sizes[i];
+			}
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set) {
+	std::string table_name = "Current Subset Group Sizes";
+	float label_width = ImGui::CalcTextSize(table_name.c_str()).x;
+	CenterNextElem(label_width);
+	ImGui::Text(table_name.c_str());
+
 	// remove spacing under first table so tables appear as one entity
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(ImGui::GetStyle().ItemSpacing.x, 0.0f));
 
@@ -1124,7 +1174,7 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 		ImU32 cell_bg_color = ImGui::GetColorU32(cell_color);
 		ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 
-		std::string subset_label = "Subset";
+		std::string subset_label = "Total";
 		float text_width = ImGui::CalcTextSize(subset_label.c_str()).x;
 		float col_width = ImGui::GetColumnWidth();
 		ImGui::SetCursorPosX((col_width - text_width) * 0.5f);
