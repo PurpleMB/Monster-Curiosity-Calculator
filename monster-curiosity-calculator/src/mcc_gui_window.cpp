@@ -166,7 +166,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 			break;
 		case Open:
 			open_param = *dynamic_cast<OpenParameterType*>(selected_param);
-			DrawOpenParameterSelector(open_param, selected_operation, building_parameter);
+			DrawOpenParameterSelector(open_param, selected_operation, building_parameter, fields_label_width, fields_combo_width);
 			break;
 		case Integer:
 			int_param = *dynamic_cast<IntegerParameterType*>(selected_param);
@@ -338,12 +338,16 @@ void DrawImageParameterSelector(EnumeratedParameterType& param_type, ParameterOp
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
+void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter, float label_width, float input_width) {
 	std::string operand = operation.operands[0];
-	std::string label = std::vformat("Set {0}:", std::make_format_args(operand));
-	ImGui::Text(label.c_str());
+	ImGui::SetNextItemWidth(label_width);
+	std::string value_label = "Parameter Value";
+	ImGui::Text(value_label.c_str());
+
 	ImGui::SameLine();
 
+	ImGui::SetCursorPosX(label_width);
+	ImGui::SetNextItemWidth(input_width);
 	std::string input_label = "##text_value_input";
 	static std::string value_text = "";
 	static ImGuiInputTextFlags flags = ImGuiInputTextFlags_EscapeClearsAll;
