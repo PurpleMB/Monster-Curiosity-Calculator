@@ -21,7 +21,7 @@ namespace monster_calculator {
 
 	void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter, float label_width, float input_width);
 	
-	void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
+	void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter, float label_width, float input_width);
 	void DrawDecimalParameterSelector(DecimalParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	
 	void DrawParameterGroupSelector(int& group_index, ParameterSet& parameter_set, float label_width, float combo_width);

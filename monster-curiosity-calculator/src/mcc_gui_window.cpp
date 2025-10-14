@@ -170,7 +170,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 			break;
 		case Integer:
 			int_param = *dynamic_cast<IntegerParameterType*>(selected_param);
-			DrawIntegerParameterSelector(int_param, selected_operation, building_parameter);
+			DrawIntegerParameterSelector(int_param, selected_operation, building_parameter, fields_label_width, fields_combo_width);
 			break;
 		case Decimal:
 			dec_param = *dynamic_cast<DecimalParameterType*>(selected_param);
@@ -362,7 +362,12 @@ void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter) {
+void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter, float label_width, float input_width) {
+	std::string operand = operation.operands[0];
+	ImGui::SetNextItemWidth(label_width);
+	std::string value_label = "Parameter Value(s)";
+	ImGui::Text(value_label.c_str());
+
 	int min_val = param_type.min_value;
 	int max_val = param_type.max_value;
 
@@ -376,20 +381,25 @@ void DrawIntegerParameterSelector(IntegerParameterType& param_type, ParameterOpe
 
 	int operand_count = operation.operands.size();
 	for (int operand_index = 0; operand_index < operand_count; operand_index++) {
+		ImGui::SetNextItemWidth(label_width);
 		std::string operand = operation.operands[operand_index];
-		std::string label = std::vformat("Set {0}:", std::make_format_args(operand, operand_index));
+		std::string label = std::vformat("\t{0}:", std::make_format_args(operand, operand_index));
 		ImGui::Text(label.c_str());
+
+
 		ImGui::SameLine();
-		int input_field_width = 100;
-		ImGui::SetNextItemWidth(input_field_width);
+		ImGui::SetCursorPosX(label_width);
+		ImGui::SetNextItemWidth(input_width);
 		std::string input_label = std::vformat("##operand_{0}", std::make_format_args(operand_index));
 		ImGui::InputScalar(input_label.c_str(), ImGuiDataType_U32, &operand_values[operand_index], inputs_step ? &u32_one : NULL, NULL, "%u", flags);
 
+		/*
 		ImGui::SameLine();
 		int slider_width = 250;
 		ImGui::SetNextItemWidth(slider_width);
 		std::string slider_label = std::vformat("##slider_{0}", std::make_format_args(operand_index));
 		ImGui::SliderInt(slider_label.c_str(), &operand_values[operand_index], min_val, max_val, "");
+		*/
 	}
 
 	std::string operation_format = operation.database_name;
