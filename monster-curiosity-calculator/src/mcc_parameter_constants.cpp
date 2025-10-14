@@ -864,7 +864,7 @@ extern const IntegerParameterType kStatTotalParam = IntegerParameterType(
 
 // decimal parameters
 const double kWeightMin = 0.0;
-const double kWeightMax = 1000.0;
+const double kWeightMax = 10000.0;
 const std::string kWeightDisplayName = "Weight (kg)";
 const std::string kWeightDatabaseFormat = "weight {0}";
 const std::string kWeightDisplayFormat = "Weight: {0}";
