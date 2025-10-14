@@ -112,15 +112,15 @@ extern const std::vector<ParameterValue> kGrowthRateValuesList = {
 
 extern const std::vector<ParameterValue> kGenderRateValuesList = {
     ParameterValue("Gender Unknown",	    "-1",	kPearlColor,        0),
-    ParameterValue("100%% Male",	        "0",	kPeriwinkleColor,   1),
-    ParameterValue("87.5%% Male",	        "1",	kPeriwinkleColor,   2),
-    ParameterValue("75%% Male ",	        "2",	kPeriwinkleColor,   3),
-    ParameterValue("62.5%% Male Male",	    "3",	kPeriwinkleColor,   4),
-    ParameterValue("50%% Male & Female",	"4",	kOrchidColor,       5),
-    ParameterValue("62.5%% Female",	        "5",	kPinkColor,         6),
-    ParameterValue("75%% Female",	        "6",	kPinkColor,         7),
-    ParameterValue("87.5%% Female",	        "7",	kPinkColor,         8),
-    ParameterValue("100%% Female",	        "8",	kPinkColor,         9)
+    ParameterValue("100% Male",	        "0",	kPeriwinkleColor,   1),
+    ParameterValue("87.5% Male",	        "1",	kPeriwinkleColor,   2),
+    ParameterValue("75% Male ",	        "2",	kPeriwinkleColor,   3),
+    ParameterValue("62.5% Male Male",	    "3",	kPeriwinkleColor,   4),
+    ParameterValue("50% Male & Female",	"4",	kOrchidColor,       5),
+    ParameterValue("62.5% Female",	        "5",	kPinkColor,         6),
+    ParameterValue("75% Female",	        "6",	kPinkColor,         7),
+    ParameterValue("87.5% Female",	        "7",	kPinkColor,         8),
+    ParameterValue("100% Female",	        "8",	kPinkColor,         9)
 };
 
 extern const std::vector<ParameterOperation> kSliderEnumOperations = {
@@ -372,7 +372,7 @@ extern const EnumeratedParameterType kGenerationParam = EnumeratedParameterType(
     kSeashellColor,
     kTextEnumOperations,
     kGenerationValuesList,
-    Slider
+    Dropdown
 );
 
 const std::string kGrowthRateDisplayName = "Growth Rate";
@@ -385,7 +385,7 @@ extern const EnumeratedParameterType kGrowthRateParam = EnumeratedParameterType(
     kBrownColor,
     kTextEnumOperations,
     kGrowthRateValuesList,
-    Slider
+    Dropdown
 );
 
 const std::string kGenderRateDisplayName = "Gender Rate";
@@ -396,9 +396,9 @@ extern const EnumeratedParameterType kGenderRateParam = EnumeratedParameterType(
     kGenderRateDisplayFormat,
     kGenderRateDatabaseFormat,
     kSaffronColor,
-    kSliderEnumOperations,
+    kTextEnumOperations,
     kGenderRateValuesList,
-    Slider
+    Dropdown
 );
 
 extern const std::vector<ParameterValue> kCriteriaValuesList = {

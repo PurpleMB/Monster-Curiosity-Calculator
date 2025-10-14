@@ -160,7 +160,7 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 					DrawImageButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, output_environment);
 					break;
 				case Dropdown:
-					DrawDropdownParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
+					DrawDropdownParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, fields_label_width, fields_combo_width);
 					break;
 			}
 			break;
@@ -218,13 +218,18 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	}
 }
 
-void DrawDropdownParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter) {
-	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+void DrawDropdownParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, float label_width, float combo_width) {
+	ImGui::SetNextItemWidth(label_width);
+	std::string value_label = "Parameter Value";
+	ImGui::Text(value_label.c_str());
 
-	static const ImVec2 combo_size = ImVec2(200, 0);
+	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(label_width);
+	ImGui::SetNextItemWidth(combo_width);
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
 	static ImGuiComboFlags value_combo_flags = 0;
-	ImGui::SetNextItemWidth(combo_size.x);
-	if (ImGui::BeginCombo("Subset Parameter Value", selected_value_name.c_str(), value_combo_flags)) {
+	if (ImGui::BeginCombo("##parameter_value", selected_value_name.c_str(), value_combo_flags)) {
 		for (int i = 0; i < param_type.values.size(); i++) {
 			const bool is_selected = (selected_value_index == i);
 			if (ImGui::Selectable(param_type.values[i].display_name.c_str(), is_selected)) {
