@@ -188,7 +188,10 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 	if (parameter_group_count > 1) {
 		DrawParameterGroupSelector(parameter_group, output_environment.parameter_set, fields_label_width, fields_combo_width);
 	}
-	if (ImGui::Button("Add Parameter")) {
+
+
+	ImGui::SetCursorPosX(fields_label_width);
+	if (ImGui::Button("Add Parameter", ImVec2(fields_combo_width, 0.0f))) {
 		output_environment.parameter_set.AddParameter(building_parameter, parameter_group);
 	}
 
@@ -565,6 +568,7 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 	int post_table_element_count = 1;
 	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
 	float dynamic_table_height = ImGui::GetContentRegionAvail().y - post_table_content_height;
+
 	float min_table_height = 150.0f;
 	float table_height = std::max(min_table_height, dynamic_table_height);
 	
@@ -649,9 +653,9 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 				std::string button_id = "##Remove" + std::to_string(group_index) + ":" + std::to_string(parameter_index);
 				ImGui::PushID(button_id.c_str());
 				ImTextureID button_tex = output_environment.GetTextureFromMap("remove");
-				float line_height = ImGui::GetTextLineHeight();
+				float image_height = ImGui::GetTextLineHeight() * 1.5f;
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-				if (ImGui::ImageButton(button_id.c_str(), button_tex, ImVec2(line_height, line_height))) {
+				if (ImGui::ImageButton(button_id.c_str(), button_tex, ImVec2(image_height, image_height))) {
 					group.RemoveParameter(parameter_index);
 				}
 				ImGui::PopStyleVar();
@@ -663,18 +667,31 @@ void DrawSubsetParameterTable(OutputEnvironment& output_environment) {
 }
 
 void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector<std::shared_ptr<ValueOperation>> value_operations, ParameterTypeConverter param_converter) {
+	std::string explanation = "Use this window to define value queries that will be calculated using your data subset. Value queries may be individually locked/unlocked or re-calculated using the query operation buttons.";
+	ImGui::TextWrapped(explanation.c_str());
+
+	ImVec2 added_spacing = ImVec2(0.0f, ImGui::GetStyle().ItemSpacing.y);
+	ImGui::Dummy(added_spacing);
+	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
+
 	static int selected_operation_index = 0;
 	std::string selected_operation_name = value_operations[selected_operation_index]->GetDisplayName();
 	static int selected_arg_index = 0;
 
-	ImGui::Text("Select value to calculate:");
+	static const float fields_label_width = 200.0f;
+	static const float fields_input_width = 175.0f;
 
-	ImGui::Text("Subset ");
-	
+	// select type of parameter to be defined
+	ImGui::SetNextItemWidth(fields_label_width);
+	std::string type_label = "Query Operation";
+	ImGui::Text(type_label.c_str());
+
 	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(fields_label_width);
+	ImGui::SetNextItemWidth(fields_input_width);
 	static ImGuiComboFlags oper_combo_flags = 0;
-	static const ImVec2 oper_combo_size = ImVec2(125, 0);
-	ImGui::SetNextItemWidth(oper_combo_size.x);
 	if (ImGui::BeginCombo("##select_operation", selected_operation_name.c_str(), oper_combo_flags)) {
 		for (int i = 0; i < value_operations.size(); i++) {
 			const bool is_selected = (selected_operation_index == i);
@@ -694,16 +711,18 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		ImGui::EndCombo();
 	}
 
-	ImGui::SameLine();
-	ImGui::Text(" of ");
 
+	ImGui::SetNextItemWidth(fields_label_width);
+	std::string argument_label = "Query Argument";
+	ImGui::Text(argument_label.c_str());
+
+	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(fields_label_width);
+	ImGui::SetNextItemWidth(fields_input_width);
 	std::vector<ValueOperationArgument> arguments = value_operations[selected_operation_index]->GetArgumentList();
 	std::string selected_arg_name = arguments[selected_arg_index].display_name;
-
-	ImGui::SameLine();
 	static ImGuiComboFlags arg_combo_flags = 0;
-	static const ImVec2 arg_combo_size = ImVec2(175, 0);
-	ImGui::SetNextItemWidth(arg_combo_size.x);
 	if (ImGui::BeginCombo("##select_argument", selected_arg_name.c_str(), arg_combo_flags)) {
 		for (int i = 0; i < arguments.size(); i++) {
 			const bool is_selected = (selected_arg_index == i);
@@ -718,7 +737,8 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		ImGui::EndCombo();
 	}
 
-	if (ImGui::Button("Add Value Operation")) {
+	ImGui::SetCursorPosX(fields_label_width);
+	if (ImGui::Button("Add Query", ImVec2(fields_input_width, 0.0f))) {
 		ValueOperation selected_operation = *value_operations[selected_operation_index].get();
 		ValueOperationArgument selected_argument = selected_operation.GetArgumentList()[selected_arg_index];
 
@@ -727,7 +747,9 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 		output_environment.value_queries.push_back(subset_value_query);
 	}
 
+	ImGui::Dummy(added_spacing);
 	ImGui::Separator();
+	ImGui::Dummy(added_spacing);
 
 	DrawValueOperationTable(output_environment, param_converter );
 
@@ -737,23 +759,36 @@ void DrawValueParameterWindow(OutputEnvironment& output_environment, std::vector
 
 		QueryValuesFromTable(output_environment, kSubTableName, active_query_indices, value_set_query);
 	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Clear All Value Queries")) {
+		output_environment.value_queries.clear();
+	}
 }
 
 void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTypeConverter param_converter) {
+	std::string table_name = "Current Subset Value Queries";
+	float label_width = ImGui::CalcTextSize(table_name.c_str()).x;
+	CenterNextElem(label_width);
+	ImGui::Text(table_name.c_str());
+
 	static bool operation_color_enabled = false;
 	static bool argument_color_enabled = false;
 	static bool result_color_enabled = false;
 	static std::vector<bool*> column_color_toggles = {&operation_color_enabled, &argument_color_enabled,  &result_color_enabled};
 	static std::vector<std::string> column_toggle_names = {"Operation", "Argument", "Result"};
 
-	// edit icon button
 	ImGui::SameLine();
-	std::string button_label = "Value Table Options";
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() - (ImGui::GetStyle().ItemSpacing.y * 0.5f));	// buttons are a little taller than normal text
+
 	ImTextureID button_tex = output_environment.GetTextureFromMap("edit");
-	float line_height = ImGui::GetTextLineHeight();
-	if (ImGui::ImageButton(button_label.c_str(), button_tex, ImVec2(line_height, line_height))) {
+	float img_size = ImGui::GetTextLineHeight();
+	float button_width = img_size + ImGui::GetStyle().FramePadding.x * 2;
+	RightJustifyNextElem(button_width);
+	if (ImGui::ImageButton("Table Options", button_tex, ImVec2(img_size, img_size))) {
 		ImGui::OpenPopup("table_options_popup");
 	}
+
 	if (ImGui::BeginPopup("table_options_popup")) {
 		if (ImGui::BeginMenu("Coloring Options")) {
 			for (int i = 0; i < column_color_toggles.size(); i++) {
@@ -764,12 +799,20 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 		ImGui::EndPopup();
 	}
 
-	ImGui::Text("Current subset value operations:");
+	float dynamic_table_width = ImGui::GetContentRegionAvail().x;
+	float min_table_width = 400.0f;
+	float table_width = std::max(min_table_width, dynamic_table_width);
 
 	float post_table_elements_height = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
 	int post_table_element_count = 1;
 	float post_table_content_height = post_table_elements_height + (post_table_element_count * ImGui::GetStyle().ItemSpacing.y);
-	ImVec2 outer_size = {0.0f, ImGui::GetContentRegionAvail().y - post_table_content_height};
+	float dynamic_table_height = ImGui::GetContentRegionAvail().y - post_table_content_height;
+
+	float min_table_height = 100.0f;
+	float table_height = std::max(min_table_height, dynamic_table_height);
+
+	ImVec2 outer_size = {table_width, table_height};
+
 	const int kColumnCount = 4;
 	const int kTableFlags =
 		ImGuiTableFlags_Borders |
@@ -777,7 +820,7 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 		ImGuiTableFlags_ScrollY;
 	static int frozen_columns = 0;
 	static int frozen_rows = 1;
-	const float col_width = 50.0f;
+	const float col_width = 80.0f;
 	if (ImGui::BeginTable("table_results", kColumnCount, kTableFlags, outer_size)) {
 		// prepare table header
 		ImGui::TableSetupColumn("Operation", ImGuiTableColumnFlags_WidthStretch);
@@ -832,35 +875,37 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 
 			ImGui::TableSetColumnIndex(3);
 			ValueQuery& curr_query = output_environment.value_queries[operation_index];
+
+			float image_height = ImGui::GetTextLineHeight() * 1.5f;
 			// value locking buttons
 			{
 				std::string lock_id = "##LockOperation" + std::to_string(operation_index);
 				ImGui::PushID(lock_id.c_str());
-				float line_height = ImGui::GetTextLineHeight();
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 				if (curr_query.IsLocked()) {
 					ImTextureID locked_tex = output_environment.GetTextureFromMap("lock");
-					if (ImGui::ImageButton(lock_id.c_str(), locked_tex, ImVec2(line_height, line_height))) {
+					if (ImGui::ImageButton(lock_id.c_str(), locked_tex, ImVec2(image_height, image_height))) {
 						curr_query.SetLocked(false);
 					}
 				}
 				else {
 					ImTextureID unlocked_tex = output_environment.GetTextureFromMap("unlock");
-					if (ImGui::ImageButton(lock_id.c_str(), unlocked_tex, ImVec2(line_height, line_height))) {
+					if (ImGui::ImageButton(lock_id.c_str(), unlocked_tex, ImVec2(image_height, image_height))) {
 						curr_query.SetLocked(true);
 					}
 				}
 				ImGui::PopStyleVar();
 				ImGui::PopID();
 			}
+
+			ImGui::SameLine();
 			// value rerolling button
 			{
 				std::string recalc_id = "##RecalculateOperation" + std::to_string(operation_index);
 				ImGui::PushID(recalc_id.c_str());
 				ImTextureID redo_tex = output_environment.GetTextureFromMap("redo");
-				float line_height = ImGui::GetTextLineHeight();
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-				if (ImGui::ImageButton(recalc_id.c_str(), redo_tex, ImVec2(line_height, line_height))) {
+				if (ImGui::ImageButton(recalc_id.c_str(), redo_tex, ImVec2(image_height, image_height))) {
 					std::vector<int> active_query_indices = {operation_index};
 					std::string value_set_query = output_environment.GenerateValueQuerySetText(active_query_indices, kSubTableName);
 
@@ -870,14 +915,14 @@ void DrawValueOperationTable(OutputEnvironment& output_environment, ParameterTyp
 				ImGui::PopID();
 			}
 
+			ImGui::SameLine();
 			// remove button
 			{
 				std::string remove_id = "##RemoveOperation" + std::to_string(operation_index);
 				ImGui::PushID(remove_id.c_str());
 				ImTextureID remove_tex = output_environment.GetTextureFromMap("remove");
-				float line_height = ImGui::GetTextLineHeight();
 				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-				if (ImGui::ImageButton(remove_id.c_str(), remove_tex, ImVec2(line_height, line_height))) {
+				if (ImGui::ImageButton(remove_id.c_str(), remove_tex, ImVec2(image_height, image_height))) {
 					output_environment.value_queries.erase(output_environment.value_queries.begin() + operation_index);
 				}
 				ImGui::PopStyleVar();
