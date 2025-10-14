@@ -16,7 +16,8 @@ namespace monster_calculator {
 	void DrawDropdownParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, float label_width, float combo_width);
 	void DrawSliderParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
 	void DrawButtonGridParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter);
-	void DrawImageButtonGridParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, OutputEnvironment& output_environment);
+	void DrawImageParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, OutputEnvironment& output_environment,
+		float label_width, float combo_width);
 
 	void DrawOpenParameterSelector(OpenParameterType& param_type, ParameterOperation& operation, QueryParameter& building_parameter);
 	

@@ -312,7 +312,7 @@ extern const EnumeratedParameterType kShapeParam = EnumeratedParameterType(
     kYellowColor,
     kTextEnumOperations,
     kShapeValuesList,
-    ImageButtonGrid,
+    Image,
     kStandardImageButtonSize,
     kStandardImageButtonsPerRow
 );

@@ -132,7 +132,7 @@ struct ParameterType {
 enum PreferredEnumDisplay {
 	Slider,
 	ButtonGrid,
-	ImageButtonGrid,
+	Image,
 	Dropdown
 };
 

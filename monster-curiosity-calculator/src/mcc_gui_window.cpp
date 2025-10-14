@@ -156,8 +156,8 @@ void DrawSetParameterWindow(OutputEnvironment& output_environment,
 				case ButtonGrid:
 					DrawButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter);
 					break;
-				case ImageButtonGrid:
-					DrawImageButtonGridParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, output_environment);
+				case Image:
+					DrawImageParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, output_environment, fields_label_width, fields_combo_width);
 					break;
 				case Dropdown:
 					DrawDropdownParameterSelector(enum_param, selected_operation, selected_value_index, building_parameter, fields_label_width, fields_combo_width);
@@ -292,22 +292,42 @@ void DrawButtonGridParameterSelector(EnumeratedParameterType& param_type, Parame
 	building_parameter.SetQuery(formatted_query);
 }
 
-void DrawImageButtonGridParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, OutputEnvironment& output_environment) {
-	std::string selected_value_name = param_type.values[selected_value_index].display_name;
-	std::string current_value_indicator = std::vformat("Currently selected value: {0}", std::make_format_args(selected_value_name));
-	ImGui::Text(current_value_indicator.c_str());
+void DrawImageParameterSelector(EnumeratedParameterType& param_type, ParameterOperation& operation, int& selected_value_index, QueryParameter& building_parameter, OutputEnvironment& output_environment,
+	float label_width, float combo_width) {
 
-	ImVec2 button_size = param_type.GetButtonSize();
-	int buttons_per_row = param_type.GetButtonsPerRow();
-	for (int i = 0; i < param_type.values.size(); i++) {
-		std::string button_label = param_type.values[i].display_name;
-		ImTextureID button_tex = output_environment.GetTextureFromMap(param_type.values[i].database_name);
-		if (i % buttons_per_row != 0) {
+	ImGui::SetNextItemWidth(label_width);
+	std::string value_label = "Parameter Value";
+	ImGui::Text(value_label.c_str());
+
+	ImGui::SameLine();
+
+	ImGui::SetCursorPosX(label_width);
+	ImGui::SetNextItemWidth(combo_width);
+	std::string selected_value_name = param_type.values[selected_value_index].display_name;
+	ImVec2 image_size = param_type.GetButtonSize();
+	float additional_label_padding = (image_size.y - ImGui::GetTextLineHeightWithSpacing()) / 2.0f;
+	static ImGuiComboFlags value_combo_flags = 0;
+	if (ImGui::BeginCombo("##parameter_value", selected_value_name.c_str(), value_combo_flags)) {
+		for (int i = 0; i < param_type.values.size(); i++) {
+			std::string image_label = param_type.values[i].display_name;
+			ImTextureID image_tex = output_environment.GetTextureFromMap(param_type.values[i].database_name);
+
+			ImGui::PushStyleVarY(ImGuiStyleVar_ItemSpacing, additional_label_padding);
+			const bool is_selected = (selected_value_index == i);
+			if (ImGui::Selectable(image_label.c_str(), is_selected)) {
+				selected_value_index = i;
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+			ImGui::PopStyleVar();
+
+
 			ImGui::SameLine();
+			ImGui::SetCursorPosY(ImGui::GetCursorPosY() - additional_label_padding - ImGui::GetStyle().FramePadding.y);
+			ImGui::Image(image_tex, param_type.GetButtonSize());
 		}
-		if (ImGui::ImageButton(button_label.c_str(), button_tex, param_type.GetButtonSize())) {
-			selected_value_index = i;
-		}
+		ImGui::EndCombo();
 	}
 
 	ParameterValue selected_value = param_type.values[selected_value_index];
