@@ -49,6 +49,14 @@ public:
 			IM_ASSERT(ph_ret);
 			output_environment.AddTextureToMap("placeholder", test_texture);
 
+			// load logo texture
+			ID3D11ShaderResourceView* logo_texture = nullptr;
+			int logo_image_width = 0;
+			int logo_image_height = 0;
+			bool logo_ret = LoadTextureFromFile("./data/images/mcclogo.png", &logo_texture, &logo_image_width, &logo_image_height);
+			IM_ASSERT(ph_ret);
+			output_environment.AddTextureToMap("logo", logo_texture);
+
 			// load button icons
 			// remove icon
 			ID3D11ShaderResourceView* remove_texture = nullptr;

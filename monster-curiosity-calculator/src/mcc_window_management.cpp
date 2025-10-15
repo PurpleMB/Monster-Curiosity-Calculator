@@ -3,7 +3,6 @@
 #include "imgui.h"
 
 #include "mcc_communication_structs.h"
-
 #include "mcc_window_management.h"
 
 namespace monster_calculator {

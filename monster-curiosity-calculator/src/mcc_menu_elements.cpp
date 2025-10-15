@@ -246,7 +246,7 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + offset);
 	}
 
-	ImTextureID program_logo = output_environment.GetTextureFromMap("placeholder");
+	ImTextureID program_logo = output_environment.GetTextureFromMap("logo");
 	ImGui::Image(program_logo, logo_size);
 
 	ImGui::Separator();

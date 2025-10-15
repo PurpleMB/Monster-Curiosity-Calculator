@@ -57,6 +57,26 @@ struct ColumnInfo {
 	int column_flags;
 	int column_id;
 	float column_width;
+
+	ColumnInfo() {
+		display_name = "UNINITIALIZED COLUMNINFO NAME";
+		query_name = "UNINITIALIZED COLUMNINFO NAME";
+		togglable = false;
+		colorable = false;
+		column_flags = 0;
+		column_id = 0;
+		column_width = 0.0f;
+	}
+
+	ColumnInfo(std::string dis_name, std::string que_name, bool toggle, bool color, int flags, int id, float width) {
+		display_name = dis_name;
+		query_name = que_name;
+		togglable = toggle;
+		colorable = color;
+		column_flags = flags;
+		column_id = id;
+		column_width = width;
+	}
 };
 
 struct ColumnStatus {
@@ -82,15 +102,15 @@ struct ColumnStatus {
 		coloring_enabled = start_colored;
 	}
 
-	ColumnInfo GetColumnInfo() {
+	ColumnInfo GetColumnInfo() const {
 		return column_info;
 	}
 
-	bool IsEnabled() {
+	bool IsEnabled() const {
 		return display_enabled;
 	}
 
-	bool IsColored() {
+	bool IsColored() const {
 		return coloring_enabled;
 	}
 };
@@ -114,7 +134,7 @@ struct SubsetEntry {
 		converted_entry_data[label] = param_val;
 	}
 
-	bool HasConvertedData(std::string label) {
+	bool HasConvertedData(std::string label) const {
 		return converted_entry_data.contains(label);
 	}
 
