@@ -599,7 +599,7 @@ public:
 	}
 
 	void ClearAllParameters() {
-		for (ParameterGroup group : parameter_groups) {
+		for (ParameterGroup& group : parameter_groups) {
 			group.ClearParameters();
 		}
 	}
