@@ -41,4 +41,11 @@ extern const ColumnInfo kSpeDefColInfo = ColumnInfo("Special Defense", "special_
 extern const ColumnInfo kSpeedColInfo = ColumnInfo("Speed", "speed", true, true, ImGuiTableColumnFlags_WidthFixed, SpeedColumnId, 0);
 extern const ColumnInfo kStatTotalColInfo = ColumnInfo("Stat Total", "stat_total", true, true, ImGuiTableColumnFlags_WidthFixed, StatTotalColumnId, 0);
 
+extern const ColumnInfo kCheriGroupColInfo = ColumnInfo("Cheri Criteria", "Cheri", true, true, ImGuiTableColumnFlags_WidthFixed, CheriGroupColumnId, 0);
+extern const ColumnInfo kChestoGroupColInfo = ColumnInfo("Chesto Criteria", "Chesto", true, true, ImGuiTableColumnFlags_WidthFixed, ChestoGroupColumnId, 0);
+extern const ColumnInfo kPechaGroupColInfo = ColumnInfo("Pecha Criteria", "Pecha", true, true, ImGuiTableColumnFlags_WidthFixed, PechaGroupColumnId, 0);
+extern const ColumnInfo kRawstGroupColInfo = ColumnInfo("Rawst Criteria", "Rawst", true, true, ImGuiTableColumnFlags_WidthFixed, RawstGroupColumnId, 0);
+extern const ColumnInfo kAspearGroupColInfo = ColumnInfo("Aspear Criteria", "Aspear", true, true, ImGuiTableColumnFlags_WidthFixed, AspearGroupColumnId, 0);
+extern const ColumnInfo kLumGroupColInfo = ColumnInfo("Lum Criteria", "Lum", true, true, ImGuiTableColumnFlags_WidthFixed, LumGroupColumnId, 0);
+
 } // namespace monster_calculator

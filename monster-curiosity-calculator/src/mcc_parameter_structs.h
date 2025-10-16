@@ -2,6 +2,7 @@
 #include <string>	// for string
 #include <vector>	// for vector
 #include <unordered_map> // used by converters
+#include <unordered_set> // used by parameter groups
 #include <memory>	//	shared_ptr in converters
 
 #include <iostream>
@@ -48,8 +49,8 @@ struct ParameterValue {
 		sorting_value = sort_val;
 	}
 
-	ImVec4 GetParameterColor() const {
-		return value_color.GetColorValues();
+	DisplayColor GetValueDisplayColor() const {
+		return value_color;
 	}
 
 	int GetSortValue() const {
@@ -63,6 +64,12 @@ struct ParameterOperation : ParameterValue {
 	ParameterOperation(std::string dis_name, std::string db_name, DisplayColor color, std::vector<std::string> ops) :
 		ParameterValue(dis_name, db_name, color) {
 		operands = ops;
+	}
+
+	bool operator==(const ParameterOperation& other) const {
+		bool display_equal = display_name == other.display_name;
+		bool db_equal = database_name == other.database_name;
+		return display_equal && db_equal;
 	}
 };
 
@@ -115,31 +122,76 @@ struct ParameterType {
 		value.value_color = kFuschiaColor;
 	}
 
-	ImVec4 GetParameterColor() const {
-		return parameter_color.GetColorValues();
+	DisplayColor GetParamDisplayColor() const {
+		return parameter_color;
 	}
+};
+
+// This enum is used to determine which method of displaying options works
+// best for an EnumeratedParameterType.
+enum PreferredEnumDisplay {
+	Slider,
+	ButtonGrid,
+	Image,
+	Dropdown
 };
 
 struct EnumeratedParameterType : ParameterType {
 	std::vector<ParameterValue> values;
 	std::unordered_map<std::string, ParameterValue> db_name_val_map;
+	PreferredEnumDisplay display_method;
+
+	// only for use by ButtonGrid
+	ImVec2 button_size;
+	int buttons_per_row;
 
 	EnumeratedParameterType() : ParameterType() {
 		values = {};
 		db_name_val_map = {};
+		display_method = Dropdown;
+		button_size = ImVec2(0.0f, 0.0f);
+		buttons_per_row = 1;
 	}
 
-	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals, PreferredEnumDisplay display) :
 		ParameterType(dis_name, dis_format, db_format, color, ops) {
 		values = vals;
 		db_name_val_map = {};
 		for (ParameterValue param_val : vals) {
 			db_name_val_map[param_val.database_name] = param_val;
 		}
+		display_method = display;
+		button_size = ImVec2(0.0f, 0.0f);
+		buttons_per_row = 1;
+	}
+
+	EnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals, PreferredEnumDisplay display,
+		ImVec2 btn_size, int btn_per_row) :
+		ParameterType(dis_name, dis_format, db_format, color, ops) {
+		values = vals;
+		db_name_val_map = {};
+		for (ParameterValue param_val : vals) {
+			db_name_val_map[param_val.database_name] = param_val;
+		}
+		display_method = display;
+		button_size = btn_size;
+		buttons_per_row = btn_per_row;
 	}
 
 	virtual ParameterCategory GetParameterCategory() const {
 		return Enumerated;
+	}
+
+	PreferredEnumDisplay GetPreferredDisplay() const {
+		return display_method;
+	}
+
+	ImVec2 GetButtonSize() const {
+		return button_size;
+	}
+
+	int GetButtonsPerRow() const {
+		return buttons_per_row;
 	}
 
 	ParameterValue RetrieveParamValFromRawName(std::string raw_name) {
@@ -147,21 +199,6 @@ struct EnumeratedParameterType : ParameterType {
 			return db_name_val_map[raw_name];
 		}
 		return ParameterValue();
-	}
-};
-
-struct SliderEnumeratedParameterType : EnumeratedParameterType {
-	SliderEnumeratedParameterType() : EnumeratedParameterType() {
-
-	}
-
-	SliderEnumeratedParameterType(std::string dis_name, std::string dis_format, std::string db_format, DisplayColor color, std::vector<ParameterOperation> ops, std::vector<ParameterValue> vals) :
-		EnumeratedParameterType(dis_name, dis_format, db_format, color, ops, vals) {
-
-	}
-
-	virtual ParameterCategory GetParameterCategory() const {
-		return EnumeratedSlider;
 	}
 };
 
@@ -188,7 +225,7 @@ struct OpenParameterType : ParameterType {
 		// generate int sum of characters to index into colors list
 		int flat_value = 0;
 		for (char c : value.display_name) {
-			flat_value += (int)c;
+			flat_value += (int)std::tolower(c);
 		}
 		value.value_color = possible_value_colors[flat_value % possible_value_colors.size()];
 	}
@@ -309,6 +346,10 @@ private:
 	std::unordered_map<int, std::string> column_id_name_map;
 
 public:
+	ParameterTypeConverter() {
+		column_type_map = {};
+	}
+
 	ParameterTypeConverter(std::unordered_map<std::string, std::shared_ptr<ParameterType>> column_type_mappings) {
 		column_type_map = column_type_mappings;
 	}
@@ -385,120 +426,92 @@ public:
 	}
 };
 
-// This struct is meant to contain multiple sets of QueryParameters.
-// Each set may contain an arbitrary number of QueryParameters, with each set
-// being evaluated to its own logical statement.
-// This allows the user to define sets looking for drastically different types
-// of monsters.
-struct ParameterSet {
-	int group_count;
-	std::vector<std::vector<QueryParameter>> parameter_groups;
-	std::vector<std::string> group_names;
-	std::vector<DisplayColor> group_colors;
-	int total_parameter_count;
-	bool resizable;
+// This struct is meant to contain a set of parameters to be
+// evaluated as a single logical clause where each parameter is connected
+// by  logical AND.
+struct ParameterGroup {
+private:
+	std::string group_name;
+	DisplayColor group_color;
+	std::vector<QueryParameter> parameters;
+	std::unordered_set<std::string> accepted_entries;
 
-	ParameterSet() {
-		group_count = 1;
-		parameter_groups = {{}};
-		group_names = {"A"};
-		group_colors = {kWhiteColor};
-		total_parameter_count = 0;
-		resizable = false;
+public:
+	ParameterGroup() {
+		group_name = "Unnamed";
+		group_color = kFuschiaColor;
+		parameters = {};
+		accepted_entries = {};
 	}
 
-	ParameterSet(int groups, bool allow_resize) {
-		group_count = groups;
-		parameter_groups = {};
-		group_names = {};
-		for (int i = 0; i < group_count; i++) {
-			parameter_groups.push_back({});
-			group_names.push_back(std::to_string('A' + i));
-		}
-		group_colors = {kWhiteColor};
-		total_parameter_count = 0;
-		resizable = allow_resize;
+	ParameterGroup(std::string name, DisplayColor color) {
+		group_name = name;
+		group_color = color;
+		parameters = {};
+		accepted_entries = {};
 	}
 
-	ParameterSet(int groups, bool allow_resize, std::vector<std::string> names, std::vector<DisplayColor>& colors) {
-		group_count = groups;
-		parameter_groups = {};
-		for (int i = 0; i < group_count; i++) {
-			parameter_groups.push_back({});
-		}
-		group_names = names;
-		group_colors = colors;
-		total_parameter_count = 0;
-		resizable = allow_resize;
+	void AddParameter(const QueryParameter parameter) {
+		parameters.push_back(parameter);
 	}
 
-	int GetGroupCount() {
-		return group_count;
-	}
-
-	void AddParameter(const QueryParameter parameter, int parameter_group = 0) {
-		if (parameter_group >= parameter_groups.size()) {
-			if (!resizable) {
-				return;
-			}
-			parameter_groups.push_back({});
-			group_count = parameter_groups.size();
-			parameter_group = parameter_groups.size() - 1;
-		}
-
-		parameter_groups[parameter_group].push_back(parameter);
-		total_parameter_count++;
-	}
-
-	void RemoveParameter(const int target_group, const int group_index) {
-		if (target_group >= parameter_groups.size()) {
-			return;
-		}
-		if (group_index >= parameter_groups[target_group].size()) {
+	void RemoveParameter(const int param_index) {
+		if (param_index >= parameters.size()) {
 			return;
 		}
 
-		std::vector<QueryParameter>& param_group = parameter_groups[target_group];
-		param_group.erase(param_group.begin() + group_index);
-		total_parameter_count--;
+		parameters.erase(parameters.begin() + param_index);
 	}
 
-	void ClearAllParameters() {
-		for (std::vector<QueryParameter>& param_group : parameter_groups) {
-			param_group.clear();
+	QueryParameter GetParameter(const int param_index) {
+		if (param_index >= parameters.size()) {
+			return QueryParameter();
 		}
-		total_parameter_count = 0;
+
+		return parameters[param_index];
+	}
+	
+	void ClearParameters() {
+		parameters.clear();
 	}
 
-	std::string GetGroupName(int group_index) const {
-		int name_index = group_index % group_names.size();
-		std::string group_name = group_names[name_index];
+	int GetParameterCount() const {
+		return parameters.size();
+	}
+
+	std::string GetGroupName() const {
 		return group_name;
 	}
 
-	ImVec4 GetGroupColor(int group_index) const {
-		int color_index = group_index % group_colors.size();
-		DisplayColor group_display_color = group_colors[color_index];
-		return group_display_color.GetColorValues();
+	DisplayColor GetGroupDisplayColor() const {
+		return group_color;
 	}
 
-	std::string GetGroupQueryString(int group_index) const {
-		if (group_index < 0 || group_index >= parameter_groups.size()) {
-			return "";
-		}
-		if (parameter_groups[group_index].size() == 0) {
-			return "";
-		}
+	std::unordered_set<std::string> GetAcceptedEntries() {
+		return accepted_entries;
+	}
 
-		std::vector<QueryParameter> parameter_group = parameter_groups[group_index];
+	bool AcceptsEntry(std::string entry_id) {
+		return accepted_entries.contains(entry_id);
+	}
+
+	void ClearAcceptedEntries() {
+		accepted_entries.clear();
+	}
+	
+	void AddAcceptedEntry(std::string entry) {
+		accepted_entries.insert(entry);
+	}
+
+	std::string GenerateGroupQuery() const {
 		std::string group_query = "(";
 
-		for (int parameter_index = 0; parameter_index < parameter_group.size(); parameter_index++) {
-			QueryParameter param = parameter_group[parameter_index];
+		for (int parameter_index = 0; parameter_index < parameters.size(); parameter_index++) {
+			QueryParameter param = parameters[parameter_index];
 			std::string query_statement = param.GetQuery();
 			group_query += "(" + query_statement + ")";
 
-			if (parameter_index < parameter_group.size() - 1) {
+			if (parameter_index < parameters.size() - 1) {
 				group_query += " AND ";
 			}
 		}
@@ -506,29 +519,121 @@ struct ParameterSet {
 		group_query += ")";
 		return group_query;
 	}
+};
 
-	std::string GetSetQueryString() const {
-		if (total_parameter_count == 0) {
-			return "( true )";
+// This struct is meant to contain multiple ParameterGroups.
+// Each group is independently evaluated and internally connected with ANDS, while
+// groups in the set are connected by a logical OR.
+// This allows the user to define sets looking for drastically different types
+// of monsters.
+struct ParameterSet {
+private:
+	std::vector<ParameterGroup> parameter_groups;
+	bool resizable;
+
+public:
+	ParameterSet() {
+		parameter_groups = {
+			ParameterGroup("A", kRedColor)
+		};
+		resizable = false;
+	}
+
+	ParameterSet(int num_groups, bool allow_resize) {
+		parameter_groups = {};
+		for (int i = 0; i < num_groups; i++) {
+			std::string name = std::to_string('A' + i);
+			DisplayColor color = kWhiteColor;
+			ParameterGroup group = ParameterGroup(name, color);
+			parameter_groups.push_back(group);
+		}
+		resizable = allow_resize;
+	}
+
+	ParameterSet(std::vector<ParameterGroup> groups, bool allow_resize) {
+		parameter_groups = {};
+		for (int i = 0; i < groups.size(); i++) {
+			parameter_groups.push_back(groups[i]);
+		}
+		resizable = allow_resize;
+	}
+
+	int GetGroupCount() {
+		return parameter_groups.size();
+	}
+
+	ParameterGroup& GetParameterGroup(int group_index) {
+		if (group_index >= parameter_groups.size()) {
+			group_index = parameter_groups.size() - 1;
 		}
 
-		std::string set_query = "";
-		int active_groups = 0;
+		return parameter_groups[group_index];
+	}
 
-		for (int group_index = 0; group_index < parameter_groups.size(); group_index++) {
-			if (parameter_groups[group_index].size() == 0) {
-				continue;
+	const std::vector<ParameterGroup> GetGroupList() {
+		return parameter_groups;
+	}
+
+	void AddParameter(const QueryParameter parameter, int parameter_group = 0) {
+		if (parameter_group >= parameter_groups.size()) {
+			if (!resizable) {
+				return;
 			}
 
-			active_groups++;
-			if (active_groups > 1) {
-				set_query += " OR ";
-			}
-
-			set_query += GetGroupQueryString(group_index);
+			parameter_group = parameter_groups.size();
+			std::string name = std::to_string('A' + parameter_group);
+			DisplayColor color = kWhiteColor;
+			ParameterGroup group = ParameterGroup(name, color);
+			parameter_groups.push_back(group);
 		}
 
-		return set_query;
+		parameter_groups[parameter_group].AddParameter(parameter);
+	}
+
+	void RemoveParameter(const int target_group, const int param_index) {
+		if (target_group >= parameter_groups.size()) {
+			return;
+		}
+
+		parameter_groups[target_group].RemoveParameter(param_index);
+	}
+
+	void ClearAllParameters() {
+		for (ParameterGroup& group : parameter_groups) {
+			group.ClearParameters();
+		}
+	}
+
+	std::string CombineGroupSets(std::string col_name) {
+		bool empty_parameter_set = true;
+		std::unordered_set<std::string> combined_set = {};
+	
+		for (ParameterGroup group : parameter_groups) {
+			empty_parameter_set &= group.GetParameterCount() == 0;
+			std::unordered_set<std::string> group_set = group.GetAcceptedEntries();
+			std::cout << group_set.size() << std::endl;
+			for (std::string entry : group_set) {
+				combined_set.insert(entry);
+			}
+		}
+		std::cout << combined_set.size() << std::endl;
+
+		// I've elected to treat a totally empty parameter set as one that accepts all main table entries
+		if (empty_parameter_set) {
+			return col_name;
+		}
+
+		std::string set_list = "";
+		int added_entries = 0;
+		for (std::string entry : combined_set) {
+			if (added_entries > 0) {
+				set_list += ", ";
+			}
+
+			set_list += entry;
+			added_entries++;
+		}
+		return set_list;
 	}
 };
 

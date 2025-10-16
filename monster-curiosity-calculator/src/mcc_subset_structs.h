@@ -40,7 +40,13 @@ enum SubsetColumnsIds {
 	SpeAtkColumnId,
 	SpeDefColumnId,
 	SpeedColumnId,
-	StatTotalColumnId
+	StatTotalColumnId,
+	CheriGroupColumnId,
+	ChestoGroupColumnId,
+	PechaGroupColumnId,
+	RawstGroupColumnId,
+	AspearGroupColumnId,
+	LumGroupColumnId
 };
 
 struct ColumnInfo {
@@ -51,6 +57,26 @@ struct ColumnInfo {
 	int column_flags;
 	int column_id;
 	float column_width;
+
+	ColumnInfo() {
+		display_name = "UNINITIALIZED COLUMNINFO NAME";
+		query_name = "UNINITIALIZED COLUMNINFO NAME";
+		togglable = false;
+		colorable = false;
+		column_flags = 0;
+		column_id = 0;
+		column_width = 0.0f;
+	}
+
+	ColumnInfo(std::string dis_name, std::string que_name, bool toggle, bool color, int flags, int id, float width) {
+		display_name = dis_name;
+		query_name = que_name;
+		togglable = toggle;
+		colorable = color;
+		column_flags = flags;
+		column_id = id;
+		column_width = width;
+	}
 };
 
 struct ColumnStatus {
@@ -76,15 +102,15 @@ struct ColumnStatus {
 		coloring_enabled = start_colored;
 	}
 
-	ColumnInfo GetColumnInfo() {
+	ColumnInfo GetColumnInfo() const {
 		return column_info;
 	}
 
-	bool IsEnabled() {
+	bool IsEnabled() const {
 		return display_enabled;
 	}
 
-	bool IsColored() {
+	bool IsColored() const {
 		return coloring_enabled;
 	}
 };
@@ -108,7 +134,7 @@ struct SubsetEntry {
 		converted_entry_data[label] = param_val;
 	}
 
-	bool HasConvertedData(std::string label) {
+	bool HasConvertedData(std::string label) const {
 		return converted_entry_data.contains(label);
 	}
 
@@ -314,6 +340,54 @@ struct SubsetComparator {
 				break;
 			case StatTotalColumnId:
 				delta = std::stoi(lhs.GetRawData("stat_total")) - std::stoi(rhs.GetRawData("stat_total"));
+				break;
+			case CheriGroupColumnId:
+				if (lhs.HasConvertedData("Cheri") && rhs.HasConvertedData("Cheri")) {
+					delta = lhs.GetParameterValue("Cheri").GetSortValue() - rhs.GetParameterValue("Cheri").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Cheri").compare(rhs.GetRawData("Cheri"));
+				}
+				break;
+			case ChestoGroupColumnId:
+				if (lhs.HasConvertedData("Chesto") && rhs.HasConvertedData("Chesto")) {
+					delta = lhs.GetParameterValue("Chesto").GetSortValue() - rhs.GetParameterValue("Chesto").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Chesto").compare(rhs.GetRawData("Chesto"));
+				}
+				break;
+			case PechaGroupColumnId:
+				if (lhs.HasConvertedData("Pecha") && rhs.HasConvertedData("Pecha")) {
+					delta = lhs.GetParameterValue("Pecha").GetSortValue() - rhs.GetParameterValue("Pecha").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Pecha").compare(rhs.GetRawData("Pecha"));
+				}
+				break;
+			case RawstGroupColumnId:
+				if (lhs.HasConvertedData("Rawst") && rhs.HasConvertedData("Rawst")) {
+					delta = lhs.GetParameterValue("Rawst").GetSortValue() - rhs.GetParameterValue("Rawst").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Rawst").compare(rhs.GetRawData("Rawst"));
+				}
+				break;
+			case AspearGroupColumnId:
+				if (lhs.HasConvertedData("Aspear") && rhs.HasConvertedData("Aspear")) {
+					delta = lhs.GetParameterValue("Aspear").GetSortValue() - rhs.GetParameterValue("Aspear").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Aspear").compare(rhs.GetRawData("Aspear"));
+				}
+				break;
+			case LumGroupColumnId:
+				if (lhs.HasConvertedData("Lum") && rhs.HasConvertedData("Lum")) {
+					delta = lhs.GetParameterValue("Lum").GetSortValue() - rhs.GetParameterValue("Lum").GetSortValue();
+				}
+				else {
+					delta = lhs.GetRawData("Lum").compare(rhs.GetRawData("Lum"));
+				}
 				break;
 			default:
 				break;

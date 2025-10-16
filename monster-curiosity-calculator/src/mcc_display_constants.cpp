@@ -7,6 +7,13 @@ namespace monster_calculator {
 
 // DisplayColor constants
 const float kColorIntensity = 0.6f;
+
+// Utility
+extern const DisplayColor kClearColor = DisplayColor(
+	"Clear",
+	ImVec4(0.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f, kColorIntensity)
+);
+
 // Reds
 extern const DisplayColor kRedColor = DisplayColor(
 	"Red",

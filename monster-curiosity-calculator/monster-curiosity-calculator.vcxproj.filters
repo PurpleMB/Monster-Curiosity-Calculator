@@ -18,9 +18,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\app.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lib\imgui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,11 +75,26 @@
     <ClCompile Include="src\mcc_json_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mcc_app_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcc_menu_elements.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcc_window_management.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcc_gui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mcc_imgui_helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="lib\imgui\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -161,10 +173,45 @@
     <ClInclude Include="src\mcc_database_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\mcc_app_dx11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\stb\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcc_menu_elements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcc_window_management.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcc_gui_widgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mcc_imgui_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="data\mccdata.json" />
     <None Include="data\test.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="data\images\cpp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="x64\Release\data\images\test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

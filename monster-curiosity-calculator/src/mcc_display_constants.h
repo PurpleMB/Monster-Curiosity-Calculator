@@ -5,6 +5,9 @@
 namespace monster_calculator {
 
 // DisplayColor constants
+// Utility
+extern const DisplayColor kClearColor;
+
 // Reds
 extern const DisplayColor kRedColor;
 extern const DisplayColor kVermillionColor;

@@ -40,4 +40,12 @@ extern const ColumnInfo kSpeDefColInfo;
 extern const ColumnInfo kSpeedColInfo;
 extern const ColumnInfo kStatTotalColInfo;
 
+extern const ColumnInfo kCheriGroupColInfo;
+extern const ColumnInfo kChestoGroupColInfo;
+extern const ColumnInfo kPechaGroupColInfo;
+extern const ColumnInfo kRawstGroupColInfo;
+extern const ColumnInfo kAspearGroupColInfo;
+extern const ColumnInfo kLumGroupColInfo;
+
+
 } // namespace monster_calculator
