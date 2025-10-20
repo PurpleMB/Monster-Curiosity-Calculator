@@ -8,7 +8,7 @@ Monster Curiosity Calculator (MCC) is a database-driven statistics application d
 It uses a Python script to query an existing RESTful API, gathering all needed data into an easy to parse file. 
 That data is then processed in a C++ application to generate a SQLite database that can be interacted with using a GUI developed using the Dear ImGui library.
 
-For a glimpse into aspects of MCC's development, consult my write up [here](https://carterboclair.com/2025/10/01/monster-calculator.html).
+For a glimpse into aspects of MCC's development, consult my write-up [here](https://carterboclair.com/2025/10/01/monster-calculator.html).
 
 ## License
 
