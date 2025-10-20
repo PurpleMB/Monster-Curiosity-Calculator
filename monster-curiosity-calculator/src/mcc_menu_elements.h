@@ -19,5 +19,6 @@ void DrawProgramLogWindow(OutputEnvironment& output_environment);
 // help windows
 void DrawUserGuideWindow(OutputEnvironment& output_environment);
 void DrawProgramInfoWindow(OutputEnvironment& output_environment);
+void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment);
 
 } // namespace monster_calculator

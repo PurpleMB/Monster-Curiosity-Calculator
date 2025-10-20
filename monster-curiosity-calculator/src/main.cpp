@@ -338,6 +338,9 @@ public:
 			style.ScrollbarRounding = 8;
 			style.GrabRounding = 8;
 		}
+
+		// adjust output_environment as needed
+		output_environment.show_disclaimer_info = true;
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
@@ -367,71 +370,6 @@ public:
 
 			ImGui::PopStyleVar();
 		}
-
-		// possible menu sub-windows
-		{
-			if (output_environment.show_settings) {
-				monster_calculator::WindowParameters window_params;
-				window_params.name = "Settings";
-				window_params.window_size = {500.0f, 0.0f};
-				window_params.window_position = ImGui::GetCursorPos();
-				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
-				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_settings);
-
-				monster_calculator::DrawSettingsWindow(output_environment);
-
-				monster_calculator::EndSubMenuWindow(window_params);
-			}
-			if (output_environment.show_database_rebuild) {
-				monster_calculator::WindowParameters window_params;
-				window_params.name = "Rebuild Database";
-				window_params.window_size = {500.0f, 0.0f};
-				window_params.window_position = ImGui::GetCursorPos();
-				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
-				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_database_rebuild);
-
-				monster_calculator::DrawDatabaseRebuildWindow(output_environment);
-
-				monster_calculator::EndSubMenuWindow(window_params);
-			}
-			if (output_environment.show_program_log) {
-				monster_calculator::WindowParameters window_params;
-				window_params.name = "Program Log";
-				window_params.window_size = {750.0f, 300.0f};
-				window_params.window_position = ImGui::GetCursorPos();
-				window_params.imgui_window_settings = ImGuiWindowFlags_None;
-				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_log);
-
-				monster_calculator::DrawProgramLogWindow(output_environment);
-
-				monster_calculator::EndSubMenuWindow(window_params);
-			}
-			if (output_environment.show_user_guide) {
-				monster_calculator::WindowParameters window_params;
-				window_params.name = "User Guide";
-				window_params.window_size = {600.0f, 500.0f};
-				window_params.window_position = ImGui::GetCursorPos();
-				window_params.imgui_window_settings = ImGuiWindowFlags_None;
-				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_user_guide);
-
-				monster_calculator::DrawUserGuideWindow(output_environment);
-
-				monster_calculator::EndSubMenuWindow(window_params);
-			}
-			if (output_environment.show_program_info) {
-				monster_calculator::WindowParameters window_params;
-				window_params.name = "Program Info";
-				window_params.window_size = {400.0f, 0.0f};
-				window_params.window_position = ImGui::GetCursorPos();
-				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize;
-				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_info);
-
-				monster_calculator::DrawProgramInfoWindow(output_environment);
-
-				monster_calculator::EndSubMenuWindow(window_params);
-			}
-		}
-
 
 		ImVec2 raw_screen_size = ImGui::GetMainViewport()->WorkSize;
 		ImVec2 effective_screen_start = {0.0f, ImGui::GetTextLineHeightWithSpacing()};
@@ -500,6 +438,82 @@ public:
 			monster_calculator::DrawSetDisplayWindow(output_environment, subset_column_statuses);
 
 			ImGui::End();
+		}
+
+		// possible menu sub-windows
+		{
+			if (output_environment.show_settings) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Settings";
+				window_params.window_size = {500.0f, 0.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_settings);
+
+				monster_calculator::DrawSettingsWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
+			if (output_environment.show_database_rebuild) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Rebuild Database";
+				window_params.window_size = {500.0f, 0.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_database_rebuild);
+
+				monster_calculator::DrawDatabaseRebuildWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
+			if (output_environment.show_program_log) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Program Log";
+				window_params.window_size = {750.0f, 300.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_None;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_log);
+
+				monster_calculator::DrawProgramLogWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
+			if (output_environment.show_user_guide) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "User Guide";
+				window_params.window_size = {600.0f, 500.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_None;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_user_guide);
+
+				monster_calculator::DrawUserGuideWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
+			if (output_environment.show_program_info) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "Program Information";
+				window_params.window_size = {400.0f, 0.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_program_info);
+
+				monster_calculator::DrawProgramInfoWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
+			if (output_environment.show_disclaimer_info) {
+				monster_calculator::WindowParameters window_params;
+				window_params.name = "License & Disclaimer Information";
+				window_params.window_size = {600.0f, 0.0f};
+				window_params.window_position = ImGui::GetCursorPos();
+				window_params.imgui_window_settings = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+				monster_calculator::BeginSubMenuWindow(window_params, &output_environment.show_disclaimer_info);
+
+				monster_calculator::DrawLicenseDisclaimerWindow(output_environment);
+
+				monster_calculator::EndSubMenuWindow(window_params);
+			}
 		}
 	}
 

@@ -84,6 +84,7 @@ struct OutputEnvironment {
 	bool show_program_log;
 	bool show_user_guide;
 	bool show_program_info;
+	bool show_disclaimer_info;
 	float table_color_intensity;
 	ParameterTypeConverter converter;
 
@@ -102,6 +103,7 @@ struct OutputEnvironment {
 		show_program_log = false;
 		show_user_guide = false;
 		show_program_info = false;
+		show_disclaimer_info = false;
 
 		table_color_intensity = .5f;
 

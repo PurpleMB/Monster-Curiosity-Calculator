@@ -10,7 +10,7 @@
 #include "mcc_json_processing.h"
 
 #include "mcc_window_management.h"
-
+#include "mcc_imgui_helpers.h"
 #include "mcc_communication_structs.h"
 
 #include "mcc_menu_elements.h"
@@ -314,6 +314,43 @@ void DrawProgramInfoWindow(OutputEnvironment& output_environment) {
 		}
 		ImGui::EndPopup();
 	}
+}
+
+void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment) {
+	std::string license_label = "Software License";
+	float license_label_width = ImGui::CalcTextSize(license_label.c_str()).x;
+	CenterNextElem(license_label_width);
+	ImGui::Text(license_label.c_str());
+
+	ImGui::NewLine();
+	std::string license_content = "The SQLite and JsonCPP libraries are used under Public Domain within the project. In areas that do not recognize Public Domain, they are used uder the MIT license.\n\n"
+		"DearImGui is used under the MIT license. The full text of the MIT license may be found at the link below.\n\n"
+		"Images from Bulbagarden are used under the Creative Commons Attribution-NonCommercial-ShareAlike 2.5 Generic license, which is also linked below.\n\n"
+		"For direct links to all tools and sources for this application, consult the Program Information window.";
+	ImGui::TextWrapped(license_content.c_str());
+
+	ImGui::NewLine();
+	ImGui::Text("MIT License:");
+	ImGui::SameLine();
+	ImGui::TextLinkOpenURL("Click to open", "https://github.com/PurpleMB/MCC/blob/main/License.txt");
+
+	ImGui::Text("CC 2.5 License:");
+	ImGui::SameLine();
+	ImGui::TextLinkOpenURL("Click to open", "https://creativecommons.org/licenses/by-nc-sa/2.5/");
+
+	ImGui::NewLine();
+	ImGui::Separator();
+
+	std::string disclaimer_label = "Copyright Notice";
+	float disclaimer_label_width = ImGui::CalcTextSize(disclaimer_label.c_str()).x;
+	CenterNextElem(disclaimer_label_width);
+	ImGui::Text(disclaimer_label.c_str());
+
+	ImGui::NewLine();
+
+	std::string disclaimer_content = "Pokemon as a franchise and all associated characters and names are trademarks of Nintendo. Pokemon is the copyright property of Nintendo, Game Freak, and Creatures Inc.\n\n"
+		"All information used by this application has been gathered from PokeAPI and Bulbapedia. PokeAPI is the copyright property of Paul Hallett and PokeAPI contributors.";
+	ImGui::TextWrapped(disclaimer_content.c_str());
 }
 
 } // namespace monster_calculator
