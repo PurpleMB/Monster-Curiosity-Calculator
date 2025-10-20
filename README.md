@@ -1,6 +1,6 @@
 # MCC
 
-![Example Image of MCC](/examples/images/mcc.png)
+![Example Image of MCC](./examples/mcc.png)
 
 ## About
 
