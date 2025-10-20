@@ -1,5 +1,7 @@
 # MCC
 
+![Example Image of MCC](/examples/images/mcc.png)
+
 ## About
 
 Monster Curiosity Calculator (MCC) is a database-driven statistics application developed to help answer niche questions about pocket-sized monsters. 
