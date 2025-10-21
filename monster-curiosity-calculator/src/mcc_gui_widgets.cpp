@@ -9,7 +9,7 @@
 
 #include "mcc_gui_widgets.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void DrawHelpIcon(std::string help_text, OutputEnvironment& environment) {
 	ImTextureID help_icon_tex = environment.GetTextureFromMap("help");
@@ -26,4 +26,4 @@ void DrawHelpIcon(std::string help_text, OutputEnvironment& environment) {
 	ImGui::SetItemTooltip(help_text.c_str());
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

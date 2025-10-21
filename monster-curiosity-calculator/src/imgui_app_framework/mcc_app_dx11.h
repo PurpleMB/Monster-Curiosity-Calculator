@@ -5,7 +5,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-namespace monster_calculator {
+namespace purple_mb::imgui_app {
 
 // Encloses and obfuscates boilerplate DearImGui code
 // Each class method, including constructors and destructors,
@@ -39,4 +39,4 @@ bool LoadTextureFromMemory(const void* data, size_t data_size, ID3D11ShaderResou
 bool LoadTextureFromFile(const char* file_name, ID3D11ShaderResourceView** out_srv, int* out_width, int* out_height);
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-} // namespace monster_calculator
+} // namespace purple_mb::imgui_app

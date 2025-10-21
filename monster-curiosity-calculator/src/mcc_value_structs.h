@@ -6,7 +6,7 @@
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 struct ValueOperationArgument {
 	std::string display_name;
@@ -232,4 +232,4 @@ public:
 	}
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

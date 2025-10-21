@@ -10,7 +10,7 @@
 
 #include "mcc_json_processing.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 std::vector<std::unordered_map<std::string, std::string>> CompileMonsterJsonData(std::string file_path) {
 	const char* json_path = file_path.c_str();
@@ -129,4 +129,4 @@ std::unordered_map<std::string, std::string> UnpackMonsterJsonEntry(Json::Value 
 	return entry_data_map;
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

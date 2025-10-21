@@ -34,7 +34,7 @@
 #include "mcc_gui_windows.h"
 
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void DrawMenuBarWindow(OutputEnvironment& output_environment) {
 	if (ImGui::BeginMenuBar()) {
@@ -1234,4 +1234,4 @@ void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& pa
 	}
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

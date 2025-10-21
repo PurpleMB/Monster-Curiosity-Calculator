@@ -3,7 +3,7 @@
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // ColumnInfo constants
 extern const ColumnInfo kResNumColInfo = ColumnInfo("Result #", "", false, false, ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_PreferSortDescending, NumberColumnId, 0);
@@ -48,4 +48,4 @@ extern const ColumnInfo kRawstGroupColInfo = ColumnInfo("Rawst Criteria", "Rawst
 extern const ColumnInfo kAspearGroupColInfo = ColumnInfo("Aspear Criteria", "Aspear", true, true, ImGuiTableColumnFlags_WidthFixed, AspearGroupColumnId, 0);
 extern const ColumnInfo kLumGroupColInfo = ColumnInfo("Lum Criteria", "Lum", true, true, ImGuiTableColumnFlags_WidthFixed, LumGroupColumnId, 0);
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

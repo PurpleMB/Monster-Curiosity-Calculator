@@ -5,7 +5,7 @@
 
 #include "mcc_parameter_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 enum SubsetColumnsIds {
 	NumberColumnId,
@@ -403,4 +403,4 @@ struct SubsetComparator {
 	}
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

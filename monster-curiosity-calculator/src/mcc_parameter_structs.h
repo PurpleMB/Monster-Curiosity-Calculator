@@ -10,7 +10,7 @@
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // This struct encapsulates the data for a single possible value of a ParameterType.
 // For example, a parameter value for a monster typing may have values like "normal", "Normal"
@@ -637,4 +637,4 @@ public:
 	}
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

@@ -4,7 +4,7 @@
 #include "mcc_value_structs.h"
 #include "mcc_value_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // value calculation arguments
 const ValueOperationArgument kGenerationArg = ValueOperationArgument("Generation", "generation", kOrchidColor);
@@ -206,4 +206,4 @@ extern const ValueOperation kRandomEntryCalcOperation = ValueOperation(
     kSelectableCalcArguments
 );
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

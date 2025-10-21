@@ -5,7 +5,7 @@
 #include "mcc_communication_structs.h"
 #include "mcc_window_management.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // TODO: change the handling of WindowParameters to be more descripive. For windows to be placed on 
 // some sort of group with margins, construct a WindowPlacement object class that handles maintaining proper margins
@@ -99,4 +99,4 @@ void EndPivotScaledWindow(WindowParameters& window_parameters) {
 }
 
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

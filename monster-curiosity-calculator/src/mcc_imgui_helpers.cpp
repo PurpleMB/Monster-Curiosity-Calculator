@@ -8,7 +8,7 @@
 
 #include "mcc_imgui_helpers.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 float CenterNextElem(float element_width) {
 	float content_size = ImGui::GetContentRegionAvail().x;
@@ -30,4 +30,4 @@ float RightJustifyNextElem(float element_width) {
 	return offset;
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

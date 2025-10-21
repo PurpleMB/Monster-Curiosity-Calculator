@@ -7,7 +7,7 @@
 #include "mcc_value_structs.h"
 #include "mcc_communication_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 	void DrawMenuBarWindow(OutputEnvironment& output_environment);
 
 	void DrawSetParameterWindow(OutputEnvironment& output_environment, 
@@ -33,4 +33,4 @@ namespace monster_calculator {
 	void DrawSetDisplayWindow(OutputEnvironment& output_environment, std::vector<ColumnStatus>& column_statuses);
 	void DrawSubsetSizeTable(OutputEnvironment& output_environment, ParameterSet& param_set);
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

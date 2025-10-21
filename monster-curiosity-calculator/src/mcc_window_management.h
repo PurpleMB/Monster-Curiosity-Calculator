@@ -2,7 +2,7 @@
 
 #include "mcc_communication_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void BeginStyledWindow(WindowParameters& window_parameters);
 void EndStyledWindow(WindowParameters& window_parameters);
@@ -19,4 +19,4 @@ void EndScalingWindow(WindowParameters& window_parameters);
 void BeginPivotScaledWindow(WindowParameters& window_parameters, ImVec2 pivot, ImVec2 pivot_offset, ImVec2 window_size_percent);
 void EndPivotScaledWindow(WindowParameters& window_parameters);
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

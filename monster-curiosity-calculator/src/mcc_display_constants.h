@@ -2,7 +2,7 @@
 
 #include "mcc_display_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // DisplayColor constants
 // Utility
@@ -68,4 +68,4 @@ extern const DisplayColor kBrownColor;
 extern const DisplayColor kMahoganyColor;
 extern const DisplayColor kBrassColor;
 
-} //  namespace monster_calculator
+} //  namespace purple_mb::monster_calculator

@@ -15,7 +15,7 @@
 
 #include "mcc_menu_elements.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // menu bar elements
 void DrawMenuBarMenu(OutputEnvironment& output_environment) {
@@ -353,4 +353,4 @@ void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment) {
 	ImGui::TextWrapped(disclaimer_content.c_str());
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

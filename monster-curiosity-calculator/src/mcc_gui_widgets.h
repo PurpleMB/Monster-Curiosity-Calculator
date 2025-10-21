@@ -7,8 +7,8 @@
 
 #include "mcc_communication_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void DrawHelpIcon(std::string help_text, OutputEnvironment& environment);
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

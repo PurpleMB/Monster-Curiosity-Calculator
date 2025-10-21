@@ -5,7 +5,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "mcc_app_dx11.h"
+#include "./imgui_app_framework/mcc_app_dx11.h"
 
 #include "mcc_window_management.h"
 #include "mcc_gui_windows.h"
@@ -22,11 +22,11 @@
 
 #include "mcc_database_querying.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // Extends App-provided boilerplate to handle drawing of 
 // windows and GUI elements for MCC.
-class MCCApp : public App {
+class MCCApp : public purple_mb::imgui_app::App {
 public:
 	MCCApp() = default;
 	~MCCApp() = default;
@@ -45,7 +45,7 @@ public:
 			ID3D11ShaderResourceView* test_texture = nullptr;
 			int ph_image_width = 0;
 			int ph_image_height = 0;
-			bool ph_ret = LoadTextureFromFile("./data/images/placeholder.png", &test_texture, &ph_image_width, &ph_image_height);
+			bool ph_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/placeholder.png", &test_texture, &ph_image_width, &ph_image_height);
 			IM_ASSERT(ph_ret);
 			output_environment.AddTextureToMap("placeholder", test_texture);
 
@@ -53,7 +53,7 @@ public:
 			ID3D11ShaderResourceView* logo_texture = nullptr;
 			int logo_image_width = 0;
 			int logo_image_height = 0;
-			bool logo_ret = LoadTextureFromFile("./data/images/mcclogo.png", &logo_texture, &logo_image_width, &logo_image_height);
+			bool logo_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/mcclogo.png", &logo_texture, &logo_image_width, &logo_image_height);
 			IM_ASSERT(ph_ret);
 			output_environment.AddTextureToMap("logo", logo_texture);
 
@@ -62,7 +62,7 @@ public:
 			ID3D11ShaderResourceView* remove_texture = nullptr;
 			int remove_image_width = 0;
 			int remove_image_height = 0;
-			bool remove_ret = LoadTextureFromFile("./data/images/x-icon.png", &remove_texture, &remove_image_width, &remove_image_height);
+			bool remove_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/x-icon.png", &remove_texture, &remove_image_width, &remove_image_height);
 			IM_ASSERT(remove_ret);
 			output_environment.AddTextureToMap("remove", remove_texture);
 
@@ -70,7 +70,7 @@ public:
 			ID3D11ShaderResourceView* edit_texture = nullptr;
 			int edit_image_width = 0;
 			int edit_image_height = 0;
-			bool edit_ret = LoadTextureFromFile("./data/images/cog-icon.png", &edit_texture, &edit_image_width, &edit_image_height);
+			bool edit_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/cog-icon.png", &edit_texture, &edit_image_width, &edit_image_height);
 			IM_ASSERT(edit_ret);
 			output_environment.AddTextureToMap("edit", edit_texture);
 
@@ -78,7 +78,7 @@ public:
 			ID3D11ShaderResourceView* redo_texture = nullptr;
 			int redo_image_width = 0;
 			int redo_image_height = 0;
-			bool redo_ret = LoadTextureFromFile("./data/images/redo-icon.png", &redo_texture, &redo_image_width, &redo_image_height);
+			bool redo_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/redo-icon.png", &redo_texture, &redo_image_width, &redo_image_height);
 			IM_ASSERT(redo_ret);
 			output_environment.AddTextureToMap("redo", redo_texture);
 
@@ -86,7 +86,7 @@ public:
 			ID3D11ShaderResourceView* lock_texture = nullptr;
 			int lock_image_width = 0;
 			int lock_image_height = 0;
-			bool lock_ret = LoadTextureFromFile("./data/images/locked-icon.png", &lock_texture, &lock_image_width, &lock_image_height);
+			bool lock_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/locked-icon.png", &lock_texture, &lock_image_width, &lock_image_height);
 			IM_ASSERT(lock_ret);
 			output_environment.AddTextureToMap("lock", lock_texture);
 
@@ -94,7 +94,7 @@ public:
 			ID3D11ShaderResourceView* unlock_texture = nullptr;
 			int unlock_image_width = 0;
 			int unlock_image_height = 0;
-			bool unlock_ret = LoadTextureFromFile("./data/images/unlocked-icon.png", &unlock_texture, &unlock_image_width, &unlock_image_height);
+			bool unlock_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/unlocked-icon.png", &unlock_texture, &unlock_image_width, &unlock_image_height);
 			IM_ASSERT(unlock_ret);
 			output_environment.AddTextureToMap("unlock", unlock_texture);
 
@@ -102,7 +102,7 @@ public:
 			ID3D11ShaderResourceView* help_texture = nullptr;
 			int help_image_width = 0;
 			int help_image_height = 0;
-			bool help_ret = LoadTextureFromFile("./data/images/help-icon.png", &help_texture, &help_image_width, &help_image_height);
+			bool help_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/help-icon.png", &help_texture, &help_image_width, &help_image_height);
 			IM_ASSERT(help_ret);
 			output_environment.AddTextureToMap("help", help_texture);
 
@@ -112,7 +112,7 @@ public:
 			ID3D11ShaderResourceView* body_01_texture = nullptr;
 			int body_01_width = 0;
 			int body_01_height = 0;
-			bool body_01_ret = LoadTextureFromFile("./data/images/bodies/01_Ball.png", &body_01_texture, &body_01_width, &body_01_height);
+			bool body_01_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/01_Ball.png", &body_01_texture, &body_01_width, &body_01_height);
 			IM_ASSERT(body_01_ret);
 			output_environment.AddTextureToMap("ball", body_01_texture);
 
@@ -120,7 +120,7 @@ public:
 			ID3D11ShaderResourceView* body_02_texture = nullptr;
 			int body_02_width = 0;
 			int body_02_height = 0;
-			bool body_02_ret = LoadTextureFromFile("./data/images/bodies/02_Squiggle.png", &body_02_texture, &body_02_width, &body_02_height);
+			bool body_02_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/02_Squiggle.png", &body_02_texture, &body_02_width, &body_02_height);
 			IM_ASSERT(body_02_ret);
 			output_environment.AddTextureToMap("squiggle", body_02_texture);
 
@@ -128,7 +128,7 @@ public:
 			ID3D11ShaderResourceView* body_03_texture = nullptr;
 			int body_03_width = 0;
 			int body_03_height = 0;
-			bool body_03_ret = LoadTextureFromFile("./data/images/bodies/03_Fish.png", &body_03_texture, &body_03_width, &body_03_height);
+			bool body_03_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/03_Fish.png", &body_03_texture, &body_03_width, &body_03_height);
 			IM_ASSERT(body_03_ret);
 			output_environment.AddTextureToMap("fish", body_03_texture);
 
@@ -136,7 +136,7 @@ public:
 			ID3D11ShaderResourceView* body_04_texture = nullptr;
 			int body_04_width = 0;
 			int body_04_height = 0;
-			bool body_04_ret = LoadTextureFromFile("./data/images/bodies/04_Arms.png", &body_04_texture, &body_04_width, &body_04_height);
+			bool body_04_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/04_Arms.png", &body_04_texture, &body_04_width, &body_04_height);
 			IM_ASSERT(body_04_ret);
 			output_environment.AddTextureToMap("arms", body_04_texture);
 
@@ -144,7 +144,7 @@ public:
 			ID3D11ShaderResourceView* body_05_texture = nullptr;
 			int body_05_width = 0;
 			int body_05_height = 0;
-			bool body_05_ret = LoadTextureFromFile("./data/images/bodies/05_Blob.png", &body_05_texture, &body_05_width, &body_05_height);
+			bool body_05_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/05_Blob.png", &body_05_texture, &body_05_width, &body_05_height);
 			IM_ASSERT(body_05_ret);
 			output_environment.AddTextureToMap("blob", body_05_texture);
 
@@ -152,7 +152,7 @@ public:
 			ID3D11ShaderResourceView* body_06_texture = nullptr;
 			int body_06_width = 0;
 			int body_06_height = 0;
-			bool body_06_ret = LoadTextureFromFile("./data/images/bodies/06_Upright.png", &body_06_texture, &body_06_width, &body_06_height);
+			bool body_06_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/06_Upright.png", &body_06_texture, &body_06_width, &body_06_height);
 			IM_ASSERT(body_06_ret);
 			output_environment.AddTextureToMap("upright", body_06_texture);
 
@@ -160,7 +160,7 @@ public:
 			ID3D11ShaderResourceView* body_07_texture = nullptr;
 			int body_07_width = 0;
 			int body_07_height = 0;
-			bool body_07_ret = LoadTextureFromFile("./data/images/bodies/07_Legs.png", &body_07_texture, &body_07_width, &body_07_height);
+			bool body_07_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/07_Legs.png", &body_07_texture, &body_07_width, &body_07_height);
 			IM_ASSERT(body_07_ret);
 			output_environment.AddTextureToMap("legs", body_07_texture);
 
@@ -168,7 +168,7 @@ public:
 			ID3D11ShaderResourceView* body_08_texture = nullptr;
 			int body_08_width = 0;
 			int body_08_height = 0;
-			bool body_08_ret = LoadTextureFromFile("./data/images/bodies/08_Quadruped.png", &body_08_texture, &body_08_width, &body_08_height);
+			bool body_08_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/08_Quadruped.png", &body_08_texture, &body_08_width, &body_08_height);
 			IM_ASSERT(body_08_ret);
 			output_environment.AddTextureToMap("quadruped", body_08_texture);
 
@@ -176,7 +176,7 @@ public:
 			ID3D11ShaderResourceView* body_09_texture = nullptr;
 			int body_09_width = 0;
 			int body_09_height = 0;
-			bool body_09_ret = LoadTextureFromFile("./data/images/bodies/09_Wings.png", &body_09_texture, &body_09_width, &body_09_height);
+			bool body_09_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/09_Wings.png", &body_09_texture, &body_09_width, &body_09_height);
 			IM_ASSERT(body_09_ret);
 			output_environment.AddTextureToMap("wings", body_09_texture);
 
@@ -184,7 +184,7 @@ public:
 			ID3D11ShaderResourceView* body_10_texture = nullptr;
 			int body_10_width = 0;
 			int body_10_height = 0;
-			bool body_10_ret = LoadTextureFromFile("./data/images/bodies/10_Tentacles.png", &body_10_texture, &body_10_width, &body_10_height);
+			bool body_10_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/10_Tentacles.png", &body_10_texture, &body_10_width, &body_10_height);
 			IM_ASSERT(body_10_ret);
 			output_environment.AddTextureToMap("tentacles", body_10_texture);
 
@@ -192,7 +192,7 @@ public:
 			ID3D11ShaderResourceView* body_11_texture = nullptr;
 			int body_11_width = 0;
 			int body_11_height = 0;
-			bool body_11_ret = LoadTextureFromFile("./data/images/bodies/11_Heads.png", &body_11_texture, &body_11_width, &body_11_height);
+			bool body_11_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/11_Heads.png", &body_11_texture, &body_11_width, &body_11_height);
 			IM_ASSERT(body_11_ret);
 			output_environment.AddTextureToMap("heads", body_11_texture);
 
@@ -200,7 +200,7 @@ public:
 			ID3D11ShaderResourceView* body_12_texture = nullptr;
 			int body_12_width = 0;
 			int body_12_height = 0;
-			bool body_12_ret = LoadTextureFromFile("./data/images/bodies/12_Humanoid.png", &body_12_texture, &body_12_width, &body_12_height);
+			bool body_12_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/12_Humanoid.png", &body_12_texture, &body_12_width, &body_12_height);
 			IM_ASSERT(body_12_ret);
 			output_environment.AddTextureToMap("humanoid", body_12_texture);
 
@@ -208,7 +208,7 @@ public:
 			ID3D11ShaderResourceView* body_13_texture = nullptr;
 			int body_13_width = 0;
 			int body_13_height = 0;
-			bool body_13_ret = LoadTextureFromFile("./data/images/bodies/13_Insect.png", &body_13_texture, &body_13_width, &body_13_height);
+			bool body_13_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/13_Insect.png", &body_13_texture, &body_13_width, &body_13_height);
 			IM_ASSERT(body_13_ret);
 			output_environment.AddTextureToMap("bug-wings", body_13_texture);
 
@@ -216,7 +216,7 @@ public:
 			ID3D11ShaderResourceView* body_14_texture = nullptr;
 			int body_14_width = 0;
 			int body_14_height = 0;
-			bool body_14_ret = LoadTextureFromFile("./data/images/bodies/14_Armor.png", &body_14_texture, &body_14_width, &body_14_height);
+			bool body_14_ret = purple_mb::imgui_app::LoadTextureFromFile("./data/images/bodies/14_Armor.png", &body_14_texture, &body_14_width, &body_14_height);
 			IM_ASSERT(body_14_ret);
 			output_environment.AddTextureToMap("armor", body_14_texture);
 		}
@@ -719,11 +719,11 @@ private:
 	ImFont* font_sono;
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator
 
 // Main code
 int main(int, char**) {
-	monster_calculator::MCCApp app;
+	purple_mb::monster_calculator::MCCApp app;
 	app.Run();
 
 	return 0;

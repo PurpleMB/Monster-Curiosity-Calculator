@@ -7,11 +7,11 @@
 #include "imgui_impl_win32.h"
 #include <misc/cpp/imgui_stdlib.h>
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // Helper functions meant to place elements at certain positions on the current line
 float CenterNextElem(float element_width);
 float RightJustifyNextElem(float element_width);
 
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

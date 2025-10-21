@@ -4,11 +4,11 @@
 
 #include "mcc_database_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 extern const std::string kDatabaseFilePath;
 extern const std::string kMainTableName;
 extern const std::string kSubTableName;
 extern const TableSchemaList kMainTableSchemaList;
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

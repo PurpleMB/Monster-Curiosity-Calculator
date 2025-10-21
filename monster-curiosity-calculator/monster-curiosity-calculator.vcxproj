@@ -150,7 +150,7 @@
     <ClCompile Include="lib\imgui\imgui_tables.cpp" />
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\mcc_app_dx11.cpp" />
+    <ClCompile Include="src\imgui_app_framework\mcc_app_dx11.cpp" />
     <ClCompile Include="src\mcc_database_constants.cpp" />
     <ClCompile Include="src\mcc_database_querying.cpp" />
     <ClCompile Include="src\mcc_display_constants.cpp" />
@@ -180,7 +180,7 @@
     <ClInclude Include="lib\imgui\imstb_textedit.h" />
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="lib\stb\stb_image.h" />
-    <ClInclude Include="src\mcc_app_dx11.h" />
+    <ClInclude Include="src\imgui_app_framework\mcc_app_dx11.h" />
     <ClInclude Include="src\mcc_communication_structs.h" />
     <ClInclude Include="src\mcc_database_constants.h" />
     <ClInclude Include="src\mcc_database_querying.h" />

@@ -3,7 +3,7 @@
 
 #include "mcc_value_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // value calculation enum values
 extern const std::vector<ValueOperationArgument> kNumericalCalcArguments;
@@ -19,4 +19,4 @@ extern const ValueOperation kMedianCalcOperation;
 extern const ValueOperation kModeCalcOperation;
 extern const ValueOperation kRandomEntryCalcOperation;
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

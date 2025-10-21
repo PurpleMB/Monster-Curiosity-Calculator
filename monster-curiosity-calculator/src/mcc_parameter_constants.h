@@ -3,7 +3,7 @@
 
 #include "mcc_parameter_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // enumerated parameter values and operations
 extern const std::vector<ParameterValue> kTypeValuesList;
@@ -89,4 +89,4 @@ extern const IntegerParameterType kStatTotalParam;
 extern const DecimalParameterType kWeightParam;
 extern const DecimalParameterType kHeightParam;
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

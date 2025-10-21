@@ -2,7 +2,7 @@
 
 #include "mcc_communication_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // menu bar elements
 void DrawMenuBarMenu(OutputEnvironment& output_environment);
@@ -21,4 +21,4 @@ void DrawUserGuideWindow(OutputEnvironment& output_environment);
 void DrawProgramInfoWindow(OutputEnvironment& output_environment);
 void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment);
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

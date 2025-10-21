@@ -3,7 +3,7 @@
 #include "mcc_display_structs.h"
 #include "mcc_display_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // DisplayColor constants
 const float kColorIntensity = 0.6f;
@@ -189,4 +189,4 @@ extern const DisplayColor kBrassColor = DisplayColor(
 	ImVec4(225.0f / 255.0f, 193.0f / 255.0f, 110.0f / 255.0f, kColorIntensity)
 );
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

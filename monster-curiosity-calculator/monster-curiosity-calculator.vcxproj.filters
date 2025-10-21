@@ -75,7 +75,7 @@
     <ClCompile Include="src\mcc_json_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_app_dx11.cpp">
+    <ClCompile Include="src\imgui_app_framework\mcc_app_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp">
@@ -173,7 +173,7 @@
     <ClInclude Include="src\mcc_database_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_app_dx11.h">
+    <ClInclude Include="src\imgui_app_framework\mcc_app_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h">

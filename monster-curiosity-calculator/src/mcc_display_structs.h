@@ -4,7 +4,7 @@
 
 #include "imgui.h" // for acces to ImVec4 datatype
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 struct DisplayColor {
 private:
@@ -94,4 +94,4 @@ struct WindowParameters {
 	float internal_margin;
 };
 
-} //  namespace monster_calculator
+} //  namespace purple_mb::monster_calculator

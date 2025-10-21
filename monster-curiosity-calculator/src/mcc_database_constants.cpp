@@ -6,7 +6,7 @@
 
 #include "mcc_database_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 extern const std::string kDatabaseFilePath = ".\\data\\mccdata.db";
 extern const std::string kMainTableName = "Monsters";
@@ -56,4 +56,4 @@ extern const TableSchemaList kMainTableSchemaList = TableSchemaList({
 	TableColumnSchema("form_url", "TEXT", "NOT NULL")
 });
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

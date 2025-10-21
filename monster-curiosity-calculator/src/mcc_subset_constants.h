@@ -2,7 +2,7 @@
 
 #include "mcc_subset_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // Subset Display ColumnInfos
 extern const ColumnInfo kResNumColInfo;
@@ -48,4 +48,4 @@ extern const ColumnInfo kAspearGroupColInfo;
 extern const ColumnInfo kLumGroupColInfo;
 
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

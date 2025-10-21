@@ -1,4 +1,4 @@
-// Dear ImGui: standalone example application for DirectX 9
+// Dear ImGui: standalone application for DirectX 11
 
 // Learn about Dear ImGui:
 // - FAQ                  https://dearimgui.com/faq
@@ -19,12 +19,12 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "mcc_display_constants.h"
+#include "../mcc_display_constants.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../lib/stb/stb_image.h"
+#include "../../lib/stb/stb_image.h"
 
-namespace monster_calculator {
+namespace purple_mb::imgui_app {
 
 // Data
 static ID3D11Device* g_pd3dDevice = nullptr;
@@ -281,19 +281,18 @@ bool LoadTextureFromFile(const char* file_name, ID3D11ShaderResourceView** out_s
 	return ret;
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::imgui_app
 
 // Forward declare message handler from imgui_impl_win32.cpp
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-namespace monster_calculator {
+namespace purple_mb::imgui_app {
 // Win32 message handler
 // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
 // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
 // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
 // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	using namespace monster_calculator;
 
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 		return true;
@@ -316,4 +315,4 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	return ::DefWindowProcW(hWnd, msg, wParam, lParam);
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::imgui_app

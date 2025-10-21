@@ -14,7 +14,7 @@
 #include "mcc_value_structs.h"
 #include "mcc_subset_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 enum EntryType {
 	Neutral,
@@ -258,4 +258,4 @@ struct OutputEnvironment {
 	}
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

@@ -3,7 +3,7 @@
 #include <vector>
 #include <format>
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 struct TableColumnSchema {
 private:
@@ -80,4 +80,4 @@ public:
 	}
 };
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

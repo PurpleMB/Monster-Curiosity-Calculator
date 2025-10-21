@@ -7,7 +7,7 @@
 
 #include "mcc_communication_structs.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void OpenDatabaseConnection(OutputEnvironment& output_environment);
 void CloseDatabaseConnection(OutputEnvironment& output_environment);
@@ -27,4 +27,4 @@ void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string 
 
 void RetrieveTableEntries(OutputEnvironment& output_environment, std::string table_name);
 void QueryValuesFromTable(OutputEnvironment& output_environment, std::string table_name, std::vector<int> query_indices, std::string query_text);
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator

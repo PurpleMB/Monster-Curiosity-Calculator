@@ -10,7 +10,7 @@
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 // enum parameter values
 extern const std::vector<ParameterValue> kTypeValuesList = {
@@ -897,4 +897,4 @@ extern const DecimalParameterType kHeightParam = DecimalParameterType(
     kHeightThresholds
 );
 
-} //namespace monster_calculator
+} //namespace purple_mb::monster_calculator

@@ -12,7 +12,7 @@
 
 #include "mcc_database_querying.h"
 
-namespace monster_calculator {
+namespace purple_mb::monster_calculator {
 
 void OpenDatabaseConnection(OutputEnvironment& output_environment) {
 	std::string log_msg;
@@ -538,4 +538,4 @@ void QueryValuesFromTable(OutputEnvironment& output_environment, std::string tab
 	return;
 }
 
-} // namespace monster_calculator
+} // namespace purple_mb::monster_calculator
