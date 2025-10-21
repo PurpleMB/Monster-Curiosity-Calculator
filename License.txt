@@ -40,5 +40,6 @@ Find the full text of that license at: (https://creativecommons.org/licenses/by-
 
 -----------------------------------------------------------------------------------------
 
-Icons from Icon8 are used in this program. The site is credited in the Program Information window.
+Icons from Icon8 are used in this program and are credited as per the site guidelines. 
+The site is credited in the Program Information window.
 (https://icons8.com/)
