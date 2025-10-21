@@ -5,6 +5,6 @@
 
 namespace purple_mb::monster_calculator {
 
-extern const std::string kMonsterJsonDataPath = ".\\data\\mccdata.json";
+extern const std::string kMonsterJsonDataPath = "./resources/jsons/mccdata.json";
 
 } // namespace purple_mb::monster_calculator 

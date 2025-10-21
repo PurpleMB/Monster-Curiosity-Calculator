@@ -8,7 +8,7 @@
 
 namespace purple_mb::monster_calculator {
 
-extern const std::string kDatabaseFilePath = ".\\data\\mccdata.db";
+extern const std::string kDatabaseFilePath = "./resources/databases/mccdata.db";
 extern const std::string kMainTableName = "Monsters";
 extern const std::string kSubTableName = "Submonsters";
 
