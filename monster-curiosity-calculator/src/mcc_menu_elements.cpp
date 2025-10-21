@@ -323,7 +323,7 @@ void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment) {
 	ImGui::Text(license_label.c_str());
 
 	ImGui::NewLine();
-	std::string license_content = "The SQLite and JsonCPP libraries are used under Public Domain within the project. In areas that do not recognize Public Domain, they are used uder the MIT license.\n\n"
+	std::string license_content = "The SQLite, STB Image Library, and JsonCPP libraries are used under Public Domain within the project. In areas that do not recognize Public Domain, they are used uder the MIT license.\n\n"
 		"DearImGui is used under the MIT license. The full text of the MIT license may be found at the link below.\n\n"
 		"Images from Bulbagarden are used under the Creative Commons Attribution-NonCommercial-ShareAlike 2.5 Generic license, which is also linked below.\n\n"
 		"For direct links to all tools and sources for this application, consult the Program Information window.";

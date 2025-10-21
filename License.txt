@@ -22,7 +22,10 @@ SOFTWARE.
 
 -----------------------------------------------------------------------------------------
 
-DearImGui, JsonCPP, and SQLite are all used under the MIT license.
+The SQLite, STB Image Library, and JsonCPP librarie are all used under Public Domain. 
+In areas that do not recognize Public Domain, they are used under the MIT license. 
+
+DearImGui is used under the MIT license.
 
 -----------------------------------------------------------------------------------------
 
