@@ -4,8 +4,9 @@
 
 #include "mcc_display_constants.h"
 
-#include "mcc_database_constants.h"
-#include "mcc_database_querying.h"
+#include "database_interaction/mcc_database_constants.h"
+#include "database_interaction/mcc_database_querying.h"
+
 #include "mcc_json_constants.h"
 #include "mcc_json_processing.h"
 

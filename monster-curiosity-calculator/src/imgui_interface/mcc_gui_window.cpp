@@ -20,13 +20,14 @@
 #include <misc/cpp/imgui_stdlib.h>
 
 #include "mcc_display_structs.h"
-#include "mcc_parameter_structs.h"
-#include "mcc_value_structs.h"
-#include "mcc_subset_structs.h"
-#include "mcc_communication_structs.h"
+#include "../mcc_parameter_structs.h"
+#include "../mcc_value_structs.h"
+#include "../mcc_subset_structs.h"
+#include "../mcc_communication_structs.h"
 
-#include "mcc_database_constants.h"
-#include "mcc_database_querying.h"
+#include "../database_interaction/mcc_database_constants.h"
+#include "../database_interaction/mcc_database_querying.h"
+
 #include "mcc_menu_elements.h"
 #include "mcc_gui_widgets.h"
 #include "mcc_imgui_helpers.h"

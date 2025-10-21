@@ -3,9 +3,9 @@
 #include <vector>
 #include <memory>
 
-#include "mcc_parameter_structs.h"
-#include "mcc_value_structs.h"
-#include "mcc_communication_structs.h"
+#include "../mcc_parameter_structs.h"
+#include "../mcc_value_structs.h"
+#include "../mcc_communication_structs.h"
 
 namespace purple_mb::monster_calculator {
 	void DrawMenuBarWindow(OutputEnvironment& output_environment);

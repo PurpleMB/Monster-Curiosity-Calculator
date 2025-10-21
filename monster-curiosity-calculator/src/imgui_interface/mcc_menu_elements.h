@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mcc_communication_structs.h"
+#include "../mcc_communication_structs.h"
 
 namespace purple_mb::monster_calculator {
 

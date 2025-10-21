@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 
-#include "mcc_communication_structs.h"
+#include "../mcc_communication_structs.h"
 #include "mcc_window_management.h"
 
 namespace purple_mb::monster_calculator {

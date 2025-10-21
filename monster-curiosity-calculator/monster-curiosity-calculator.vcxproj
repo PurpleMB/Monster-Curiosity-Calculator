@@ -151,19 +151,19 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\imgui_app_framework\mcc_app_dx11.cpp" />
-    <ClCompile Include="src\mcc_database_constants.cpp" />
-    <ClCompile Include="src\mcc_database_querying.cpp" />
-    <ClCompile Include="src\mcc_display_constants.cpp" />
-    <ClCompile Include="src\mcc_gui_widgets.cpp" />
-    <ClCompile Include="src\mcc_imgui_helpers.cpp" />
+    <ClCompile Include="src\database_interaction\mcc_database_constants.cpp" />
+    <ClCompile Include="src\database_interaction\mcc_database_querying.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_display_constants.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_gui_widgets.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_imgui_helpers.cpp" />
     <ClCompile Include="src\mcc_json_constants.cpp" />
     <ClCompile Include="src\mcc_json_processing.cpp" />
-    <ClCompile Include="src\mcc_menu_elements.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_menu_elements.cpp" />
     <ClCompile Include="src\mcc_parameter_constants.cpp" />
-    <ClCompile Include="src\mcc_gui_window.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_gui_window.cpp" />
     <ClCompile Include="src\mcc_subset_constants.cpp" />
     <ClCompile Include="src\mcc_value_constants.cpp" />
-    <ClCompile Include="src\mcc_window_management.cpp" />
+    <ClCompile Include="src\imgui_interface\mcc_window_management.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Downloads\stb_image.h" />
@@ -182,24 +182,24 @@
     <ClInclude Include="lib\stb\stb_image.h" />
     <ClInclude Include="src\imgui_app_framework\mcc_app_dx11.h" />
     <ClInclude Include="src\mcc_communication_structs.h" />
-    <ClInclude Include="src\mcc_database_constants.h" />
-    <ClInclude Include="src\mcc_database_querying.h" />
-    <ClInclude Include="src\mcc_database_structs.h" />
-    <ClInclude Include="src\mcc_display_constants.h" />
-    <ClInclude Include="src\mcc_display_structs.h" />
-    <ClInclude Include="src\mcc_gui_widgets.h" />
-    <ClInclude Include="src\mcc_imgui_helpers.h" />
+    <ClInclude Include="src\database_interaction\mcc_database_constants.h" />
+    <ClInclude Include="src\database_interaction\mcc_database_querying.h" />
+    <ClInclude Include="src\database_interaction\mcc_database_structs.h" />
+    <ClInclude Include="src\imgui_interface\mcc_display_constants.h" />
+    <ClInclude Include="src\imgui_interface\mcc_display_structs.h" />
+    <ClInclude Include="src\imgui_interface\mcc_gui_widgets.h" />
+    <ClInclude Include="src\imgui_interface\mcc_imgui_helpers.h" />
     <ClInclude Include="src\mcc_json_constants.h" />
     <ClInclude Include="src\mcc_json_processing.h" />
-    <ClInclude Include="src\mcc_menu_elements.h" />
+    <ClInclude Include="src\imgui_interface\mcc_menu_elements.h" />
     <ClInclude Include="src\mcc_parameter_constants.h" />
     <ClInclude Include="src\mcc_parameter_structs.h" />
     <ClInclude Include="src\mcc_subset_constants.h" />
     <ClInclude Include="src\mcc_subset_structs.h" />
-    <ClInclude Include="src\mcc_gui_windows.h" />
+    <ClInclude Include="src\imgui_interface\mcc_gui_windows.h" />
     <ClInclude Include="src\mcc_value_constants.h" />
     <ClInclude Include="src\mcc_value_structs.h" />
-    <ClInclude Include="src\mcc_window_management.h" />
+    <ClInclude Include="src\imgui_interface\mcc_window_management.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\mccdata.json" />

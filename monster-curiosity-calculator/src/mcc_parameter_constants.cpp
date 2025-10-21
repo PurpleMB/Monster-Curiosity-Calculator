@@ -4,8 +4,8 @@
 
 #include "imgui.h"	// for access to ImGui color type
 
-#include "mcc_display_constants.h"
-#include "mcc_display_structs.h"
+#include "imgui_interface/mcc_display_constants.h"
+#include "imgui_interface/mcc_display_structs.h"
 
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"

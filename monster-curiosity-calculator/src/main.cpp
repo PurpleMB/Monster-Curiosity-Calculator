@@ -7,9 +7,9 @@
 
 #include "./imgui_app_framework/mcc_app_dx11.h"
 
-#include "mcc_window_management.h"
-#include "mcc_gui_windows.h"
-#include "mcc_menu_elements.h"
+#include "imgui_interface/mcc_window_management.h"
+#include "imgui_interface/mcc_gui_windows.h"
+#include "imgui_interface/mcc_menu_elements.h"
 
 #include "mcc_parameter_structs.h"
 #include "mcc_parameter_constants.h"
@@ -18,9 +18,9 @@
 #include "mcc_subset_structs.h"
 #include "mcc_subset_constants.h"
 #include "mcc_communication_structs.h"
-#include "mcc_database_constants.h"
 
-#include "mcc_database_querying.h"
+#include "database_interaction/mcc_database_constants.h"
+#include "database_interaction/mcc_database_querying.h"
 
 namespace purple_mb::monster_calculator {
 
