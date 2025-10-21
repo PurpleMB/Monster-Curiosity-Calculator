@@ -69,10 +69,10 @@
     <ClCompile Include="src\database_interaction\mcc_database_querying.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_json_processing.cpp">
+    <ClCompile Include="src\json_interaction\mcc_json_processing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_json_constants.cpp">
+    <ClCompile Include="src\json_interaction\mcc_json_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\imgui_app_framework\mcc_app_dx11.cpp">
@@ -164,10 +164,10 @@
     <ClInclude Include="src\database_interaction\mcc_database_querying.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_json_processing.h">
+    <ClInclude Include="src\json_interaction\mcc_json_processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_json_constants.h">
+    <ClInclude Include="src\json_interaction\mcc_json_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\database_interaction\mcc_database_structs.h">
