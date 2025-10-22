@@ -5,6 +5,7 @@ import aiohttp
 import requests
 
 base_url = "https://pokeapi.co/api/v2/"
+json_directory = "../resources/jsons/"
 
 def get_ability_urls():
     ability_url = f"{base_url}/ability?limit=500&offset=0"
@@ -113,6 +114,10 @@ async def get_pokemon_info(session, dex_entry, ability_name_map, generation_map)
             print(f"API Request for {dex_entry["name"]} failed. Error code {poke_response.status_code}")
             return None
         poke_data = await poke_response.json()
+
+    # Legends:ZA creatures are currently lacking data, ignore them for now
+    if poke_data["id"] > 10277:
+        return
 
     species_url = poke_data["species"]["url"]
     async with session.get(species_url) as species_response:
@@ -276,7 +281,7 @@ async def main():
     async with aiohttp.ClientSession() as session:
         ability_name_map = await gather_ability_data(session, ability_data)
 
-    filename = "../data/abilities.json"
+    filename = json_directory + "abilities.json"
     with open(filename, "w") as file:
         json.dump(ability_name_map, file, indent = 4)
 
@@ -284,19 +289,20 @@ async def main():
     async with aiohttp.ClientSession() as session:
         generation_map = await gather_generation_data(session, generation_data)
 
-    filename = "../data/generations.json"
+    filename = json_directory + "generations.json"
     with open(filename, "w") as file:
         json.dump(generation_map, file, indent = 4)
 
     species_data = gather_species_data()
     async with aiohttp.ClientSession() as session:
         pokemon_data = await gather_pokemon_data(session, species_data, ability_name_map, generation_map)
+        pokemon_data = list(filter(None, pokemon_data)) # new pokemon are adding nulls at end of list
 
-    filename = "../data/mccdata.json"
+    filename = json_directory + "mccdata.json"
     with open(filename, "w") as file:
         json.dump(pokemon_data, file, indent = 4)
 
-    print(f"JSON data saved to '{filename}'")
+    print(f"JSON data saved to '{json_directory}'")
 
     end_time = time.time()
     print(f"Time Taken: {end_time - start_time} seconds")

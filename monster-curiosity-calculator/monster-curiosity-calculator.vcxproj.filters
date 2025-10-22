@@ -33,9 +33,6 @@
     <ClCompile Include="lib\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lib\imgui\backends\imgui_impl_dx9.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,52 +42,52 @@
     <ClCompile Include="..\..\..\Libraries\jsoncpp\dist\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_gui_window.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_gui_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\misc\cpp\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_database_constants.cpp">
+    <ClCompile Include="src\database_interaction\mcc_database_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_display_constants.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_display_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_parameter_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_parameter_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_subset_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_subset_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_value_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_value_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_database_querying.cpp">
+    <ClCompile Include="src\database_interaction\mcc_database_querying.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_json_processing.cpp">
+    <ClCompile Include="src\json_interaction\mcc_json_processing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_json_constants.cpp">
+    <ClCompile Include="src\json_interaction\mcc_json_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_app_dx11.cpp">
+    <ClCompile Include="src\imgui_app_framework\mcc_app_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_menu_elements.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_menu_elements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_window_management.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_window_management.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_gui_widgets.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_gui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_imgui_helpers.cpp">
+    <ClCompile Include="src\imgui_interface\mcc_imgui_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,9 +110,6 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="lib\imgui\backends\imgui_impl_dx9.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -125,55 +119,55 @@
     <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json-forwards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_gui_windows.h">
+    <ClInclude Include="src\imgui_interface\mcc_gui_windows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_database_constants.h">
+    <ClInclude Include="src\database_interaction\mcc_database_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_display_structs.h">
+    <ClInclude Include="src\imgui_interface\mcc_display_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_display_constants.h">
+    <ClInclude Include="src\imgui_interface\mcc_display_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_parameter_structs.h">
+    <ClInclude Include="src\data_communication\mcc_parameter_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_parameter_constants.h">
+    <ClInclude Include="src\data_communication\mcc_parameter_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_subset_structs.h">
+    <ClInclude Include="src\data_communication\mcc_subset_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_subset_constants.h">
+    <ClInclude Include="src\data_communication\mcc_subset_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_communication_structs.h">
+    <ClInclude Include="src\data_communication\mcc_communication_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_value_structs.h">
+    <ClInclude Include="src\data_communication\mcc_value_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_value_constants.h">
+    <ClInclude Include="src\data_communication\mcc_value_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_database_querying.h">
+    <ClInclude Include="src\database_interaction\mcc_database_querying.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_json_processing.h">
+    <ClInclude Include="src\json_interaction\mcc_json_processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_json_constants.h">
+    <ClInclude Include="src\json_interaction\mcc_json_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_database_structs.h">
+    <ClInclude Include="src\database_interaction\mcc_database_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_app_dx11.h">
+    <ClInclude Include="src\imgui_app_framework\mcc_app_dx11.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h">
@@ -185,16 +179,16 @@
     <ClInclude Include="lib\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_menu_elements.h">
+    <ClInclude Include="src\imgui_interface\mcc_menu_elements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_window_management.h">
+    <ClInclude Include="src\imgui_interface\mcc_window_management.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_gui_widgets.h">
+    <ClInclude Include="src\imgui_interface\mcc_gui_widgets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_imgui_helpers.h">
+    <ClInclude Include="src\imgui_interface\mcc_imgui_helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
