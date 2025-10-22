@@ -51,7 +51,7 @@ extern const TableSchemaList kMainTableSchemaList = TableSchemaList({
 	TableColumnSchema("special_defense", "INTEGER", "NOT NULL"),
 	TableColumnSchema("speed", "INTEGER", "NOT NULL"),
 	TableColumnSchema("stat_total", "INTEGER", "NOT NULL"),
-	TableColumnSchema("poke_url", "TEXT", "NOT NULL"),
+	TableColumnSchema("monster_url", "TEXT", "NOT NULL"),
 	TableColumnSchema("species_url", "TEXT", "NOT NULL"),
 	TableColumnSchema("form_url", "TEXT", "NOT NULL")
 });
