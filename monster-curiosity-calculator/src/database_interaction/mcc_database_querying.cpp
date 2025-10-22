@@ -6,7 +6,8 @@
 // remove after debuggind is done
 #include <iostream>
 
-#include "../data_communication/mcc_communication_structs.h"
+#include "data_communication/mcc_communication_structs.h"
+
 #include "mcc_database_structs.h"
 #include "mcc_database_constants.h"
 

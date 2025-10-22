@@ -7,8 +7,8 @@
 
 #include <iostream>
 
-#include "../imgui_interface/mcc_display_structs.h"
-#include "../imgui_interface/mcc_display_constants.h"
+#include "imgui_interface/mcc_display_structs.h"
+#include "imgui_interface/mcc_display_constants.h"
 
 namespace purple_mb::monster_calculator {
 

@@ -19,10 +19,10 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "../imgui_interface/mcc_display_constants.h"
+#include "imgui_interface/mcc_display_constants.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../lib/stb/stb_image.h"
+#include "stb_image.h"
 
 namespace purple_mb::imgui_app {
 
