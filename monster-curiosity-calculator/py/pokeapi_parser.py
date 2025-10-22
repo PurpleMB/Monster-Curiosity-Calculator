@@ -79,7 +79,7 @@ async def form_version_map(session, versions_info):
 
     tasks = []
     for version_entry in versions_info["results"]:
-        task = asyncio.create_task(get_version_info(session, version_entry))
+        task = asyncio.create_task(get_version_gen(session, version_entry))
         tasks.append(task)
     version_gen_maps = await asyncio.gather(*tasks)
 
@@ -90,7 +90,7 @@ async def form_version_map(session, versions_info):
     return versions_map
 
 # Creates the mapping of version-group -> generation for a single version group
-async def get_version_info(session, version_entry):
+async def get_version_gen(session, version_entry):
     version_name = version_entry["name"]
 
     version_url = version_entry["url"]
@@ -124,6 +124,7 @@ async def gather_monsters_data(session, monsters_info, ability_name_map, generat
 
 # Obtains all required data about monster before it down to form a dictionary entry
 async def get_monster_data(session, monster_entry, ability_map, versions_map):
+    # Some monsters, particularly new ones, will have incomplete info and not possess information about their form, species, etc.
     monster_url = monster_entry["url"]
     try:
         monster_data = await request_json_async(session, monster_url)
@@ -223,9 +224,9 @@ def prune_monster_data(monster_data, ability_map):
     # I am forming the database to uses "-" instead of nulls for non-values
     monster_types = {}
     monster_types["primary"] = monster_data["types"][0]["type"]["name"]
-    if len(monster_data["types"]) > 1:
+    try:
         monster_types["secondary"] = monster_data["types"][1]["type"]["name"]
-    else:
+    except:
         monster_types["secondary"] = "-"
     pruned_data["types"] = monster_types
 
@@ -284,9 +285,9 @@ def prune_species_data(species_data):
     # I am forming the database to uses "-" instead of nulls for non-values
     egg_groups = {}
     egg_groups["primary"] = species_data["egg_groups"][0]["name"]
-    if len(species_data["egg_groups"]) > 1:
+    try:
         egg_groups["secondary"] = species_data["egg_groups"][1]["name"]
-    else:
+    except:
         egg_groups["secondary"] = "-"
     pruned_data["egg_groups"] = egg_groups
 
