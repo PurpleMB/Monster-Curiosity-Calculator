@@ -69,8 +69,7 @@ async def get_ability_names(session, ability_entry):
     pretty_names = ability_data["names"]
     english_pretty_name = next((pretty_name["name"] for pretty_name in pretty_names if pretty_name["language"]["name"] == "en"), "")
 
-    name_map = {raw_name : english_pretty_name}
-    return name_map
+    return {raw_name : english_pretty_name}
 
 # Forms a map for converting version-groups to generations
 # This is done because generation is simply a more commonly used data point
@@ -105,8 +104,7 @@ async def get_version_info(session, version_entry):
 
     generation_name = version_data["generation"]["name"]
 
-    version_map = {version_name : generation_name}
-    return version_map
+    return {version_name : generation_name}
 
 # This function takes in the list of urls generated in the above function.
 # It generates asynchronous requests gathering the data for each one before
