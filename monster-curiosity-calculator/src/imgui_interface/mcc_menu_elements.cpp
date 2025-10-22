@@ -13,7 +13,7 @@
 
 #include "mcc_window_management.h"
 #include "mcc_imgui_helpers.h"
-#include "../mcc_communication_structs.h"
+#include "../data_communication/mcc_communication_structs.h"
 
 #include "mcc_menu_elements.h"
 

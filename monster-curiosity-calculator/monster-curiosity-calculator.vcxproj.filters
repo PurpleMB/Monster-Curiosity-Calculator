@@ -57,13 +57,13 @@
     <ClCompile Include="src\imgui_interface\mcc_display_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_parameter_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_parameter_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_subset_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_subset_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\mcc_value_constants.cpp">
+    <ClCompile Include="src\data_communication\mcc_value_constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\database_interaction\mcc_database_querying.cpp">
@@ -140,25 +140,25 @@
     <ClInclude Include="src\imgui_interface\mcc_display_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_parameter_structs.h">
+    <ClInclude Include="src\data_communication\mcc_parameter_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_parameter_constants.h">
+    <ClInclude Include="src\data_communication\mcc_parameter_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_subset_structs.h">
+    <ClInclude Include="src\data_communication\mcc_subset_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_subset_constants.h">
+    <ClInclude Include="src\data_communication\mcc_subset_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_communication_structs.h">
+    <ClInclude Include="src\data_communication\mcc_communication_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_value_structs.h">
+    <ClInclude Include="src\data_communication\mcc_value_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\mcc_value_constants.h">
+    <ClInclude Include="src\data_communication\mcc_value_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\database_interaction\mcc_database_querying.h">

@@ -159,10 +159,10 @@
     <ClCompile Include="src\json_interaction\mcc_json_constants.cpp" />
     <ClCompile Include="src\json_interaction\mcc_json_processing.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_menu_elements.cpp" />
-    <ClCompile Include="src\mcc_parameter_constants.cpp" />
+    <ClCompile Include="src\data_communication\mcc_parameter_constants.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_gui_window.cpp" />
-    <ClCompile Include="src\mcc_subset_constants.cpp" />
-    <ClCompile Include="src\mcc_value_constants.cpp" />
+    <ClCompile Include="src\data_communication\mcc_subset_constants.cpp" />
+    <ClCompile Include="src\data_communication\mcc_value_constants.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_window_management.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +181,7 @@
     <ClInclude Include="lib\imgui\imstb_truetype.h" />
     <ClInclude Include="lib\stb\stb_image.h" />
     <ClInclude Include="src\imgui_app_framework\mcc_app_dx11.h" />
-    <ClInclude Include="src\mcc_communication_structs.h" />
+    <ClInclude Include="src\data_communication\mcc_communication_structs.h" />
     <ClInclude Include="src\database_interaction\mcc_database_constants.h" />
     <ClInclude Include="src\database_interaction\mcc_database_querying.h" />
     <ClInclude Include="src\database_interaction\mcc_database_structs.h" />
@@ -192,13 +192,13 @@
     <ClInclude Include="src\json_interaction\mcc_json_constants.h" />
     <ClInclude Include="src\json_interaction\mcc_json_processing.h" />
     <ClInclude Include="src\imgui_interface\mcc_menu_elements.h" />
-    <ClInclude Include="src\mcc_parameter_constants.h" />
-    <ClInclude Include="src\mcc_parameter_structs.h" />
-    <ClInclude Include="src\mcc_subset_constants.h" />
-    <ClInclude Include="src\mcc_subset_structs.h" />
+    <ClInclude Include="src\data_communication\mcc_parameter_constants.h" />
+    <ClInclude Include="src\data_communication\mcc_parameter_structs.h" />
+    <ClInclude Include="src\data_communication\mcc_subset_constants.h" />
+    <ClInclude Include="src\data_communication\mcc_subset_structs.h" />
     <ClInclude Include="src\imgui_interface\mcc_gui_windows.h" />
-    <ClInclude Include="src\mcc_value_constants.h" />
-    <ClInclude Include="src\mcc_value_structs.h" />
+    <ClInclude Include="src\data_communication\mcc_value_constants.h" />
+    <ClInclude Include="src\data_communication\mcc_value_structs.h" />
     <ClInclude Include="src\imgui_interface\mcc_window_management.h" />
   </ItemGroup>
   <ItemGroup>
