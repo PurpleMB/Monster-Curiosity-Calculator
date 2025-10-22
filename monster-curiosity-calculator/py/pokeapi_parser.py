@@ -38,11 +38,9 @@ def get_category_info(api_url, category_name, limit = 20000, offset = 0):
 
 # Forms a map for converting raw ability names to pretty ability names
 async def form_ability_map(session, ability_info):
-    if(ability_info is None):
+    if ability_info is None:
         print("Ability information not provided.")
         return None
-
-    ability_map = {"-" : "None"}
 
     tasks = []
     for ability_entry in ability_info["results"]:
@@ -50,6 +48,7 @@ async def form_ability_map(session, ability_info):
         tasks.append(task)
     ability_name_maps = await asyncio.gather(*tasks)
 
+    ability_map = {"-" : "None"}
     for name_mapping in ability_name_maps:
         ability_map |= name_mapping
 
@@ -62,7 +61,7 @@ async def get_ability_names(session, ability_entry):
     ability_url = ability_entry["url"]
     ability_data = await request_json_async(session, ability_url)
 
-    if(ability_data is None):
+    if ability_data is None:
         print(f"Request for ability '{raw_name}' failed.")
         return {raw_name : raw_name}
 
@@ -74,11 +73,9 @@ async def get_ability_names(session, ability_entry):
 # Forms a map for converting version-groups to generations
 # This is done because generation is simply a more commonly used data point
 async def form_version_map(session, versions_info):
-    if(versions_info is None):
+    if versions_info is None:
         print("Versions information not provided.")
         return None
-
-    versions_map = {}
 
     tasks = []
     for version_entry in versions_info["results"]:
@@ -86,6 +83,7 @@ async def form_version_map(session, versions_info):
         tasks.append(task)
     version_gen_maps = await asyncio.gather(*tasks)
 
+    versions_map = {}
     for version_mapping in version_gen_maps:
         versions_map |= version_mapping
 
@@ -98,7 +96,7 @@ async def get_version_info(session, version_entry):
     version_url = version_entry["url"]
     version_data = await request_json_async(session, version_url)
 
-    if(version_data is None):
+    if version_data is None:
         print(f"Request for version '{version_name}' failed.")
         return {version_name : version_name}
 
@@ -106,12 +104,10 @@ async def get_version_info(session, version_entry):
 
     return {version_name : generation_name}
 
-# This function takes in the list of urls generated in the above function.
-# It generates asynchronous requests gathering the data for each one before
-# gathering all request results.
-# The return of this function is a fully pruned dictionary of information.
+# Creates tasks to form individual monster entries and compiles them into a list
+# Filters out failed entries before returning list
 async def gather_monsters_data(session, monsters_info, ability_name_map, generation_map):
-    if(monsters_info is None):
+    if monsters_info is None:
         print("Monsters information not provided.")
         return None
 
@@ -121,166 +117,189 @@ async def gather_monsters_data(session, monsters_info, ability_name_map, generat
         tasks.append(task)
     monsters_data = await asyncio.gather(*tasks)
 
+    # Prune entries that failed for any reason
+    monsters_data = list(filter(None, monsters_data)) 
+
     return monsters_data
 
-# This is a helper function responsible for compiling the data for one monster.
-# It generates async requests for info about the monster, its overall species,
-# and its form before passing all of that data to a pruning function.
-# The return of this function is a dictionary of prepared info for one monster.
+# Obtains all required data about monster before it down to form a dictionary entry
 async def get_monster_data(session, monster_entry, ability_map, versions_map):
     monster_url = monster_entry["url"]
-    monster_data = await request_json_async(session, monster_url)
-
-    # Legends:ZA creatures are currently lacking data, ignore them for now
-    if monster_data["id"] > 10277:
+    try:
+        monster_data = await request_json_async(session, monster_url)
+        if monster_data is None:
+            return None
+    except:
         return None
 
-    species_url = monster_data["species"]["url"]
-    species_data = await request_json_async(session, species_url)
+    try:
+        species_url = monster_data["species"]["url"]
+        species_data = await request_json_async(session, species_url)
+        if species_data is None:
+            return None
+    except:
+        return None
 
-    form_url = monster_data["forms"][0]["url"]
-    form_data = await request_json_async(session, form_url)
+    try:
+        form_url = monster_data["forms"][0]["url"]
+        form_data = await request_json_async(session, form_url)
+        if species_data is None:
+            return None
+    except:
+        return None
 
-    url_data = {
-        "monster": monster_url,
-        "species": species_url,
-        "form": form_url
+    pretty_name = {
+        "pretty_name" : form_monster_pretty_name(species_data, form_data)
     }
 
-    pruned_monster_data = prune_monster_info(species_data, monster_data, form_data, url_data, ability_map, versions_map)
-    return pruned_monster_data
-        
-# This helper function is responsible for taking in the raw data of a
-# monster, its form, and its species and then re-organizing and pruning that
-# data to be convenient for later parsing into an SQL database.
-def prune_monster_info(species_info, monster_info, form_info, url_info, ability_map, versions_map):
-    pruned_info = {}
+    monster_pruned_data = prune_monster_data(monster_data, ability_map)
+    species_pruned_data = prune_species_data(species_data)
+    form_pruned_data = prune_form_data(form_data, versions_map)
 
+    url_data = {
+        "monster_url": monster_url,
+        "species_url": species_url,
+        "form_url": form_url
+    }
 
-    # basic identification info
-    pruned_info["name"] = monster_info["name"]
-    pruned_info["dex_number"] = species_info["id"]
-    #pruned_info["generation"] = species_info["generation"]["name"]
-    version_group = form_info["version_group"]["name"]
-    pruned_info["generation"] = versions_map[version_group]
-    pruned_info["unique_id"] = monster_info["id"]
-    pruned_info["form_switchable"] = 1 if species_info["forms_switchable"] else 0
-    pruned_info["color"] = species_info["color"]["name"]
-    pruned_info["shape"] = species_info["shape"]["name"]
-    
-    # pretty name generation
+    combo_pruned_data = pretty_name | monster_pruned_data | species_pruned_data | form_pruned_data | url_data
+
+    return combo_pruned_data
+
+# Forms a "pretty" name for the monster, which requires different data depending on if the monster is a variant of an existing monster
+def form_monster_pretty_name(species_data, form_data):
     pretty_name = ""
-    if form_info["id"] == species_info["id"]:
-        for species_name in species_info["names"]:
-            if(species_name["language"]["name"] == "en"):
-                pretty_name = species_name["name"]
+
+    # Base form API entries have a pretty name in the species data
+    if form_data["id"] == species_data["id"]:
+        pretty_name = next((name["name"] for name in species_data["names"] if name["language"]["name"] == "en"), "")
+    # Monster variants require their more-specific name held in the form data
     else:
-        name_found = False
-        for form_name in form_info["names"]:
-            if(form_name["language"]["name"] == "en"):
-                pretty_name = form_name["name"]
-                name_found = True
-        if not name_found:
-            # this is only here for annoying Koraidon/Miraidon forms
+        try:
+            pretty_name = next((name["name"] for name in form_data["names"] if name["language"]["name"] == "en"), "")
+        # This is here to handle Koraidon/Miraidon, which for some reason don't have English pretty names in their form name data.
+        except:
             pretty_base_name = ""
-            for species_name in species_info["names"]:
+            for species_name in species_data["names"]:
                 if(species_name["language"]["name"] == "en"):
                     pretty_base_name = species_name["name"]
             pretty_form_name = ""
-            for form_name in form_info["form_names"]:
+            for form_name in form_data["form_names"]:
                 if(form_name["language"]["name"] == "en"):
                     pretty_form_name = form_name["name"]
             pretty_name = f"{pretty_base_name} ({pretty_form_name})"
 
+    # Some characters need to be replaced due to ImGui's character system
     pretty_name = pretty_name.replace("%", "%%")
     pretty_name = pretty_name.replace(u"\u2018", "\'")
     pretty_name = pretty_name.replace(u"\u2019", "\'")
     pretty_name = pretty_name.replace(u"\u2640", " (F)")
     pretty_name = pretty_name.replace(u"\u2642", " (M)")
-    pruned_info["pretty_name"] = pretty_name
 
-    # API source info
-    pruned_info["species_url"] = url_info["species"]
-    pruned_info["monster_url"] = url_info["monster"]
-    pruned_info["form_url"] = url_info["form"]
+    return pretty_name
 
-    # breeding/growth info
-    pruned_info["growth_rate"] = species_info["growth_rate"]["name"]
-    pruned_info["base_experience"] = monster_info["base_experience"]
-    pruned_info["base_happiness"] = species_info["base_happiness"]
-    pruned_info["catch_rate"] = species_info["capture_rate"]
-    pruned_info["hatch_counter"] = species_info["hatch_counter"]
-    pruned_info["gender_rate"] = species_info["gender_rate"]
-    pruned_info["dimorphic"] = 1 if species_info["has_gender_differences"] else 0
+def prune_monster_data(monster_data, ability_map):
+    pruned_data = {}
 
-    egg_groups = {}
-    egg_groups["primary"] = species_info["egg_groups"][0]["name"]
-    if len(species_info["egg_groups"]) > 1:
-        egg_groups["secondary"] = species_info["egg_groups"][1]["name"]
-    else:
-        egg_groups["secondary"] = "-"
-    pruned_info["egg_groups"] = egg_groups
+    pruned_data["name"] = monster_data["name"]
+    pruned_data["unique_id"] = monster_data["id"]
+    pruned_data["base_experience"] = monster_data["base_experience"]
 
-    
-    # classification info
-    pruned_info["is_default"] = 1 if monster_info["is_default"] else 0
-    pruned_info["is_baby"] = 1 if species_info["is_baby"] else 0
-    pruned_info["is_legendary"] = 1 if species_info["is_legendary"] else 0
-    pruned_info["is_mythical"] = 1 if species_info["is_mythical"] else 0
-    
-    # size info
-    # This condition is for E-max Eternatuss, which has an unknown weight of "0", I am choosing to treat its weight as very large instead for more logical sorting compared to other known weights
-    raw_weight = monster_info["weight"]
-    if  raw_weight != 0:
-        pruned_info["weight(kg)"] = raw_weight / 10
-    else:
-        pruned_info["weight(kg)"] = 9999.9
-    pruned_info["height(m)"] = monster_info["height"] / 10
-    
-    # base stat info 
+    # Converting booleans to 0/1 as that plays nicer with the SQLite database
+    pruned_data["is_default"] = int(monster_data["is_default"])
+ 
+    # BST isn't in API data and must be manually calculated
     base_stats = {}
     stat_total = 0
-    for stat in monster_info["stats"]:
-        base_stats[stat["stat"]["name"]] = stat["base_stat"]
-        stat_total += stat["base_stat"]
+    for stat in monster_data["stats"]:
+        stat_name = stat["stat"]["name"]
+        stat_value = stat["base_stat"]
+
+        base_stats[stat_name] = stat_value
+        stat_total += stat_value
     base_stats["total"] = stat_total
-    pruned_info["stats"] = base_stats
-    
-    # typing info
+    pruned_data["stats"] = base_stats
+
+    # I am forming the database to uses "-" instead of nulls for non-values
     monster_types = {}
-    monster_types["primary"] = monster_info["types"][0]["type"]["name"]
-    if len(monster_info["types"]) > 1:
-        monster_types["secondary"] = monster_info["types"][1]["type"]["name"]
+    monster_types["primary"] = monster_data["types"][0]["type"]["name"]
+    if len(monster_data["types"]) > 1:
+        monster_types["secondary"] = monster_data["types"][1]["type"]["name"]
     else:
         monster_types["secondary"] = "-"
-    pruned_info["types"] = monster_types
-    
-    # ability info
-    monster_abilities = {}
-    abilities = ["-", "-", "-"]
-    pretty_monster_abilities = {}
-    pretty_abilities = ["None", "None", "None"]
+    pruned_data["types"] = monster_types
 
-    for ability in monster_info["abilities"]:
+    # Abilities require consulting the map to get pretty names
+    abilities = ["-", "-", "-"]
+    for ability in monster_data["abilities"]:
         ability_name = ability["ability"]["name"]
-        # API contains erroneous duplicate abilities?
+        # This check is here because some API entries have abilties repeated for some reason
         if not ability_name in abilities:
             abilities[ability["slot"]-1] = ability_name
+    monster_abilities = {
+        "first" : abilities[0],
+        "second" : abilities[1],
+        "hidden" : abilities[2]
+    }
+    pruned_data["abilities"] = monster_abilities
 
-    monster_abilities["first"] = abilities[0]
-    monster_abilities["second"] = abilities[1]
-    monster_abilities["hidden"] = abilities[2]
+    pretty_monster_abilities = {
+        "first" : ability_map[monster_abilities["first"]],
+        "second" : ability_map[monster_abilities["second"]],
+        "hidden" : ability_map[monster_abilities["hidden"]]
+    }
+    pruned_data["pretty_abilities"] = pretty_monster_abilities
 
-    pretty_monster_abilities["first"] = ability_map[abilities[0]]
-    pretty_monster_abilities["second"] = ability_map[abilities[1]]
-    pretty_monster_abilities["hidden"] = ability_map[abilities[2]]
+    # API uses 1/10th m/kg as its units. I want just 1 m/kg.
+    pruned_data["height(m)"] = monster_data["height"] / 10
+    # This condition is specifically for E-Max Eternatus, which logically should be sorted as having a very high weight instead of a very low weight.
+    if monster_data["weight"] != 0:
+        pruned_data["weight(kg)"] = monster_data["weight"] / 10
+    else:
+        pruned_data["weight(kg)"] = 9999.9
 
-    pruned_info["abilities"] = monster_abilities
-    pruned_info["pretty_abilities"] = pretty_monster_abilities
-    
+    return pruned_data
 
-    return pruned_info
 
+def prune_species_data(species_data):
+    pruned_data = {}
+
+    pruned_data["dex_number"] = species_data["id"]
+    pruned_data["color"] = species_data["color"]["name"]
+    pruned_data["shape"] = species_data["shape"]["name"]
+
+    pruned_data["growth_rate"] = species_data["growth_rate"]["name"]
+    pruned_data["base_happiness"] = species_data["base_happiness"]
+    pruned_data["catch_rate"] = species_data["capture_rate"]
+    pruned_data["hatch_counter"] = species_data["hatch_counter"]
+    pruned_data["gender_rate"] = species_data["gender_rate"]
+
+    # Converting booleans to 0/1 as that plays nicer with the SQLite database
+    pruned_data["dimorphic"] = int(species_data["has_gender_differences"])
+    pruned_data["is_baby"] = int(species_data["is_baby"])
+    pruned_data["is_legendary"] = int(species_data["is_legendary"])
+    pruned_data["is_mythical"] = int(species_data["is_mythical"])
+    pruned_data["form_switchable"] = int(species_data["forms_switchable"])
+
+    # I am forming the database to uses "-" instead of nulls for non-values
+    egg_groups = {}
+    egg_groups["primary"] = species_data["egg_groups"][0]["name"]
+    if len(species_data["egg_groups"]) > 1:
+        egg_groups["secondary"] = species_data["egg_groups"][1]["name"]
+    else:
+        egg_groups["secondary"] = "-"
+    pruned_data["egg_groups"] = egg_groups
+
+    return pruned_data
+
+
+def prune_form_data(form_data, versions_map):
+    pruned_data = {}
+
+    version_group = form_data["version_group"]["name"]
+    pruned_data["generation"] = versions_map[version_group]
+
+    return pruned_data
 
 async def main():
     start_time = time.time()
@@ -316,10 +335,6 @@ async def main():
     monsters_info = get_category_info(api_url, monsters_name)
     async with aiohttp.ClientSession() as session:
         monsters_data = await gather_monsters_data(session, monsters_info, ability_map, versions_map)
-
-    if(monsters_info is not None):
-        # Prune entries that failed for any reason
-        monsters_data = list(filter(None, monsters_data)) 
 
     monster_file_name = json_directory + "mccdata.json"
     with open(monster_file_name, "w") as monster_file:
