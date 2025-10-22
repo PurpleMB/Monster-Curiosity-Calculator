@@ -142,7 +142,6 @@
     <ClCompile Include="..\..\..\Libraries\sqlite-amalgamation-3490200\sqlite3.c" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="lib\imgui\misc\cpp\imgui_stdlib.cpp" />
-    <ClCompile Include="lib\imgui\backends\imgui_impl_dx9.cpp" />
     <ClCompile Include="lib\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="lib\imgui\imgui.cpp" />
     <ClCompile Include="lib\imgui\imgui_demo.cpp" />
@@ -171,7 +170,6 @@
     <ClInclude Include="..\..\..\Libraries\jsoncpp\dist\json\json.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="lib\imgui\misc\cpp\imgui_stdlib.h" />
-    <ClInclude Include="lib\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="lib\imgui\imconfig.h" />
     <ClInclude Include="lib\imgui\imgui.h" />
