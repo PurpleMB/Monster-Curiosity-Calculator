@@ -4,19 +4,17 @@ import asyncio
 import aiohttp
 import requests
 
-base_url = "https://pokeapi.co/api/v2/"
-json_directory = "../resources/jsons/"
+def get_category_info(api_url, category_name, limit = 20000, offset = 0):
+    query_url = f"{api_url}/{category_name}?limit={limit}&offset={offset}"
 
-def get_ability_urls():
-    ability_url = f"{base_url}/ability?limit=500&offset=0"
-    api_response = requests.get(ability_url)
-
+    api_response = requests.get(query_url)
     if api_response.status_code != 200:
-        print(f"API Request for ability info failed. Error code {api_response.status_code}")
+        print(f"API Request for {category_name} from {api_url} failed")
+        print(f"Error Code: {api_response.status_code}")
         return None
 
-    ability_data = api_response.json()
-    return ability_data
+    category_info = api_response.json()
+    return category_info 
 
 async def gather_ability_data(session, ability_data):
     tasks = []
@@ -44,17 +42,6 @@ async def get_ability_info(session, ability_entry, ability_map):
 
     ability_map[raw_name] = pretty_name
 
-def get_generation_urls():
-    generation_url = f"{base_url}/generation?limit=20&offset=0"
-    api_response = requests.get(generation_url)
-
-    if api_response.status_code != 200:
-        print(f"API Request for generation info failed. Error code {api_response.status_code}")
-        return None
-
-    generation_data = api_response.json()
-    return generation_data
-
 async def gather_generation_data(session, generation_data):
     tasks = []
     generation_map = {}
@@ -75,19 +62,6 @@ async def get_version_group_info(session, generation_entry, generation_map):
 
     for version_group in generation_data["version_groups"]:
         generation_map[version_group["name"]] = generation_data["name"]
-
-# This function gathers the links for information on all pokemon.
-# It does not query those links, but merely gathers them all in an array.
-def gather_species_data():
-    pokedex_url = f"{base_url}/pokemon?limit=100000&offset=0"
-    api_response = requests.get(pokedex_url)
-
-    if api_response.status_code != 200:
-        print(f"API Request for dex info failed. Error code {api_response.status_code}")
-        return None
-    
-    pokedex_data = api_response.json()
-    return pokedex_data
 
 # This function takes in the list of urls generated in the above function.
 # It generates asynchronous requests gathering the data for each one before
@@ -277,31 +251,44 @@ def prune_pokemon_info(species_info, poke_info, form_info, url_info, ability_nam
 async def main():
     start_time = time.time()
 
-    ability_data = get_ability_urls()
+    api_url = "https://pokeapi.co/api/v2"
+    json_directory = "../resources/jsons/"
+
+    # Gathers data to create map of raw ability names -> pretty ability names.
+    # This could be done during the main info gathering sequence, but
+    # doing it now is more simple to understand.
+    ability_name = "ability"
+    ability_info = get_category_info(api_url, ability_name)
     async with aiohttp.ClientSession() as session:
-        ability_name_map = await gather_ability_data(session, ability_data)
+        ability_map = await gather_ability_data(session, ability_info)
 
-    filename = json_directory + "abilities.json"
-    with open(filename, "w") as file:
-        json.dump(ability_name_map, file, indent = 4)
+    ability_file_name = json_directory + "abilities.json"
+    with open(ability_file_name, "w") as ability_file:
+        json.dump(ability_map, ability_file, indent = 4)
 
-    generation_data = get_generation_urls()
+    # Gathers data to create map of version-group -> generation.
+    # Reasoning for doing this here is the same as for ability mapping.
+    generation_name = "generation"
+    generation_data = get_category_info(api_url, generation_name)
     async with aiohttp.ClientSession() as session:
         generation_map = await gather_generation_data(session, generation_data)
 
-    filename = json_directory + "generations.json"
-    with open(filename, "w") as file:
-        json.dump(generation_map, file, indent = 4)
+    generation_file_name = json_directory + "generations.json"
+    with open(generation_file_name, "w") as generation_file:
+        json.dump(generation_map, generation_file, indent = 4)
 
-    species_data = gather_species_data()
+    # Main information gathering takes place here. 
+    species_name = "pokemon"
+    species_data = get_category_info(api_url, species_name)
     async with aiohttp.ClientSession() as session:
-        pokemon_data = await gather_pokemon_data(session, species_data, ability_name_map, generation_map)
-        pokemon_data = list(filter(None, pokemon_data)) # new pokemon are adding nulls at end of list
+        pokemon_data = await gather_pokemon_data(session, species_data, ability_map, generation_map)
 
-    filename = json_directory + "mccdata.json"
-    with open(filename, "w") as file:
-        json.dump(pokemon_data, file, indent = 4)
+        # Prune entries that failed for any reason
+        pokemon_data = list(filter(None, pokemon_data)) 
 
+    monster_file_name = json_directory + "mccdata.json"
+    with open(monster_file_name, "w") as monster_file:
+        json.dump(pokemon_data, monster_file, indent = 4)
     print(f"JSON data saved to '{json_directory}'")
 
     end_time = time.time()
