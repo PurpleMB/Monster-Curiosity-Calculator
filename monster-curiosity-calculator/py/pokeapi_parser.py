@@ -12,21 +12,27 @@ def get_category_info(api_url, category_name, limit = 20000, offset = 0):
         print(f"API Request for {category_name} from {api_url} failed")
         print(f"Error Code: {api_response.status_code}")
         return None
-
     category_info = api_response.json()
+
     return category_info 
 
-async def gather_ability_data(session, ability_data):
-    tasks = []
+# Forms a map for converting raw ability names to pretty ability names
+async def form_ability_map(session, ability_info):
     ability_map = {"-" : "None"}
-    for ability_entry in ability_data["results"]:
-        task = asyncio.create_task(get_ability_info(session, ability_entry, ability_map))
-        tasks.append(task)
 
-    await asyncio.gather(*tasks)
+    tasks = []
+    for ability_entry in ability_info["results"]:
+        task = asyncio.create_task(get_ability_names(session, ability_entry))
+        tasks.append(task)
+    ability_name_maps = await asyncio.gather(*tasks)
+
+    for name_mapping in ability_name_maps:
+        ability_map |= name_mapping
+
     return ability_map
 
-async def get_ability_info(session, ability_entry, ability_map):
+# Creates the mapping of raw -> pretty name for a single ability
+async def get_ability_names(session, ability_entry):
     ability_url = ability_entry["url"]
     async with session.get(ability_url) as ability_response:
         if ability_response.status != 200:
@@ -35,33 +41,43 @@ async def get_ability_info(session, ability_entry, ability_map):
         ability_data = await ability_response.json()
 
     raw_name = ability_entry["name"]
-    pretty_name = ""
-    for ability_name in ability_data["names"]:
-        if(ability_name["language"]["name"] == "en"):
-            pretty_name = ability_name["name"]
 
-    ability_map[raw_name] = pretty_name
+    pretty_names = ability_data["names"]
+    english_pretty_name = next((pretty_name["name"] for pretty_name in pretty_names if pretty_name["language"]["name"] == "en"), "")
 
-async def gather_generation_data(session, generation_data):
+    name_map = {raw_name : english_pretty_name}
+    return name_map
+
+# Forms a map for converting version-groups to generations
+# This is done because generation is simply a more commonly used data point
+async def form_version_map(session, version_info):
+    versions_map = {}
+
     tasks = []
-    generation_map = {}
-    for generation_entry in generation_data["results"]:
-        task = asyncio.create_task(get_version_group_info(session, generation_entry, generation_map))
+    for version_entry in version_info["results"]:
+        task = asyncio.create_task(get_version_info(session, version_entry))
         tasks.append(task)
+    version_gen_maps = await asyncio.gather(*tasks)
 
-    await asyncio.gather(*tasks)
-    return generation_map
+    for version_mapping in version_gen_maps:
+        versions_map |= version_mapping
 
-async def get_version_group_info(session, generation_entry, generation_map):
-    generation_url = generation_entry["url"]
-    async with session.get(generation_url) as generation_response:
-        if generation_response.status != 200:
-            print(f"API Request for {generation_entry["name"]} failed. Error code {generation_response.status_code}")
+    return versions_map
+
+# Creates the mapping of version-group -> generation for a single version group
+async def get_version_info(session, version_entry):
+    version_url = version_entry["url"]
+    async with session.get(version_url) as version_response:
+        if version_response.status != 200:
+            print(f"API Request for {version_entry["name"]} failed. Error code {version_response.status_code}")
             return None
-        generation_data = await generation_response.json()
+        version_data = await version_response.json()
 
-    for version_group in generation_data["version_groups"]:
-        generation_map[version_group["name"]] = generation_data["name"]
+    version_name = version_data["name"]
+    generation_name = version_data["generation"]["name"]
+
+    version_map = {version_name : generation_name}
+    return version_map
 
 # This function takes in the list of urls generated in the above function.
 # It generates asynchronous requests gathering the data for each one before
@@ -260,7 +276,7 @@ async def main():
     ability_name = "ability"
     ability_info = get_category_info(api_url, ability_name)
     async with aiohttp.ClientSession() as session:
-        ability_map = await gather_ability_data(session, ability_info)
+        ability_map = await form_ability_map(session, ability_info)
 
     ability_file_name = json_directory + "abilities.json"
     with open(ability_file_name, "w") as ability_file:
@@ -268,20 +284,20 @@ async def main():
 
     # Gathers data to create map of version-group -> generation.
     # Reasoning for doing this here is the same as for ability mapping.
-    generation_name = "generation"
-    generation_data = get_category_info(api_url, generation_name)
+    versions_name = "version-group"
+    versions_info = get_category_info(api_url, versions_name)
     async with aiohttp.ClientSession() as session:
-        generation_map = await gather_generation_data(session, generation_data)
+        versions_map = await form_version_map(session, versions_info)
 
-    generation_file_name = json_directory + "generations.json"
-    with open(generation_file_name, "w") as generation_file:
-        json.dump(generation_map, generation_file, indent = 4)
+    versions_file_name = json_directory + "versions.json"
+    with open(versions_file_name, "w") as versions_file:
+        json.dump(versions_map, versions_file, indent = 4)
 
     # Main information gathering takes place here. 
     species_name = "pokemon"
     species_data = get_category_info(api_url, species_name)
     async with aiohttp.ClientSession() as session:
-        pokemon_data = await gather_pokemon_data(session, species_data, ability_map, generation_map)
+        pokemon_data = await gather_pokemon_data(session, species_data, ability_map, versions_map)
 
         # Prune entries that failed for any reason
         pokemon_data = list(filter(None, pokemon_data)) 
