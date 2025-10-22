@@ -5,21 +5,30 @@ import aiohttp
 import requests
 
 async def request_json_async(session, request_url):
-    async with session.get(request_url) as request_response:
-        if request_response.status != 200:
-            print(f"API Request for '{request_url}' failed")
-            print(f"Error Code: {request_response.status_code}")
-            return None
-        return await request_response.json()
+    try:
+        async with session.get(request_url) as request_response:
+            if request_response.status != 200:
+                print(f"API request for '{request_url}' using session '{session}' failed")
+                print(f"Error Code: {request_response.status_code}")
+                return None
+            return await request_response.json()
+    except:
+        print(f"Could not connect to '{request_url}' with session '{session}'")
+        return None
 
 def request_json_synced(request_url):
-    request_response = requests.get(request_url)
-    if request_response.status_code != 200:
-        print(f"API Request for '{request_url}' failed")
-        print(f"Error Code: {request_response.status_code}")
+    try:
+        request_response = requests.get(request_url)
+        if request_response.status_code != 200:
+            print(f"API request for '{request_url}' failed")
+            print(f"Error Code: {request_response.status_code}")
+            return None
+        return request_response.json()
+    except:
+        print(f"Could not connect to '{request_url}'")
         return None
-    return request_response.json()
 
+# A request for a general category of information returns a list of urls to entries of that category
 def get_category_info(api_url, category_name, limit = 20000, offset = 0):
     query_url = f"{api_url}/{category_name}?limit={limit}&offset={offset}"
 
@@ -29,6 +38,10 @@ def get_category_info(api_url, category_name, limit = 20000, offset = 0):
 
 # Forms a map for converting raw ability names to pretty ability names
 async def form_ability_map(session, ability_info):
+    if(ability_info is None):
+        print("Ability information not provided.")
+        return None
+
     ability_map = {"-" : "None"}
 
     tasks = []
@@ -44,10 +57,14 @@ async def form_ability_map(session, ability_info):
 
 # Creates the mapping of raw -> pretty name for a single ability
 async def get_ability_names(session, ability_entry):
+    raw_name = ability_entry["name"]
+
     ability_url = ability_entry["url"]
     ability_data = await request_json_async(session, ability_url)
 
-    raw_name = ability_entry["name"]
+    if(ability_data is None):
+        print(f"Request for ability '{raw_name}' failed.")
+        return {raw_name : raw_name}
 
     pretty_names = ability_data["names"]
     english_pretty_name = next((pretty_name["name"] for pretty_name in pretty_names if pretty_name["language"]["name"] == "en"), "")
@@ -57,11 +74,15 @@ async def get_ability_names(session, ability_entry):
 
 # Forms a map for converting version-groups to generations
 # This is done because generation is simply a more commonly used data point
-async def form_version_map(session, version_info):
+async def form_version_map(session, versions_info):
+    if(versions_info is None):
+        print("Versions information not provided.")
+        return None
+
     versions_map = {}
 
     tasks = []
-    for version_entry in version_info["results"]:
+    for version_entry in versions_info["results"]:
         task = asyncio.create_task(get_version_info(session, version_entry))
         tasks.append(task)
     version_gen_maps = await asyncio.gather(*tasks)
@@ -73,10 +94,15 @@ async def form_version_map(session, version_info):
 
 # Creates the mapping of version-group -> generation for a single version group
 async def get_version_info(session, version_entry):
+    version_name = version_entry["name"]
+
     version_url = version_entry["url"]
     version_data = await request_json_async(session, version_url)
 
-    version_name = version_data["name"]
+    if(version_data is None):
+        print(f"Request for version '{version_name}' failed.")
+        return {version_name : version_name}
+
     generation_name = version_data["generation"]["name"]
 
     version_map = {version_name : generation_name}
@@ -87,6 +113,10 @@ async def get_version_info(session, version_entry):
 # gathering all request results.
 # The return of this function is a fully pruned dictionary of information.
 async def gather_monsters_data(session, monsters_info, ability_name_map, generation_map):
+    if(monsters_info is None):
+        print("Monsters information not provided.")
+        return None
+
     tasks = []
     for monster_entry in monsters_info["results"]:
         task = asyncio.create_task(get_monster_data(session, monster_entry, ability_name_map, generation_map))
@@ -289,8 +319,9 @@ async def main():
     async with aiohttp.ClientSession() as session:
         monsters_data = await gather_monsters_data(session, monsters_info, ability_map, versions_map)
 
-    # Prune entries that failed for any reason
-    monsters_data = list(filter(None, monsters_data)) 
+    if(monsters_info is not None):
+        # Prune entries that failed for any reason
+        monsters_data = list(filter(None, monsters_data)) 
 
     monster_file_name = json_directory + "mccdata.json"
     with open(monster_file_name, "w") as monster_file:
