@@ -334,11 +334,15 @@ void DrawLicenseDisclaimerWindow(OutputEnvironment& output_environment) {
 	ImGui::NewLine();
 	ImGui::Text("MIT License:");
 	ImGui::SameLine();
+	ImGui::PushID("##link_mit_license");
 	ImGui::TextLinkOpenURL("Click to open", "https://github.com/PurpleMB/MCC/blob/main/License.txt");
+	ImGui::PopID();
 
 	ImGui::Text("CC 2.5 License:");
 	ImGui::SameLine();
+	ImGui::PushID("##link_cc_license");
 	ImGui::TextLinkOpenURL("Click to open", "https://creativecommons.org/licenses/by-nc-sa/2.5/");
+	ImGui::PopID();
 
 	ImGui::NewLine();
 	ImGui::Separator();
