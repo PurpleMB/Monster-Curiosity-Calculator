@@ -522,8 +522,7 @@ public:
 	}
 
 private:
-	bool show_demo_window_ = true;
-	bool show_another_window_ = false;
+	bool show_demo_window_ = false;
 
 	const int kDefaultImGuiWindowSettings = ImGuiWindowFlags_NoResize | 
 											ImGuiWindowFlags_NoCollapse | 
