@@ -4,7 +4,7 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "mcc_app_dx11.h"
+#include "imgui_app_dx11.h"
 
 #include <d3d11.h>
 #include <tchar.h>

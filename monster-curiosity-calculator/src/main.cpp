@@ -5,7 +5,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "imgui_app_framework/mcc_app_dx11.h"
+#include "imgui_app_framework/imgui_app_dx11.h"
 
 #include "imgui_interface/mcc_window_management.h"
 #include "imgui_interface/mcc_gui_windows.h"
