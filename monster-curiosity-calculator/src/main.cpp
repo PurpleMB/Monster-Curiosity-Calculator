@@ -5,7 +5,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 
-#include "imgui_app_framework/mcc_app_dx11.h"
+#include "imgui_app_framework/imgui_app_dx11.h"
 
 #include "imgui_interface/mcc_window_management.h"
 #include "imgui_interface/mcc_gui_windows.h"
@@ -28,7 +28,9 @@ namespace purple_mb::monster_calculator {
 // windows and GUI elements for MCC.
 class MCCApp : public purple_mb::imgui_app::App {
 public:
-	MCCApp() = default;
+	MCCApp(std::wstring app_name, std::wstring app_version, ImVec2 window_pos, ImVec2 window_size) : App(app_name, app_version, window_pos, window_size) {
+	};
+
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
@@ -341,6 +343,8 @@ public:
 
 		// adjust output_environment as needed
 		output_environment.show_disclaimer_info = true;
+
+		clear_color = ImVec4(191.0f / 255.0f, 237.0f / 255.0f, 193.0f / 255.0f, 1.0f);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
@@ -723,7 +727,11 @@ private:
 
 // Main code
 int main(int, char**) {
-	purple_mb::monster_calculator::MCCApp app;
+	std::wstring app_name = L"HEEEEEELLO";
+	std::wstring app_version = L"0.1";
+	ImVec2 window_pos = {100, 100};
+	ImVec2 window_size = {1280, 800};
+	purple_mb::monster_calculator::MCCApp app(app_name, app_version, window_pos, window_size);
 	app.Run();
 
 	return 0;
