@@ -10,6 +10,7 @@
 #include <tchar.h>
 
 #include <cstdlib>
+#include <string>
 
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
@@ -31,12 +32,20 @@ static bool                     g_SwapChainOccluded = false;
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
 static ID3D11RenderTargetView* g_mainRenderTargetView = nullptr;
 
-App::App() {
+App::App(std::wstring app_name, std::wstring app_version, ImVec2 window_pos, ImVec2 window_size) {
+    // Initialize window variabless
+    application_name = app_name;
+    application_version = app_version;
+    std::wstring window_name = application_name + L" v" + application_version;
+
+    init_window_pos = window_pos;
+    init_window_size = window_size;
+    
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
-    wc = {sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr};
+    wc = {sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,  window_name.c_str(), nullptr};
     ::RegisterClassExW(&wc);
-    hwnd = ::CreateWindowW(wc.lpszClassName, L"Monster Curiosity Calculator v0.1", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
+    hwnd = ::CreateWindowW(wc.lpszClassName, window_name.c_str(), WS_OVERLAPPEDWINDOW, init_window_pos.x, init_window_pos.y, init_window_size.x, init_window_size.y, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd)) {

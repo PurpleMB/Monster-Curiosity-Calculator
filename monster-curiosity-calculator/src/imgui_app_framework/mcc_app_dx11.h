@@ -1,6 +1,8 @@
 #pragma once
 #include <d3d11.h>
 
+#include <string>
+
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
@@ -12,7 +14,7 @@ namespace purple_mb::imgui_app {
 // simply calling Run to begin the child application.
 class App {
 public:
-    App();
+    App(std::wstring app_name, std::wstring app_version, ImVec2 window_pos, ImVec2 window_size);
     virtual ~App();
 
     // Call this once to begin the application
@@ -27,6 +29,10 @@ public:
     virtual void Update();
 
 protected:
+    std::wstring application_name;
+    std::wstring application_version;
+    ImVec2 init_window_pos;
+    ImVec2 init_window_size;
     ImVec4 clear_color;	// the background color of the application
     ImGuiIO io;		// ImGui struct responsible for handling processing IO data
 

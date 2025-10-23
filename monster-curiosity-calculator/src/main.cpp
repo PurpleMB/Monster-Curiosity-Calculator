@@ -28,7 +28,9 @@ namespace purple_mb::monster_calculator {
 // windows and GUI elements for MCC.
 class MCCApp : public purple_mb::imgui_app::App {
 public:
-	MCCApp() = default;
+	MCCApp(std::wstring app_name, std::wstring app_version, ImVec2 window_pos, ImVec2 window_size) : App(app_name, app_version, window_pos, window_size) {
+	};
+
 	~MCCApp() = default;
 
 	virtual void StartUp() final {
@@ -725,7 +727,11 @@ private:
 
 // Main code
 int main(int, char**) {
-	purple_mb::monster_calculator::MCCApp app;
+	std::wstring app_name = L"HEEEEEELLO";
+	std::wstring app_version = L"0.1";
+	ImVec2 window_pos = {100, 100};
+	ImVec2 window_size = {1280, 800};
+	purple_mb::monster_calculator::MCCApp app(app_name, app_version, window_pos, window_size);
 	app.Run();
 
 	return 0;
