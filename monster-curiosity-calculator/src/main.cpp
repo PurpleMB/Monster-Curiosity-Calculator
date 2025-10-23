@@ -341,6 +341,8 @@ public:
 
 		// adjust output_environment as needed
 		output_environment.show_disclaimer_info = true;
+
+		clear_color = ImVec4(191.0f / 255.0f, 237.0f / 255.0f, 193.0f / 255.0f, 1.0f);
 	}
 
 	// Put any logic for the GUI that needs to be drawn every frame in here
