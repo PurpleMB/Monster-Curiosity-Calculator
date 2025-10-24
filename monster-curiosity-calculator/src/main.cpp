@@ -726,7 +726,7 @@ private:
 
 // Main code
 int main(int, char**) {
-	std::wstring app_name = L"HEEEEEELLO";
+	std::wstring app_name = L"Monster Curiosity Calculator";
 	std::wstring app_version = L"0.1";
 	ImVec2 window_pos = {100, 100};
 	ImVec2 window_size = {1280, 800};
