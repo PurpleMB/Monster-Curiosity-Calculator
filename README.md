@@ -10,6 +10,8 @@ That data is then processed in a C++ application to generate a SQLite database t
 
 For a glimpse into aspects of MCC's development, consult my write-up [here](https://carterboclair.com/2025/10/01/monster-calculator.html).
 
+For a video demonstration of how MCC works, check out my demonstration [here](https://youtu.be/mzaODFaIKeg).
+
 ## License
 
 MCC is licensed under the MIT license. See [License.txt](https://github.com/PurpleMB/MCC/blob/main/License.txt) for more information.
