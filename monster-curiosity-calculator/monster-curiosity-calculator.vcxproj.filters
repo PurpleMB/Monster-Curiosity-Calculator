@@ -69,9 +69,6 @@
     <ClCompile Include="src\json_interaction\mcc_json_processing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\json_interaction\mcc_json_constants.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui_app_framework\imgui_app_dx11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -161,7 +158,7 @@
     <ClInclude Include="src\json_interaction\mcc_json_processing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\json_interaction\mcc_json_constants.h">
+    <ClInclude Include="src\json_interaction\mcc_json_constants.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\database_interaction\mcc_database_structs.h">
@@ -196,6 +193,7 @@
     <None Include="packages.config" />
     <None Include="data\mccdata.json" />
     <None Include="data\test.db" />
+    <None Include="resources\jsons\mccdata.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\images\test.png">
