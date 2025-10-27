@@ -209,26 +209,22 @@ def prune_monster_data(monster_data, ability_map):
     # Converting booleans to 0/1 as that plays nicer with the SQLite database
     pruned_data["is_default"] = int(monster_data["is_default"])
  
-    # BST isn't in API data and must be manually calculated
-    base_stats = {}
+    # BST isn't in API data and must be manually calculate
     stat_total = 0
     for stat in monster_data["stats"]:
         stat_name = stat["stat"]["name"]
         stat_value = stat["base_stat"]
 
-        base_stats[stat_name] = stat_value
+        pruned_data[stat_name] = stat_value
         stat_total += stat_value
-    base_stats["total"] = stat_total
-    pruned_data["stats"] = base_stats
+    pruned_data["base_stat_total"] = stat_total
 
     # I am forming the database to uses "-" instead of nulls for non-values
-    monster_types = {}
-    monster_types["primary"] = monster_data["types"][0]["type"]["name"]
+    pruned_data["primary_type"] = monster_data["types"][0]["type"]["name"]
     try:
-        monster_types["secondary"] = monster_data["types"][1]["type"]["name"]
+        pruned_data["secondary_type"] = monster_data["types"][1]["type"]["name"]
     except:
-        monster_types["secondary"] = "-"
-    pruned_data["types"] = monster_types
+        pruned_data["secondary_type"] = "-"
 
     # Abilities require consulting the map to get pretty names
     abilities = ["-", "-", "-"]
@@ -237,19 +233,13 @@ def prune_monster_data(monster_data, ability_map):
         # This check is here because some API entries have abilties repeated for some reason
         if not ability_name in abilities:
             abilities[ability["slot"]-1] = ability_name
-    monster_abilities = {
-        "first" : abilities[0],
-        "second" : abilities[1],
-        "hidden" : abilities[2]
-    }
-    pruned_data["abilities"] = monster_abilities
+    pruned_data["first_ability"]  = abilities[0]
+    pruned_data["second_ability"] = abilities[1]
+    pruned_data["hidden_ability"] = abilities[2]
 
-    pretty_monster_abilities = {
-        "first" : ability_map[monster_abilities["first"]],
-        "second" : ability_map[monster_abilities["second"]],
-        "hidden" : ability_map[monster_abilities["hidden"]]
-    }
-    pruned_data["pretty_abilities"] = pretty_monster_abilities
+    pruned_data["pretty_first_ability"] = ability_map[abilities[0]]
+    pruned_data["pretty_second_ability"] = ability_map[abilities[1]]
+    pruned_data["pretty_hidden_ability"] = ability_map[abilities[2]]
 
     # API uses 1/10th m/kg as its units. I want just 1 m/kg.
     pruned_data["height(m)"] = monster_data["height"] / 10
@@ -283,13 +273,11 @@ def prune_species_data(species_data):
     pruned_data["form_switchable"] = int(species_data["forms_switchable"])
 
     # I am forming the database to uses "-" instead of nulls for non-values
-    egg_groups = {}
-    egg_groups["primary"] = species_data["egg_groups"][0]["name"]
+    pruned_data["primary_egg_group"] = species_data["egg_groups"][0]["name"]
     try:
-        egg_groups["secondary"] = species_data["egg_groups"][1]["name"]
+        pruned_data["secondary_egg_group"] = species_data["egg_groups"][1]["name"]
     except:
-        egg_groups["secondary"] = "-"
-    pruned_data["egg_groups"] = egg_groups
+        pruned_data["secondary_egg_group"] = "-"
 
     return pruned_data
 

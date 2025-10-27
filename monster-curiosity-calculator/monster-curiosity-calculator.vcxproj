@@ -127,7 +127,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,7 +157,6 @@
     <ClCompile Include="src\imgui_interface\mcc_display_constants.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_gui_widgets.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_imgui_helpers.cpp" />
-    <ClCompile Include="src\json_interaction\mcc_json_constants.cpp" />
     <ClCompile Include="src\json_interaction\mcc_json_processing.cpp" />
     <ClCompile Include="src\imgui_interface\mcc_menu_elements.cpp" />
     <ClCompile Include="src\data_communication\mcc_parameter_constants.cpp" />
@@ -189,7 +188,7 @@
     <ClInclude Include="src\imgui_interface\mcc_display_structs.h" />
     <ClInclude Include="src\imgui_interface\mcc_gui_widgets.h" />
     <ClInclude Include="src\imgui_interface\mcc_imgui_helpers.h" />
-    <ClInclude Include="src\json_interaction\mcc_json_constants.h" />
+    <ClInclude Include="src\json_interaction\mcc_json_constants.hpp" />
     <ClInclude Include="src\json_interaction\mcc_json_processing.h" />
     <ClInclude Include="src\imgui_interface\mcc_menu_elements.h" />
     <ClInclude Include="src\data_communication\mcc_parameter_constants.h" />

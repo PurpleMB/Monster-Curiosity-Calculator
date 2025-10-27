@@ -7,8 +7,8 @@
 #include "database_interaction/mcc_database_constants.h"
 #include "database_interaction/mcc_database_querying.h"
 
+#include "json_interaction/mcc_json_constants.hpp"
 #include "json_interaction/mcc_json_processing.h"
-#include "json_interaction/mcc_json_constants.h"
 
 
 #include "mcc_window_management.h"
@@ -100,7 +100,7 @@ void DrawDatabaseRebuildWindow(OutputEnvironment& output_environment) {
 
 		CreateTableFromSchema(output_environment, kMainTableName, kMainTableSchemaList);
 		ClearTableContents(output_environment, kMainTableName);
-		auto monster_data = CompileMonsterJsonData(kMonsterJsonDataPath);
+		auto monster_data = CompileJsonData(constants::kMonsterJsonDataPath, constants::kMonsterJsonNameMap);
 		PopulateTableFromList(output_environment, kMainTableName, kMainTableSchemaList, monster_data);
 
 		ImGui::CloseCurrentPopup();

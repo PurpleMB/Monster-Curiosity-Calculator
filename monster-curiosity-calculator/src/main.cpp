@@ -243,6 +243,7 @@ public:
 		OpenDatabaseConnection(output_environment);
 
 		// ensure subtable exists and is populated
+		CreateTableFromSchema(output_environment, kSubTableName, kMainTableSchemaList);
 		ClearTableContents(output_environment, kSubTableName);
 		GetColumnsFulfillingEachGroup(output_environment, "id", kMainTableName);
 		std::string id_list = output_environment.parameter_set.CombineGroupSets("id");
