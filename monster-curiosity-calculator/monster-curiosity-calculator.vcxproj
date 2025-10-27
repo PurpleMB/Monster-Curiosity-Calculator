@@ -124,6 +124,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ShowIncludes>true</ShowIncludes>
       <AdditionalIncludeDirectories>$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
