@@ -384,7 +384,7 @@ void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string 
 	if (prepare_status != SQLITE_OK) {
 		std::string prepare_msg = std::vformat(
 			"Failed to prepare statement for copying from '{0}' to '{1}' using column {2}",
-			std::make_format_args(target_table, source_table, col_name)
+			std::make_format_args(source_table, target_table, col_name)
 		);
 		output_environment.LogError(prepare_status, prepare_msg.c_str());
 		return;
@@ -394,7 +394,7 @@ void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string 
 	if (step_status != SQLITE_DONE) {
 		std::string step_msg = std::vformat(
 			"Error processing step during copying from '{0}' to '{1}' using column {2}",
-			std::make_format_args(target_table, source_table, col_name)
+			std::make_format_args(source_table, target_table, col_name)
 		);
 		output_environment.LogError(step_status, step_msg.c_str());
 		sqlite3_finalize(prepared_stmt);
@@ -404,7 +404,7 @@ void CopyTableSubsetByColumn(OutputEnvironment& output_environment, std::string 
 	sqlite3_finalize(prepared_stmt);
 	std::string success_msg = std::vformat(
 		"Successfully copied from '{0}' to '{1}' using column {2}",
-		std::make_format_args(target_table, source_table, col_name)
+		std::make_format_args(source_table, target_table, col_name)
 	);
 	output_environment.LogSuccess(success_msg.c_str());
 }
